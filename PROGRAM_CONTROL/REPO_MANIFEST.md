@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/add-free-spark-twin-logic`
-**Commit:** `7d7a67f4ada25748e9a3d2681b00273da64ced7b`
-**Generated:** 2026-04-27T15:35:49Z
-**Branch:** `copilot/add-stripe-subscription-webhooks`
-**Commit:** `c2036285b71a1a68d01f684241dbe03f13d9edde`
-**Generated:** 2026-04-27T15:29:22Z
+**Commit:** `320058225f64170218a80d92a03727e29f43acb4`
+**Generated:** 2026-04-27T15:44:39Z
 
 ## All Files
 
