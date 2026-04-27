@@ -218,8 +218,19 @@ async function seedHouseModels() {
 }
 
 async function runAll() {
-  await main();
-  await seedHouseModels();
+  try {
+    await main();
+  } catch (e) {
+    console.error('MEMB-001 seed failed:', e);
+    throw e;
+  }
+
+  try {
+    await seedHouseModels();
+  } catch (e) {
+    console.error('House model seed failed:', e);
+    throw e;
+  }
 }
 
 runAll()

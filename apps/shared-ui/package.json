@@ -2,8 +2,8 @@
   "name": "@cyrano/shared-ui",
   "version": "1.0.0",
   "private": true,
-  "main": "./lib/index.ts",
-  "types": "./lib/index.ts",
+  "main": "./utils/index.ts",
+  "types": "./utils/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
