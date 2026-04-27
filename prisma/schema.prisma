@@ -2202,3 +2202,167 @@ model RedRoomRewardsBurn {
   @@index([user_id, burned_at_utc])
   @@map("redroom_rewards_burns")
 }
+
+// ─── Cyrano Standalone — AI Twin, Image Generation, Voice Cloning, Narrative Engine ─────────
+// CYR: These models power the AI companion / character product layer.
+//      All tables include correlation_id + reason_code per §5.2 schema discipline.
+
+// ── AI Twin ──────────────────────────────────────────────────────────────────
+
+model AiTwin {
+  twin_id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id        String         @db.Uuid
+  display_name      String         @db.VarChar(120)
+  persona_prompt    String         @db.Text
+  trigger_word      String         @db.VarChar(80)
+  /// "PRIVATE" | "PLATFORM_INTERNAL" | "SUBSCRIBER"
+  visibility        String         @default("PRIVATE") @db.VarChar(20)
+  /// true = house model (platform-owned, 100% revenue to platform)
+  is_house_model    Boolean        @default(false)
+  /// "PENDING_UPLOAD" | "UPLOAD_COMPLETE" | "TRAINING_QUEUED" | "TRAINING_IN_PROGRESS" | "TRAINING_COMPLETE" | "TRAINING_FAILED" | "RETIRED"
+  training_status   String         @default("PENDING_UPLOAD") @db.VarChar(30)
+  lora_weights_url  String?        @db.Text
+  training_error    String?        @db.Text
+  trained_at        DateTime?      @db.Timestamptz
+  correlation_id    String         @unique @db.VarChar(200)
+  reason_code       String         @default("TWIN_CREATE") @db.VarChar(40)
+  created_at        DateTime       @default(now()) @db.Timestamptz
+  updated_at        DateTime       @updatedAt @db.Timestamptz
+
+  photos            AiTwinPhoto[]
+  voice_clones      VoiceClone[]
+  image_caches      ImageCache[]
+  memory_banks      MemoryBank[]
+  narrative_branches NarrativeBranch[]
+
+  @@index([creator_id, training_status])
+  @@index([is_house_model, training_status])
+  @@map("ai_twins")
+}
+
+model AiTwinPhoto {
+  photo_id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  twin_id        String   @db.Uuid
+  storage_key    String   @db.Text
+  correlation_id String   @unique @db.VarChar(200)
+  reason_code    String   @default("PHOTO_UPLOAD") @db.VarChar(40)
+  created_at     DateTime @default(now()) @db.Timestamptz
+
+  twin           AiTwin   @relation(fields: [twin_id], references: [twin_id])
+
+  @@index([twin_id])
+  @@map("ai_twin_photos")
+}
+
+// ── Image Generation / Cache ──────────────────────────────────────────────────
+
+model ImageCache {
+  image_cache_id String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  twin_id        String   @db.Uuid
+  creator_id     String   @db.Uuid
+  user_id        String   @db.Uuid
+  prompt_hash    String   @db.VarChar(64)
+  prompt_used    String   @db.Text
+  /// "flux-pro" | "flux-schnell" | "flux-dev"
+  model          String   @db.VarChar(30)
+  storage_url    String   @db.Text
+  width          Int
+  height         Int
+  correlation_id String   @unique @db.VarChar(200)
+  reason_code    String   @default("IMAGE_GEN") @db.VarChar(40)
+  generated_at   DateTime @default(now()) @db.Timestamptz
+
+  twin           AiTwin   @relation(fields: [twin_id], references: [twin_id])
+
+  @@index([twin_id, prompt_hash, generated_at])
+  @@index([user_id, generated_at])
+  @@map("image_caches")
+}
+
+// ── Voice Cloning ─────────────────────────────────────────────────────────────
+
+model VoiceClone {
+  voice_clone_id       String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  twin_id              String              @db.Uuid
+  creator_id           String              @db.Uuid
+  voice_name           String              @db.VarChar(120)
+  description          String?             @db.Text
+  labels_json          String?             @db.Text
+  elevenlabs_voice_id  String?             @db.VarChar(100)
+  /// "PENDING_SAMPLES" | "SAMPLES_READY" | "CLONING_IN_PROGRESS" | "CLONE_COMPLETE" | "CLONE_FAILED" | "RETIRED"
+  status               String              @default("PENDING_SAMPLES") @db.VarChar(30)
+  clone_error          String?             @db.Text
+  cloned_at            DateTime?           @db.Timestamptz
+  correlation_id       String              @unique @db.VarChar(200)
+  reason_code          String              @default("VOICE_CLONE_CREATE") @db.VarChar(40)
+  created_at           DateTime            @default(now()) @db.Timestamptz
+  updated_at           DateTime            @updatedAt @db.Timestamptz
+
+  twin                 AiTwin              @relation(fields: [twin_id], references: [twin_id])
+  samples              VoiceCloneSample[]
+
+  @@index([twin_id, status])
+  @@map("voice_clones")
+}
+
+model VoiceCloneSample {
+  sample_id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  voice_clone_id   String     @db.Uuid
+  storage_key      String     @db.Text
+  duration_seconds Float
+  correlation_id   String     @unique @db.VarChar(200)
+  reason_code      String     @default("VOICE_SAMPLE_UPLOAD") @db.VarChar(40)
+  created_at       DateTime   @default(now()) @db.Timestamptz
+
+  voice_clone      VoiceClone @relation(fields: [voice_clone_id], references: [voice_clone_id])
+
+  @@index([voice_clone_id])
+  @@map("voice_clone_samples")
+}
+
+// ── Narrative Engine — Persistent Memory Bank ─────────────────────────────────
+
+model MemoryBank {
+  memory_id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id       String   @db.VarChar(200)
+  twin_id          String   @db.Uuid
+  user_id          String   @db.Uuid
+  /// "FACT" | "PREFERENCE" | "EMOTION" | "STORY_BEAT" | "RELATIONSHIP" | "SECRET"
+  memory_type      String   @db.VarChar(20)
+  content          String   @db.Text
+  /// 0.0–1.0; higher = recalled first in context window
+  importance_score Float    @default(0.5)
+  expires_at       DateTime? @db.Timestamptz
+  correlation_id   String   @unique @db.VarChar(200)
+  reason_code      String   @default("MEMORY_STORE") @db.VarChar(40)
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  twin             AiTwin   @relation(fields: [twin_id], references: [twin_id])
+
+  @@index([twin_id, user_id, importance_score(sort: Desc)])
+  @@index([twin_id, user_id, expires_at])
+  @@map("memory_banks")
+}
+
+// ── Narrative Engine — Cinematic Branching ────────────────────────────────────
+
+model NarrativeBranch {
+  branch_id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  twin_id            String    @db.Uuid
+  user_id            String    @db.Uuid
+  branch_title       String    @db.VarChar(200)
+  branch_premise     String    @db.Text
+  decision_prompt    String    @db.Text
+  options_json       String    @db.Text
+  resolved           Boolean   @default(false)
+  chosen_option_key  String?   @db.VarChar(10)
+  resolved_at        DateTime? @db.Timestamptz
+  correlation_id     String    @unique @db.VarChar(200)
+  reason_code        String    @default("BRANCH_CREATE") @db.VarChar(40)
+  created_at         DateTime  @default(now()) @db.Timestamptz
+
+  twin               AiTwin    @relation(fields: [twin_id], references: [twin_id])
+
+  @@index([twin_id, user_id, resolved])
+  @@map("narrative_branches")
+}
