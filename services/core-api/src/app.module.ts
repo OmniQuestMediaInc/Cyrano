@@ -32,6 +32,10 @@ import { CreatorOnboardingModule } from '../../creator-onboarding/src/creator-on
 import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { BenefitsModule } from './middleware/benefits.module';
+import { SparkTwinModule } from './spark-twin/spark-twin.module';
+import { AdminModule } from './admin/admin.module';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { BenefitsMiddleware } from './middleware/benefits.middleware';
 
 @Module({
   imports: [
@@ -65,6 +69,9 @@ import { BenefitsModule } from './middleware/benefits.module';
     CyranoAuthModule,
     PromotionModule,
     BenefitsModule,
+    SparkTwinModule,
+    AdminModule,
+    SubscriptionModule,
   ],
 })
 export class AppModule implements NestModule {
@@ -79,5 +86,11 @@ export class AppModule implements NestModule {
     // /spend routes. Final defence against a handler that tries to debit
     // PURCHASED before MEMBERSHIP_ALLOCATION or PROMOTIONAL_BONUS.
     consumer.apply(ThreeBucketSpendGuardMiddleware).forRoutes('/spend');
+
+    // CYR-SUB-002: Benefits middleware runs on Cyrano feature routes.
+    // Enforces monthly image / message / video limits per subscription tier.
+    consumer
+      .apply(BenefitsMiddleware)
+      .forRoutes('/image', '/chat', '/video');
   }
 }
