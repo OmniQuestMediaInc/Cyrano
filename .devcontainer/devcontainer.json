@@ -1,0 +1,14 @@
+{
+  "name": "ChatNow.Zone BUILD",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22",
+  "postCreateCommand": "yarn install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "prisma.prisma"
+      ]
+    }
+  }
+}

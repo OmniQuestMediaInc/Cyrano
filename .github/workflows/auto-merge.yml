@@ -1,0 +1,35 @@
+# WO: WO-CI-002
+# Auto-Merge — ChatNow.Zone BUILD
+# Enables auto-merge (squash strategy) on every PR targeting main so that
+# the branch is merged automatically once all required status checks pass.
+name: Auto Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+# Needs write access to pull-requests (to enable auto-merge) and
+# contents (to perform the actual merge commit).
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable-auto-merge:
+    name: Enable Auto Merge
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enable auto-merge for PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh pr merge "${{ github.event.pull_request.number }}" \
+               --repo "${{ github.repository }}" \
+               --auto \
+               --squash; then
+            echo "✅ Auto-merge enabled on PR #${{ github.event.pull_request.number }}"
+          else
+            echo "⚠️  Auto-merge could not be enabled — may already be set or branch protection not configured"
+          fi

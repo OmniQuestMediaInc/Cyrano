@@ -1,0 +1,52 @@
+# INFRA: Program Control notification — fires when report-back files land on main
+name: Program Control Notify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'PROGRAM_CONTROL/REPORT_BACK/**'
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    name: Notify Program Control
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          fetch-depth: 2
+
+      - name: Detect new report-back files
+        id: detect
+        run: |
+          NEW_FILES=$(git diff --name-only HEAD~1 HEAD -- 'PROGRAM_CONTROL/REPORT_BACK/*.md' | tr '\n' ', ')
+          echo "new_files=$NEW_FILES" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA::8}" >> $GITHUB_OUTPUT
+          echo "commit_msg=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
+
+      - name: Post to webhook
+        if: steps.detect.outputs.new_files != ''
+        env:
+          NOTIFY_WEBHOOK: ${{ secrets.PROGRAM_CONTROL_WEBHOOK }}
+        run: |
+          if [ -z "$NOTIFY_WEBHOOK" ]; then
+            echo "PROGRAM_CONTROL_WEBHOOK secret not set — skipping notification"
+            exit 0
+          fi
+          curl -s -X POST "$NOTIFY_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"text\": \"ChatNow.Zone BUILD — Report-back landed on main\",
+              \"attachments\": [{
+                \"color\": \"good\",
+                \"fields\": [
+                  {\"title\": \"Commit\", \"value\": \"${{ steps.detect.outputs.commit_sha }}\", \"short\": true},
+                  {\"title\": \"Files\", \"value\": \"${{ steps.detect.outputs.new_files }}\", \"short\": false},
+                  {\"title\": \"Message\", \"value\": \"${{ steps.detect.outputs.commit_msg }}\", \"short\": false}
+                ]
+              }]
+            }"

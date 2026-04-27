@@ -1,0 +1,60 @@
+---
+# markdownlint config consumed by Super-Linter.
+# Goal: enforce structural hygiene without fighting long-form docs.
+
+default: true
+
+# MD013: line length — docs/ contains long URLs and policy paragraphs.
+MD013: false
+
+# MD033: inline HTML — allow <br>, <details>, <sub>, etc. used in docs.
+MD033: false
+
+# MD041: first-line-heading — many repo docs open with a banner/admonition.
+MD041: false
+
+# MD024: duplicate headings — allow identical headings in sibling sections
+#        (e.g. "## Notes" under multiple features).
+MD024:
+  siblings_only: true
+
+# MD026: trailing punctuation in headings — allow `?` and `!`.
+MD026:
+  punctuation: ".,;:"
+
+# MD029: ordered list prefix — accept either all-ones or ordered styles.
+MD029:
+  style: one_or_ordered
+
+# MD034: bare URLs — permit; many docs paste links inline.
+MD034: false
+
+# MD036: emphasis as heading — tolerate in callouts.
+MD036: false
+
+# MD040: fenced code blocks without language — warn, not fail, since many
+#        snippets are intentionally plain-text.
+MD040: false
+
+# MD022: blanks around headings — compact-doctrine docs intentionally omit
+#        blank lines between `### step` and the first bullet.
+MD022: false
+
+# MD032: blanks around lists — same rationale as MD022.
+MD032: false
+
+# MD007: ul-indent — docs use 2-space indent for nested lists; upstream's
+#        default of 0 fights that style universally.
+MD007: false
+
+# MD025: multiple H1 — some evidence templates intentionally stack H1s
+#        (e.g. a banner H1 followed by the real title).
+MD025: false
+
+# MD058: blanks around tables — evidence templates intentionally have no
+#        surrounding blank lines.
+MD058: false
+
+# MD060: table-column-style — table alignment is hand-written in policy
+#        docs and tolerates missing-space / unaligned pipes.
+MD060: false

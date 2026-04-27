@@ -1,0 +1,78 @@
+# WO: WO-CI-001
+# Continuous Integration — ChatNow.Zone BUILD
+# Triggers on every push to main and every PR targeting main so that the
+# branch always shows a green status check instead of grey (no runs).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Minimal permissions — jobs only need to read repository contents.
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Validate SQL schema by actually applying it to a live PostgreSQL
+  #        instance.  Proves the ledger schema is runnable at any commit.
+  # ---------------------------------------------------------------------------
+  validate-schema:
+    name: Validate SQL Schema
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_USER: chatnow_app
+          POSTGRES_DB: chatnow
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Apply ledger schema
+        env:
+          PGPASSWORD: testpass
+        run: |
+          psql -v ON_ERROR_STOP=1 -h localhost -U chatnow_app -d chatnow \
+               -f infra/postgres/init-ledger.sql && \
+          echo "✅ Ledger schema applied successfully"
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Assert that every required file is present.  Catches accidental
+  #        deletions of governance, infra, or critical source files.
+  # ---------------------------------------------------------------------------
+  validate-structure:
+    name: Validate Repository Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Check required files exist
+        run: |
+          all_ok=true
+          while IFS= read -r f || [ -n "$f" ]; do
+            # Skip blank lines and comments
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            if [ -f "$f" ]; then
+              echo "✅  $f"
+            else
+              echo "❌  MISSING: $f"
+              all_ok=false
+            fi
+          done < .github/required-files.txt
+          $all_ok || exit 1

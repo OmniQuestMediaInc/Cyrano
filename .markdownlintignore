@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.next/
+archive/
+yarn.lock
+# Binary-with-.md-in-name (legacy export artifact, not markdown)
+*.md.pdf

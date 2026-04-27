@@ -1,0 +1,40 @@
+name: Generate Repo Manifest
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Generate manifest
+        run: |
+          echo "# REPO MANIFEST" > PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "Auto-generated on every push. Do not edit manually." >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "**Branch:** \`${GITHUB_REF_NAME}\`" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "**Commit:** \`${GITHUB_SHA}\`" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "**Generated:** $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "## All Files" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          echo "" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          git ls-files | sort | while read f; do
+            echo "- \`$f\`" >> PROGRAM_CONTROL/REPO_MANIFEST.md
+          done
+
+      - name: Commit manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add PROGRAM_CONTROL/REPO_MANIFEST.md
+          git diff --staged --quiet || git commit -m "CHORE: update REPO_MANIFEST [skip ci]"
+          git push

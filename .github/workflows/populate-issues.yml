@@ -1,0 +1,53 @@
+# WO: WO-019 / WO-020 / WO-021
+# Populate GitHub Issues from ROADMAP_MANIFEST for active mission objectives.
+# Run this workflow manually (workflow_dispatch) to create the three tracked issues.
+name: Populate Issues from Manifest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-issues:
+    name: Create Active Mission Objective Issues
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Create WO-019 — Audit Dashboard API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "WO-019: Audit Dashboard API" \
+            --body "Implement compliance visualization for Red Book scenarios as defined in docs/ROADMAP_MANIFEST.md" \
+            --label "critical" \
+          && echo "✅ WO-019 issue created" \
+          || echo "⚠️  WO-019 issue may already exist or label is missing — skipping"
+
+      - name: Create WO-020 — Frontend Ingestion Layer
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "WO-020: Frontend Ingestion Layer" \
+            --body "Integrate backend services into Studio/Model UI components." \
+            --label "high-priority" \
+          && echo "✅ WO-020 issue created" \
+          || echo "⚠️  WO-020 issue may already exist or label is missing — skipping"
+
+      - name: Create WO-021 — Batch Payout Service
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "WO-021: Batch Payout Service" \
+            --body "Deterministic aggregation of Ledger entries for bulk processing." \
+            --label "high-priority" \
+          && echo "✅ WO-021 issue created" \
+          || echo "⚠️  WO-021 issue may already exist or label is missing — skipping"

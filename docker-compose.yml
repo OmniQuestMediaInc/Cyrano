@@ -1,0 +1,152 @@
+# WO: WO-032 / FT-033 / PAYLOAD-9
+# FT-033: Postgres and Redis are isolated to the internal backend network.
+#         No host port bindings for db or redis — internal traffic only.
+# PAYLOAD-9: Env-var driven configuration only. No hard-coded secrets.
+#            All Payload 1–8 services routed through the `api` process boundary:
+#            GateGuard, Flicker n'Flame Scoring (FFS), CreatorControl, Cyrano, Diamond Concierge,
+#            Recovery, Immutable Audit, and Integration Hub are NestJS modules
+#            mounted inside the `api` composite runtime (see
+#            services/core-api/src/app.module.ts). A dedicated service row
+#            per module is only created when horizontal scaling is enabled —
+#            the Business Plan §G.6 AWS topology documents this path.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: chatnow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chatnow}
+      POSTGRES_USER: ${POSTGRES_USER:-chatnow_app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    # PORTS REMOVED: Internal network only. (FT-033 — NETWORK ISOLATION invariant)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init-ledger.sql:/docker-entrypoint-initdb.d/01-init-ledger.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-chatnow_app} -d ${POSTGRES_DB:-chatnow}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: chatnow_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    # PORTS REMOVED: Internal network only. (FT-033 — NETWORK ISOLATION invariant)
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  nats:
+    image: nats:2.10-alpine
+    container_name: chatnow_nats
+    restart: unless-stopped
+    # INFRA: NATS.io message fabric — all chat and haptic events route through here.
+    # Latency Invariant: REST polling is prohibited. All real-time events via NATS.
+    command: >
+      -js
+      -sd /data
+      -m 8222
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8222/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  api:
+    # Core API monolith — hosts all NestJS modules including:
+    # GateGuard, Flicker n'Flame Scoring (FFS), CreatorControl, Cyrano, Audit, Recovery,
+    # Integration Hub, Ledger, DFSP, Bijou, ShowZone, OBS-Bridge,
+    # Scheduling, Membership, Risk Engine, Geo, Games, Zone-GPT.
+    build:
+      context: ./services/core-api
+      dockerfile: Dockerfile
+    container_name: chatnow_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${API_PORT:-3000}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-chatnow_app}:${DB_PASSWORD}@db:5432/${POSTGRES_DB:-chatnow}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      NATS_URL: nats://nats:4222
+      # Canonical module feature flags — defaults ON for production bring-up.
+      # Payload 1–8 modules are mounted inside the api composite runtime.
+      LEDGER_ENABLED: ${LEDGER_ENABLED:-true}
+      GATEGUARD_ENABLED: ${GATEGUARD_ENABLED:-true}
+      RECOVERY_ENABLED: ${RECOVERY_ENABLED:-true}
+      DIAMOND_CONCIERGE_ENABLED: ${DIAMOND_CONCIERGE_ENABLED:-true}
+      FFS_ENABLED: ${FFS_ENABLED:-true}
+      CREATOR_CONTROL_ENABLED: ${CREATOR_CONTROL_ENABLED:-true}
+      CYRANO_ENABLED: ${CYRANO_ENABLED:-true}
+      INTEGRATION_HUB_ENABLED: ${INTEGRATION_HUB_ENABLED:-true}
+      AUDIT_IMMUTABLE_ENABLED: ${AUDIT_IMMUTABLE_ENABLED:-true}
+      STREAMING_ENABLED: ${STREAMING_ENABLED:-true}
+      # Webhook signing + RBAC step-up — NEVER commit values.
+      WEBHOOK_SIGNING_SECRET: ${WEBHOOK_SIGNING_SECRET:?WEBHOOK_SIGNING_SECRET is required}
+      RBAC_STEP_UP_SIGNING_SECRET: ${RBAC_STEP_UP_SIGNING_SECRET:?RBAC_STEP_UP_SIGNING_SECRET is required}
+    ports:
+      - "${API_PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - backend
+
+  # ── Streaming SFU (mediasoup) ─────────────────────────────────────────────
+  # SCAFFOLD — requires mediasoup Worker Dockerfile (services/streaming/).
+  # Target: 500 concurrent viewers per SFU instance (AWS c6i.xlarge).
+  # Uncomment and provide Dockerfile before production deployment.
+  #
+  # streaming:
+  #   build:
+  #     context: ./services/streaming
+  #     dockerfile: Dockerfile
+  #   container_name: chatnow_streaming
+  #   restart: unless-stopped
+  #   environment:
+  #     MEDIASOUP_LISTEN_IP: 0.0.0.0
+  #     MEDIASOUP_ANNOUNCED_IP: ${STREAMING_PUBLIC_IP}
+  #     NATS_URL: ${NATS_URL:-nats://nats:4222}
+  #   ports:
+  #     - "3002:3002"
+  #     - "40000-40100:40000-40100/udp"  # RTP port range
+  #   depends_on:
+  #     nats:
+  #       condition: service_healthy
+  #   networks:
+  #     - backend
+
+volumes:
+  postgres_data:
+  redis_data:
+  nats_data:
+
+networks:
+  backend:
+    driver: bridge
