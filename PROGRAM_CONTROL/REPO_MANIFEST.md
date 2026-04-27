@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/add-stripe-subscription-webhooks`
-**Commit:** `c2036285b71a1a68d01f684241dbe03f13d9edde`
-**Generated:** 2026-04-27T15:29:22Z
+**Branch:** `copilot/final-polish-gateguard-sentinel-welfare-guardian`
+**Commit:** `9b3ec8ef4f6dcb9cdac2972c9993900467271719`
+**Generated:** 2026-04-27T16:06:07Z
 
 ## All Files
 
@@ -455,11 +455,14 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/games/game-engine.service.ts`
 - `services/core-api/src/games/games.controller.ts`
 - `services/core-api/src/games/games.module.ts`
+- `services/core-api/src/gateguard/chat-guard.service.ts`
+- `services/core-api/src/gateguard/gateguard-sentinel.service.ts`
 - `services/core-api/src/gateguard/gateguard.middleware.ts`
 - `services/core-api/src/gateguard/gateguard.module.ts`
 - `services/core-api/src/gateguard/gateguard.service.ts`
 - `services/core-api/src/gateguard/gateguard.types.ts`
 - `services/core-api/src/gateguard/welfare-guardian.scorer.ts`
+- `services/core-api/src/gateguard/welfare-guardian.service.ts`
 - `services/core-api/src/geo/geo-pricing.service.ts`
 - `services/core-api/src/gifts/gift.controller.spec.ts`
 - `services/core-api/src/gifts/gift.controller.ts`
