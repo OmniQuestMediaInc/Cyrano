@@ -309,6 +309,19 @@ export const NATS_TOPICS = {
   CYRANO_LAYER4_VOICE_SYNTHESIZED:   'cyrano.layer4.voice.synthesized',
   CYRANO_LAYER4_VOICE_SKIPPED:       'cyrano.layer4.voice.skipped',
 
+  // ── Cyrano Translation Layer (Issue #15 — Phase 4) ───────────────────────
+  CYRANO_TRANSLATION_REQUESTED:      'cyrano.translation.requested',
+  CYRANO_TRANSLATION_COMPLETED:      'cyrano.translation.completed',
+  CYRANO_TRANSLATION_SKIPPED:        'cyrano.translation.skipped',
+  CYRANO_TRANSLATION_UNSUPPORTED:    'cyrano.translation.unsupported',
+
+  // ── Cyrano Beta Analytics (Issue #16 — Phase 4) ──────────────────────────
+  CYRANO_BETA_CREATOR_ENROLLED:      'cyrano.beta.creator.enrolled',
+  CYRANO_BETA_CREATOR_REMOVED:       'cyrano.beta.creator.removed',
+  CYRANO_BETA_PROMPT_TRACKED:        'cyrano.beta.prompt.tracked',
+  CYRANO_BETA_TRANSLATION_TRACKED:   'cyrano.beta.translation.tracked',
+  CYRANO_BETA_SUMMARY_EMITTED:       'cyrano.beta.summary.emitted',
+
   // ── Integration Hub (Business Plan B.3 + B.4 — cross-service wiring) ─────
   HUB_HIGH_HEAT_MONETIZATION:        'hub.high_heat.monetization',
   HUB_PAYOUT_SCALING_APPLIED:        'hub.payout.scaling_applied',

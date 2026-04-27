@@ -100,6 +100,13 @@ export interface CyranoLayer4PromptRequest {
   correlation_id?: string;
   /** Caller-provided consent receipt id (HIPAA / GDPR). */
   consent_receipt_id?: string;
+  /**
+   * Optional BCP-47 locale code for real-time text translation (Issue #15).
+   * When present and the locale differs from the canonical en-US baseline,
+   * the translation layer will populate `translated_copy` on the response.
+   * Example: "fr-FR", "es-ES", "de-DE".
+   */
+  target_locale?: string;
 }
 
 /** Layer 4 prompt response envelope. */
@@ -116,8 +123,23 @@ export interface CyranoLayer4PromptResponse {
   rule_applied_id: string;
   /** Voice synthesis envelope (voice_uri populated when synthesis succeeded). */
   voice?: CyranoLayer4VoiceEnvelope | null;
+  /** Translation envelope — populated when target_locale was requested. */
+  translation?: CyranoLayer4TranslationEnvelope | null;
   correlation_id: string;
   emitted_at_utc: string;
+}
+
+/** Translation envelope returned alongside a prompt response (Issue #15). */
+export interface CyranoLayer4TranslationEnvelope {
+  /** BCP-47 source locale (always en-US for Cyrano's baseline templates). */
+  source_locale: string;
+  /** BCP-47 target locale requested by the caller. */
+  target_locale: string;
+  /** Translated copy — empty string when translation was skipped. */
+  translated_copy: string;
+  /** Reason translation was skipped, when applicable. */
+  skipped_reason_code?: CyranoLayer4TranslationSkipReason;
+  rule_applied_id: string;
 }
 
 /** Voice envelope returned alongside a prompt response. */
@@ -130,6 +152,13 @@ export interface CyranoLayer4VoiceEnvelope {
   skipped_reason_code?: CyranoLayer4ReasonCode;
   rule_applied_id: string;
 }
+
+/** Reason codes for translation skips (Issue #15). */
+export type CyranoLayer4TranslationSkipReason =
+  | 'TRANSLATION_LOCALE_SAME_AS_SOURCE'
+  | 'TRANSLATION_LOCALE_NOT_SUPPORTED'
+  | 'TRANSLATION_DISABLED_BY_TENANT'
+  | 'TRANSLATION_INPUT_EMPTY';
 
 /** Closed enum of every Layer 4 reason code emitted on success or refusal. */
 export type CyranoLayer4ReasonCode =

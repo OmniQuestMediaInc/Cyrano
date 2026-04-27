@@ -3,8 +3,12 @@
 // surface today; Layer 3 (HCZ consumer) is a scaffolded provider; Layer 4
 // (enterprise multi-tenant API) is the new v1 surface added by this PR.
 // Layer 2 lives in apps/cyrano-standalone/.
+// Phase 4 adds the Translation Layer (Issue #15) and Beta Analytics
+// (Issue #16) services.
 import { Module } from '@nestjs/common';
 import { NatsModule } from '../../core-api/src/nats/nats.module';
+import { CyranoBetaAnalyticsService } from './cyrano-beta-analytics.service';
+import { CyranoBetaRegistryService } from './cyrano-beta-registry.service';
 import { CyranoLayer3HczService } from './cyrano-layer3-hcz.service';
 import { CyranoLayer4ApiKeyService } from './cyrano-layer4-api-key.service';
 import { CyranoLayer4AuditService } from './cyrano-layer4-audit.service';
@@ -15,6 +19,7 @@ import { CyranoLayer4RateLimiterService } from './cyrano-layer4-rate-limiter.ser
 import { CyranoLayer4TenantStore } from './cyrano-layer4-tenant.store';
 import { CyranoLayer4VoiceBridge } from './cyrano-layer4-voice.bridge';
 import { CyranoService } from './cyrano.service';
+import { CyranoTranslationService } from './cyrano-translation.service';
 import { PersonaManager } from './persona.manager';
 import { SessionMemoryStore } from './session-memory.store';
 
@@ -34,6 +39,11 @@ import { SessionMemoryStore } from './session-memory.store';
     CyranoLayer4VoiceBridge,
     CyranoLayer4EnterpriseService,
     CyranoLayer4Guard,
+    // Phase 4 — Translation Layer (Issue #15)
+    CyranoTranslationService,
+    // Phase 4 — Beta Analytics (Issue #16)
+    CyranoBetaRegistryService,
+    CyranoBetaAnalyticsService,
   ],
   exports: [
     SessionMemoryStore,
@@ -47,6 +57,9 @@ import { SessionMemoryStore } from './session-memory.store';
     CyranoLayer4VoiceBridge,
     CyranoLayer4EnterpriseService,
     CyranoLayer4Guard,
+    CyranoTranslationService,
+    CyranoBetaRegistryService,
+    CyranoBetaAnalyticsService,
   ],
 })
 export class CyranoModule {}
