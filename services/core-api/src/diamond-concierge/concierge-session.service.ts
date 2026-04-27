@@ -57,6 +57,11 @@ export class ConciergeRequestTooLongError extends Error {
 export const CONCIERGE_SESSION_RULE_ID = 'DIAMOND_CONCIERGE_SESSION_v1';
 const MAX_REQUEST_CHARS = 2_000;
 
+/** Build a unique correlation_id for a concierge session. */
+function makeCorrelationId(userId: string): string {
+  return `CONCIERGE:${userId}:${Date.now()}:${randomUUID().slice(0, 8)}`;
+}
+
 @Injectable()
 export class DiamondConciergeSessionService {
   private readonly logger = new Logger(DiamondConciergeSessionService.name);
@@ -93,7 +98,7 @@ export class DiamondConciergeSessionService {
       request,
       status: 'pending',
       priority,
-      correlation_id: `CONCIERGE:${userId}:${Date.now()}:${randomUUID().slice(0, 8)}`,
+      correlation_id: makeCorrelationId(userId),
       reason_code: 'CONCIERGE_REQUEST',
     });
 

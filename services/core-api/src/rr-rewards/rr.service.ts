@@ -114,6 +114,11 @@ export class AlreadyAwardedTodayError extends Error {
 
 export const RR_REWARDS_RULE_ID = 'RR_REWARDS_v1';
 
+/** Build a unique correlation_id for an RRR action. */
+function makeCorrelationId(prefix: string, userId: string): string {
+  return `${prefix}:${userId}:${Date.now()}:${randomUUID().slice(0, 8)}`;
+}
+
 /**
  * Reward expiry windows by reward type (calendar days from grant).
  * EXTRA_IMAGES: 30 days; TEMP_INFERNO: 7 days; CUSTOM_TWIN: no expiry.
@@ -148,7 +153,7 @@ export class RedRoomRewardsService {
       amount: points,
       action,
       description: `Earned ${points} points for ${action}`,
-      correlation_id: `RRR:${action}:${userId}:${Date.now()}:${randomUUID().slice(0, 8)}`,
+      correlation_id: makeCorrelationId(`RRR:${action}`, userId),
       reason_code: 'RRR_AWARD',
     });
 
@@ -232,7 +237,7 @@ export class RedRoomRewardsService {
       throw new InsufficientRrrPointsError(balance, cost);
     }
 
-    const correlationId = `RRR:BURN:${reward}:${userId}:${Date.now()}:${randomUUID().slice(0, 8)}`;
+    const correlationId = makeCorrelationId(`RRR:BURN:${reward}`, userId);
 
     const debit_entry = await this.ledger.appendEntry({
       user_id: userId,
