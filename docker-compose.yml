@@ -118,25 +118,48 @@ services:
     networks:
       - backend
 
-  # ── Streaming SFU (mediasoup) ─────────────────────────────────────────────
-  # SCAFFOLD — requires mediasoup Worker Dockerfile (services/streaming/).
-  # Target: 500 concurrent viewers per SFU instance (AWS c6i.xlarge).
-  # Uncomment and provide Dockerfile before production deployment.
+  # ── Cyrano Standalone — Next.js UI ────────────────────────────────────────
+  # Run the Next.js cyrano-standalone app on port 3100.
+  # Connects to the api service for all Cyrano/AI endpoints.
+  cyrano-ui:
+    build:
+      context: ./apps/cyrano-standalone
+      dockerfile: Dockerfile
+    container_name: cyrano_ui
+    restart: unless-stopped
+    environment:
+      CYRANO_CORE_API_URL: ${CYRANO_CORE_API_URL:-http://api:3000}
+      NEXT_PUBLIC_CYRANO_API_URL: ${NEXT_PUBLIC_CYRANO_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3100:3100"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+    # CYR: run with `yarn dev:cyrano` in development; this service is for prod.
+
+  # ── Cyrano AI Worker — Banana.dev LoRA Training Webhook Handler ───────────
+  # SCAFFOLD — receives Banana.dev training completion callbacks and updates
+  # AiTwin records. Runs as a lightweight worker process.
+  # Uncomment and provide Dockerfile when Banana.dev integration is active.
   #
-  # streaming:
+  # ai-twin-worker:
   #   build:
-  #     context: ./services/streaming
+  #     context: ./services/ai-twin
   #     dockerfile: Dockerfile
-  #   container_name: chatnow_streaming
+  #   container_name: cyrano_ai_twin_worker
   #   restart: unless-stopped
   #   environment:
-  #     MEDIASOUP_LISTEN_IP: 0.0.0.0
-  #     MEDIASOUP_ANNOUNCED_IP: ${STREAMING_PUBLIC_IP}
+  #     DATABASE_URL: ${DATABASE_URL}
   #     NATS_URL: ${NATS_URL:-nats://nats:4222}
-  #   ports:
-  #     - "3002:3002"
-  #     - "40000-40100:40000-40100/udp"  # RTP port range
+  #     BANANA_API_KEY: ${BANANA_API_KEY}
+  #     BANANA_API_ENDPOINT: ${BANANA_API_ENDPOINT}
+  #     AI_TWIN_LORA_RANK: ${AI_TWIN_LORA_RANK:-16}
   #   depends_on:
+  #     db:
+  #       condition: service_healthy
   #     nats:
   #       condition: service_healthy
   #   networks:

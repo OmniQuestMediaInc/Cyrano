@@ -24,6 +24,17 @@ const NATS_IMAGE_FAILED = 'cyrano.image.failed';
 const BANANA_API_KEY = process.env.BANANA_API_KEY ?? '';
 const BANANA_MODEL_KEY_FLUX_PRO = process.env.BANANA_MODEL_KEY_FLUX_PRO ?? '';
 const BANANA_MODEL_KEY_FLUX_SCHNELL = process.env.BANANA_MODEL_KEY_FLUX_SCHNELL ?? '';
+// Use configurable endpoint — defaults to known stable version path
+const BANANA_BASE_URL = process.env.BANANA_API_ENDPOINT ?? 'https://api.banana.dev';
+const BANANA_START_PATH = process.env.BANANA_START_PATH ?? '/start/v4/';
+
+// Response shape from Banana.dev /start/v4/ — defined explicitly to avoid unsafe casts
+interface BananaDevResponse {
+  modelOutputs?: Array<{
+    image_base64?: string;
+    image_url?: string;
+  }>;
+}
 
 /** Default dimensions by aspect ratio */
 const ASPECT_DIMENSIONS: Record<string, { width: number; height: number }> = {
@@ -157,7 +168,7 @@ export class ImageService {
     const modelKey =
       model === 'flux-pro' ? BANANA_MODEL_KEY_FLUX_PRO : BANANA_MODEL_KEY_FLUX_SCHNELL;
 
-    const response = await fetch('https://api.banana.dev/start/v4/', {
+    const response = await fetch(`${BANANA_BASE_URL}${BANANA_START_PATH}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +182,11 @@ export class ImageService {
       throw new Error(`Banana.dev API error ${response.status}: ${text}`);
     }
 
-    const data = (await response.json()) as { modelOutputs?: Array<{ image_base64?: string; image_url?: string }> };
+    const raw = (await response.json()) as unknown;
+    if (typeof raw !== 'object' || raw === null || !('modelOutputs' in raw)) {
+      throw new Error('Banana.dev returned unexpected response shape');
+    }
+    const data = raw as BananaDevResponse;
     const output = data.modelOutputs?.[0];
     if (!output) throw new Error('Banana.dev returned no model output');
 

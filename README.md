@@ -1,189 +1,178 @@
-# ChatNow.Zone
+# Cyrano™ Standalone
 
-> **✅ BUILD COMPLETE — CANONICAL COMPLIANT (Alpha Launch Ready)**
-> Payloads 1–10 executed and verified. All L0 ship-gates closed per Canonical Corpus v10 + REDBOOK + Business Plan v2.8.
-> **Date:** April 24, 2026 · **Next steps:** Pixel Legacy onboarding, payment processor testing, CEO launch clearance sign-off.
+> **AI Character Companions — photorealistic, persistent-memory, voice-cloned.**
+> Powered by Flux LoRA fine-tuning, ElevenLabs voice cloning, and a cinematic narrative engine.
+> Governed by OmniQuest Media Inc. (OQMInc™) — OQMI Coding Doctrine v2.0.
 
-> **ChatNow.Zone — Canonical Corpus v10 governed monorepo (TypeScript + Prisma + Postgres).**
-> **Status: BUILD COMPLETE (Payload 9, 2026-04-24) — Alpha Launch Ready (September 2026 target).**
-
-The ChatNow.Zone build is the primary production platform for
-OmniQuest Media Inc. (OQMInc™). Every commit is bound by the OQMI
-governance invariants: append-only finance, deterministic execution,
-idempotent services, multi-tenant mandate, and zero secrets in the
-tree.
+**Package manager:** Yarn (canonical for all OQMInc repos — do not use npm or pnpm).
 
 ---
 
-## Authoritative docs
+## What is Cyrano™?
 
-- **Governance doctrine:** [`PROGRAM_CONTROL/OQMI_GOVERNANCE.md`](PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md) — invariants, agent roles, PR-lifecycle authority.
-- **Coding doctrine:** [`PROGRAM_CONTROL/OQMI_SYSTEM_STATE.md`](PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md) — OQMI Coding Doctrine v2.0.
-- **Program control pipeline:** [`PROGRAM_CONTROL/`](PROGRAM_CONTROL/) — directive queue, in-progress, done, report-backs, repo manifest, ship-gate verifier.
-- **Architecture overview (Payloads 1–8):** [`docs/ARCHITECTURE_OVERVIEW.md`](docs/ARCHITECTURE_OVERVIEW.md).
-- **Pre-launch L0 checklist:** [`docs/PRE_LAUNCH_CHECKLIST.md`](docs/PRE_LAUNCH_CHECKLIST.md).
-- **Engineering docs root:** [`docs/`](docs/) — `DOMAIN_GLOSSARY.md`, `REQUIREMENTS_MASTER.md`, `MEMBERSHIP_LIFECYCLE_POLICY.md`, `ROADMAP_MANIFEST.md`, compliance, doctrine.
-- **Agent instructions (GitHub Copilot + Claude Code):** [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
-- **Backlog snapshot:** [`OQMI_SYSTEM_STATE.md`](OQMI_SYSTEM_STATE.md) (repo root — periodic snapshot of ship-gate and invariant-audit status).
-- **Architecture overview (Payload 9):** [`docs/ARCHITECTURE_OVERVIEW.md`](docs/ARCHITECTURE_OVERVIEW.md) — full system map + cross-Payload invariants.
-- **Pre-launch checklist:** [`docs/PRE_LAUNCH_CHECKLIST.md`](docs/PRE_LAUNCH_CHECKLIST.md) — go/no-go for the 2026-10-01 hard launch.
-- **Launch manifest:** [`PROGRAM_CONTROL/LAUNCH_MANIFEST.md`](PROGRAM_CONTROL/LAUNCH_MANIFEST.md) — Pixel Legacy onboarding, Mic Drop reveal, 3,000-creator rate-lock, GateGuard LOI data package.
+Cyrano™ is a standalone AI companion product built on top of the OmniQuestMediaInc
+governance, ledger, and user system. It allows creators to:
+
+1. **Train an AI Twin** — Upload photos → fine-tune a Flux LoRA model → generate photorealistic
+   character images with natural skin, pores, lighting depth, and cinematic quality.
+2. **Persistent Character Chat** — Conversations backed by a long-term Memory Bank
+   (facts, preferences, story beats, secrets) so every interaction deepens the relationship.
+3. **Voice Call** — ElevenLabs voice cloning gives each character a unique, cloned voice for
+   real-time spoken interactions.
+4. **Narrative Branching** — Cinematic branching choice points let users shape their story arc,
+   with consequences written into memory.
+5. **House Models** — Platform-owned characters that keep 100% revenue for testing and direct
+   platform monetization.
 
 ---
 
-## Quickstart — local bring-up
+## Repository Structure
 
-Prerequisites: Node ≥ 20 (< 23), Yarn ≥ 1.22, Docker + Docker Compose.
-
-```bash
-# 1. Install workspace dependencies
-yarn install --frozen-lockfile
-
-# 2. Generate Prisma client + apply schema
-yarn prisma:generate
-yarn prisma:push
-
-# 3. Typecheck + lint + test (must be green before bring-up)
-yarn typecheck
-yarn lint
-yarn test
-
-# 4. Launch Postgres + Redis + NATS + core-api (Postgres 5432 and Redis 6379
-#    are internal-only by design — FT-033 network-isolation invariant)
-docker compose up --build
+```
+Cyrano/
+├── apps/
+│   └── cyrano-standalone/       # Next.js 14 frontend (port 3100)
+│       ├── app/                 # App Router pages
+│       │   ├── page.tsx         # Home dashboard
+│       │   ├── ai-twin/         # AI Twin Creator wizard
+│       │   ├── chat/            # Character Chat
+│       │   └── voice-call/      # Voice Call
+│       ├── components/
+│       │   ├── AITwinCreator/   # Step-by-step twin training wizard
+│       │   ├── CharacterChat/   # Persistent narrative chat UI
+│       │   └── VoiceCall/       # ElevenLabs TTS voice call UI
+│       └── lib/                 # Session helpers, API clients
+├── services/
+│   ├── ai-twin/                 # Photo upload + Flux LoRA training pipeline
+│   ├── image-generation/        # Flux 2 Pro + Banana.dev image service
+│   ├── voice-cloning/           # ElevenLabs voice clone + TTS service
+│   ├── narrative-engine/        # Persistent memory + cinematic branching
+│   ├── cyrano/                  # Cyrano core (session, prompt, persona)
+│   ├── core-api/                # NestJS monolith (auth, ledger, GateGuard, …)
+│   ├── diamond-concierge/       # Diamond-tier VIP concierge
+│   ├── ledger/                  # Canonical Ledger (append-only finance)
+│   ├── creator-control/         # Creator management
+│   ├── integration-hub/         # Service integration layer
+│   ├── recovery/                # Diamond recovery flows
+│   ├── ffs/                     # Flicker n'Flame Scoring (Red Room rewards)
+│   ├── gamification/            # Earn/burn logic, prize pools
+│   └── rewards-api/             # Rewards API
+├── prisma/                      # Prisma schema + migrations
+├── finance/                     # Canonical Ledger, REDBOOK, dynamic pricing
+├── governance/                  # Governance artifacts
+├── PROGRAM_CONTROL/             # Directive queue, ship-gate verifier, report-backs
+├── docs/                        # Architecture, glossary, requirements
+└── docker-compose.yml           # Cyrano-focused compose (db, redis, nats, api, cyrano-ui)
 ```
 
-The `api` service exposes `http://localhost:3000` with a `/health`
-endpoint and mounts every Payload 1–8 module (Ledger, Recovery,
-GateGuard, Streaming, CreatorControl, Cyrano, Diamond Concierge,
-Immutable Audit) plus the Integration Hub. `db`, `redis`, and `nats`
-remain on the internal `backend` network and are not reachable from
-the host.
+---
 
-The compose file requires four secrets to be present in the
-environment (or a developer-local `.env.local` — **never** committed):
+## Quick Start (Development)
 
-- `DB_PASSWORD`
-- `REDIS_PASSWORD`
-- `WEBHOOK_SIGNING_SECRET`
-- `RBAC_STEP_UP_SIGNING_SECRET`
+```bash
+# 1. Install dependencies
+yarn install
 
-Module-level feature flags (`LEDGER_ENABLED`, `GATEGUARD_ENABLED`,
-`CYRANO_ENABLED`, …) default to `true` and can be flipped per
-environment without rebuilding the container.
+# 2. Copy environment variables
+cp .env.example .env
+# Fill in DATABASE_URL, ELEVENLABS_API_KEY, BANANA_API_KEY, etc.
+
+# 3. Start infrastructure (Postgres, Redis, NATS)
+docker-compose up db redis nats -d
+
+# 4. Apply Prisma migrations
+yarn prisma migrate dev
+
+# 5. Start the core API
+yarn workspace core-api dev
+
+# 6. Start the Cyrano standalone UI
+cd apps/cyrano-standalone && yarn dev
+# → http://localhost:3100
+```
+
+Or run everything with Docker Compose:
+
+```bash
+docker-compose up
+# → API: http://localhost:3000
+# → Cyrano UI: http://localhost:3100
+```
 
 ---
 
-## Package scripts
+## Key API Endpoints
 
-| Command                                 | Purpose                                                            |
-| --------------------------------------- | ------------------------------------------------------------------ |
-| `yarn lint` / `yarn lint:fix`           | ESLint `services/**/*.ts` (zero warnings)                          |
-| `yarn format` / `yarn format:check`     | Prettier across the tree                                           |
-| `yarn typecheck` / `yarn typecheck:api` | `tsc --noEmit` (root / core-api)                                   |
-| `yarn test`                             | Jest integration + E2E suite (`tests/integration/` + `tests/e2e/`) |
-| `yarn prisma:generate`                  | Regenerate Prisma client from `prisma/schema.prisma`               |
-| `yarn prisma:push`                      | Push Prisma schema to the database                                 |
-| `yarn seed:scheduling`                  | Seed GuestZone scheduling reference data                           |
-| `yarn ship-gate`                        | Run `PROGRAM_CONTROL/ship-gate-verifier.ts` (L0 compliance report) |
-
----
-
-## Architecture map (Payloads 1–8)
-
-| Surface                                                   | Path                                                                |
-| --------------------------------------------------------- | ------------------------------------------------------------------- |
-| Canonical Ledger (three-bucket + hash chain)              | `services/ledger/`                                                  |
-| Diamond Concierge (volume + velocity quotes)              | `services/diamond-concierge/`                                       |
-| Recovery Engine (Token Bridge / 3/5ths Exit / Expiration) | `services/recovery/` + `services/ledger/recovery.service.ts`        |
-| GateGuard Sentinel + Welfare Guardian                     | `services/core-api/src/gateguard/`                                  |
-| RBAC + step-up                                            | `services/core-api/src/auth/`                                       |
-| Compliance + WORM + audit chain                           | `services/core-api/src/compliance/`, `services/core-api/src/audit/` |
-| CreatorControl + Cyrano                                   | `services/creator-control/`, `services/cyrano/`                     |
-| Integration Hub                                           | `services/integration-hub/`                                         |
-| UI presenters + page builders                             | `ui/types/`, `ui/view-models/`, `ui/app/`, `ui/config/`             |
-| End-to-end tests                                          | `tests/e2e/`                                                        |
-| Ship-gate verifier                                        | `PROGRAM_CONTROL/ship-gate-verifier.ts`                             |
-
-Detailed map: [`docs/ARCHITECTURE_OVERVIEW.md`](docs/ARCHITECTURE_OVERVIEW.md).
+| Endpoint | Description |
+|---|---|
+| `POST /cyrano/ai-twin` | Create a new AI twin record |
+| `POST /cyrano/ai-twin/:id/photos` | Record a photo upload |
+| `POST /cyrano/ai-twin/:id/train` | Start Flux LoRA training |
+| `GET  /cyrano/ai-twin/house-models` | List platform house models |
+| `POST /cyrano/images/generate` | Generate a photorealistic image |
+| `POST /cyrano/voice` | Create a voice clone |
+| `POST /cyrano/voice/tts` | Text-to-speech with cloned voice |
+| `POST /cyrano/narrative/memory` | Store a memory for a user+twin |
+| `POST /cyrano/narrative/context` | Build LLM context from memory bank |
+| `POST /cyrano/narrative/branch` | Create a cinematic branch point |
+| `POST /cyrano/narrative/branch/:id/resolve` | Resolve a branch choice |
 
 ---
 
-## Architecture summary
+## Environment Variables
 
-Eight payloads compose the canonical runtime:
+See [`.env.example`](.env.example) for a full list. Key variables:
 
-| # | Payload | Highlights |
-| - | --- | --- |
-| 1 | Canonical Financial Ledger | Three-bucket wallet, REDBOOK rate cards, append-only triggers |
-| 2 | REDBOOK Recovery + Diamond Concierge | Extension / recovery / Token Bridge / 3/5ths Exit |
-| 3 | GateGuard Sentinel + Welfare Guardian Score | Pre-processor on every ledger touch |
-| 4 | OBS Streaming Bridge + Flicker n'Flame Scoring (FFS) | Deterministic tier transitions, theatre + Bijou |
-| 5 | CreatorControl.Zone + Cyrano L1 + Integration Hub | Whisper copilot ≤ 350 ms, cross-Payload wiring |
-| 6 | Immutable Audit Architecture | Hash-chain + WORM export + Canonical Compliance Checklist |
-| 7 | RBAC Step-Up + Compliance Lockdown | Step-up challenge + Legal Hold model |
-| 8 | (Cross-cutting) | Covered by Payloads 1–7 |
-| 9 | Deployment Readiness + Launch Prep | This release — see `docs/ARCHITECTURE_OVERVIEW.md` |
-
-See [`docs/ARCHITECTURE_OVERVIEW.md`](docs/ARCHITECTURE_OVERVIEW.md) for
-the full topology, cross-Payload contracts, and AWS deploy plan.
-
-## Ship-gate status (vs Canonical Corpus L0)
-
-Snapshot at 2026-04-25 (Payload 7 + 8):
-
-- **PAYLOAD 1 (Canonical Ledger)** — DONE. Three-bucket wallet + hash chain.
-- **PAYLOAD 2 (Recovery Engine)** — DONE. REDBOOK §5 pillars wired.
-- **PAYLOAD 3 (GateGuard)** — DONE (scaffold + middleware).
-- **PAYLOAD 4 (OBS bridge / Flicker n'Flame Scoring)** — DONE (scaffold).
-- **PAYLOAD 5 (CreatorControl + Cyrano L1)** — DONE.
-- **PAYLOAD 6 (Immutable audit + RBAC + compliance)** — DONE.
-- **PAYLOAD 7 (Frontend polish + Diamond Concierge UI)** — DONE.
-- **PAYLOAD 8 (E2E validation + ship-gate verifier)** — DONE.
-
-Remaining `NEEDS_DIRECTIVE` items (deferred to post-alpha): Black-Glass
-Interface (G101+), Cyrano Layer 2, FairPay + NOWPayouts wiring, OBS
-Broadcast Kernel hardening, `legal_holds.correlation_id` migration.
-See `docs/REQUIREMENTS_MASTER.md` for the live matrix.
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | Postgres connection string |
+| `ELEVENLABS_API_KEY` | ElevenLabs API key for voice cloning + TTS |
+| `BANANA_API_KEY` | Banana.dev API key for Flux LoRA training |
+| `BANANA_MODEL_KEY_FLUX_PRO` | Banana.dev model key for Flux Pro |
+| `AI_TWIN_LORA_RANK` | LoRA rank for training (default: 16) |
+| `NARRATIVE_MEMORY_TTL_DAYS` | Memory retention in days (default: 365) |
 
 ---
 
-## Invariants (excerpt)
+## Governance
 
-1. **Append-only finance** — no `UPDATE`/`DELETE` on ledger tables.
-   Enforced via Postgres triggers in `infra/postgres/init-ledger.sql`.
-2. **`correlation_id` + `reason_code`** required on every financial /
-   audit write.
-3. **Postgres (5432) / Redis (6379)** never on public interfaces.
-4. **Chat + haptic events via NATS.io** — REST polling forbidden.
-5. **No secrets, tokens, credentials, or PII in logs.**
-6. **Governance §12:** the banned entity ([REDACTED] — see governance
-   doc) must never appear in any OQMInc material.
+This repo operates under the OQMI Coding Doctrine v2.0. All agents must read:
 
-Full invariant set and enforcement rules:
-[`PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`](PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md).
+- **[`PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`](PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md)** — governance invariants, PR lifecycle, escalation discipline.
+- **[`docs/DOMAIN_GLOSSARY.md`](docs/DOMAIN_GLOSSARY.md)** — naming authority and commit prefix enum.
 
----
+### Financial Integrity Zone (FIZ)
 
-## Contributing
+All paths under `services/ledger/`, `finance/`, and any code touching `balance`, `payout`,
+`escrow`, or `ledger_entry` columns are FIZ-scoped. FIZ commits require:
 
-Work flows through the **PROGRAM_CONTROL directive pipeline**:
+```
+FIZ: <subject>
+REASON: <why>
+IMPACT: <financial surface affected>
+CORRELATION_ID: <idempotency key>
+```
 
-1. Claude Chat authors a directive into `PROGRAM_CONTROL/DIRECTIVES/QUEUE/`.
-2. An agent (Claude Code, GitHub Copilot, or human contributor) moves
-   the directive to `IN_PROGRESS/`, opens a branch, executes exactly
-   as written, and files a report-back in `PROGRAM_CONTROL/REPORT_BACK/`.
-3. PR is reviewed per `.github/CODEOWNERS` + `ci.yml` + `super-linter.yml`;
-   on merge the directive moves to `DONE/` and
-   `docs/REQUIREMENTS_MASTER.md` is updated.
+### Non-negotiable invariants
 
-Do not push directly to `main`. Branch naming: `claude/<id>-<suffix>`,
-`copilot/<id>-<suffix>`, or `<team>/<short-slug>`.
+- **Append-only finance** — no `UPDATE`/`DELETE` on ledger tables; corrections are offset entries.
+- **NATS for real-time** — all chat and AI events via NATS.io; no REST polling.
+- **Network isolation** — Postgres (5432) and Redis (6379) never on public interface.
+- **No secrets in tree** — all credentials in `.env` only, never committed.
 
 ---
 
-## License & authority
+## Future Merge Path
 
-All content © OmniQuest Media Inc. Final authority: Kevin B. Hartley
-(CEO). No agent clears a GOV gate without CEO-signed clearance in
-`PROGRAM_CONTROL/CLEARANCES/`.
+Cyrano Standalone shares the same Prisma schema, governance model, Canonical Ledger, and
+user system as the main ChatNow.Zone platform. When ready to merge:
+
+1. The `AiTwin`, `VoiceClone`, `MemoryBank`, `ImageCache`, and `NarrativeBranch` Prisma
+   models drop cleanly into the ChatNow.Zone schema with no conflicts.
+2. The four new services (`ai-twin`, `image-generation`, `voice-cloning`, `narrative-engine`)
+   register as NestJS modules in `core-api/src/app.module.ts`.
+3. The `cyrano-standalone` Next.js app becomes a sub-app in the main monorepo.
+
+---
+
+*Cyrano™ — OmniQuest Media Inc. · All rights reserved.*

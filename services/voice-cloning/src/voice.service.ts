@@ -107,12 +107,19 @@ export class VoiceService {
     try {
       const samples = await this.prisma.voiceCloneSample.findMany({ where: { voice_clone_id } });
 
-      // ElevenLabs expects multipart/form-data with audio file URLs
+      // ElevenLabs /voices/add expects multipart/form-data with audio file blobs.
+      // We fetch each sample audio from its storage URL and append the raw blob.
+      // NOTE: In production, sample storage_keys should be presigned S3 URLs.
       const formData = new FormData();
       formData.append('name', clone.voice_name);
       if (clone.description) formData.append('description', clone.description);
       for (const s of samples) {
-        formData.append('files', s.storage_key); // URL reference
+        const audioRes = await fetch(s.storage_key);
+        if (!audioRes.ok) {
+          throw new Error(`Failed to fetch sample ${s.sample_id} from storage: ${audioRes.status}`);
+        }
+        const audioBlob = await audioRes.blob();
+        formData.append('files', audioBlob, `sample-${s.sample_id}.mp3`);
       }
 
       const response = await fetch(`${ELEVENLABS_BASE}/voices/add`, {

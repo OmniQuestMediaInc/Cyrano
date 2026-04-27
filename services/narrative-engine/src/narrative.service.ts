@@ -25,13 +25,19 @@ const NATS_STORY_BEAT = 'cyrano.narrative.story-beat';
 const NATS_BRANCH_RESOLVED = 'cyrano.narrative.branch.resolved';
 
 /** Default memory retention window in days — configurable per tier */
-const MEMORY_TTL_DAYS = parseInt(process.env.NARRATIVE_MEMORY_TTL_DAYS ?? '365', 10);
+const rawTtl = parseInt(process.env.NARRATIVE_MEMORY_TTL_DAYS ?? '365', 10);
+const MEMORY_TTL_DAYS = Number.isFinite(rawTtl) && rawTtl > 0 ? rawTtl : 365;
 
-/** System instruction prefix injected into every Cyrano session prompt */
+/**
+ * System instruction prefix injected into every Cyrano session prompt.
+ * Override via NARRATIVE_PERSONA_HEADER env var (must be a single-line string;
+ * use \n literals for newlines).
+ */
 const SYSTEM_PERSONA_HEADER =
+  process.env.NARRATIVE_PERSONA_HEADER ??
   'You are a Cyrano™ AI character. You have a continuous, persistent relationship with ' +
-  'this user. Recall the following memories and honour them in every response. Never break ' +
-  'character. Speak with emotional depth, warmth, and narrative continuity.\n\n';
+    'this user. Recall the following memories and honour them in every response. Never break ' +
+    'character. Speak with emotional depth, warmth, and narrative continuity.\n\n';
 
 @Injectable()
 export class NarrativeService {
@@ -192,8 +198,8 @@ export class NarrativeService {
     correlation_id: string,
   ): Promise<BranchResolution> {
     const branch = await this.prisma.narrativeBranch.findUniqueOrThrow({ where: { branch_id } });
-    const options: Array<{ option_key: string; label: string; consequence_hint: string }> =
-      JSON.parse(branch.options_json as string);
+    const parsedOptions = this.parseOptionsJson(branch.options_json, branch_id);
+    const options = parsedOptions;
 
     const chosen = options.find((o) => o.option_key === chosen_option_key);
     if (!chosen) {
@@ -283,8 +289,45 @@ export class NarrativeService {
       branch_title: r.branch_title,
       branch_premise: r.branch_premise,
       decision_prompt: r.decision_prompt,
-      options: JSON.parse(r.options_json as string),
+      options: this.parseOptionsJson(r.options_json, r.branch_id),
       created_at_utc: r.created_at.toISOString(),
     };
+  }
+
+  /**
+   * Safely parse the options_json column. Validates that the result is a
+   * non-empty array of objects with the expected keys to guard against
+   * malformed data written by older code paths.
+   */
+  private parseOptionsJson(
+    raw: unknown,
+    contextId: string,
+  ): Array<{ option_key: string; label: string; consequence_hint: string }> {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(typeof raw === 'string' ? raw : JSON.stringify(raw));
+    } catch {
+      throw new Error(`NarrativeBranch ${contextId}: options_json is not valid JSON`);
+    }
+
+    if (!Array.isArray(parsed)) {
+      throw new Error(`NarrativeBranch ${contextId}: options_json must be an array`);
+    }
+
+    for (const item of parsed) {
+      if (
+        typeof item !== 'object' ||
+        item === null ||
+        typeof (item as Record<string, unknown>).option_key !== 'string' ||
+        typeof (item as Record<string, unknown>).label !== 'string' ||
+        typeof (item as Record<string, unknown>).consequence_hint !== 'string'
+      ) {
+        throw new Error(
+          `NarrativeBranch ${contextId}: options_json contains an invalid option entry`,
+        );
+      }
+    }
+
+    return parsed as Array<{ option_key: string; label: string; consequence_hint: string }>;
   }
 }
