@@ -1,0 +1,13 @@
+{
+  "name": "@cyrano/shared-ui",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./utils/index.ts",
+  "types": "./utils/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
