@@ -108,7 +108,121 @@ async function main() {
   console.log('MEMB-001 seed complete — 6 users, 6 memberships, 6 transitions.');
 }
 
-main()
+// ── House Models ─────────────────────────────────────────────────────────────
+// Deterministic creator UUID used for all platform-owned house models.
+const HOUSE_MODEL_CREATOR_ID = '00000000-0000-0000-0000-000000000099';
+
+const HOUSE_MODEL_FIXTURES: ReadonlyArray<{
+  correlationId: string;
+  displayName: string;
+  personaPrompt: string;
+  triggerWord: string;
+  portal: string;
+}> = [
+  {
+    correlationId: 'HOUSE-MODEL-001-RAVEN-STEELE',
+    displayName: 'Raven Steele',
+    personaPrompt: 'Tattooed punk domme — bold, commanding, and deeply charismatic. Portal: INK_AND_STEEL.',
+    triggerWord: 'raven_steele',
+    portal: 'INK_AND_STEEL',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-002-LUNA-MEI',
+    displayName: 'Luna Mei',
+    personaPrompt: 'Elegant kawaii companion who shifts from playful to seductive. Portal: LOTUS_BLOOM.',
+    triggerWord: 'luna_mei',
+    portal: 'LOTUS_BLOOM',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-003-JADE-CROSS',
+    displayName: 'Jade Cross',
+    personaPrompt: 'Steel-edged alt model with a razor wit and a soft heart underneath. Portal: INK_AND_STEEL.',
+    triggerWord: 'jade_cross',
+    portal: 'INK_AND_STEEL',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-004-SAKURA-ROSE',
+    displayName: 'Sakura Rose',
+    personaPrompt: 'Delicate yet fierce — blends traditional elegance with modern passion. Portal: LOTUS_BLOOM.',
+    triggerWord: 'sakura_rose',
+    portal: 'LOTUS_BLOOM',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-005-VERONICA-CHASE',
+    displayName: 'Veronica Chase',
+    personaPrompt: 'Polished suburban seductress with a taste for chaos. Portal: DESPERATE_HOUSEWIVES.',
+    triggerWord: 'veronica_chase',
+    portal: 'DESPERATE_HOUSEWIVES',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-006-DIANA-VANCE',
+    displayName: 'Diana Vance',
+    personaPrompt: 'Sophisticated neighbor with secrets and an irresistible smile. Portal: DESPERATE_HOUSEWIVES.',
+    triggerWord: 'diana_vance',
+    portal: 'DESPERATE_HOUSEWIVES',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-007-NOVA-SKY',
+    displayName: 'Nova Sky',
+    personaPrompt: 'Bright-eyed and fearless — perpetually playful with a bold edge. Portal: BARELY_LEGAL.',
+    triggerWord: 'nova_sky',
+    portal: 'BARELY_LEGAL',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-008-CLEO-HART',
+    displayName: 'Cleo Hart',
+    personaPrompt: 'Confident and flirty with an energy that fills any room. Portal: BARELY_LEGAL.',
+    triggerWord: 'cleo_hart',
+    portal: 'BARELY_LEGAL',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-009-SELENE-VOSS',
+    displayName: 'Selene Voss',
+    personaPrompt: 'Dark and magnetic — draws you in with a gaze that promises everything. Portal: DARK_DESIRES.',
+    triggerWord: 'selene_voss',
+    portal: 'DARK_DESIRES',
+  },
+  {
+    correlationId: 'HOUSE-MODEL-010-MORGAN-BLAKE',
+    displayName: 'Morgan Blake',
+    personaPrompt: 'Intense and mysterious — the kind of person you cannot stop thinking about. Portal: DARK_DESIRES.',
+    triggerWord: 'morgan_blake',
+    portal: 'DARK_DESIRES',
+  },
+];
+
+async function seedHouseModels() {
+  console.log('Starting house model seed...');
+
+  for (const fixture of HOUSE_MODEL_FIXTURES) {
+    await prisma.aiTwin.upsert({
+      where: { correlation_id: fixture.correlationId },
+      update: {},
+      create: {
+        creator_id: HOUSE_MODEL_CREATOR_ID,
+        display_name: fixture.displayName,
+        persona_prompt: fixture.personaPrompt,
+        trigger_word: fixture.triggerWord,
+        visibility: 'PLATFORM_INTERNAL',
+        is_house_model: true,
+        training_status: 'TRAINING_COMPLETE',
+        correlation_id: fixture.correlationId,
+        reason_code: 'HOUSE_MODEL_SEED',
+      },
+    });
+
+    console.log(`Seeded house model: ${fixture.displayName} (${fixture.portal})`);
+  }
+
+  console.log(`House model seed complete — ${HOUSE_MODEL_FIXTURES.length} models seeded.`);
+}
+
+async function runAll() {
+  await main();
+  await seedHouseModels();
+}
+
+runAll()
   .catch((e) => {
     console.error(e);
     process.exit(1);
