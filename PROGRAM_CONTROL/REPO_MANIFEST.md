@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `25997ce56592812b5b6f0fc24b8b2b3b8effcfab`
-**Generated:** 2026-04-27T14:32:27Z
+**Branch:** `copilot/add-subscription-service-boilerplate`
+**Commit:** `3b0ac2351c26cd3ef8ec85edd0859794444054c3`
+**Generated:** 2026-04-27T15:05:20Z
 
 ## All Files
 
@@ -470,6 +470,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/scheduling/zonebot.service.ts`
 - `services/core-api/src/studio/studio-report.controller.ts`
 - `services/core-api/src/studio/studio-report.service.ts`
+- `services/core-api/src/subscription/subscription.module.ts`
+- `services/core-api/src/subscription/subscription.service.ts`
 - `services/core-api/src/test/helpers/setTestEnv.ts`
 - `services/core-api/src/zone-access/zone-access.guard.ts`
 - `services/core-api/src/zone-access/zone-access.module.ts`
