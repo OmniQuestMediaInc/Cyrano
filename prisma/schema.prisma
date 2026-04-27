@@ -2366,3 +2366,46 @@ model NarrativeBranch {
   @@index([twin_id, user_id, resolved])
   @@map("narrative_branches")
 }
+
+// ── Subscription Tiers — Issue 3: Subscription + BenefitsService ──────────────
+// CYR: Fan-facing subscription tiers governing AI-twin, image, voice, and message limits.
+//      All tables include correlation_id + reason_code per §5.2 schema discipline.
+
+enum CyranoTier {
+  FREE
+  SPARK
+  FLAME
+  INFERNO
+}
+
+model Subscription {
+  subscription_id String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id         String     @unique @db.Uuid
+  tier            CyranoTier @default(FREE)
+  correlation_id  String     @unique @db.VarChar(200)
+  reason_code     String     @default("SUBSCRIPTION_CREATE") @db.VarChar(40)
+  created_at      DateTime   @default(now()) @db.Timestamptz
+  updated_at      DateTime   @updatedAt @db.Timestamptz
+
+  benefit_usages  BenefitUsage[]
+
+  @@index([user_id, tier])
+  @@map("subscriptions")
+}
+
+model BenefitUsage {
+  usage_id       String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String       @db.Uuid
+  /// "image" | "voice" | "message"
+  action         String       @db.VarChar(20)
+  count          Int          @default(1)
+  usage_date     DateTime     @default(dbgenerated("CURRENT_DATE")) @db.Date
+  correlation_id String       @unique @db.VarChar(200)
+  reason_code    String       @default("BENEFIT_USAGE") @db.VarChar(40)
+  created_at     DateTime     @default(now()) @db.Timestamptz
+
+  subscription   Subscription @relation(fields: [user_id], references: [user_id])
+
+  @@index([user_id, action, usage_date])
+  @@map("benefit_usages")
+}
