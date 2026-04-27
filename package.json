@@ -16,7 +16,8 @@
     "seed:scheduling": "ts-node scripts/seed-scheduling.ts",
     "ship-gate": "ts-node PROGRAM_CONTROL/ship-gate-verifier.ts",
     "dev:cyrano": "cd apps/cyrano-standalone && yarn dev",
-    "build:cyrano": "cd apps/cyrano-standalone && yarn build"
+    "build:cyrano": "cd apps/cyrano-standalone && yarn build",
+    "deploy:all": "docker-compose up --build -d"
   },
   "engines": {
     "node": ">=20 <23",
