@@ -1,7 +1,7 @@
 // Shared Landing Hero component — used by all 6 portal landing pages.
 // Apply portal theme via CSS custom properties or className overrides.
 import React from 'react';
-import type { PortalConfig } from '../portal.types';
+import type { PortalConfig } from './portal.types';
 
 interface LandingHeroProps {
   config: PortalConfig;

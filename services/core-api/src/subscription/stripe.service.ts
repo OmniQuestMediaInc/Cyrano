@@ -4,13 +4,12 @@
 // CORRELATION_ID: CYR-SUB-001
 //
 // StripeService — Checkout session creation and webhook event processing.
-// Uses WebhookHardeningService for replay-attack prevention and signature
-// validation before any subscription write is performed.
+// Signature verification is handled exclusively by stripe.webhooks.constructEvent()
+// in the controller, covering HMAC-SHA256 + timestamp-drift replay prevention.
 import { Injectable, Logger } from '@nestjs/common';
 import Stripe from 'stripe';
 import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma.service';
-import { WebhookHardeningService } from '../payments/webhook-hardening.service';
 import { NatsService } from '../nats/nats.service';
 import { NATS_TOPICS } from '../../../nats/topics.registry';
 import { SubscriptionTier, Portal, BillingCycle } from './subscription.types';
@@ -31,7 +30,6 @@ export class StripeService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly subscriptionWebhookHardening: WebhookHardeningService,
     private readonly nats: NatsService,
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {

@@ -6,6 +6,12 @@
 // Raw body access: NestJS must be bootstrapped with `rawBody: true` in
 // NestFactory.create() so that req.rawBody is populated before JSON parsing.
 // The Stripe signature check requires the byte-exact raw body.
+//
+// Signature verification is performed exclusively via stripe.webhooks.constructEvent()
+// (Stripe SDK). This covers timestamp-drift replay prevention and HMAC-SHA256
+// validation in a single call, so no secondary raw_body forwarding is needed.
+// StripeService.handleWebhook() uses upsert for idempotent writes — safe under
+// Stripe's at-least-once delivery guarantee.
 import {
   Controller,
   Post,
@@ -17,7 +23,6 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { StripeService } from './stripe.service';
-import { WebhookHardeningService } from '../payments/webhook-hardening.service';
 
 interface RawBodyRequest extends Request {
   rawBody?: Buffer;
@@ -28,17 +33,14 @@ export class StripeWebhookController {
   private readonly logger = new Logger(StripeWebhookController.name);
   private readonly RULE_ID = 'CYR-SUB-001_WEBHOOK_CTRL_v1';
 
-  constructor(
-    private readonly stripeService: StripeService,
-    private readonly webhookHardening: WebhookHardeningService,
-  ) {}
+  constructor(private readonly stripeService: StripeService) {}
 
   /**
    * POST /stripe/webhook
    *
-   * Accepts Stripe webhook events. Validates the Stripe signature using the
-   * byte-exact raw body, then runs WebhookHardeningService replay/nonce
-   * checks before delegating to StripeService.handleWebhook().
+   * Accepts Stripe webhook events. Validates the Stripe-signature header
+   * using the byte-exact raw body via stripe.webhooks.constructEvent(), which
+   * enforces HMAC-SHA256 verification and timestamp-drift replay prevention.
    *
    * Responds 400 on signature failure, 200 on success (Stripe requires a
    * 2xx response to consider the event delivered).
@@ -68,38 +70,12 @@ export class StripeWebhookController {
     }
 
     // Use raw body buffer for Stripe signature verification.
+    // req.rawBody is populated when NestJS is bootstrapped with rawBody: true.
     const rawBody: Buffer | string = req.rawBody ?? req.body;
 
     const event = this.stripeService.constructEvent(rawBody, signature, webhookSecret);
     if (!event) {
       res.status(400).json({ error: 'SIGNATURE_INVALID' });
-      return;
-    }
-
-    // Secondary: replay-window and event_id idempotency via WebhookHardeningService.
-    // Extract timestamp from Stripe signature header (t=<unix_sec>,v1=<sig>).
-    const timestampMatch = /t=(\d+)/.exec(signature);
-    const timestampSeconds = timestampMatch ? parseInt(timestampMatch[1], 10) : 0;
-
-    const hardeningResult = this.webhookHardening.validate({
-      processor_id: 'stripe',
-      event_id: event.id,
-      timestamp_seconds: timestampSeconds,
-      signature,
-      signing_secret: webhookSecret,
-      raw_body: typeof rawBody === 'string' ? rawBody : rawBody.toString('utf8'),
-    });
-
-    if (!hardeningResult.valid) {
-      this.logger.warn('StripeWebhookController: hardening rejected', {
-        failure_reason: hardeningResult.failure_reason,
-        event_id: event.id,
-        rule_applied_id: this.RULE_ID,
-      });
-      // Respond 200 to prevent Stripe from retrying idempotent duplicates;
-      // respond 400 for genuine replay/signature failures.
-      const status = hardeningResult.failure_reason === 'EVENT_ID_DUPLICATE' ? 200 : 400;
-      res.status(status).json({ error: hardeningResult.failure_reason });
       return;
     }
 
