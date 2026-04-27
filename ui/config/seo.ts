@@ -107,6 +107,26 @@ export const SEO: Record<string, SeoMetadata> = {
     robots: 'noindex,nofollow',
     keywords: [...COMMON_KEYWORDS, 'admin', 'recovery'],
   },
+  rewards_dashboard: {
+    title: 'Red Room Rewards · ChatNow.Zone',
+    description:
+      'Earn points for every action — daily login, messages, voice calls, referrals. Spend them in the Burn Shop for extra images, Inferno access, and custom Twins.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/rewards`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/rewards.png`,
+    twitter_card: 'summary_large_image',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'rewards', 'points', 'gamification', 'burn shop'],
+  },
+  diamond_concierge: {
+    title: 'Diamond Concierge · ChatNow.Zone',
+    description:
+      'Your personal Diamond Concierge — request custom experiences, private events, or ultra-personalized AI Twins. Exclusive to Inferno-tier subscribers.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/diamond/concierge`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/diamond-concierge.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'diamond', 'concierge', 'inferno', 'VIP'],
+  },
 };
 
 export function buildJsonLd(): Record<string, unknown> {

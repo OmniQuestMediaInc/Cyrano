@@ -5,6 +5,9 @@ Auto-generated on every push. Do not edit manually.
 **Branch:** `copilot/deliver-final-launch-package`
 **Commit:** `92f195f0e6c5fdcf7104ca36301f574e218436be`
 **Generated:** 2026-04-27T16:05:30Z
+**Branch:** `copilot/add-diamond-concierge-service`
+**Commit:** `8c21fdf0ee3d021c505765c8574c1bc8acd71fdb`
+**Generated:** 2026-04-27T16:22:54Z
 
 ## All Files
 
@@ -454,6 +457,7 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/dfsp/purchase-hours-gate.service.ts`
 - `services/core-api/src/dfsp/risk-scoring.service.ts`
 - `services/core-api/src/dfsp/voice-sample.service.ts`
+- `services/core-api/src/diamond-concierge/concierge-session.service.ts`
 - `services/core-api/src/events/audit.service.ts`
 - `services/core-api/src/finance/batch-payout.service.ts`
 - `services/core-api/src/finance/ledger.module.ts`
@@ -465,11 +469,14 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/games/game-engine.service.ts`
 - `services/core-api/src/games/games.controller.ts`
 - `services/core-api/src/games/games.module.ts`
+- `services/core-api/src/gateguard/chat-guard.service.ts`
+- `services/core-api/src/gateguard/gateguard-sentinel.service.ts`
 - `services/core-api/src/gateguard/gateguard.middleware.ts`
 - `services/core-api/src/gateguard/gateguard.module.ts`
 - `services/core-api/src/gateguard/gateguard.service.ts`
 - `services/core-api/src/gateguard/gateguard.types.ts`
 - `services/core-api/src/gateguard/welfare-guardian.scorer.ts`
+- `services/core-api/src/gateguard/welfare-guardian.service.ts`
 - `services/core-api/src/geo/geo-pricing.service.ts`
 - `services/core-api/src/gifts/gift.controller.spec.ts`
 - `services/core-api/src/gifts/gift.controller.ts`
@@ -509,6 +516,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/rewards/rewards.module.ts`
 - `services/core-api/src/rewards/rrr-client.service.ts`
 - `services/core-api/src/risk/risk-score.service.ts`
+- `services/core-api/src/rr-rewards/rr.module.ts`
+- `services/core-api/src/rr-rewards/rr.service.ts`
 - `services/core-api/src/safety/incident.service.ts`
 - `services/core-api/src/safety/provisional-suppression.service.ts`
 - `services/core-api/src/safety/publish-gate.service.ts`
@@ -667,6 +676,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
+- `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
@@ -693,6 +703,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/recovery-service.spec.ts`
 - `tests/integration/redbook-rate-card.spec.ts`
 - `tests/integration/refund-disclosure.spec.ts`
+- `tests/integration/rr-rewards.spec.ts`
 - `tests/integration/scheduling-service.spec.ts`
 - `tests/integration/seed-loader.ts`
 - `tests/integration/sensync-metrics.spec.ts`
@@ -716,7 +727,9 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/creator/control/page.ts`
 - `ui/app/creator/gamification/page.ts`
 - `ui/app/creator/studio/page.ts`
+- `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
+- `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
 - `ui/app/wallet/page.ts`
 - `ui/components/dice-game.ts`
@@ -734,8 +747,10 @@ Auto-generated on every push. Do not edit manually.
 - `ui/types/creator-panel-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
+- `ui/types/rewards-contracts.ts`
 - `ui/view-models/creator-control.presenter.ts`
 - `ui/view-models/diamond-concierge.presenter.ts`
 - `ui/view-models/gamification.presenter.ts`
 - `ui/view-models/public-wallet.presenter.ts`
+- `ui/view-models/rewards.presenter.ts`
 - `yarn.lock`

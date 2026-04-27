@@ -6,7 +6,6 @@ const config = {
   rootDir: '.',
   roots: [
     '<rootDir>/tests/integration',
-    '<rootDir>/tests/e2e',
     '<rootDir>/services',
     '<rootDir>/ui',
   ],

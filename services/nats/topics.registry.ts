@@ -243,6 +243,12 @@ export const NATS_TOPICS = {
   GATEGUARD_FEDERATED_LOOKUP:        'gateguard.federated.lookup',
   GATEGUARD_HUMAN_CONTACT_ZONE:      'gateguard.human_contact_zone.escalated',
 
+  // ── GateGuard Sentinel — Chat Message Moderation ──────────────────────────
+  /** Emitted when a chat message is blocked by content moderation. */
+  GATEGUARD_MESSAGE_BLOCKED:           'gateguard.message.blocked',
+  /** Emitted when WelfareGuardian detects a distress signal in conversation. */
+  GATEGUARD_WELFARE_DISTRESS_DETECTED: 'gateguard.welfare.distress_detected',
+
   // ── Flicker n'Flame Scoring — FFS (replaces Room-Heat Engine) ────────
   FFS_SCORE_UPDATE:               'ffs.score.update',
   FFS_TIER_CHANGED:               'ffs.score.tier.changed',
