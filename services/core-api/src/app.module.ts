@@ -30,6 +30,8 @@ import { ThreeBucketSpendGuardMiddleware } from './finance/three-bucket-spend-gu
 import { FfsModule } from '../../ffs/src/ffs.module';
 import { CreatorOnboardingModule } from '../../creator-onboarding/src/creator-onboarding.module';
 import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
+import { PromotionModule } from './promotion/promotion.module';
+import { BenefitsModule } from './middleware/benefits.module';
 
 @Module({
   imports: [
@@ -61,6 +63,8 @@ import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
     RewardsModule,
     CreatorOnboardingModule,
     CyranoAuthModule,
+    PromotionModule,
+    BenefitsModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -217,6 +217,32 @@ async function seedHouseModels() {
   console.log(`House model seed complete — ${HOUSE_MODEL_FIXTURES.length} models seeded.`);
 }
 
+// ── Promo Codes ───────────────────────────────────────────────────────────────
+// PROMO-001: Launch70 promo code — 70% off, valid until 2026-07-31.
+// FIZ: REASON: Seed canonical launch promo code for LAUNCH70 promotion.
+//      IMPACT: Writes a single row to promo_codes; used_count starts at 0.
+//      CORRELATION_ID: CNZ-WORK-001-PROMO-001-SEED
+
+async function seedPromoCodes() {
+  console.log('Starting promo code seed...');
+
+  await prisma.promoCode.upsert({
+    where: { code: 'LAUNCH70' },
+    update: {},
+    create: {
+      code: 'LAUNCH70',
+      discount_percent: 70,
+      expires_at: new Date('2026-07-31T23:59:59Z'),
+      max_uses: 5000,
+      used_count: 0,
+      correlation_id: 'PROMO-001-LAUNCH70-SEED',
+      reason_code: 'PROMO_SEED',
+    },
+  });
+
+  console.log('Promo code seed complete — LAUNCH70 seeded.');
+}
+
 async function runAll() {
   try {
     await main();
@@ -229,6 +255,13 @@ async function runAll() {
     await seedHouseModels();
   } catch (e) {
     console.error('House model seed failed:', e);
+    throw e;
+  }
+
+  try {
+    await seedPromoCodes();
+  } catch (e) {
+    console.error('Promo code seed failed:', e);
     throw e;
   }
 }

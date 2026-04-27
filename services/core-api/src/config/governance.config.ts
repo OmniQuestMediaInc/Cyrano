@@ -581,3 +581,30 @@ export function rrrPointsPriceFor(gift: MicroGiftDef): number {
 export function findMicroGift(gift_id: string): MicroGiftDef | undefined {
   return MICRO_GIFTS.find((g) => g.gift_id === gift_id);
 }
+
+// ─── PROMOTION ENGINE (PROMO-001) ────────────────────────────────────────────
+// CEO-AUTHORIZED 2026-04-27.
+// REASON: Launch promotion — 70% discount on first subscription period.
+// IMPACT: Controls promo code validation and subscription period calculation.
+// CORRELATION_ID: CNZ-WORK-001-PROMO-001
+export const PROMOTION = {
+  LAUNCH70_CODE: 'LAUNCH70',
+  LAUNCH70_DISCOUNT_PCT: 70,
+  LAUNCH70_EXPIRES_AT: new Date('2026-07-31T23:59:59Z'),
+  LAUNCH70_MAX_USES: 5000,
+  // Months granted for ANNUAL billing interval under the launch promo.
+  LAUNCH70_ANNUAL_MONTHS: 12,
+  // Months granted for all other billing intervals under the launch promo.
+  LAUNCH70_STANDARD_MONTHS: 1,
+} as const;
+
+// ─── BENEFIT LIMITS BY TIER ───────────────────────────────────────────────────
+// Per-month caps enforced by BenefitsGuard. -1 = unlimited.
+export const BENEFIT_LIMITS: Record<string, { images: number; voiceMin: number }> = {
+  GUEST:        { images: 0,   voiceMin: 0   },
+  VIP:          { images: 5,   voiceMin: 0   },
+  VIP_SILVER:   { images: 20,  voiceMin: 30  },
+  VIP_GOLD:     { images: 50,  voiceMin: 60  },
+  VIP_PLATINUM: { images: 100, voiceMin: 120 },
+  VIP_DIAMOND:  { images: -1,  voiceMin: -1  },
+} as const;
