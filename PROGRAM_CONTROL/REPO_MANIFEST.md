@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `claude/fix-sensync-bpm-block-ykUPQ`
-**Commit:** `fc432b959ccaf5d1ab83b29b0cfe43cefda59267`
-**Generated:** 2026-04-27T16:09:14Z
+**Branch:** `copilot/final-polish-gateguard-sentinel-welfare-guardian`
+**Commit:** `faf39e7a767b430038ccfecdcb9ef0d7c26556ef`
+**Generated:** 2026-04-27T16:21:37Z
 
 ## All Files
 
@@ -465,11 +465,14 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/games/game-engine.service.ts`
 - `services/core-api/src/games/games.controller.ts`
 - `services/core-api/src/games/games.module.ts`
+- `services/core-api/src/gateguard/chat-guard.service.ts`
+- `services/core-api/src/gateguard/gateguard-sentinel.service.ts`
 - `services/core-api/src/gateguard/gateguard.middleware.ts`
 - `services/core-api/src/gateguard/gateguard.module.ts`
 - `services/core-api/src/gateguard/gateguard.service.ts`
 - `services/core-api/src/gateguard/gateguard.types.ts`
 - `services/core-api/src/gateguard/welfare-guardian.scorer.ts`
+- `services/core-api/src/gateguard/welfare-guardian.service.ts`
 - `services/core-api/src/geo/geo-pricing.service.ts`
 - `services/core-api/src/gifts/gift.controller.spec.ts`
 - `services/core-api/src/gifts/gift.controller.ts`

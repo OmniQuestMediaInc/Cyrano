@@ -167,6 +167,38 @@ export interface GateGuardResult {
   evaluatedAtUtc: string;
 }
 
+// ---------------------------------------------------------------------------
+// Chat-layer content scanning types (GateGuardSentinel + WelfareGuardian)
+// ---------------------------------------------------------------------------
+
+/**
+ * Moderation flags produced by the GateGuardSentinel content scanner.
+ * Every field is set deterministically from the message text; no external
+ * AI call is made — all detection is pattern-based for auditability.
+ */
+export interface ContentScanFlags {
+  /** True when content appears to imitate or sexualise a named celebrity. */
+  celebrity: boolean;
+  /** True when content matches illegal-content patterns (CSAM-adjacent, exploitation). */
+  illegal: boolean;
+  /** True when content matches non-consensual scenario patterns. */
+  nonConsensual: boolean;
+  /** Comma-separated reason codes; 'NONE' when no flags are raised. */
+  reason: string;
+}
+
+/**
+ * Result returned by GateGuardSentinel.scanMessage().
+ * Callers MUST check `blocked` before persisting or forwarding the message.
+ */
+export interface ContentScanResult {
+  blocked: boolean;
+  /** Human-readable reason surfaced to the caller when blocked. */
+  message?: string;
+  /** Populated when blocked — supplies the raw flag evidence. */
+  flags?: ContentScanFlags;
+}
+
 /**
  * Raised by the pre-processor when a caller attempts to mutate the ledger
  * without first clearing GateGuard. Never caught inside GateGuard itself —
