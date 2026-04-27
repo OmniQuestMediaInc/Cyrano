@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `claude/cyrano-layer-4-whisper-WJdo8`
-**Commit:** `7fefb5eae6da84c8ba510996db132734a8e857b9`
-**Generated:** 2026-04-27T05:06:01Z
+**Branch:** `copilot/import-chat-now-zone`
+**Commit:** `ca21c6fd181fae35c67f7c392de7fef7bafdd6ac`
+**Generated:** 2026-04-27T11:13:44Z
 
 ## All Files
 
@@ -505,7 +505,6 @@ Auto-generated on every push. Do not edit manually.
 - `services/creator-onboarding/src/dto/onboarding.dto.ts`
 - `services/creator-onboarding/src/email-domain.policy.spec.ts`
 - `services/creator-onboarding/src/email-domain.policy.ts`
-- `services/cyrano/.env.example`
 - `services/cyrano/ASSUMPTIONS.md`
 - `services/cyrano/FLAGS.md`
 - `services/cyrano/README.md`
@@ -528,7 +527,6 @@ Auto-generated on every push. Do not edit manually.
 - `services/cyrano/src/session-memory.store.ts`
 - `services/diamond-concierge/src/diamond-concierge.module.ts`
 - `services/diamond-concierge/src/diamond.service.ts`
-- `services/ffs/.env.example`
 - `services/ffs/ASSUMPTIONS.md`
 - `services/ffs/FLAGS.md`
 - `services/ffs/README.md`
@@ -563,7 +561,6 @@ Auto-generated on every push. Do not edit manually.
 - `services/gamification/src/services/redroom-rewards-burn.service.ts`
 - `services/gamification/src/services/security.service.ts`
 - `services/gamification/src/types/gamification.types.ts`
-- `services/guest-heat/.env.example`
 - `services/guest-heat/ASSUMPTIONS.md`
 - `services/guest-heat/FLAGS.md`
 - `services/guest-heat/README.md`
@@ -620,7 +617,6 @@ Auto-generated on every push. Do not edit manually.
 - `services/rewards-api/src/white-label/partner-config.schema.ts`
 - `services/risk-engine/src/region-signal.service.ts`
 - `services/risk-engine/src/risk.module.ts`
-- `services/sensync/.env.example`
 - `services/sensync/ASSUMPTIONS.md`
 - `services/sensync/FLAGS.md`
 - `services/sensync/README.md`
@@ -664,7 +660,6 @@ Auto-generated on every push. Do not edit manually.
 - `services/zone-gpt/src/zone-gpt.module.js`
 - `services/zone-gpt/src/zone-gpt.module.js.map`
 - `services/zone-gpt/src/zone-gpt.module.ts`
-- `services/zonebot-scheduler/.env.example`
 - `services/zonebot-scheduler/ASSUMPTIONS.md`
 - `services/zonebot-scheduler/FLAGS.md`
 - `services/zonebot-scheduler/README.md`
