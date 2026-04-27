@@ -2270,6 +2270,75 @@ model RedRoomRewardsBurn {
   @@map("redroom_rewards_burns")
 }
 
+// ─── Diamond Concierge Sessions — K) Wave K ───────────────────────────────────
+// Append-only session records for VIP Diamond / Inferno-tier concierge requests.
+// Status lifecycle: pending → in_progress → completed | cancelled.
+// All writes go through DiamondConciergeSessionService (core-api).
+
+model ConciergeSession {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String   @db.VarChar(200)
+  request        String   @db.Text
+  /// "pending" | "in_progress" | "completed" | "cancelled"
+  status         String   @default("pending") @db.VarChar(20)
+  /// "high" | "normal"
+  priority       String   @default("high") @db.VarChar(20)
+  correlation_id String   @unique @db.VarChar(200)
+  reason_code    String   @default("CONCIERGE_REQUEST") @db.VarChar(60)
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @updatedAt @db.Timestamptz
+
+  @@index([user_id, status, created_at])
+  @@map("concierge_sessions")
+}
+
+// ─── User RRR Points Ledger — L) Wave L ──────────────────────────────────────
+// Append-only points ledger for guest/user-facing RedRoom Rewards points.
+// Positive entries = awards; negative entries = burns.
+// Balance = SUM(amount) for a given user_id.
+// OQMI invariant: no UPDATE on balance columns — offsets only.
+
+model UserRrPointsLedger {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String   @db.VarChar(200)
+  /// Signed integer: positive = award, negative = burn
+  amount         Int
+  /// DAILY_LOGIN | MESSAGE_SENT | IMAGE_GENERATED | VOICE_CALL | REFERRAL |
+  ///   HOUSE_MODEL_CHAT | PORTAL_SWITCH | BURN_EXTRA_IMAGES | BURN_TEMP_INFERNO |
+  ///   BURN_CUSTOM_TWIN
+  action         String   @db.VarChar(40)
+  description    String   @db.VarChar(200)
+  correlation_id String   @unique @db.VarChar(200)
+  reason_code    String   @default("RRR_AWARD") @db.VarChar(40)
+  created_at     DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, created_at])
+  @@index([user_id, action, created_at])
+  @@map("user_rrr_points_ledger")
+}
+
+// ─── Burn Reward Grants — L) Wave L ──────────────────────────────────────────
+// Records grants issued when a user burns RRR points for a reward.
+// The downstream effect (extra images, temp tier, custom twin) is applied by
+// the service consuming this record; this table is the authoritative source of
+// truth for what was promised.
+
+model BurnRewardGrant {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String    @db.VarChar(200)
+  points_burned     Int
+  /// "EXTRA_IMAGES" | "TEMP_INFERNO" | "CUSTOM_TWIN"
+  reward_type       String    @db.VarChar(30)
+  expires_at        DateTime? @db.Timestamptz
+  fulfilled_at      DateTime? @db.Timestamptz
+  correlation_id    String    @unique @db.VarChar(200)
+  reason_code       String    @default("RRR_BURN_REWARD") @db.VarChar(40)
+  created_at        DateTime  @default(now()) @db.Timestamptz
+
+  @@index([user_id, reward_type, created_at])
+  @@map("burn_reward_grants")
+}
+
 // ─── Cyrano Standalone — AI Twin, Image Generation, Voice Cloning, Narrative Engine ─────────
 // CYR: These models power the AI companion / character product layer.
 //      All tables include correlation_id + reason_code per §5.2 schema discipline.
