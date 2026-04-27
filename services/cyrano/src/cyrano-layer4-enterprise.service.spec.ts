@@ -18,6 +18,7 @@ import {
   _resetLayer4DomainOverlays,
   registerLayer4DomainOverlay,
 } from './cyrano-prompt-templates';
+import { CyranoTranslationService } from './cyrano-translation.service';
 
 function buildHarness() {
   // NatsService publish() is a no-op without a connection — safe in unit tests.
@@ -27,14 +28,16 @@ function buildHarness() {
   const rateLimiter = new CyranoLayer4RateLimiterService(nats);
   const audit = new CyranoLayer4AuditService(nats);
   const voice = new CyranoLayer4VoiceBridge(nats);
+  const translation = new CyranoTranslationService(nats);
   const service = new CyranoLayer4EnterpriseService(
     nats,
     tenants,
     rateLimiter,
     audit,
     voice,
+    translation,
   );
-  return { service, tenants, apiKeys, rateLimiter, audit };
+  return { service, tenants, apiKeys, rateLimiter, audit, translation };
 }
 
 describe('CyranoLayer4EnterpriseService', () => {
@@ -340,6 +343,57 @@ describe('CyranoLayer4EnterpriseService', () => {
         tier: 'COLD',
       });
       expect(res.copy).toContain('CUSTOM TEACHING OPENER');
+    });
+  });
+
+  describe('translation integration (Issue #15)', () => {
+    it('attaches a translation envelope when target_locale is provided', () => {
+      const { service, tenants } = buildHarness();
+      tenants.upsertTenant({
+        tenant_id: 'tr-1', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+      });
+      const res = service.resolvePrompt({
+        tenant_id: 'tr-1',
+        session_id: 's',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
+        target_locale: 'fr-FR',
+      });
+      expect(res.blocked).toBe(false);
+      expect(res.translation).toBeTruthy();
+      expect(res.translation?.target_locale).toBe('fr-FR');
+      expect(res.translation?.source_locale).toBe('en-US');
+      expect(res.translation?.translated_copy).toBeTruthy();
+    });
+
+    it('omits the translation envelope when no target_locale is given', () => {
+      const { service, tenants } = buildHarness();
+      tenants.upsertTenant({
+        tenant_id: 'tr-2', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+      });
+      const res = service.resolvePrompt({
+        tenant_id: 'tr-2',
+        session_id: 's',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
+      });
+      expect(res.translation).toBeNull();
+    });
+
+    it('returns a skip envelope when target_locale equals source locale', () => {
+      const { service, tenants } = buildHarness();
+      tenants.upsertTenant({
+        tenant_id: 'tr-3', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+      });
+      const res = service.resolvePrompt({
+        tenant_id: 'tr-3',
+        session_id: 's',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
+        target_locale: 'en-US',
+      });
+      expect(res.translation?.translated_copy).toBe('');
+      expect(res.translation?.skipped_reason_code).toBe('TRANSLATION_LOCALE_SAME_AS_SOURCE');
     });
   });
 });

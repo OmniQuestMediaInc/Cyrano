@@ -27,8 +27,10 @@ import {
   type CyranoLayer4PromptResponse,
   type CyranoLayer4ReasonCode,
   type CyranoLayer4Tenant,
+  type CyranoLayer4TranslationEnvelope,
   type CyranoLayer4VoiceEnvelope,
 } from './cyrano-layer4.types';
+import { CyranoTranslationService } from './cyrano-translation.service';
 
 export { CYRANO_LAYER4_RULE_ID };
 
@@ -47,6 +49,7 @@ export class CyranoLayer4EnterpriseService {
     private readonly rateLimiter: CyranoLayer4RateLimiterService,
     private readonly audit: CyranoLayer4AuditService,
     private readonly voice: CyranoLayer4VoiceBridge,
+    private readonly translation: CyranoTranslationService,
   ) {}
 
   /**
@@ -130,6 +133,19 @@ export class CyranoLayer4EnterpriseService {
       });
     }
 
+    // Optional real-time text translation (Issue #15 — Phase 4).
+    // When target_locale is provided the translation service is called
+    // and the envelope is attached to the response alongside the original copy.
+    let translation_envelope: CyranoLayer4TranslationEnvelope | null = null;
+    if (req.target_locale) {
+      translation_envelope = this.translation.translate({
+        tenant_id: tenant.tenant_id,
+        source_copy: copy,
+        target_locale: req.target_locale,
+        correlation_id,
+      });
+    }
+
     const response: CyranoLayer4PromptResponse = {
       request_id: randomUUID(),
       tenant_id: tenant.tenant_id,
@@ -142,6 +158,7 @@ export class CyranoLayer4EnterpriseService {
       reason_code: 'PROMPT_OK',
       rule_applied_id: CYRANO_LAYER4_RULE_ID,
       voice: voice_envelope,
+      translation: translation_envelope,
       correlation_id,
       emitted_at_utc: new Date().toISOString(),
     };
@@ -160,6 +177,8 @@ export class CyranoLayer4EnterpriseService {
         domain: tenant.domain,
         voice_requested: Boolean(req.voice?.enabled),
         voice_emitted: Boolean(voice_envelope?.voice_uri),
+        translation_requested: Boolean(req.target_locale),
+        target_locale: req.target_locale ?? null,
       },
     });
 
