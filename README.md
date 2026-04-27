@@ -31,17 +31,28 @@ governance, ledger, and user system. It allows creators to:
 ```
 Cyrano/
 ├── apps/
-│   └── cyrano-standalone/       # Next.js 14 frontend (port 3100)
-│       ├── app/                 # App Router pages
-│       │   ├── page.tsx         # Home dashboard
-│       │   ├── ai-twin/         # AI Twin Creator wizard
-│       │   ├── chat/            # Character Chat
-│       │   └── voice-call/      # Voice Call
-│       ├── components/
-│       │   ├── AITwinCreator/   # Step-by-step twin training wizard
-│       │   ├── CharacterChat/   # Persistent narrative chat UI
-│       │   └── VoiceCall/       # ElevenLabs TTS voice call UI
-│       └── lib/                 # Session helpers, API clients
+│   ├── cyrano-standalone/       # Next.js 14 frontend (port 3100)
+│   │   ├── app/                 # App Router pages
+│   │   │   ├── page.tsx         # Home dashboard
+│   │   │   ├── ai-twin/         # AI Twin Creator wizard
+│   │   │   ├── chat/            # Character Chat
+│   │   │   └── voice-call/      # Voice Call
+│   │   ├── components/
+│   │   │   ├── AITwinCreator/   # Step-by-step twin training wizard
+│   │   │   ├── CharacterChat/   # Persistent narrative chat UI
+│   │   │   └── VoiceCall/       # ElevenLabs TTS voice call UI
+│   │   └── lib/                 # Session helpers, API clients
+│   ├── portals/                 # Brand-specific portal apps
+│   │   ├── main/                # Main platform portal
+│   │   ├── ink-and-steel/       # Ink & Steel brand portal
+│   │   ├── lotus-bloom/         # Lotus Bloom brand portal
+│   │   ├── desperate-housewives/ # Desperate Housewives brand portal
+│   │   ├── barely-legal/        # Barely Legal brand portal
+│   │   └── dark-desires/        # Dark Desires brand portal
+│   └── shared-ui/               # Shared UI component library
+│       ├── components/          # Reusable React/UI components
+│       ├── lib/                 # Shared utilities and helpers
+│       └── themes/              # Brand-specific theme tokens
 ├── services/
 │   ├── ai-twin/                 # Photo upload + Flux LoRA training pipeline
 │   ├── image-generation/        # Flux 2 Pro + Banana.dev image service
