@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `25997ce56592812b5b6f0fc24b8b2b3b8effcfab`
-**Generated:** 2026-04-27T14:32:27Z
+**Branch:** `copilot/create-folder-structure`
+**Commit:** `6812a2322a1d72da9410d69f1282376b94194ddf`
+**Generated:** 2026-04-27T14:53:26Z
 
 ## All Files
 
@@ -273,6 +273,15 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/next.config.js`
 - `apps/cyrano-standalone/package.json`
 - `apps/cyrano-standalone/tsconfig.json`
+- `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/main/.gitkeep`
+- `apps/shared-ui/components/.gitkeep`
+- `apps/shared-ui/lib/.gitkeep`
+- `apps/shared-ui/themes/.gitkeep`
 - `docker-compose.yml`
 - `docs/ARCHITECTURE_OVERVIEW.md`
 - `docs/AUDIT_CERTIFICATION_V1.md`
