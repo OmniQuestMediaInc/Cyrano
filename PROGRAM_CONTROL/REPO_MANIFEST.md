@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/create-portal-starter-templates`
-**Commit:** `9cf9e9ad4ea0dfa9831bd7a02de66ba0870254f7`
-**Generated:** 2026-04-27T15:14:56Z
+**Branch:** `copilot/add-launch-promotion-engine`
+**Commit:** `a0cea1c8e0e2f5afcfe9c4ac36c83b957e363200`
+**Generated:** 2026-04-27T15:36:02Z
 
 ## All Files
 
@@ -274,25 +274,33 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/package.json`
 - `apps/cyrano-standalone/tsconfig.json`
 - `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/barely-legal/app/page.tsx`
 - `apps/portals/barely-legal/next.config.mjs`
 - `apps/portals/barely-legal/package.json`
 - `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/dark-desires/app/page.tsx`
 - `apps/portals/dark-desires/next.config.mjs`
 - `apps/portals/dark-desires/package.json`
 - `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/desperate-housewives/app/page.tsx`
 - `apps/portals/desperate-housewives/next.config.mjs`
 - `apps/portals/desperate-housewives/package.json`
 - `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/ink-and-steel/app/page.tsx`
 - `apps/portals/ink-and-steel/next.config.mjs`
 - `apps/portals/ink-and-steel/package.json`
 - `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/lotus-bloom/app/page.tsx`
 - `apps/portals/lotus-bloom/next.config.mjs`
 - `apps/portals/lotus-bloom/package.json`
 - `apps/portals/main/.gitkeep`
+- `apps/portals/main/app/page.tsx`
 - `apps/portals/main/next.config.mjs`
 - `apps/portals/main/package.json`
 - `apps/shared-ui/components/.gitkeep`
+- `apps/shared-ui/components/HeroSection.tsx`
 - `apps/shared-ui/lib/.gitkeep`
+- `apps/shared-ui/lib/portal-seo.ts`
 - `apps/shared-ui/package.json`
 - `apps/shared-ui/themes/.gitkeep`
 - `apps/shared-ui/themes/index.ts`
@@ -461,12 +469,17 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/membership/membership.module.ts`
 - `services/core-api/src/membership/membership.service.ts`
 - `services/core-api/src/membership/stipend-distribution.job.ts`
+- `services/core-api/src/middleware/benefits.guard.ts`
+- `services/core-api/src/middleware/benefits.module.ts`
+- `services/core-api/src/middleware/usage.interceptor.ts`
 - `services/core-api/src/nats/nats.module.ts`
 - `services/core-api/src/nats/nats.service.ts`
 - `services/core-api/src/payments/payments.module.ts`
 - `services/core-api/src/payments/webhook-hardening.service.ts`
 - `services/core-api/src/prisma.module.ts`
 - `services/core-api/src/prisma.service.ts`
+- `services/core-api/src/promotion/promotion.module.ts`
+- `services/core-api/src/promotion/promotion.service.ts`
 - `services/core-api/src/refund/extension.service.ts`
 - `services/core-api/src/refund/refund-disclosure.service.ts`
 - `services/core-api/src/refund/refund-disclosure.types.ts`
