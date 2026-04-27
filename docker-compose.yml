@@ -165,6 +165,122 @@ services:
   #   networks:
   #     - backend
 
+  # ── Portal Services — One Engine, Multiple Brand Portals ──────────────────
+  # Each portal is a lightweight Next.js app that shares the same core API.
+  # NEXT_PUBLIC_PORTAL drives brand theming; NEXT_PUBLIC_API_URL points at
+  # the shared api service. Portal Dockerfiles live in apps/portals/<name>/.
+  # Ports follow the convention: main=3001, ink-and-steel=3002,
+  #   lotus-bloom=3003, desperate-housewives=3004, barely-legal=3005,
+  #   dark-desires=3006.
+
+  portal-main:
+    build:
+      context: ./apps/portals/main
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_main
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: MAIN
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3001:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
+  portal-ink-and-steel:
+    build:
+      context: ./apps/portals/ink-and-steel
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_ink_and_steel
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: INK_AND_STEEL
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3002:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
+  portal-lotus-bloom:
+    build:
+      context: ./apps/portals/lotus-bloom
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_lotus_bloom
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: LOTUS_BLOOM
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3003:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
+  portal-desperate-housewives:
+    build:
+      context: ./apps/portals/desperate-housewives
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_desperate_housewives
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: DESPERATE_HOUSEWIVES
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3004:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
+  portal-barely-legal:
+    build:
+      context: ./apps/portals/barely-legal
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_barely_legal
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: BARELY_LEGAL
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3005:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
+  portal-dark-desires:
+    build:
+      context: ./apps/portals/dark-desires
+      dockerfile: Dockerfile
+    container_name: cyrano_portal_dark_desires
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_PORTAL: DARK_DESIRES
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3006:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - backend
+
 volumes:
   postgres_data:
   redis_data:

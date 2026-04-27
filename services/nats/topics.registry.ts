@@ -243,6 +243,12 @@ export const NATS_TOPICS = {
   GATEGUARD_FEDERATED_LOOKUP:        'gateguard.federated.lookup',
   GATEGUARD_HUMAN_CONTACT_ZONE:      'gateguard.human_contact_zone.escalated',
 
+  // ── GateGuard Sentinel — Chat Message Moderation ──────────────────────────
+  /** Emitted when a chat message is blocked by content moderation. */
+  GATEGUARD_MESSAGE_BLOCKED:           'gateguard.message.blocked',
+  /** Emitted when WelfareGuardian detects a distress signal in conversation. */
+  GATEGUARD_WELFARE_DISTRESS_DETECTED: 'gateguard.welfare.distress_detected',
+
   // ── Flicker n'Flame Scoring — FFS (replaces Room-Heat Engine) ────────
   FFS_SCORE_UPDATE:               'ffs.score.update',
   FFS_TIER_CHANGED:               'ffs.score.tier.changed',
@@ -343,6 +349,14 @@ export const NATS_TOPICS = {
   CREATOR_ONBOARDING_STARTED:        'creator.onboarding.started',
   CREATOR_ONBOARDING_AFFILIATED:     'creator.onboarding.affiliated',
   CREATOR_ONBOARDING_COMPLETED:      'creator.onboarding.completed',
+
+  // ── Promotion Engine (PROMO-001) ──────────────────────────────────────────
+  PROMO_APPLIED:                     'promo.applied',
+  PROMO_EXPIRED:                     'promo.expired',
+
+  // ── Benefit Usage (BENEFITS-001) ─────────────────────────────────────────
+  BENEFIT_LIMIT_REACHED:             'benefit.limit.reached',
+  BENEFIT_USAGE_INCREMENTED:         'benefit.usage.incremented',
 } as const;
 
 export type NatsTopic = typeof NATS_TOPICS[keyof typeof NATS_TOPICS];

@@ -5,9 +5,23 @@
 import { Module } from '@nestjs/common';
 import { GateGuardService } from './gateguard.service';
 import { GateGuardMiddleware } from './gateguard.middleware';
+import { GateGuardSentinelService } from './gateguard-sentinel.service';
+import { WelfareGuardianService } from './welfare-guardian.service';
+import { ChatGuardService } from './chat-guard.service';
 
 @Module({
-  providers: [GateGuardService, GateGuardMiddleware],
-  exports: [GateGuardService, GateGuardMiddleware],
+  providers: [
+    GateGuardService,
+    GateGuardMiddleware,
+    GateGuardSentinelService,
+    WelfareGuardianService,
+    ChatGuardService,
+  ],
+  exports: [
+    GateGuardService,
+    GateGuardMiddleware,
+    GateGuardSentinelService,
+    WelfareGuardianService,
+  ],
 })
 export class GateGuardModule {}

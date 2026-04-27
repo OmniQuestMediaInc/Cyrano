@@ -33,6 +33,7 @@ const PERMISSION_MATRIX: Record<string, RbacRole> = {
   'audit_log:view': 'ADMIN',
   'worm:export': 'ADMIN',
   'geo_block:modify': 'ADMIN',
+  'house-model:manage': 'ADMIN',
 
   // ── RBAC-STUDIO-001 — additive studio permissions ─────────────────────
   // Platform-side floor; studio-scoped role checks are layered on top via
