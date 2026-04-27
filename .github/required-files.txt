@@ -1,0 +1,24 @@
+# Required files — checked by the validate-structure CI job.
+# Add or remove paths here; the workflow reads this list automatically.
+infra/postgres/init-ledger.sql
+docker-compose.yml
+PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md
+PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md
+PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001.md
+.github/copilot-instructions.md
+services/core-api/src/app.module.ts
+services/core-api/src/db.ts
+services/core-api/src/prisma.service.ts
+services/core-api/src/finance/ledger.service.ts
+services/core-api/src/finance/ledger.types.ts
+services/core-api/src/creator/statements.service.ts
+services/core-api/src/creator/statements.controller.ts
+services/core-api/src/creator/creator.module.ts
+services/core-api/src/risk/risk-score.service.ts
+services/core-api/src/safety/safety.service.ts
+services/core-api/src/safety/safety.module.ts
+services/core-api/src/growth/referral-reward.service.ts
+services/core-api/src/growth/guarded-notification.service.ts
+services/core-api/src/growth/growth.module.ts
+docs/REQUIREMENTS_MASTER.md
+docs/DOMAIN_GLOSSARY.md

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.next/
+out/
+archive/
+yarn.lock
+*.lock
+prisma/migrations/
+# Binary export artifact
+*.md.pdf

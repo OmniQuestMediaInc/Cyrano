@@ -1,0 +1,45 @@
+# Copilot Setup Steps — ChatNow.Zone BUILD
+# Configures the Copilot coding agent's ephemeral development environment
+# so it can create PRs, resolve merge conflicts, commit, and push.
+#
+# This workflow installs Node.js, Yarn, and project dependencies before
+# the agent begins work.  It runs automatically when changed (for
+# validation) and can be triggered manually from the Actions tab.
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` for Copilot to pick it up.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: yarn prisma:generate
+
+      - name: TypeScript type-check
+        run: yarn typecheck
+        continue-on-error: true

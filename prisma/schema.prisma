@@ -1,0 +1,2204 @@
+// prisma/schema.prisma
+// PRISMA-001: Prisma schema mirroring infra/postgres/init-ledger.sql
+// All 15 tables. Append-only tables documented with @@map and comments.
+// DO NOT add relations that don't exist in the SQL — match schema exactly.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Append-only: no update/delete permitted (enforced by DB triggers) ──────
+
+model LedgerEntry {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transaction_ref       String   @unique @db.VarChar(100)
+  idempotency_key       String   @unique @db.VarChar(200)
+  parent_entry_id       String?  @db.Uuid
+  user_id               String   @db.Uuid
+  studio_id             String?  @db.Uuid
+  performer_id          String?  @db.Uuid
+  contract_id           String?  @db.Uuid
+  entry_type            String   @db.VarChar(50)
+  status                String   @default("PENDING") @db.VarChar(20)
+  gross_amount_cents    BigInt
+  fee_amount_cents      BigInt   @default(0)
+  net_amount_cents      BigInt
+  currency              String   @default("USD") @db.Char(3)
+  studio_amount_cents   BigInt   @default(0)
+  performer_amount_cents BigInt  @default(0)
+  platform_amount_cents BigInt   @default(0)
+  gateway               String?  @db.VarChar(50)
+  gateway_txn_id        String?  @db.VarChar(200)
+  gateway_response      Json?
+  description           String?
+  metadata              Json?
+  created_at            DateTime @default(now()) @db.Timestamptz
+
+  @@map("ledger_entries")
+}
+
+model Transaction {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transaction_ref  String   @unique @db.VarChar(100)
+  idempotency_key  String   @unique @db.VarChar(200)
+  user_id          String   @db.Uuid
+  performer_id     String?  @db.Uuid
+  studio_id        String?  @db.Uuid
+  transaction_type String   @db.VarChar(50)
+  status           String   @default("PENDING") @db.VarChar(20)
+  gross_amount_cents BigInt
+  currency         String   @default("USD") @db.Char(3)
+  metadata         Json?
+  created_at       DateTime @default(now()) @db.Timestamptz
+  updated_at       DateTime @default(now()) @db.Timestamptz
+
+  @@map("transactions")
+}
+
+model AuditEvent {
+  event_id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_type         String   @db.VarChar(50)
+  actor_id           String   @db.Uuid
+  performer_id       String?  @db.Uuid
+  purpose_code       String?  @db.VarChar(100)
+  device_fingerprint String?  @db.VarChar(255)
+  outcome            String?  @db.VarChar(50)
+  reason_code        String?  @db.VarChar(100)
+  template_id        String?  @db.VarChar(100)
+  consent_basis_id   String?  @db.VarChar(100)
+  metadata           Json?
+  created_at         DateTime @default(now()) @db.Timestamptz
+
+  @@map("audit_events")
+}
+
+model IdentityVerification {
+  verification_id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  performer_id                 String    @db.Uuid
+  document_hash                String    @db.Char(64)
+  dob                          DateTime  @db.Date
+  status                       String    @default("PENDING") @db.VarChar(20)
+  expiry_date                  DateTime? @db.Timestamptz
+  liveness_pass                Boolean   @default(false)
+  expiry_override_actor_id     String?   @db.Uuid
+  expiry_override_reason_code  String?   @db.VarChar(100)
+  expiry_override_at           DateTime? @db.Timestamptz
+  created_at                   DateTime  @default(now()) @db.Timestamptz
+  updated_at                   DateTime  @default(now()) @db.Timestamptz
+
+  @@map("identity_verification")
+}
+
+model UserRiskProfile {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String    @unique @db.Uuid
+  risk_score          Decimal   @default(0.00) @db.Decimal(5, 2)
+  risk_tier           String    @default("UNRATED") @db.VarChar(20)
+  total_charged_back  Decimal   @default(0.00) @db.Decimal(12, 2)
+  total_disputed      Decimal   @default(0.00) @db.Decimal(12, 2)
+  total_approved      Decimal   @default(0.00) @db.Decimal(12, 2)
+  chargeback_ratio    Decimal   @default(0.0000) @db.Decimal(5, 4)
+  daily_spend_limit   Decimal   @default(500.00) @db.Decimal(12, 2)
+  monthly_spend_limit Decimal   @default(5000.00) @db.Decimal(12, 2)
+  created_at          DateTime  @default(now()) @db.Timestamptz
+  updated_at          DateTime  @default(now()) @db.Timestamptz
+  last_evaluated_at   DateTime? @db.Timestamptz
+
+  @@map("user_risk_profiles")
+}
+
+model StudioContract {
+  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studio_id                  String    @db.Uuid
+  performer_id               String    @db.Uuid
+  contract_ref               String    @unique @db.VarChar(100)
+  effective_date             DateTime  @db.Date
+  expiry_date                DateTime? @db.Date
+  status                     String    @default("ACTIVE") @db.VarChar(20)
+  studio_split               Decimal   @db.Decimal(5, 4)
+  performer_split            Decimal   @db.Decimal(5, 4)
+  platform_split             Decimal   @default(0.0000) @db.Decimal(5, 4)
+  performer_floor_per_minute Decimal?  @db.Decimal(8, 4)
+  created_at                 DateTime  @default(now()) @db.Timestamptz
+  updated_at                 DateTime  @default(now()) @db.Timestamptz
+  created_by                 String    @db.Uuid
+
+  @@map("studio_contracts")
+}
+
+model ReferralLink {
+  id                       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id               String   @db.Uuid
+  campaign_id              String   @db.Uuid
+  attribution_window_days  Int
+  link_slug                String   @unique @db.VarChar(100)
+  device_fingerprint       String?  @db.VarChar(255)
+  payment_instrument_hash  String?  @db.VarChar(64)
+  is_active                Boolean  @default(true)
+  metadata                 Json?
+  created_at               DateTime @default(now()) @db.Timestamptz
+
+  @@map("referral_links")
+}
+
+model AttributionEvent {
+  id                      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  referral_link_id        String   @db.Uuid
+  creator_id              String   @db.Uuid
+  campaign_id             String   @db.Uuid
+  attributed_user_id      String   @db.Uuid
+  event_type              String   @db.VarChar(50)
+  device_fingerprint      String?  @db.VarChar(255)
+  payment_instrument_hash String?  @db.VarChar(64)
+  ledger_entry_id         String?  @db.Uuid
+  rule_applied_id         String?  @db.VarChar(100)
+  platform_time           DateTime @default(now()) @db.Timestamptz
+  metadata                Json?
+  created_at              DateTime @default(now()) @db.Timestamptz
+
+  @@map("attribution_events")
+}
+
+model NotificationConsentStore {
+  id                       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                  String   @db.Uuid
+  channel                  String   @db.VarChar(20)
+  is_opted_in              Boolean  @default(false)
+  jurisdiction_rule_version String  @db.VarChar(50)
+  created_at               DateTime @default(now()) @db.Timestamptz
+  updated_at               DateTime @default(now()) @db.Timestamptz
+
+  @@unique([user_id, channel])
+  @@map("notification_consent_store")
+}
+
+model TipMenuItem {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id        String   @db.Uuid
+  item_name         String   @db.VarChar(100)
+  description       String?
+  base_price_tokens Int
+  geo_price_low     Int?
+  geo_price_med     Int?
+  is_active         Boolean  @default(true)
+  version           Int      @default(1)
+  rule_applied_id   String   @default("TIP_MENU_v1") @db.VarChar(100)
+  created_at        DateTime @default(now()) @db.Timestamptz
+
+  @@map("tip_menu_items")
+}
+
+model GameSession {
+  session_id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String   @db.Uuid
+  creator_id          String   @db.Uuid
+  game_type           String   @db.VarChar(20)
+  token_tier          Int
+  tokens_paid         Int
+  ledger_entry_id     String?  @db.Uuid
+  outcome             Json?
+  prize_awarded       String?
+  prize_table_version String   @db.VarChar(50)
+  idempotency_key     String   @unique @db.VarChar(200)
+  rule_applied_id     String   @default("GAMIFICATION_v1") @db.VarChar(100)
+  created_at          DateTime @default(now()) @db.Timestamptz
+
+  @@map("game_sessions")
+}
+
+model PrizeTable {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id        String   @db.Uuid
+  game_type         String   @db.VarChar(20)
+  token_tier        Int
+  prize_slot        String   @db.VarChar(20)
+  prize_description String
+  is_active         Boolean  @default(true)
+  version           String   @db.VarChar(50)
+  rule_applied_id   String   @default("PRIZE_TABLE_v1") @db.VarChar(100)
+  created_at        DateTime @default(now()) @db.Timestamptz
+
+  @@map("prize_tables")
+}
+
+model CallBooking {
+  booking_id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id         String   @db.Uuid
+  vip_user_id        String   @db.Uuid
+  scheduled_at_utc   DateTime @db.Timestamptz
+  block_type         String   @db.VarChar(20)
+  block_duration_mins Int
+  price_usd          Decimal  @db.Decimal(10, 2)
+  status             String   @default("SCHEDULED") @db.VarChar(20)
+  reschedule_fee_usd Decimal  @default(0.00) @db.Decimal(10, 2)
+  ledger_entry_id    String?  @db.Uuid
+  idempotency_key    String   @unique @db.VarChar(200)
+  rule_applied_id    String   @default("PRIVATE_CALL_v1") @db.VarChar(100)
+  created_at         DateTime @default(now()) @db.Timestamptz
+
+  @@map("call_bookings")
+}
+
+model CallSession {
+  session_id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  booking_id          String    @db.Uuid
+  creator_login_at    DateTime? @db.Timestamptz
+  vip_login_at        DateTime? @db.Timestamptz
+  creator_ready_at    DateTime? @db.Timestamptz
+  vip_ready_at        DateTime? @db.Timestamptz
+  call_start_at       DateTime? @db.Timestamptz
+  call_end_at         DateTime? @db.Timestamptz
+  actual_duration_secs Int?
+  creator_no_show     Boolean   @default(false)
+  vip_no_show         Boolean   @default(false)
+  voip_session_id     String?   @db.VarChar(200)
+  rule_applied_id     String    @default("PRIVATE_CALL_v1") @db.VarChar(100)
+  created_at          DateTime  @default(now()) @db.Timestamptz
+
+  @@map("call_sessions")
+}
+
+model VoucherVault {
+  voucher_id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  offer_name      String   @db.VarChar(100)
+  description     String?
+  eligible_tiers  String[]
+  trigger_type    String   @default("LOGIN") @db.VarChar(50)
+  token_value     Int?
+  is_permanent    Boolean  @default(true)
+  is_active       Boolean  @default(true)
+  rule_applied_id String   @default("GWP_VAULT_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@map("voucher_vault")
+}
+
+model LegalHold {
+  id              String    @id @default(uuid())
+  hold_id         String    @unique
+  subject_id      String
+  subject_type    String
+  applied_by      String
+  applied_at_utc  DateTime
+  lifted_by       String?
+  lifted_at_utc   DateTime?
+  reason_code     String
+  rule_applied_id String
+  created_at      DateTime  @default(now())
+
+  @@map("legal_holds")
+}
+
+model ContentSuppressionQueue {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content_id      String    @db.VarChar(200)
+  case_id         String    @db.VarChar(200)
+  rule_applied_id String    @db.VarChar(100)
+  status          String    @default("PROVISIONAL") @db.VarChar(20)
+  content_hash    String?   @db.Char(64)
+  suppressed_at   DateTime  @default(now()) @db.Timestamptz
+  finalized_at    DateTime? @db.Timestamptz
+  lifted_at       DateTime? @db.Timestamptz
+  lifted_by       String?   @db.Uuid
+  created_at      DateTime  @default(now()) @db.Timestamptz
+
+  @@map("content_suppression_queue")
+}
+
+// ─── DFSP — Diamond Financial Security Platform™ (PV-001) ────────────────────
+// Migration: dfsp_foundation_schema
+// Multi-tenant mandate (v1.1a — LOCKED): all models include organization_id and tenant_id.
+
+model PurchaseWindowConfig {
+  id                String   @id @default(uuid())
+  country_code      String?
+  tier              String
+  window_open_hour  Int
+  window_close_hour Int
+  active            Boolean  @default(true)
+  updated_at        DateTime @updatedAt
+  updated_by        String?
+  organization_id   String
+  tenant_id         String
+
+  @@map("purchase_window_config")
+}
+
+model RiskAssessment {
+  id                        String   @id @default(uuid())
+  account_id                String
+  purchase_attempt_id       String?
+  score                     Int
+  tier                      String
+  flags                     Json
+  expedited_access_eligible Boolean
+  auto_bar                  Boolean
+  calculated_at             DateTime @default(now())
+  weight_config_version     String
+  organization_id           String
+  tenant_id                 String
+
+  @@map("risk_assessments")
+}
+
+model IntegrityHold {
+  id                       String    @id @default(uuid())
+  contract_id              String
+  account_id               String
+  hold_amount              Decimal   @db.Decimal(8, 2)
+  processor_auth_reference String?
+  authorized_at            DateTime?
+  status                   String
+  released_at              DateTime?
+  captured_at              DateTime?
+  capture_reason           String?
+  chargeback_reference     String?
+  organization_id          String
+  tenant_id                String
+  created_at               DateTime  @default(now())
+
+  @@map("integrity_holds")
+}
+
+model CheckoutConfirmation {
+  id                                  String    @id @default(uuid())
+  transaction_id                      String
+  account_id                          String
+  checkbox_age_confirmed              Boolean
+  checkbox_age_confirmed_at           DateTime?
+  checkbox_no_refund_confirmed        Boolean
+  checkbox_no_refund_confirmed_at     DateTime?
+  checkbox_authorization_confirmed    Boolean
+  checkbox_authorization_confirmed_at DateTime?
+  email_receipt_sent                  Boolean   @default(false)
+  email_receipt_sent_at               DateTime?
+  sms_notification_sent               Boolean   @default(false)
+  sms_notification_sent_at            DateTime?
+  session_ip                          String?
+  session_fingerprint                 String?
+  organization_id                     String
+  tenant_id                           String
+  created_at                          DateTime  @default(now())
+
+  @@map("checkout_confirmations")
+}
+
+model OtpEvent {
+  id              String    @id @default(uuid())
+  account_id      String
+  transaction_id  String?
+  code_hash       String
+  channel         String
+  issued_at       DateTime  @default(now())
+  expires_at      DateTime
+  used_at         DateTime?
+  failed_attempts Int       @default(0)
+  status          String
+  organization_id String
+  tenant_id       String
+
+  @@map("otp_events")
+}
+
+model AccountHold {
+  id                     String    @id @default(uuid())
+  account_id             String
+  trigger_type           String
+  trigger_transaction_id String?
+  triggered_at           DateTime  @default(now())
+  hold_until             DateTime
+  released_at            DateTime?
+  released_by            String?
+  release_reason         String?
+  identity_reverified    Boolean   @default(false)
+  organization_id        String
+  tenant_id              String
+
+  @@map("account_holds")
+}
+
+model VoiceSample {
+  id                String    @id @default(uuid())
+  account_id        String
+  transaction_id    String?
+  agent_id          String?
+  recorded_at       DateTime
+  file_reference    String
+  duration_seconds  Int?
+  consent_given     Boolean
+  consent_timestamp DateTime
+  sample_sequence   Int
+  retention_until   DateTime
+  disposed_at       DateTime?
+  organization_id   String
+  tenant_id         String
+
+  @@map("voice_samples")
+}
+
+model QuoteSession {
+  id                   String    @id @default(uuid())
+  account_id           String
+  token_qty            Int
+  lifespan_days        Int
+  payment_method       String
+  indicative_rate_min  Decimal   @db.Decimal(10, 6)
+  indicative_rate_max  Decimal   @db.Decimal(10, 6)
+  risk_score           Int?
+  risk_tier            String?
+  is_requote           Boolean   @default(false)
+  source_contract_id   String?
+  agent_intake_sent_at DateTime?
+  agent_id             String?
+  created_at           DateTime  @default(now())
+  expires_at           DateTime
+  organization_id      String
+  tenant_id            String
+
+  @@map("quote_sessions")
+}
+
+model DiamondContract {
+  id                           String    @id @default(uuid())
+  contract_ref                 String    @unique
+  account_id                   String
+  agent_id                     String?
+  quote_session_id             String?
+  token_qty                    Int
+  token_lifespan_days          Int
+  token_expiry_date            DateTime
+  rate_per_token               Decimal   @db.Decimal(10, 6)
+  total_price_cad              Decimal   @db.Decimal(12, 2)
+  payment_method               String
+  advance_qty                  Int       @default(0)
+  advance_rate                 Decimal?  @db.Decimal(10, 6)
+  advance_price_cad            Decimal?  @db.Decimal(12, 2)
+  remainder_rate               Decimal?  @db.Decimal(10, 6)
+  integrity_hold_amount        Decimal   @db.Decimal(8, 2)
+  carf_amount                  Decimal   @db.Decimal(8, 2)
+  contract_url_token           String?
+  contract_url_expires_at      DateTime?
+  issued_at                    DateTime?
+  viewed_at                    DateTime?
+  accepted_at                  DateTime?
+  acceptance_ip                String?
+  acceptance_fingerprint       String?
+  verbal_confirmation_event_id String?
+  otp_event_id                 String?
+  recording_id                 String?
+  status                       String
+  voided_at                    DateTime?
+  voided_reason                String?
+  organization_id              String
+  tenant_id                    String
+  created_at                   DateTime  @default(now())
+
+  @@map("diamond_contracts")
+}
+
+model TokenBalance {
+  id                  String   @id @default(uuid())
+  account_id          String
+  contract_id         String?
+  quantity            Int
+  state               String
+  state_changed_at    DateTime @default(now())
+  state_changed_by    String?
+  state_change_reason String?
+  issued_at           DateTime @default(now())
+  lifespan_days       Int
+  expires_at          DateTime
+  frozen_reason       String?
+  compliance_review_id String?
+  organization_id     String
+  tenant_id           String
+  token_origin        String   @default("PURCHASED")
+  /// Single-token economy: always 'CZT'. Immutable default enforced by application layer.
+  token_type          String   @default("CZT") @db.VarChar(10)
+
+  @@index([token_type])
+  @@map("token_balances")
+}
+
+model ExpeditedAccessEvent {
+  id                           String    @id @default(uuid())
+  contract_id                  String
+  account_id                   String
+  approved_by_agent            String?
+  supervisor_approval_required Boolean
+  supervisor_id                String?
+  advance_qty                  Int
+  advance_rate                 Decimal   @db.Decimal(10, 6)
+  advance_total                Decimal   @db.Decimal(12, 2)
+  released_at                  DateTime?
+  payment_cleared              Boolean   @default(false)
+  payment_cleared_at           DateTime?
+  tokens_frozen                Boolean   @default(false)
+  tokens_frozen_at             DateTime?
+  prior_clean_contracts_count  Int
+  organization_id              String
+  tenant_id                    String
+  created_at                   DateTime  @default(now())
+
+  @@map("expedited_access_events")
+}
+
+model MonitoringFlag {
+  id                    String    @id @default(uuid())
+  account_id            String
+  flag_type             String
+  severity              String
+  description           String
+  job_run_at            DateTime
+  auto_action_taken     String?
+  agent_review_required Boolean
+  agent_id              String?
+  reviewed_at           DateTime?
+  resolution            String?
+  related_contract_ids  String[]
+  organization_id       String
+  tenant_id             String
+  created_at            DateTime  @default(now())
+
+  @@map("monitoring_flags")
+}
+
+model ModelFlag {
+  id                        String    @id @default(uuid())
+  model_account_id          String
+  trigger_type              String
+  trigger_source_account_id String?
+  trigger_event_id          String?
+  flagged_at                DateTime  @default(now())
+  monitoring_state          String
+  compliance_reviewer_id    String?
+  reviewed_at               DateTime?
+  resolution                String?
+  organization_id           String
+  tenant_id                 String
+
+  @@map("model_flags")
+}
+
+model TreasuryOverride {
+  id                         String    @id @default(uuid())
+  account_id                 String
+  requested_by               String
+  requested_at               DateTime  @default(now())
+  token_qty                  Int
+  installment_count          Int
+  installment_amount_cad     Decimal   @db.Decimal(12, 2)
+  payment_plan_premium_pct   Decimal   @db.Decimal(5, 2)
+  ceo_approved_by            String?
+  ceo_approved_at            DateTime?
+  cfo_approved_by            String?
+  cfo_approved_at            DateTime?
+  compliance_approved_by     String?
+  compliance_approved_at     DateTime?
+  finance_approved_by        String?
+  finance_approved_at        DateTime?
+  legal_approved_by          String?
+  legal_approved_at          DateTime?
+  status                     String
+  rejection_reason           String?
+  legal_instrument_reference String?
+  organization_id            String
+  tenant_id                  String
+
+  @@map("treasury_overrides")
+}
+
+model ExecutiveConsultation {
+  id                        String    @id @default(uuid())
+  account_id                String
+  requested_at              DateTime  @default(now())
+  desired_qty_text          String?
+  preferred_times           Json?
+  assigned_exec             String?
+  scheduled_at              DateTime?
+  video_platform            String?
+  video_link_encrypted      String?
+  call_completed            Boolean   @default(false)
+  call_completed_at         DateTime?
+  recording_id              String?
+  video_recording_reference String?
+  visual_consent_given      Boolean?
+  visual_consent_refused    Boolean?
+  outcome                   String?
+  notes                     String?
+  organization_id           String
+  tenant_id                 String
+
+  @@map("executive_consultations")
+}
+
+model CollectionsQueue {
+  id                         String    @id @default(uuid())
+  account_id                 String
+  contract_id                String?
+  chargeback_reference       String?
+  processor_fee_amount       Decimal   @db.Decimal(8, 2)
+  integrity_hold_captured    Decimal   @db.Decimal(8, 2)
+  outstanding_amount         Decimal   @db.Decimal(8, 2)
+  notified_at                DateTime?
+  account_suspended_at       DateTime?
+  referred_to_collections_at DateTime?
+  collected_at               DateTime?
+  collected_amount           Decimal?  @db.Decimal(8, 2)
+  status                     String
+  organization_id            String
+  tenant_id                  String
+  created_at                 DateTime  @default(now())
+
+  @@map("collections_queue")
+}
+
+// ─── GZ SCHEDULING MODULE — GuestZone Operations Scheduling ─────────────────
+// Waterfall shift model, ZoneBot lottery, multi-department coverage,
+// Ontario ESA 2026 compliance. Append-only for audit logs.
+
+model StaffMember {
+  id                      String    @id @default(uuid())
+  employee_ref            String    @unique @db.VarChar(50)
+  display_name            String    @db.VarChar(100)
+  role                    String    @db.VarChar(20)       // GZM, GZAM, GZS, GZSA
+  employment_type         String    @db.VarChar(10)       // FT, PT
+  staff_category          String    @db.VarChar(10)       // CORE, EDGE
+  department              String    @db.VarChar(30)       // GUESTZONE, FINANCE, TECH, LEGAL, MAINTENANCE, RECEPTION
+  languages               String[]                        // e.g. ['EN','FR','ES']
+  hourly_rate_cad         Decimal?  @db.Decimal(8, 2)    // Hourly staff
+  annual_salary_cad       Decimal?  @db.Decimal(10, 2)   // Salaried staff
+  is_active               Boolean   @default(true)
+  hire_date               DateTime  @db.Date
+  // WO-002: HCZ Zoey scheduler additions
+  target_weekly_hours     Int       @default(385)         // Tenths of hours: 385 = 38.5h target
+  min_weekly_hours        Int       @default(360)         // Tenths of hours: 360 = 36.0h floor
+  jurisdiction            String    @default("ON")        // Provincial jurisdiction code
+  birthday                DateTime? @db.Date
+  sick_hours_remaining    Int       @default(40)          // Hours: 40h = 5 sick days
+  sick_carryover_hours    Int       @default(0)
+  sick_carryover_expires  DateTime? @db.Date
+  correlation_id          String    @db.VarChar(64)
+  reason_code             String    @db.VarChar(100)
+  created_at              DateTime  @default(now()) @db.Timestamptz
+
+  @@map("staff_members")
+}
+
+model SchedulePeriod {
+  id                  String    @id @default(uuid())
+  period_ref          String    @unique @db.VarChar(50)
+  department          String    @db.VarChar(30)
+  period_start        DateTime  @db.Date
+  period_end          DateTime  @db.Date
+  block_cutoff_at     DateTime  @db.Timestamptz      // B-Lock: 21 days before period_start
+  final_lock_at       DateTime  @db.Timestamptz      // Final Lock: 14 days before period_start
+  status              String    @default("DRAFT") @db.VarChar(20) // DRAFT, B_LOCKED, FINAL_LOCKED, ACTIVE, ARCHIVED
+  published_by        String?   @db.Uuid
+  published_at        DateTime? @db.Timestamptz
+  correlation_id      String    @db.VarChar(64)
+  reason_code         String    @db.VarChar(100)
+  rule_applied_id     String    @default("GZ_SCHEDULE_v1") @db.VarChar(100)
+  created_at          DateTime  @default(now()) @db.Timestamptz
+
+  @@map("schedule_periods")
+}
+
+model ShiftTemplate {
+  id                String   @id @default(uuid())
+  shift_code        String   @db.VarChar(10)       // A, B, C
+  department        String   @db.VarChar(30)
+  shift_label       String   @db.VarChar(50)       // "Morning", "Swing", "Night"
+  start_time        String   @db.VarChar(5)        // "07:00" (HH:mm, America/Toronto)
+  end_time          String   @db.VarChar(5)        // "15:45"
+  duration_hours    Decimal  @db.Decimal(4, 2)     // 8.75
+  meal_break_start  String?  @db.VarChar(5)        // "11:30"
+  meal_break_mins   Int?                           // 30
+  is_active         Boolean  @default(true)
+  correlation_id    String   @db.VarChar(64)
+  reason_code       String   @db.VarChar(100)
+  rule_applied_id   String   @default("GZ_SHIFT_TEMPLATE_v1") @db.VarChar(100)
+  created_at        DateTime @default(now()) @db.Timestamptz
+
+  @@unique([shift_code, department])
+  @@map("shift_templates")
+}
+
+model ShiftAssignment {
+  id                  String   @id @default(uuid())
+  schedule_period_id  String   @db.Uuid
+  staff_member_id     String   @db.Uuid
+  shift_template_id   String   @db.Uuid
+  shift_date          DateTime @db.Date
+  override_start_time String?  @db.VarChar(5)       // Edge staff may have different start
+  override_end_time   String?  @db.VarChar(5)
+  is_stat_holiday     Boolean  @default(false)
+  pay_multiplier      Decimal  @default(1.00) @db.Decimal(3, 2) // 1.50 for stat holiday
+  assignment_source   String   @db.VarChar(20)       // ROSTER, ZONEBOT, MANUAL, SWAP
+  on_call             Boolean  @default(false)
+  meal_cover_role     Boolean  @default(false)       // True if this person covers meal breaks
+  correlation_id      String   @db.VarChar(64)
+  reason_code         String   @db.VarChar(100)
+  rule_applied_id     String   @default("GZ_SHIFT_ASSIGN_v1") @db.VarChar(100)
+  created_at          DateTime @default(now()) @db.Timestamptz
+
+  @@unique([staff_member_id, shift_date])
+  @@map("shift_assignments")
+}
+
+model ShiftGap {
+  id                  String    @id @default(uuid())
+  schedule_period_id  String    @db.Uuid
+  shift_template_id   String    @db.Uuid
+  gap_date            DateTime  @db.Date
+  department          String    @db.VarChar(30)
+  required_role       String    @db.VarChar(20)
+  status              String    @default("OPEN") @db.VarChar(20) // OPEN, BIDDING, AWARDED, FILLED, CANCELLED
+  posted_at           DateTime  @default(now()) @db.Timestamptz
+  filled_at           DateTime? @db.Timestamptz
+  filled_by           String?   @db.Uuid
+  correlation_id      String    @db.VarChar(64)
+  reason_code         String    @db.VarChar(100)
+  rule_applied_id     String    @default("GZ_SHIFT_GAP_v1") @db.VarChar(100)
+  created_at          DateTime  @default(now()) @db.Timestamptz
+
+  @@map("shift_gaps")
+}
+
+model ShiftBid {
+  id              String    @id @default(uuid())
+  shift_gap_id    String    @db.Uuid
+  staff_member_id String    @db.Uuid
+  lottery_position Int?                           // 1, 2, or 3 (assigned by ZoneBot)
+  status          String    @default("PENDING") @db.VarChar(20) // PENDING, POSITION_ASSIGNED, OFFERED, ACCEPTED, DECLINED, EXPIRED
+  offered_at      DateTime? @db.Timestamptz
+  expires_at      DateTime? @db.Timestamptz       // 16-hour confirmation clock
+  responded_at    DateTime? @db.Timestamptz
+  suppressed_until DateTime? @db.Date             // Suppressed for next 2 cycles after award
+  correlation_id  String    @db.VarChar(64)
+  reason_code     String    @db.VarChar(100)
+  rule_applied_id String    @default("GZ_ZONEBOT_BID_v1") @db.VarChar(100)
+  created_at      DateTime  @default(now()) @db.Timestamptz
+
+  @@unique([shift_gap_id, staff_member_id])
+  @@map("shift_bids")
+}
+
+// Append-only: no UPDATE or DELETE permitted
+model ScheduleAuditLog {
+  id              String   @id @default(uuid())
+  event_type      String   @db.VarChar(50)        // PERIOD_CREATED, SHIFT_ASSIGNED, GAP_POSTED, LOTTERY_RUN, BID_AWARDED, COMPLIANCE_VIOLATION, COVERAGE_GAP
+  actor_id        String   @db.VarChar(100)       // Staff ID or 'ZONEBOT'
+  target_id       String?  @db.VarChar(100)       // Entity being acted upon
+  target_type     String?  @db.VarChar(30)        // PERIOD, SHIFT, GAP, BID, STAFF
+  department      String?  @db.VarChar(30)
+  details         Json?                           // Structured event payload
+  correlation_id  String   @db.VarChar(64)
+  reason_code     String   @db.VarChar(100)
+  rule_applied_id String   @default("GZ_SCHEDULE_AUDIT_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@map("schedule_audit_log")
+}
+
+model DepartmentCoverage {
+  id                  String   @id @default(uuid())
+  department          String   @db.VarChar(30)
+  day_of_week         Int                          // 0=Mon, 6=Sun
+  coverage_start      String   @db.VarChar(5)      // "09:00"
+  coverage_end        String   @db.VarChar(5)      // "21:00"
+  min_staff_count     Int
+  min_supervisor_count Int     @default(1)
+  requires_manager    Boolean  @default(false)
+  is_on_call_only     Boolean  @default(false)     // e.g. Legal weekends
+  crossover_mins      Int      @default(30)        // Handoff/crossover buffer
+  correlation_id      String   @db.VarChar(64)
+  reason_code         String   @db.VarChar(100)
+  rule_applied_id     String   @default("GZ_DEPT_COVERAGE_v1") @db.VarChar(100)
+  created_at          DateTime @default(now()) @db.Timestamptz
+
+  @@unique([department, day_of_week, coverage_start])
+  @@map("department_coverage")
+}
+
+model StatHoliday {
+  id              String   @id @default(uuid())
+  holiday_date    DateTime @unique @db.Date
+  holiday_name    String   @db.VarChar(100)
+  pay_multiplier  Decimal  @default(1.50) @db.Decimal(3, 2) // 1.5x Premium Pay
+  requires_on_call_manager Boolean @default(true)
+  correlation_id  String   @db.VarChar(64)
+  reason_code     String   @db.VarChar(100)
+  rule_applied_id String   @default("GZ_STAT_HOLIDAY_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@map("stat_holidays")
+}
+
+// ── PROC-001: Webhook Idempotency Log (append-only — no UPDATE or DELETE permitted) ──
+model WebhookIdempotencyLog {
+  id             String   @id @default(uuid())
+  event_id       String   @unique @db.VarChar(200)
+  event_type     String   @db.VarChar(100)
+  schema_version String   @db.VarChar(20)
+  correlation_id String   @db.VarChar(64)
+  reason_code    String   @db.VarChar(100)
+  organization_id String  @db.VarChar(100)
+  tenant_id      String   @db.VarChar(100)
+  received_at    DateTime @default(now())
+
+  @@map("webhook_idempotency_log")
+}
+
+// ─── User (minimal model for MEMB-001 relations) ─────────────────────────────
+// Stub model to support membership relations. Full user profile fields deferred.
+
+model User {
+  id                    String          @id @default(uuid())
+  organization_id       String          @db.VarChar(100)
+  tenant_id             String          @db.VarChar(100)
+  created_at            DateTime        @default(now()) @db.Timestamptz
+  updated_at            DateTime        @updatedAt @db.Timestamptz
+
+  membership                 Membership?
+  card_on_file               CardOnFile?
+  extension_action_records   ExtensionActionRecord[]
+  guest_risk_profile         GuestRiskProfile?
+  friendly_fraud_signals     FriendlyFraudSignal[]
+
+  @@map("users")
+}
+
+// ─── Membership Subscriptions — MEMB-002 ─────────────────────────────────────
+
+enum MembershipTier {
+  GUEST
+  VIP
+  VIP_SILVER
+  VIP_GOLD
+  VIP_PLATINUM
+  VIP_DIAMOND
+}
+
+enum AccountStatus {
+  ACTIVE
+  GUEST_LOCKED           // policy §3.1 — 31 days elapsed, no upgrade
+  SUSPENDED              // policy §3.2, §3.3 — age-verification failure
+  CARD_FROZEN            // policy §5 — card-on-file incomplete
+}
+
+enum TransitionTrigger {
+  GATE_1_GUEST_GRANTED           // policy §2 Gate 1
+  GATE_2_VIP_GRANTED             // policy §2 Gate 2
+  GATE_3_PAID_TIER_PURCHASED     // policy §2 Gate 3
+  PAID_TIER_RENEWED              // policy §3.3
+  PAID_TIER_LAPSED_TO_VIP        // policy §3.3
+  GUEST_EXPIRED_TO_LOCKED        // policy §3.1 — 31 days elapsed
+  GUEST_PURGED                   // policy §3.1 — 366 days post-lock
+  GUEST_REACTIVATED              // policy §3.1
+  VIP_AGE_VERIFY_SUSPENDED       // policy §3.2
+  PAID_AGE_VERIFY_SUSPENDED      // policy §3.3
+  SUSPENSION_LIFTED              // reactivation after age-verify success
+  CARD_FROZEN                    // policy §5
+  CARD_FREEZE_LIFTED             // policy §5
+}
+
+enum AgeVerificationMethod {
+  UNSPECIFIED           // placeholder — concrete methods defined in future AV-001 directive
+}
+
+enum AgeVerificationResult {
+  PASS
+  FAIL
+  PENDING
+}
+
+enum AgeVerificationTrigger {
+  ACCOUNT_CREATION              // policy §4.1
+  GUEST_TO_VIP_UPGRADE          // policy §4.2
+  VIP_THIRTY_DAY_CADENCE        // policy §4.3
+  PAID_TIER_PURCHASE            // policy §4.4
+  GUEST_REACTIVATION            // policy §4.5
+  POST_SUSPENSION_REACTIVATION  // policy §4.6
+}
+
+// ─── MEMB-001: Membership Schema Foundation ──────────────────────────────────
+// Policy source: docs/MEMBERSHIP_LIFECYCLE_POLICY.md v1.0
+
+model Membership {
+  id                    String          @id @default(cuid())
+  user_id               String          @unique
+  tier                  MembershipTier
+  account_status        AccountStatus   @default(ACTIVE)
+  product_variant       String?         // e.g. "SILVER_BULLET" for §7.3 variant; null for standard tier
+  paid_block_started_at DateTime?       // null for GUEST and VIP; non-null for paid tiers
+  paid_block_expires_at DateTime?       // null for GUEST and VIP; set to paid_block_started_at + 91 days for paid tiers
+  guest_expires_at      DateTime?       // non-null for GUEST only; 31 days from creation/reactivation
+  guest_purge_at        DateTime?       // non-null when GUEST is locked; 366 days post-lock
+  created_at            DateTime        @default(now())
+  updated_at            DateTime        @updatedAt
+  organization_id       String
+  tenant_id             String
+
+  user                  User            @relation(fields: [user_id], references: [id])
+  transitions           MembershipTierTransition[]
+  age_verifications     AgeVerification[]
+
+  @@index([tier])
+  @@index([account_status])
+  @@index([organization_id, tenant_id])
+  @@index([guest_expires_at])          // for scheduler queries (policy §3.1)
+  @@index([paid_block_expires_at])     // for scheduler queries (policy §3.3)
+  @@map("memberships")
+}
+
+model MembershipTierTransition {
+  id                    String                @id @default(cuid())
+  membership_id         String
+  user_id               String                // denormalized for audit queries
+  previous_tier         MembershipTier?       // null for initial GUEST grant (Gate 1)
+  new_tier              MembershipTier
+  previous_status       AccountStatus?
+  new_status            AccountStatus
+  trigger_type          TransitionTrigger
+  actor_id              String?               // null for system-triggered transitions (e.g. scheduler)
+  rule_applied_id       String                // mandatory per global invariant
+  occurred_at           DateTime              @default(now())
+  organization_id       String
+  tenant_id             String
+
+  membership            Membership            @relation(fields: [membership_id], references: [id])
+
+  @@index([membership_id, occurred_at])
+  @@index([user_id, occurred_at])
+  @@index([trigger_type])
+  @@index([organization_id, tenant_id])
+  @@map("membership_tier_transitions")
+}
+
+model AgeVerification {
+  id                    String                  @id @default(cuid())
+  membership_id         String
+  user_id               String                  // denormalized for audit queries
+  method                AgeVerificationMethod
+  result                AgeVerificationResult
+  triggering_event      AgeVerificationTrigger
+  rule_applied_id       String                  // mandatory per global invariant
+  occurred_at           DateTime                @default(now())
+  organization_id       String
+  tenant_id             String
+
+  membership            Membership              @relation(fields: [membership_id], references: [id])
+
+  @@index([membership_id, occurred_at])
+  @@index([user_id, occurred_at])
+  @@index([triggering_event])
+  @@index([organization_id, tenant_id])
+  @@map("age_verifications")
+}
+
+model CardOnFile {
+  id                       String      @id @default(cuid())
+  user_id                  String      @unique
+  cardholder_name          String?
+  billing_address          String?     // single-field address; structured breakdown TBD in future directive if needed
+  phone_number             String?
+  email                    String?
+  card_expiration_month    Int?        // 1–12
+  card_expiration_year     Int?        // 4-digit year
+  card_cvv_hash            String?     // SHA-256 hash only — never store raw CVV
+  card_token               String?     // payment processor token (e.g. Stripe Payment Method ID)
+  is_complete              Boolean     @default(false)  // computed: all 6 fields non-null
+  created_at               DateTime    @default(now())
+  updated_at               DateTime    @updatedAt
+  organization_id          String
+  tenant_id                String
+
+  user                     User        @relation(fields: [user_id], references: [id])
+
+  @@index([is_complete])
+  @@index([organization_id, tenant_id])
+  @@map("cards_on_file")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  GRACE
+}
+
+enum BillingInterval {
+  MONTHLY
+  QUARTERLY
+  SEMI_ANNUAL
+  ANNUAL
+}
+
+model MembershipSubscription {
+  id                    String             @id @default(uuid())
+  user_id               String             @db.Uuid
+  tier                  MembershipTier
+  status                SubscriptionStatus @default(ACTIVE)
+  billing_interval      BillingInterval
+  commitment_months     Int
+  bonus_months          Int                @default(0)
+  current_period_start  DateTime           @db.Timestamptz
+  current_period_end    DateTime           @db.Timestamptz
+  cancelled_at          DateTime?          @db.Timestamptz
+  organization_id       String             @db.VarChar(100)
+  tenant_id             String             @db.VarChar(100)
+  created_at            DateTime           @default(now()) @db.Timestamptz
+  updated_at            DateTime           @updatedAt @db.Timestamptz
+
+  // Application-level invariant: one ACTIVE subscription per user.
+  // Enforced in MembershipService.createSubscription before insert.
+  @@index([user_id, status])
+  @@map("membership_subscriptions")
+}
+
+// ─── Zone Access — MEMB-001: ShowZonePass for zone-gate overrides ────────────
+
+enum ZoneAccessZone {
+  CHAT_ZONE
+  SHOW_THEATRE
+  BIJOU
+  PRIVATE_CALL
+  DIAMOND_CONCIERGE
+}
+
+model ShowZonePass {
+  id              String         @id @default(uuid())
+  user_id         String         @db.Uuid
+  zone            ZoneAccessZone
+  valid_from      DateTime       @db.Timestamptz
+  valid_until     DateTime       @db.Timestamptz
+  organization_id String         @db.VarChar(100)
+  tenant_id       String         @db.VarChar(100)
+  created_at      DateTime       @default(now()) @db.Timestamptz
+
+  @@index([user_id, zone])
+  @@map("show_zone_passes")
+}
+
+// ─── Bijou Scheduler — BJ-002 ────────────────────────────────────────────────
+
+enum BijouSessionStatus {
+  SCHEDULED
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+model BijouSession {
+  id                String             @id @default(uuid())
+  creator_id        String             @db.Uuid
+  scheduled_start   DateTime           @db.Timestamptz
+  scheduled_end     DateTime           @db.Timestamptz
+  capacity          Int                @default(24)
+  status            BijouSessionStatus @default(SCHEDULED)
+  organization_id   String             @db.VarChar(100)
+  tenant_id         String             @db.VarChar(100)
+  created_at        DateTime           @default(now()) @db.Timestamptz
+  updated_at        DateTime           @updatedAt @db.Timestamptz
+
+  @@index([status, scheduled_start])
+  @@index([creator_id, scheduled_start])
+  @@map("bijou_sessions")
+}
+
+// ─── Bijou Admission — BJ-003 ────────────────────────────────────────────────
+
+enum BijouAdmissionStatus {
+  PENDING
+  ADMITTED
+  STANDBY
+  EJECTED
+  ABANDONED
+}
+
+model BijouAdmission {
+  id                    String               @id @default(uuid())
+  session_id            String               @db.Uuid
+  user_id               String               @db.Uuid
+  status                BijouAdmissionStatus @default(PENDING)
+  admitted_at           DateTime?            @db.Timestamptz
+  camera_grace_deadline DateTime?            @db.Timestamptz
+  organization_id       String               @db.VarChar(100)
+  tenant_id             String               @db.VarChar(100)
+  created_at            DateTime             @default(now()) @db.Timestamptz
+  updated_at            DateTime             @updatedAt @db.Timestamptz
+
+  @@index([session_id, status])
+  @@index([session_id, created_at])
+  @@map("bijou_admissions")
+}
+
+// ─── Bijou Dwell Credit — BJ-004 ─────────────────────────────────────────────
+// Append-only. No UPDATE or DELETE permitted.
+
+model DwellLog {
+  id              String   @id @default(uuid())
+  admission_id    String   @db.Uuid
+  session_id      String   @db.Uuid
+  user_id         String   @db.Uuid
+  dwell_seconds   Int
+  czt_credited    Int
+  payout_czt      Int
+  platform_czt    Int
+  organization_id String   @db.VarChar(100)
+  tenant_id       String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@unique([admission_id, session_id])
+  @@index([session_id])
+  @@index([user_id])
+  @@map("bijou_dwell_logs")
+}
+
+model CreatorDwellAccrual {
+  id              String   @id @default(uuid())
+  creator_id      String   @db.Uuid
+  session_id      String   @db.Uuid
+  payout_czt      Int
+  settled         Boolean  @default(false)
+  organization_id String   @db.VarChar(100)
+  tenant_id       String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([creator_id, settled])
+  @@index([session_id])
+  @@map("bijou_creator_dwell_accruals")
+}
+
+// ─── CANONICAL FINANCIAL LEDGER — Payload 1 (OQMI_GOVERNANCE + REDBOOK) ──────
+// New canonical three-bucket wallet layer sourced from services/ledger/.
+// Prisma model names are prefixed `Canonical*` to coexist with the legacy
+// LedgerEntry (payment-gateway oriented) without colliding. Table names follow
+// the directive: wallets, wallet_ledger_entries, token_expirations, rate_cards.
+// Append-only: wallet_ledger_entries never UPDATE or DELETE (hash-chained).
+
+model CanonicalWallet {
+  id               String   @id @default(cuid())
+  user_id          String   @unique
+  user_type        String   // "guest" | "creator" | "diamond"
+
+  // Three-bucket balances — enforced by services/ledger/ (never write directly).
+  purchased_tokens  Int     @default(0)
+  membership_tokens Int     @default(0)
+  bonus_tokens      Int     @default(0)
+
+  last_updated     DateTime @updatedAt
+  organization_id  String
+  tenant_id        String
+  created_at       DateTime @default(now())
+
+  ledger_entries    CanonicalLedgerEntry[]
+  token_expirations CanonicalTokenExpiration[]
+
+  @@index([user_type])
+  @@index([organization_id, tenant_id])
+  @@map("wallets")
+}
+
+model CanonicalLedgerEntry {
+  id              String   @id @default(cuid())
+  wallet_id       String
+  correlation_id  String   @unique
+  reason_code     String   // "PURCHASE" | "SPEND" | "PAYOUT" | "EXPIRY_RECOVERY" | "TOKEN_BRIDGE" | "THREE_FIFTHS_EXIT" | ...
+  amount          Int      // signed: positive = credit, negative = debit
+  bucket          String   // "purchased" | "membership" | "bonus"
+  token_type      String   @default("CZT") @db.VarChar(10) // CZT only — single-token economy enforced at DB level
+  metadata        Json?
+  hash_prev       String?
+  hash_current    String
+  created_at      DateTime @default(now())
+
+  wallet          CanonicalWallet @relation(fields: [wallet_id], references: [id])
+
+  @@index([wallet_id, correlation_id])
+  @@index([wallet_id, created_at])
+  @@index([reason_code])
+  @@index([token_type])
+  @@map("wallet_ledger_entries")
+}
+
+model CanonicalTokenExpiration {
+  id           String    @id @default(cuid())
+  wallet_id    String
+  tokens       Int
+  expires_at   DateTime
+  status       String    // "active" | "expired" | "recovered" | "extended"
+  recovery_fee Decimal?  @db.Decimal(10, 2)
+  created_at   DateTime  @default(now())
+
+  wallet       CanonicalWallet @relation(fields: [wallet_id], references: [id])
+
+  @@index([wallet_id, status])
+  @@index([status, expires_at])
+  @@map("token_expirations")
+}
+
+model CanonicalRateCard {
+  id              String    @id @default(cuid())
+  tier            String    // "tease_regular" | "tease_showzone" | "diamond_floor" | "vip_baseline"
+  guest_price     Decimal   @db.Decimal(10, 2)
+  member_price    Decimal   @db.Decimal(10, 2)
+  creator_payout  Decimal   @db.Decimal(6, 4)  // $0.065–$0.090 per token
+  platform_margin Decimal   @db.Decimal(6, 4)
+  min_volume      Int?
+  heat_level      String?   // for Flicker n'Flame Scoring (FFS) scaling: "cold" | "warm" | "hot" | "inferno"
+  valid_from      DateTime
+  valid_to        DateTime?
+
+  @@index([tier, valid_from])
+  @@map("rate_cards")
+}
+
+// ─── Creator — OBS-001 foundation fields ─────────────────────────────────────
+// Minimal Creator model carrying OBS stream key hash and persona CREATOR_AUTO
+// flag. Canonical identity / profile fields are deferred to a future directive.
+
+model Creator {
+  id              String   @id @default(uuid())
+  // OBS-001: stream key stored as SHA-256 hash — never plaintext.
+  stream_key_hash String?  @unique @db.VarChar(64)
+  // OBS-001: CREATOR_AUTO flag gates persona auto-responses. Default false.
+  creator_auto    Boolean  @default(false)
+  // RBAC-STUDIO-001: denormalised affiliation number for fast profile reads
+  // and login/verification flows. Source-of-truth lives on the Studio row;
+  // this column mirrors it after the StudioAffiliation is created. Permanent
+  // once set — no regeneration policy is enforced at the application layer.
+  affiliation_number String? @db.VarChar(9)
+  organization_id String   @db.VarChar(100)
+  tenant_id       String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+  updated_at      DateTime @updatedAt @db.Timestamptz
+
+  studio_affiliations StudioAffiliation[]
+  studio_onboarding   CreatorOnboarding?
+
+  @@index([affiliation_number])
+  @@map("creators")
+}
+
+// ─── RBAC-STUDIO-001: Studio Onboarding + Affiliation + RBAC ────────────
+// Spec: services/studio-affiliation + services/creator-onboarding +
+//       services/affiliation-number generator. Append-only writes carry
+//       correlation_id + reason_code + rule_applied_id (Canonical L0).
+
+enum StudioStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  CLOSED
+}
+
+enum StudioRole {
+  STUDIO_OWNER
+  STUDIO_ADMIN
+  CREATOR
+}
+
+enum AffiliationStatus {
+  ACTIVE
+  PENDING
+  REVOKED
+}
+
+enum OnboardingStatus {
+  PENDING
+  AFFILIATED
+  COMPLETE
+}
+
+enum StudioContractStatus {
+  UPLOADED
+  SIGNED
+  COUNTERSIGNED
+  VOIDED
+}
+
+model Studio {
+  id                  String       @id @default(uuid())
+  name                String       @db.VarChar(200)
+  // 6-9 char uppercase alphanumeric (A-Z, 2-9 — excludes 0, 1, O, I).
+  // Length range enforced by the AffiliationNumberService + DB CHECK.
+  // Uniqueness enforced globally (no organization scope).
+  affiliation_number  String       @unique @db.VarChar(9)
+  status              StudioStatus @default(PENDING)
+  // Commission set by PLATFORM_ADMIN only (read-only on the studio dashboard).
+  // Stored as a 4-decimal fraction (e.g. 0.2500 == 25%). Bounded 0..1.
+  commission_rate     Decimal      @default(0.0000) @db.Decimal(5, 4)
+  // Multi-tenant scoping (every write must include).
+  organization_id     String       @db.VarChar(100)
+  tenant_id           String       @db.VarChar(100)
+  // Canonical audit columns — populated on every mutation by the service layer.
+  correlation_id      String       @db.VarChar(128)
+  reason_code         String       @db.VarChar(64)
+  rule_applied_id     String       @db.VarChar(100)
+  created_at          DateTime     @default(now()) @db.Timestamptz
+  updated_at          DateTime     @updatedAt @db.Timestamptz
+
+  affiliations        StudioAffiliation[]
+  contracts           StudioContractDocument[]
+  onboardings         CreatorOnboarding[]
+
+  @@index([affiliation_number])
+  @@index([status, organization_id])
+  @@map("studios")
+}
+
+model StudioAffiliation {
+  id              String            @id @default(uuid())
+  studio_id       String
+  creator_id      String
+  role            StudioRole        @default(CREATOR)
+  status          AffiliationStatus @default(ACTIVE)
+  joined_at       DateTime          @default(now()) @db.Timestamptz
+  // Canonical audit columns.
+  correlation_id  String            @db.VarChar(128)
+  reason_code     String            @db.VarChar(64)
+  rule_applied_id String            @db.VarChar(100)
+  organization_id String            @db.VarChar(100)
+  tenant_id       String            @db.VarChar(100)
+  created_at      DateTime          @default(now()) @db.Timestamptz
+  updated_at      DateTime          @updatedAt @db.Timestamptz
+
+  studio          Studio            @relation(fields: [studio_id], references: [id])
+  creator         Creator           @relation(fields: [creator_id], references: [id])
+
+  @@unique([studio_id, creator_id])
+  @@index([creator_id])
+  @@index([status, role])
+  @@map("studio_affiliations")
+}
+
+model CreatorOnboarding {
+  id                  String           @id @default(uuid())
+  creator_id          String           @unique
+  // Resolved studio (NULL until affiliation is granted).
+  studio_id           String?
+  // Mirror of studio.affiliation_number for read-side convenience.
+  affiliation_number  String?          @db.VarChar(9)
+  status              OnboardingStatus @default(PENDING)
+  // Secondary email used for the verification code step.
+  secondary_email     String?          @db.VarChar(255)
+  email_verified_at   DateTime?        @db.Timestamptz
+  // Optional studio-domain block reason (audit only).
+  email_block_reason  String?          @db.VarChar(64)
+  // Canonical audit columns.
+  correlation_id      String           @db.VarChar(128)
+  reason_code         String           @db.VarChar(64)
+  rule_applied_id     String           @db.VarChar(100)
+  organization_id     String           @db.VarChar(100)
+  tenant_id           String           @db.VarChar(100)
+  created_at          DateTime         @default(now()) @db.Timestamptz
+  updated_at          DateTime         @updatedAt @db.Timestamptz
+
+  creator             Creator          @relation(fields: [creator_id], references: [id])
+  studio              Studio?          @relation(fields: [studio_id], references: [id])
+
+  @@index([affiliation_number])
+  @@index([status])
+  @@map("creator_onboardings")
+}
+
+model StudioContractDocument {
+  id                  String               @id @default(uuid())
+  studio_id           String
+  // FK to Creator (the signing party). Studio side is the studio owner.
+  creator_id          String
+  // Storage URI for the uploaded document (e.g. s3://… or assets-service ref).
+  storage_uri         String               @db.VarChar(500)
+  // SHA-256 of the document bytes — used to detect tampering at sign time.
+  document_hash       String               @db.Char(64)
+  status              StudioContractStatus @default(UPLOADED)
+  // Typed-name signature block (MVP). Prod: replace with cryptographic.
+  signed_typed_name   String?              @db.VarChar(200)
+  signed_at           DateTime?            @db.Timestamptz
+  // Canonical audit columns.
+  correlation_id      String               @db.VarChar(128)
+  reason_code         String               @db.VarChar(64)
+  rule_applied_id     String               @db.VarChar(100)
+  organization_id     String               @db.VarChar(100)
+  tenant_id           String               @db.VarChar(100)
+  created_at          DateTime             @default(now()) @db.Timestamptz
+  updated_at          DateTime             @updatedAt @db.Timestamptz
+
+  studio              Studio               @relation(fields: [studio_id], references: [id])
+
+  @@index([studio_id, status])
+  @@index([creator_id])
+  @@map("studio_contract_documents")
+}
+
+// ─── GateGuard Sentinel Pre-Processor (Business Plan B.5 + Canonical Corpus) ─
+// Every financial transaction (purchase / spend / payout) is routed through
+// GateGuard BEFORE it reaches the append-only ledger. Each evaluation yields
+// a Welfare Guardian Score (fraud + welfare + risk factors) that drives a
+// deterministic decision: APPROVE / COOLDOWN / HARD_DECLINE / HUMAN_ESCALATE.
+//
+// Both tables are append-only. The GateGuardLog is hash-chained so that any
+// tampering with a decision record is detectable downstream (Audit Chain).
+
+model WelfareGuardianScore {
+  id              String   @id @default(uuid())
+  // A single transaction receives exactly one authoritative score.
+  transaction_id  String   @unique @db.VarChar(200)
+  // Both scores are normalised integers in the 0..100 band.
+  fraud_score     Int
+  welfare_score   Int
+  // Aggregate risk: opaque JSON envelope produced by the scorer. Shape is
+  // intentionally flexible — new signals can be added without migration.
+  risk_factors    Json
+  // Final gate decision. Mirrors GateGuardDecision in the service layer.
+  decision        String   @db.VarChar(32)
+  // Correlation across microservices (ledger, NATS, UI) for a single attempt.
+  correlation_id  String   @db.VarChar(100)
+  // Rule set version used to produce this score — never mutated after write.
+  rule_applied_id String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([correlation_id])
+  @@index([decision, created_at])
+  @@map("welfare_guardian_scores")
+}
+
+model GateGuardLog {
+  id              String   @id @default(uuid())
+  transaction_id  String   @db.VarChar(200)
+  // Action being gated: "PURCHASE" | "SPEND" | "PAYOUT" | "AV_CALLBACK" ...
+  action          String   @db.VarChar(50)
+  // Snapshot of the score object at decision time.
+  score           Json
+  decision        String   @db.VarChar(32)
+  // Hash chain — hash_current = SHA256(hash_prior || canonical(payload))
+  hash_prior      String   @db.Char(64)
+  hash_current    String   @db.Char(64)
+  correlation_id  String   @db.VarChar(100)
+  rule_applied_id String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([transaction_id])
+  @@index([correlation_id])
+  @@index([action, created_at])
+  @@map("gateguard_logs")
+}
+
+// ── PAYLOAD 6: Immutable Audit Architecture ──────────────────────────────
+// Canonical Corpus v10, Chapter 7 §5 + Appendix D/H.
+// Append-only. Hash-chained. No UPDATE, no DELETE. Enforced at the service
+// layer (ImmutableAuditService) and, in production, by DB triggers.
+// Every row: hash_current = SHA-256(hash_prior || canonical(payload_hash)).
+// payload_hash itself is a SHA-256 of the redacted, canonicalised payload
+// so raw sensitive data never enters the ledger.
+
+model ImmutableAuditEvent {
+  event_id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_type      String   @db.VarChar(64)
+  // Correlation across spans of the same business flow (purchase, recovery,
+  // gateguard decision, cyrano suggestion, etc.). Unique to prevent double
+  // emission for the same business event.
+  correlation_id  String   @unique @db.VarChar(128)
+  actor_id        String   @db.VarChar(128)
+  actor_role      String   @db.VarChar(32)
+  reason_code     String   @db.VarChar(64)
+  // SHA-256 of canonical(redacted_payload). Never store raw PII or secrets.
+  payload_hash    String   @db.Char(64)
+  // Hash chain pointers — hash_prior is nullable ONLY for genesis row.
+  hash_prior      String?  @db.Char(64)
+  hash_current    String   @db.Char(64)
+  // Monotonic sequence number within the chain for O(1) prior lookup.
+  sequence_number BigInt   @unique
+  // Non-sensitive metadata (ids, codes, outcomes). Never raw payload fields.
+  metadata        Json?
+  rule_applied_id String   @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([event_type, created_at])
+  @@index([actor_id, event_type])
+  @@map("immutable_audit_events")
+}
+
+// Periodic WORM (Write-Once-Read-Many) export seals. Each row pins a
+// contiguous range of immutable_audit_events via first/last sequence numbers
+// and a hash_seal covering the ordered event IDs + timestamps. A failing
+// verify_integrity call is a P0 incident.
+model WormExportRecord {
+  export_id          String   @id @db.VarChar(128)
+  from_utc           DateTime @db.Timestamptz
+  to_utc             DateTime @db.Timestamptz
+  first_event_id     String   @db.Uuid
+  last_event_id      String   @db.Uuid
+  first_sequence     BigInt
+  last_sequence      BigInt
+  event_count        Int
+  hash_seal          String   @db.Char(64)
+  storage_uri        String?  @db.VarChar(512)
+  integrity_verified Boolean  @default(true)
+  rule_applied_id    String   @db.VarChar(100)
+  exported_at        DateTime @default(now()) @db.Timestamptz
+
+  @@index([exported_at])
+  @@map("worm_export_records")
+}
+
+// Room-level visual/haptic effect config (e.g. dual-flame pulse).
+model RoomEffectConfig {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  room_id        String   @db.VarChar(100)
+  effect_type    String   @db.VarChar(60)
+  enabled        Boolean  @default(true)
+  parameters     Json?
+  correlation_id String   @db.VarChar(100)
+  reason_code    String   @db.VarChar(100)
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @default(now()) @db.Timestamptz
+
+  @@unique([room_id, effect_type])
+  @@index([room_id])
+  @@map("room_effect_configs")
+}
+
+// Whale profile — spending intelligence, preference vectors, loyalty scoring.
+// Append-heavy: new rows on each rescore event. No update of previous rows.
+model WhaleProfile {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guest_id              String   @db.Uuid
+  // Loyalty tier derived from multi-window spend analysis.
+  loyalty_tier          String   @db.VarChar(30)
+  // Composite whale score 0..100.
+  whale_score           Decimal  @db.Decimal(5, 2)
+  // Rolling spend windows (CZT tokens).
+  spend_24h             Decimal  @default(0) @db.Decimal(14, 4)
+  spend_72h             Decimal  @default(0) @db.Decimal(14, 4)
+  spend_7d              Decimal  @default(0) @db.Decimal(14, 4)
+  spend_14d             Decimal  @default(0) @db.Decimal(14, 4)
+  spend_30d             Decimal  @default(0) @db.Decimal(14, 4)
+  // Preference vector — opaque JSON envelope; shape is intentionally flexible.
+  preference_vector     Json?
+  // Geo-pricing region tag (ISO 3166-1 alpha-2 or CNZ region code).
+  geo_region            String?  @db.VarChar(10)
+  correlation_id        String   @db.VarChar(100)
+  reason_code           String   @db.VarChar(100)
+  rule_applied_id       String   @db.VarChar(100)
+  scored_at             DateTime @default(now()) @db.Timestamptz
+  created_at            DateTime @default(now()) @db.Timestamptz
+
+  @@index([guest_id, scored_at])
+  @@index([loyalty_tier, scored_at])
+  @@map("whale_profiles")
+}
+
+// Gemstone awards — queued symbolic gifting from the platform to a guest.
+// Append-only; delivery state updated via reason_code field progression.
+model GemstoneAward {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guest_id       String    @db.Uuid
+  session_id     String?   @db.VarChar(100)
+  // Gem type (e.g. RUBY, SAPPHIRE, EMERALD, DIAMOND).
+  gem_type       String    @db.VarChar(40)
+  // Symbolic description shown to the guest (customisable).
+  symbolism      String    @db.VarChar(255)
+  // PUBLIC or PRIVATE visibility in room feed.
+  visibility     String    @db.VarChar(20)
+  // QUEUED | SENT | VIEWED | DECLINED.
+  status         String    @default("QUEUED") @db.VarChar(20)
+  // ISO timestamp of when the gem was dispatched (null until sent).
+  sent_at        DateTime? @db.Timestamptz
+  // Deliberate send delay in seconds (simulates human-like timing).
+  send_delay_sec Int       @default(0)
+  correlation_id String    @db.VarChar(100)
+  reason_code    String    @db.VarChar(100)
+  rule_applied_id String   @db.VarChar(100)
+  created_at     DateTime  @default(now()) @db.Timestamptz
+
+  @@index([guest_id, status])
+  @@index([session_id, status])
+  @@map("gemstone_awards")
+}
+
+// ── Fan Fervor Score ──────────────────────────────────────────────────────────
+// Append-only per-guest engagement score. No UPDATE, no DELETE.
+// Consumers: payout engine, UI effects, Cyrano, GateGuard Welfare Score,
+//   VelocityZone (via NATS FFS_SCORED).
+
+model FanFervorScore {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guest_id           String   @db.Uuid
+  session_id         String   @db.VarChar(100)
+  // Composite Fan Fervor Score 0–100.
+  ffs_score          Int
+  // Resolved tier: COLD | WARM | HOT | INFERNO.
+  ffs_tier           String   @db.VarChar(10)
+  // Raw base score before SenSync™/HeartSync boost.
+  base_score         Int
+  // Points added by the HeartSync biometric boost (0 if not opted in).
+  heartsync_boost    Int      @default(0)
+  // Whether the guest had active HeartSync biometric consent for this score.
+  heartsync_opted_in Boolean  @default(false)
+  correlation_id     String   @db.VarChar(100)
+  rule_applied_id    String   @db.VarChar(100)
+  scored_at          DateTime @default(now()) @db.Timestamptz
+
+  @@index([guest_id, scored_at])
+  @@index([session_id, scored_at])
+  @@index([ffs_tier, scored_at])
+  @@map("fan_fervor_scores")
+}
+
+// ── Fraud Prevention Models ───────────────────────────────────────────────────
+
+model ExtensionActionRecord {
+  actionId            String   @id @default(cuid())
+  guestId             String
+  agentId             String
+  agentTier           String
+  action              String
+  expiryExtensionDays Int?
+  goodwillCreditCZT   Int?
+  interactionRef      String
+  reason              String
+  executedAt          DateTime
+  ceoReviewFlagged    Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  user                User     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@index([guestId, executedAt])
+  @@map("extension_action_records")
+}
+
+model GuestRiskProfile {
+  guestId        String   @id
+  riskScore      Int      @default(0)
+  tier           String   @default("GREEN")
+  activeSignals  String[]
+  lastUpdated    DateTime @updatedAt
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@index([riskScore])
+  @@index([tier])
+  @@map("guest_risk_profiles")
+}
+
+model FriendlyFraudSignal {
+  id             String   @id @default(cuid())
+  guestId        String
+  score          Int
+  triggers       String[]
+  recommendation String
+  detectedAt     DateTime @default(now())
+  rawData        Json?
+
+  user           User     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@index([guestId])
+  @@index([detectedAt])
+  @@map("friendly_fraud_signals")
+}
+
+model MlModelRegistry {
+  id                    String   @id @default(cuid())
+  version               String   @unique
+  onnxModel             Bytes
+  shapAnalysis          Json?
+  fairnessReport        Json?
+  benchmarkSnapshot     Json?
+  complianceAuditId     String?
+  fintracRetentionUntil DateTime
+  trainingTrigger       String
+  createdAt             DateTime @default(now())
+
+  @@map("ml_model_registry")
+}
+
+model PipedaComplianceLog {
+  id         String   @id @default(cuid())
+  auditId    String   @unique
+  reportJson Json
+  pdfBuffer  String
+  createdAt  DateTime @default(now())
+
+  @@map("pipeda_compliance_logs")
+}
+
+model InternationalComplianceLog {
+  id          String   @id @default(cuid())
+  cycleId     String   @unique
+  masterPDF   String
+  summaryJson Json
+  createdAt   DateTime @default(now())
+
+  @@map("international_compliance_logs")
+}
+
+model FintracEvidencePackage {
+  id          String   @id @default(cuid())
+  packageId   String   @unique
+  pdfBuffer   String
+  jsonPayload Json
+  createdAt   DateTime @default(now())
+
+  @@map("fintrac_evidence_packages")
+}
+
+// ─── WO-002: HCZ ZoneBot Zoey — Scheduling System ───────────────────────────
+// Standalone scheduler service (services/zonebot-scheduler).
+// All tables are append-only for audit integrity.
+
+model HczShift {
+  id                     String    @id @default(uuid())
+  staff_member_id        String    @db.Uuid
+  schedule_period_id     String?   @db.Uuid
+  shift_date             DateTime  @db.Date
+  start_utc              DateTime  @db.Timestamptz
+  end_utc                DateTime  @db.Timestamptz
+  break_start_utc        DateTime? @db.Timestamptz
+  break_minutes          Int       @default(30)
+  is_break_locked        Boolean   @default(false)
+  locked_by_staff_id     String?   @db.Uuid
+  actual_start_utc       DateTime? @db.Timestamptz
+  actual_end_utc         DateTime? @db.Timestamptz
+  payroll_code           String    @default("REG")
+  overtime_minutes       Int       @default(0)
+  reason_code            String?
+  override_by            String?   @db.Uuid
+  override_reason        String?
+  role_segment           Json?
+  stagger_offset_minutes Int?      @default(0)
+  correlation_id         String
+  rule_applied_id        String    @default("HCZ_ZOEY_SHIFT_v1")
+  created_at             DateTime  @default(now()) @db.Timestamptz
+
+  @@index([staff_member_id, shift_date])
+  @@index([shift_date])
+  @@map("hcz_shifts")
+}
+
+model HczLeaveRequest {
+  id               String    @id @default(uuid())
+  staff_member_id  String    @db.Uuid
+  leave_type       String                      // SICK, VACATION, PERSONAL, BEREAVEMENT
+  start_date       DateTime  @db.Date
+  end_date         DateTime  @db.Date
+  hours_requested  Int
+  status           String    @default("PENDING")  // PENDING, APPROVED, DENIED
+  approved_by      String?   @db.Uuid
+  approved_at      DateTime? @db.Timestamptz
+  denial_reason    String?
+  correlation_id   String
+  reason_code      String
+  rule_applied_id  String    @default("HCZ_LEAVE_v1")
+  created_at       DateTime  @default(now()) @db.Timestamptz
+
+  @@index([staff_member_id])
+  @@map("hcz_leave_requests")
+}
+
+model HczShiftOffer {
+  id              String    @id @default(uuid())
+  shift_id        String    @db.Uuid
+  offered_by      String    @db.Uuid
+  status          String    @default("OPEN")   // OPEN, CLAIMED, EXPIRED, CANCELLED
+  claimed_by      String?   @db.Uuid
+  claimed_at      DateTime? @db.Timestamptz
+  expires_at      DateTime? @db.Timestamptz
+  correlation_id  String
+  reason_code     String
+  rule_applied_id String    @default("HCZ_SHIFT_OFFER_v1")
+  created_at      DateTime  @default(now()) @db.Timestamptz
+
+  @@map("hcz_shift_offers")
+}
+
+model HczShiftSwap {
+  id                  String    @id @default(uuid())
+  initiator_id        String    @db.Uuid
+  initiator_shift_id  String    @db.Uuid
+  recipient_id        String    @db.Uuid
+  recipient_shift_id  String    @db.Uuid
+  status              String    @default("PENDING")  // PENDING, APPROVED, REJECTED, CANCELLED
+  approved_by         String?   @db.Uuid
+  approved_at         DateTime? @db.Timestamptz
+  rejection_reason    String?
+  correlation_id      String
+  reason_code         String
+  rule_applied_id     String    @default("HCZ_SHIFT_SWAP_v1")
+  created_at          DateTime  @default(now()) @db.Timestamptz
+
+  @@map("hcz_shift_swaps")
+}
+
+model HczWellbeingResponse {
+  id                   String   @id @default(uuid())
+  staff_member_id      String   @db.Uuid
+  response_date        DateTime @db.Date
+  energy_score         Int                        // 1-10
+  stress_score         Int                        // 1-10
+  satisfaction_score   Int                        // 1-10
+  notes                String?
+  is_anonymous         Boolean  @default(false)
+  correlation_id       String
+  reason_code          String
+  rule_applied_id      String   @default("HCZ_WELLBEING_v1")
+  created_at           DateTime @default(now()) @db.Timestamptz
+
+  @@index([staff_member_id, response_date])
+  @@map("hcz_wellbeing_responses")
+}
+
+model HczFatigueScore {
+  id                    String   @id @default(uuid())
+  staff_member_id       String   @db.Uuid
+  score_date            DateTime @db.Date
+  score                 Int                        // 0-100; higher = more fatigued
+  consecutive_days      Int      @default(0)
+  hours_past_7_days     Int      @default(0)
+  recent_overtime_hours Int      @default(0)
+  flags                 Json?
+  correlation_id        String
+  reason_code           String
+  rule_applied_id       String   @default("HCZ_FATIGUE_v1")
+  created_at            DateTime @default(now()) @db.Timestamptz
+
+  @@unique([staff_member_id, score_date])
+  @@map("hcz_fatigue_scores")
+}
+
+// Append-only: no UPDATE or DELETE permitted (cash incentive disbursements)
+model HczIncentiveLedger {
+  id                  String   @id @default(uuid())
+  staff_member_id     String   @db.Uuid
+  incentive_type      String                      // SPIN_WIN, COVERAGE_BONUS, REFERRAL, OTHER
+  amount_cad_cents    Int                         // Always in cents (e.g. 5000 = $50.00)
+  reference_shift_id  String?  @db.Uuid
+  awarded_at          DateTime @default(now()) @db.Timestamptz
+  payroll_period      String?
+  correlation_id      String
+  reason_code         String
+  rule_applied_id     String   @default("HCZ_INCENTIVE_v1")
+  created_at          DateTime @default(now()) @db.Timestamptz
+
+  @@index([staff_member_id])
+  @@map("hcz_incentive_ledger")
+}
+
+model HczDemandHistory {
+  id                   String   @id @default(uuid())
+  week_start           DateTime @db.Date
+  department           String
+  day_of_week          Int                        // 0=Mon, 6=Sun
+  hour_of_day          Int                        // 0-23
+  volume_index         Decimal  @db.Decimal(6, 3) // normalized 0.000-1.000
+  actual_staff_count   Int      @default(0)
+  source               String   @default("ACTUAL")  // ACTUAL, FORECAST
+  correlation_id       String
+  reason_code          String
+  rule_applied_id      String   @default("HCZ_DEMAND_v1")
+  created_at           DateTime @default(now()) @db.Timestamptz
+
+  @@unique([week_start, department, day_of_week, hour_of_day])
+  @@map("hcz_demand_history")
+}
+
+model HczBudgetForecast {
+  id                           String    @id @default(uuid())
+  week_start                   DateTime  @db.Date
+  department                   String
+  projected_labour_cad_cents   BigInt    @default(0)
+  actual_labour_cad_cents      BigInt?
+  projected_ft_hours           Int       @default(0)
+  projected_pt_hours           Int       @default(0)
+  projected_ot_hours           Int       @default(0)
+  headcount_ft                 Int       @default(0)
+  headcount_pt                 Int       @default(0)
+  status                       String    @default("DRAFT")  // DRAFT, APPROVED, ACTUAL
+  correlation_id               String
+  reason_code                  String
+  rule_applied_id              String    @default("HCZ_BUDGET_v1")
+  created_at                   DateTime  @default(now()) @db.Timestamptz
+
+  @@unique([week_start, department])
+  @@map("hcz_budget_forecasts")
+}
+
+// ─── Flicker n'Flame Scoring (FFS) ──────────────────────────────────────────
+// Replaces Room-Heat Engine (services/room-heat/ → services/ffs/).
+// Rule authority: FFS_ENGINE_v1
+
+/// Time-series FFS score snapshots — one row per ingest() call.
+/// Append-only by convention (no UPDATE/DELETE in service code).
+model FfsSnapshot {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id      String   @db.VarChar(200)
+  creator_id      String   @db.Uuid
+  ffs_score       Decimal  @db.Decimal(5, 2)
+  ffs_tier        String   @db.VarChar(20)
+  /// JSON object of FfsScoreComponents (all 13 component values).
+  components      Json
+  correlation_id  String   @db.VarChar(128)
+  reason_code     String   @db.VarChar(100)
+  is_dual_flame   Boolean  @default(false)
+  rule_applied_id String   @default("FFS_ENGINE_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([session_id, created_at])
+  @@index([creator_id, created_at])
+  @@map("ffs_snapshots")
+}
+
+/// Per-creator adaptive weight multipliers, learned from tip events.
+/// One row per creator — updated in-place via increment-only tip_events_seen.
+model FfsAdaptiveWeights {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id      String   @unique @db.Uuid
+  /// JSON Record<string, number> — multipliers for each FFS component.
+  weights         Json
+  /// Monotonic counter of tip events that have driven weight updates.
+  tip_events_seen Int      @default(0)
+  last_updated_at DateTime @default(now()) @db.Timestamptz
+  correlation_id  String   @db.VarChar(128)
+  reason_code     String   @default("FFS_ADAPTIVE_INIT") @db.VarChar(100)
+  rule_applied_id String   @default("FFS_ENGINE_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@map("ffs_adaptive_weights")
+}
+
+// ── SenSync™ Biometric Layer (HZ — SenSync consent store) ────────────────────
+// Law 25 / GDPR / PIPEDA compliant. consent_granted_at is immutable once
+// recorded. Revocation is tracked by setting consent_revoked_at on the
+// existing consent row; the service does not create a separate revocation row.
+// The correlation_id column is overwritten with the revocation action's ID
+// for a complete audit trail.
+// Automatic purge on deletion request fires SENSYNC_PURGE_REQUESTED on NATS.
+// Rule authority: SENSYNC_v1
+
+/// Per-tier on/off toggle for SenSync™ biometric relay.
+/// Managed by platform operators. Non-FIZ; no financial impact.
+model SenSyncTierConfig {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// Membership tier this row governs.
+  tier           String   @db.VarChar(40)
+  /// Whether SenSync™ relay is enabled for this tier.
+  enabled        Boolean  @default(false)
+  /// Whether COMBINED ("feel as one") mode is permitted for this tier.
+  combined_mode  Boolean  @default(false)
+  correlation_id String   @db.VarChar(100)
+  reason_code    String   @db.VarChar(100)
+  updated_by     String   @db.Uuid
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @default(now()) @db.Timestamptz
+
+  @@unique([tier])
+  @@index([tier, enabled])
+  @@map("sensync_tier_configs")
+}
+
+model SenSyncConsent {
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id              String    @db.Uuid
+  creator_id              String    @db.Uuid
+  guest_id                String    @db.Uuid
+  consent_version         String    @db.VarChar(20)          // e.g. "SENSYNC_CONSENT_v1"
+  basis                   String    @db.VarChar(50)          // EXPLICIT_OPT_IN | REVOKED
+  consent_granted_at      DateTime  @db.Timestamptz
+  consent_revoked_at      DateTime? @db.Timestamptz          // null until revoked
+  /// Phase 5.3 — granular consent scopes (JSON string array).
+  /// Default: ['BPM_TO_FFS','BPM_TO_HAPTIC','BPM_TO_CYRANO','BPM_TO_PARTNER']
+  /// Single scopes can be revoked without revoking the entire consent row.
+  consent_scopes          Json      @default("[\"BPM_TO_FFS\",\"BPM_TO_HAPTIC\",\"BPM_TO_CYRANO\",\"BPM_TO_PARTNER\"]")
+  /// Phase 5.3 — ephemerality TTL. NULL means no auto-expiry.
+  /// Default lifetime is 24h from grant; the rate-limit / submit gate refuses
+  /// samples once the row has expired and the purge worker tombstones the row.
+  consent_expires_at      DateTime? @db.Timestamptz
+  ip_hash                 String?   @db.Char(64)             // SHA-256 of guest IP — never raw
+  device_fingerprint      String?   @db.VarChar(255)
+  domain                  String    @default("ADULT_ENTERTAINMENT") @db.VarChar(50)
+  correlation_id          String    @db.VarChar(200)
+  reason_code             String    @db.VarChar(100)
+  rule_applied_id         String    @default("SENSYNC_v1") @db.VarChar(100)
+  purge_requested_at      DateTime? @db.Timestamptz          // Law 25 deletion request
+  purge_completed_at      DateTime? @db.Timestamptz
+  created_at              DateTime  @default(now()) @db.Timestamptz
+
+  @@index([session_id])
+  @@index([creator_id, guest_id])
+  @@index([guest_id, consent_revoked_at])
+  @@index([consent_expires_at])
+  @@map("sensync_consents")
+}
+
+// ── Cyrano™ Persistent Session Memory ────────────────────────────────────────
+// Restart-safe memory store backing the in-memory SessionMemoryStore.
+// Rows are scaffolded for future persistence; upserted on fact/arc writes.
+// Soft-delete on guest purge.
+
+model CyranoSessionMemory {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id        String    @db.Uuid
+  guest_id          String    @db.Uuid
+  memory_type       String    @db.VarChar(10)        // FACT | ARC
+  memory_key        String    @db.VarChar(200)       // fact.key or arc_id
+  memory_value      Json                             // MemoryFact | SessionArc payload
+  confidence        Decimal?  @db.Decimal(4, 3)      // 0.000–1.000 (facts only)
+  last_touched_at   DateTime  @db.Timestamptz
+  is_purged         Boolean   @default(false)
+  correlation_id    String    @db.VarChar(200)
+  reason_code       String    @db.VarChar(100)
+  rule_applied_id   String    @default("CYRANO_MEMORY_v1") @db.VarChar(100)
+  created_at        DateTime  @default(now()) @db.Timestamptz
+  updated_at        DateTime  @updatedAt @db.Timestamptz
+
+  @@unique([creator_id, guest_id, memory_type, memory_key])
+  @@index([creator_id, guest_id])
+  @@map("cyrano_session_memory")
+}
+
+// ─── VelocityZone — Creator Payout Rate Engine ───────────────────────────────
+// Business Plan §3 — time-window payout rate events keyed to FFS score.
+// Rule authority: VELOCITYZONE_v1
+
+/// Per-creator payout rate tier audit trail.
+/// FIZ-scoped: any mutation requires REASON/IMPACT/CORRELATION_ID in commit.
+model CreatorRateTier {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tier_id          String   @unique @db.Uuid
+  creator_id       String   @db.Uuid
+  /// Tier name: 'FOUNDING' | 'STANDARD' | 'POST_DAY_61'
+  tier_name        String   @db.VarChar(30)
+  /// Minimum payout rate (USD per CZT).
+  rate_floor_usd   Decimal  @db.Decimal(8, 6)
+  /// Maximum payout rate (USD per CZT).
+  rate_ceiling_usd Decimal  @db.Decimal(8, 6)
+  effective_from   DateTime @db.Timestamptz
+  effective_to     DateTime? @db.Timestamptz
+  correlation_id   String   @db.VarChar(128)
+  reason_code      String   @db.VarChar(100)
+  rule_applied_id  String   @default("VELOCITYZONE_v1") @db.VarChar(100)
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@index([creator_id, effective_from])
+  @@index([tier_name])
+  @@map("creator_rate_tiers")
+}
+
+/// Admin-defined time-window VelocityZone event.
+/// Maps FFS score (0–100) to exact payout rate (floor → ceiling) during the window.
+model VelocityZoneEvent {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_id         String   @unique @db.Uuid
+  name             String   @db.VarChar(100)
+  starts_at        DateTime @db.Timestamptz
+  ends_at          DateTime @db.Timestamptz
+  rate_floor_usd   Decimal  @db.Decimal(8, 6)
+  rate_ceiling_usd Decimal  @db.Decimal(8, 6)
+  /// Empty = applies to all creators; non-empty = restricted to listed creator_ids.
+  creator_ids      String[]
+  /// 'SCHEDULED' | 'ACTIVE' | 'ENDED' | 'CANCELLED'
+  status           String   @default("SCHEDULED") @db.VarChar(20)
+  created_by       String   @db.Uuid
+  correlation_id   String   @db.VarChar(128)
+  reason_code      String   @db.VarChar(100)
+  rule_applied_id  String   @default("VELOCITYZONE_v1") @db.VarChar(100)
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@index([status, starts_at, ends_at])
+  @@map("velocityzone_events")
+}
+
+// ── Gamification (Phase G1) ─────────────────────────────────────────────────
+// Append-only storage for creator prize pools, per-game config, cooldown logs,
+// and RRR-burn payments. Edits produce a new row with a bumped `version`.
+
+model PrizePool {
+  pool_id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id        String   @db.Uuid
+  name              String   @db.VarChar(120)
+  /// Null = shared (applies to all games). Otherwise SPIN_WHEEL | SLOT_MACHINE | DICE.
+  scoped_game_type  String?  @db.VarChar(20)
+  version           String   @db.VarChar(50)
+  rule_applied_id   String   @default("PRIZE_POOL_v1") @db.VarChar(100)
+  is_active         Boolean  @default(true)
+  created_at        DateTime @default(now()) @db.Timestamptz
+
+  @@index([creator_id, is_active, scoped_game_type])
+  @@map("prize_pools")
+}
+
+model PrizePoolEntry {
+  entry_id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pool_id         String   @db.Uuid
+  prize_slot      String   @db.VarChar(40)
+  name            String   @db.VarChar(120)
+  description     String
+  /// COMMON | RARE | EPIC | LEGENDARY
+  rarity          String   @db.VarChar(20)
+  base_weight     Decimal  @db.Decimal(10, 4)
+  asset_url       String?  @db.VarChar(500)
+  is_active       Boolean  @default(true)
+  rule_applied_id String   @default("PRIZE_POOL_v1") @db.VarChar(100)
+  created_at      DateTime @default(now()) @db.Timestamptz
+
+  @@index([pool_id, is_active])
+  @@map("prize_pool_entries")
+}
+
+model CreatorGameConfig {
+  config_id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator_id                 String   @db.Uuid
+  game_type                  String   @db.VarChar(20)
+  /// Comma-separated positive integers, 1–3 entries (e.g. "25,40,55").
+  token_tiers_csv            String   @db.VarChar(60)
+  prize_pool_id              String   @db.Uuid
+  cooldown_seconds_override  Int?
+  enabled                    Boolean  @default(true)
+  accepts_rrr_burn           Boolean  @default(false)
+  version                    String   @db.VarChar(50)
+  rule_applied_id            String   @default("CREATOR_GAME_CONFIG_v1") @db.VarChar(100)
+  created_at                 DateTime @default(now()) @db.Timestamptz
+
+  @@index([creator_id, game_type, enabled])
+  @@map("creator_game_configs")
+}
+
+model GameCooldownLog {
+  log_id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String   @db.Uuid
+  creator_id       String   @db.Uuid
+  game_type        String   @db.VarChar(20)
+  played_at_utc    DateTime @db.Timestamptz
+  next_play_at_utc DateTime @db.Timestamptz
+  rule_applied_id  String   @default("GAMIFICATION_COOLDOWN_v1") @db.VarChar(100)
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, creator_id, game_type, next_play_at_utc])
+  @@map("game_cooldown_logs")
+}
+
+model RedRoomRewardsBurn {
+  burn_id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                String   @db.Uuid
+  creator_id             String   @db.Uuid
+  game_type              String   @db.VarChar(20)
+  rrr_points_burned      Int
+  czt_tokens_equivalent  Int
+  correlation_id         String   @unique @db.VarChar(200)
+  reason_code            String   @default("GAME_PLAY") @db.VarChar(40)
+  rule_applied_id        String   @default("RRR_BURN_v1") @db.VarChar(100)
+  burned_at_utc          DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, burned_at_utc])
+  @@map("redroom_rewards_burns")
+}

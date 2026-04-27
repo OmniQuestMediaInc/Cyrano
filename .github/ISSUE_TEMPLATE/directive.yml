@@ -1,0 +1,47 @@
+# GOV-CONST-001 Commit 2 of 2 — Directive Issue Template
+# Used by directive-intake.yml and manual issue creation. Apply the
+# 'copilot-task' label so Copilot picks it up via the active-mission pipeline.
+name: Directive
+description: File a directive for Copilot / Claude to execute.
+title: "DIRECTIVE: <ID> — <short description>"
+labels:
+  - copilot-task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to file a new directive for automated agent intake.
+        The directive body should follow the format used in
+        `PROGRAM_CONTROL/DIRECTIVES/QUEUE/*.md`.
+  - type: input
+    id: agent
+    attributes:
+      label: Agent
+      description: "COPILOT or CLAUDE_CODE"
+    validations:
+      required: true
+
+  - type: input
+    id: parallel_safe
+    attributes:
+      label: Parallel-safe
+      description: "YES or NO"
+    validations:
+      required: true
+
+  - type: textarea
+    id: touches
+    attributes:
+      label: Touches (file paths)
+      description: "Primary files this directive creates or modifies"
+    validations:
+      required: true
+
+  - type: textarea
+    id: directive
+    attributes:
+      label: Directive content
+      description: Paste the full directive (objective, scope, commit format, report-back requirements).
+      render: markdown
+    validations:
+      required: true

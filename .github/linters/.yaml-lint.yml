@@ -1,0 +1,38 @@
+---
+# yamllint config consumed by Super-Linter (LINTER_RULES_PATH=.github/linters)
+# Goal: permit GitHub Actions YAML idioms without sacrificing real hygiene.
+
+extends: default
+
+rules:
+  # GitHub Actions' top-level `on:` collides with yamllint's truthy rule.
+  truthy:
+    allowed-values: ["true", "false"]
+    check-keys: false
+
+  # Workflow files routinely exceed 80 chars (expressions, URLs, run: scripts).
+  line-length:
+    max: 200
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # Don't require `---` at top of every YAML file.
+  document-start: disable
+
+  # Comments with `#` immediately followed by text are widespread in Actions YAML.
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 1
+
+  comments-indentation: disable
+
+  # Block sequences inside mappings: allow either indented or flush.
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    check-multi-line-strings: false
+
+  # Trailing blank newline is enforced by .editorconfig already.
+  new-line-at-end-of-file: enable
+  trailing-spaces: enable

@@ -1,0 +1,26 @@
+{
+  "name": "cyrano-standalone",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cyrano Layer 2 standalone Next.js app — VIP/Diamond persistent-worlds whisper console",
+  "scripts": {
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "typecheck": "tsc --noEmit --project tsconfig.json"
+  },
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20 <23"
+  }
+}

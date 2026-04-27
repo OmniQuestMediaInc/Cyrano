@@ -1,0 +1,19 @@
+name: Block refs/* merges to main
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  block-refs-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block if source branch is refs/*
+        run: |
+          if [[ "${{ github.head_ref }}" == refs/* ]]; then
+            echo "ERROR: refs/* branches must never merge to main."
+            echo "Branch: ${{ github.head_ref }}"
+            echo "These are permanent read-only reference libraries."
+            echo "See .github/refs-branch-policy.md"
+            exit 1
+          fi

@@ -1,0 +1,438 @@
+Task follows as a single copyable block per §11:
+TASK: Thread 12 → Thread 13 cleanup — handoff commit, QUEUE decontamination, stale report-back purge
+
+AUTHORITY: Kevin B. Hartley, CEO — OmniQuest Media Inc.
+DATE: 2026-04-17
+COMMIT PREFIX: CHORE
+
+CONTEXT:
+Thread 12 closed with three outstanding housekeeping items and one
+subsequent discovery from Thread 13 opening verification. The
+docs/MEMBERSHIP_LIFECYCLE_POLICY.md v1.0 commit landed on main and
+is now authoritative (per §10 of that document). This task finishes
+the Thread 12 cleanup so Thread 13 can open with a known-clean
+pipeline against the policy doc as source of truth.
+
+Four operations in this single CHORE commit:
+
+1. CREATE the Thread 12 handoff document at its canonical repo path
+   (this directory does not currently exist on main; create it)
+
+2. DELETE THREAD11-COPILOT-INTAKE.md from QUEUE
+   (contaminated with retired tier names DAY_PASS / ANNUAL /
+   OMNIPASS_PLUS / standalone DIAMOND; superseded by
+   MEMBERSHIP_LIFECYCLE_POLICY.md §1.1)
+
+3. DELETE THREAD11-DIRECTIVE-SERIES-001.md from QUEUE
+   (duplicate of above, same contamination)
+
+4. DELETE three stale report-back files that predate the policy doc:
+   - GOV-CONST-001-PATCH-REPORT-BACK.md
+   - MEMB-001-REPORT-BACK.md
+   - MEMB-002-REPORT-BACK.md
+   (MEMB-001 and MEMB-002 describe work against a MembershipTier enum
+   that was fully removed from the Prisma schema by PRs #254 and #255;
+   their presence creates naming collision risk when MEMB-001 is
+   re-authored against MEMBERSHIP_LIFECYCLE_POLICY.md §§1–5.
+   GOV-CONST-001-PATCH-REPORT-BACK.md is deleted per CEO directive to
+   keep the cleanup scope uniform; the underlying work — ANNUAL_DISCOUNT_PCT
+   null placeholders in FAN_CLUB and CREATOR_SAAS blocks of
+   governance.config.ts — remains in place and is not affected by
+   this deletion.)
+
+SCOPE — execute in order:
+
+1. CREATE the file:
+   PROGRAM_CONTROL/HANDOFFS/THREAD-12-HANDOFF.md
+
+   Contents are specified verbatim in the FILE CONTENTS block below.
+   Copy the content exactly — do not edit, reformat, re-wrap, or
+   "improve" anything. Preserve all markdown formatting, table
+   syntax, emphasis, and section numbering as-is.
+
+2. DELETE these files from main:
+   - PROGRAM_CONTROL/DIRECTIVES/QUEUE/THREAD11-COPILOT-INTAKE.md
+   - PROGRAM_CONTROL/DIRECTIVES/QUEUE/THREAD11-DIRECTIVE-SERIES-001.md
+   - PROGRAM_CONTROL/REPORT_BACK/GOV-CONST-001-PATCH-REPORT-BACK.md
+   - PROGRAM_CONTROL/REPORT_BACK/MEMB-001-REPORT-BACK.md
+   - PROGRAM_CONTROL/REPORT_BACK/MEMB-002-REPORT-BACK.md
+
+3. COMMIT message:
+   CHORE: Close Thread 12 — commit handoff, decontaminate QUEUE, purge stale report-backs
+
+   Longer body (multi-line commit):
+     File Thread 12 handoff at canonical repo path per
+     MEMBERSHIP_LIFECYCLE_POLICY.md §11 working agreement (handoffs
+     live in repo, not Google Drive).
+
+     Remove two contaminated Thread 11 directive files from QUEUE.
+     Both embed retired tier values (DAY_PASS, ANNUAL as tier,
+     OMNIPASS_PLUS as tier, standalone DIAMOND) that are prohibited
+     per MEMBERSHIP_LIFECYCLE_POLICY.md §1.1. Canonical 6-value
+     MembershipTier enum is: GUEST, VIP, VIP_SILVER, VIP_GOLD,
+     VIP_PLATINUM, VIP_DIAMOND.
+
+     Purge three stale report-back files that predate the canonical
+     policy doc. MEMB-001-REPORT-BACK.md and MEMB-002-REPORT-BACK.md
+     describe work against a MembershipTier enum fully removed from
+     the Prisma schema by PRs #254 and #255 — their canonical names
+     would collide with fresh MEMB-00X directives authored against
+     the committed policy doc. GOV-CONST-001-PATCH-REPORT-BACK.md is
+     purged per CEO directive for scope uniformity; the underlying
+     ANNUAL_DISCOUNT_PCT null-placeholder work in governance.config.ts
+     remains in place and is unaffected by this deletion.
+
+4. DO NOT modify any source files, governance configuration, Prisma
+   schema, NATS registry, or service code in this commit. No
+   REQUIREMENTS_MASTER.md or DOMAIN_GLOSSARY.md edits. No policy
+   doc edits. Scope is strictly: (a) new handoff file, (b) QUEUE
+   deletions, (c) REPORT_BACK deletions.
+
+5. REPORT-BACK after commit at:
+   PROGRAM_CONTROL/REPORT_BACK/THREAD-12-CLEANUP-REPORT-BACK.md
+
+   Contents must confirm:
+   - Handoff file created at PROGRAM_CONTROL/HANDOFFS/THREAD-12-HANDOFF.md
+     with byte count and line count
+   - Five files deleted, listed with their pre-deletion SHAs for audit
+   - No other files modified in the commit
+   - Merge commit SHA on main (or PR number + merge SHA if branch
+     protection required PR path — confirm which path was used)
+   - Confirmation that PROGRAM_CONTROL/HANDOFFS/ directory now exists
+     on main with the handoff file as its first non-.gitkeep entry
+
+CONSTRAINTS:
+- One response, one code block when reporting back (standing rule)
+- Never fabricate command output
+- Ask zero confirmation questions
+- No backdoors, master passwords, or money/settlement behavior changes
+- File must be committed on main branch (or PR to main if branch
+  protection requires it — confirm in report-back which path was used)
+- Deletions are permanent via commit; history is preserved in git log
+
+====================================================================
+FILE CONTENTS — PROGRAM_CONTROL/HANDOFFS/THREAD-12-HANDOFF.md
+====================================================================
+
+# THREAD 12 → THREAD 13 HANDOFF — ChatNow.Zone
+
+**Date:** 2026-04-17
+**Authority:** Kevin B. Hartley, CEO — OmniQuest Media Inc.
+**Repo:** OmniQuestMediaInc/ChatNowZone--BUILD
+**Repo commit path for this handoff:** `PROGRAM_CONTROL/HANDOFFS/THREAD-12-HANDOFF.md`
+**Hard launch deadline:** 1 October 2026
+
+---
+
+## 0. PASTE AT NEW THREAD START — GITHUB API WHITELIST
+
+Paste these two URLs in your first message to the new thread so Claude Chat can read repo state:
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/commits?per_page=10
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/contents/PROGRAM_CONTROL/DIRECTIVES/QUEUE
+
+Also paste these two to give Claude Chat read access to the new canonical policy doc and the handoff folder:
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/contents/docs/MEMBERSHIP_LIFECYCLE_POLICY.md
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/contents/PROGRAM_CONTROL/HANDOFFS
+
+---
+
+## 1. CANONICAL AUTHORITY — READ THIS FIRST
+
+**`docs/MEMBERSHIP_LIFECYCLE_POLICY.md` v1.0** was adopted in Thread 12 and is the **source of truth** for all tier, membership, age-verification, card-on-file, token-lifecycle, and product-domain semantics. It supersedes conflicting content in `REQUIREMENTS_MASTER.md`, `DOMAIN_GLOSSARY.md`, governance configuration, and any prior handoff doc. On conflict, the policy doc wins; diverging code is the bug.
+
+**Section 11 of the policy doc is the binding working agreement** for how Claude Chat operates across threads. Key points:
+
+- Thread handoffs live in the repo at `PROGRAM_CONTROL/HANDOFFS/THREAD-NN-HANDOFF.md`, **not** in Google Drive
+- Policy docs and agent directives are always delivered to the CEO as **single copyable code blocks** with no prose interleaved inside the block
+- Claude Chat does not extrapolate policy beyond what the CEO has explicitly stated — asks rather than guesses, flags uncertainty explicitly
+
+### Canonical `MembershipTier` enum (locked, 6 values)
+
+`GUEST, VIP, VIP_SILVER, VIP_GOLD, VIP_PLATINUM, VIP_DIAMOND`
+
+### Retired — must not appear as `MembershipTier` anywhere
+
+`DAY_PASS`, `ANNUAL` (as tier), `OMNIPASS_PLUS` (is a product, not a tier), standalone `DIAMOND`
+
+### OmniPass / OmniPass+ are PRODUCTS, not tiers
+
+They live in a separate domain (working name: `Pass` / `Entitlement` / `ProductPurchase`) and are handled by a future PASS-001 directive. Not in MembershipTier.
+
+### Banned entity ([REDACTED] — governance §12)
+
+Not a partner and may never be. Do not reference, suggest, or include this individual or firm in any regulatory, advisory, or engagement context. Original name redacted per OQMI_GOVERNANCE.md §12 repo invariant.
+
+---
+
+## 2. ROLE — SENIOR CODING DEVELOPMENT & ARCHITECTURE COORDINATOR
+
+Claude Chat operates as architect, sequencer, directive author, and verifier. Does not write code directly to repo. Kevin is the human bridge. Copilot and Claude Code execute directives autonomously via the PROGRAM_CONTROL pipeline.
+
+**Agent routing:**
+
+- **COPILOT** — CHORE, housekeeping, schema cleanup, policy-doc commits, non-FIZ tasks
+- **CLAUDE_CODE (DROID MODE)** — FIZ-scoped, schema, complex architecture
+- **Claude Chat** — directive authoring, verification, sequencing, handoffs
+
+**Pipeline flow:** Directive filed to `PROGRAM_CONTROL/DIRECTIVES/QUEUE/` in repo → Agent reads, executes, files report-back to `PROGRAM_CONTROL/REPORT_BACK/` → Merges PR → moves directive to DONE → Claude Chat verifies via GitHub API and authors next directive.
+
+---
+
+## 3. WHAT WAS ACCOMPLISHED IN THREAD 12
+
+### Policy work (new — most important output of this thread)
+
+- Authored and adopted `docs/MEMBERSHIP_LIFECYCLE_POLICY.md` v1.0 — full membership lifecycle policy, CEO-signed
+- Locked 6-tier `MembershipTier` enum: `GUEST, VIP, VIP_SILVER, VIP_GOLD, VIP_PLATINUM, VIP_DIAMOND`
+- Locked Guest lifecycle: expires every 31 days (30+1), lock at 31, purge at day 366 post-lock, recovery by age re-verification or upgrade
+- Locked VIP lifecycle: does NOT expire; age re-verification every 30 days cadence; suspension on re-verification failure
+- Locked paid-tier lifecycle: 90+1 day blocks; drops to VIP on lapse if card + age-verify current; re-verify on each new paid purchase
+- Locked card-on-file requirements (6 fields); card-incomplete triggers frozen account state (tier unchanged)
+- Locked Guest purchase flow: ephemeral card entry, 3-confirmation sequence (purchase + age + no-refunds), 6-digit-plus-1-letter code via SMS/email
+- Locked token lifecycle: dripped tokens 45+1d life burn first; purchased tokens 365+1d life; tokens survive membership state changes; only own clock forfeits
+- Locked Upgrade Escalator mechanic: 2,500/5,000 top-up resets balance to 365+1d and waives fees; extension-fee path = +45d only, no reset
+- Locked separation of product domain (OmniPass/OmniPass+) from tier domain
+- Locked SilverBullet as a `product_variant` of VIP_SILVER (not a separate tier, not a product)
+- Issued Copilot change order to commit the policy doc to the repo
+
+### Memory updates
+
+- Memory #10 rewritten to canonical 6-tier enum + supporting rules
+- Memory #11 added: banned entity ([REDACTED] per §12) not a partner
+- Memory #12 added: OmniPass/OmniPass+ are products, not tiers
+- Memory #13 added: tier expiry rules (Guest 31d, VIP never, paid 90+1d, verification cadences)
+
+### Directive status at end of Thread 12
+
+| Directive | Status | Notes |
+|---|---|---|
+| CONCIERGE-CONFIG-001 | ✅ DONE (PR #244) — from Thread 11 | DFSP_CONCIERGE block + NATS topic |
+| TOK-006-FOLLOWUP | ✅ DONE (PR #246) — from Thread 11 | token_origin wired into LedgerService |
+| GOV-CONST-001-PATCH | ✅ Satisfied per Copilot (PR #253 note) | Report-back still not formally filed |
+| MembershipTier enum removal | ✅ Merged (PRs #254, #255) | Enum fully removed from schema; MEMB-001 will reintroduce with canonical values |
+| Duplicate enum/model cleanup | ✅ Merged (PR #252) | |
+| **`MEMBERSHIP_LIFECYCLE_POLICY.md` v1.0** | **⏳ PENDING COPILOT EXECUTION** | Change order issued at end of Thread 12 — awaiting Copilot commit + report-back |
+| THREAD11-COPILOT-INTAKE.md (in QUEUE) | ⚠️ CONTAMINATED — DO NOT EXECUTE | Embeds retired tier names (DAY_PASS/ANNUAL/OMNIPASS_PLUS/DIAMOND); must be removed from QUEUE, not executed |
+| THREAD11-DIRECTIVE-SERIES-001.md (in QUEUE) | ⚠️ DUPLICATE — remove | Duplicate of above |
+
+---
+
+## 4. CURRENT PIPELINE STATE (verified via GitHub API at Thread 12 close)
+
+### QUEUE folder contents
+PROGRAM_CONTROL/DIRECTIVES/QUEUE/
+├── .gitkeep
+├── THREAD11-COPILOT-INTAKE.md       ⚠️ CONTAMINATED — must be removed
+└── THREAD11-DIRECTIVE-SERIES-001.md ⚠️ DUPLICATE — must be removed
+
+### Last commits before handoff
+
+- `06b6ce3` CHORE: update REPO_MANIFEST [skip ci]
+- `996dba0` Merge PR #255 — Remove MembershipTier enum and all its usage
+- `2d81e8c` Merge PR #254 — Remove MembershipTier enum and update field types
+- `7e31804` CHORE: Add THREAD11-COPILOT-INTAKE.md directive to QUEUE (#253)
+- `d58704b` Merge PR #252 — Remove duplicate enum/model definitions
+
+### State at Thread 13 open will depend on Copilot's execution of the two outstanding change orders
+
+---
+
+## 5. FIRST ACTIONS FOR THREAD 13
+
+### Action 1 — Verify policy doc commit
+
+Check that Copilot has executed the change order issued at end of Thread 12 and committed `docs/MEMBERSHIP_LIFECYCLE_POLICY.md` v1.0. Verification paths:
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/contents/docs/MEMBERSHIP_LIFECYCLE_POLICY.md
+https://api.github.com/repos/OmniQuestMediaInc/ChatNowZone--BUILD/contents/PROGRAM_CONTROL/REPORT_BACK
+
+If the file exists on main and `MEMBERSHIP_LIFECYCLE_POLICY-v1.0-REPORT-BACK.md` is filed: proceed to Action 2.
+
+If not: resurface the change order from Thread 12 and re-issue to Copilot.
+
+### Action 2 — Remove contaminated QUEUE files + file GOV-CONST-001-PATCH report-back
+
+Paste this to Copilot (single copyable block per Section 11 working agreement):
+TASK: QUEUE cleanup + formalize GOV-CONST-001-PATCH closure
+AUTHORITY: Kevin B. Hartley, CEO — OmniQuest Media Inc.
+COMMIT PREFIX: CHORE
+SCOPE — execute in order:
+
+DELETE from PROGRAM_CONTROL/DIRECTIVES/QUEUE/:
+
+THREAD11-COPILOT-INTAKE.md  (contaminated with retired tier names
+DAY_PASS/ANNUAL/OMNIPASS_PLUS/DIAMOND — superseded by canonical
+MEMBERSHIP_LIFECYCLE_POLICY.md v1.0)
+THREAD11-DIRECTIVE-SERIES-001.md  (duplicate)
+
+Commit message:
+CHORE: Remove contaminated Thread 11 directive files from QUEUE
+Commit body:
+Superseded by docs/MEMBERSHIP_LIFECYCLE_POLICY.md v1.0 which
+establishes canonical 6-value MembershipTier enum: GUEST, VIP,
+VIP_SILVER, VIP_GOLD, VIP_PLATINUM, VIP_DIAMOND. Retired values
+DAY_PASS, ANNUAL (as tier), OMNIPASS_PLUS (is a product, not a
+tier), and standalone DIAMOND must not appear in any directive
+or implementation.
+FILE report-back at:
+PROGRAM_CONTROL/REPORT_BACK/GOV-CONST-001-PATCH-REPORT-BACK.md
+Contents must confirm:
+
+Directive 1 (GOV-CONST-001-PATCH) is satisfied
+ANNUAL_DISCOUNT_PCT null placeholders already present in FAN_CLUB
+and CREATOR_SAAS blocks of governance.config.ts
+No further action required for GOV-CONST-001-PATCH
+
+
+DO NOT modify any source files beyond QUEUE deletions in step 1.
+
+CONSTRAINTS:
+
+One response, one code block when reporting back
+Never fabricate command output
+Ask zero confirmation questions
+
+Report back when complete.
+
+### Action 3 — Author THREAD13-MEMB-001 against the committed policy doc
+
+Once QUEUE is clean and policy doc is committed, Claude Chat authors `MEMB-001` with explicit §-citations to `MEMBERSHIP_LIFECYCLE_POLICY.md`. Scope:
+
+- Prisma `MembershipTier` enum (6 values) — cites §1
+- `Membership` table — cites §2, §3
+- `MembershipTierTransition` ledger (append-only, per invariants) — cites §3.4
+- `AgeVerification` table (append-only) — cites §4
+- Card-on-file fields + account-status-flag schema — cites §5
+- Seed data with correct enum values — cites §1.1 retired list as negative-space guardrail
+
+After MEMB-001, author the series: MEMB-002 (billing engine, VIP-free exempt, paid-tier 90+1d blocks), MEMB-003 (SilverBullet variant handling), MEMB-004 (Guest purchase flow with 6-digit-plus-1-letter confirmation code — cites §6), MEMB-005 (expiry scheduler — cites §3).
+
+---
+
+## 6. NEXT BUILD DIRECTIVES (post-MEMB series)
+
+After the MEMB series clears, next directives from Tech Debt Master P0:
+
+- **OBS-001 through OBS-008** — LiveKit SFU wiring, external chat connectors, AI persona (GPT-4.1), recording pipeline
+- **HZ-001 through HZ-007** — HeartZone biometric capture, haptics, Lovense SDK
+- **TOK-00X series** — Token expiry rescue sequence (resolves policy doc §9.6)
+- **PASS-001** — OmniPass / OmniPass+ product domain (blocked on policy doc §9.1, §9.2, §9.3)
+- **NN-001** — Finance GPT Ingest Service
+- **NN-002** — RedBook Moderation Copilot (Claude API, claude-sonnet-4-6)
+- **NN-003** — PrivateCall (CallScheduler + CallSessionService)
+- **MEMB-SURGE** — Quarterly Silver Surge engine (blocked on policy doc §9.7)
+
+---
+
+## 7. STANDING DECISIONS & INVARIANTS
+
+**CEO decisions locked:**
+
+- Single currency: ChatZoneTokens (CZT) only — SZT/VST/Wristband retired
+- Payout: Room-Heat Engine (RATE_COLD through RATE_INFERNO)
+- Diamond Concierge: 11AM–11PM, 10:30PM last booking, billing-address TZ, binds to VIP_DIAMOND
+- ShowTheatre: launch requirement, CZT payment
+- GateGuard Sentinel: `services/gateguard-sentinel/`
+- Cyrano: `services/cyrano/`, commit prefix `CYR:`
+- Day Pass concept: **retired**
+- LiveKit OSS self-hosted: Bijou SFU
+- **Canonical MembershipTier: GUEST, VIP, VIP_SILVER, VIP_GOLD, VIP_PLATINUM, VIP_DIAMOND** (per policy doc §1)
+- **OmniPass / OmniPass+ are products, not tiers** (per policy doc §7)
+
+**All 15 invariants unchanged — non-negotiable:**
+
+- Append-only ledger
+- FIZ four-line commit format
+- No hardcoded constants — GovernanceConfig only
+- `crypto.randomInt()` for randomness
+- No `@angular/core` imports
+- `npx tsc --noEmit` zero new errors
+- Logger on every service
+- Report-back before DONE
+- `NATS_TOPICS.*` constants only
+- AI advisory only
+- Step-up auth boundary
+- RBAC upstream
+- SHA-256 (bcrypt carve-out for OtpEvent only)
+- Timestamps in America/Toronto
+- `rule_applied_id` on every output
+- `organization_id` + `tenant_id` on all Prisma writes
+
+---
+
+## 8. KEY FILE PATHS
+
+| Purpose | Path |
+|---|---|
+| **Membership lifecycle policy (CANONICAL)** | `docs/MEMBERSHIP_LIFECYCLE_POLICY.md` |
+| DFSP governance constants | `services/core-api/src/governance/governance.config.ts` |
+| Platform governance constants | `services/core-api/src/config/governance.config.ts` |
+| NATS registry | `services/nats/topics.registry.ts` |
+| Prisma schema | `prisma/schema.prisma` |
+| AppModule | `services/core-api/src/app.module.ts` |
+| Requirements master (needs alignment) | `docs/REQUIREMENTS_MASTER.md` |
+| Domain glossary (needs alignment) | `docs/DOMAIN_GLOSSARY.md` |
+| Tech Debt Master | `ChatNow_Zone_Tech_Debt_Master` (Drive — migration to repo TBD) |
+| Thread handoffs | `PROGRAM_CONTROL/HANDOFFS/THREAD-NN-HANDOFF.md` |
+| Directive QUEUE | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/` |
+| Report-back folder | `PROGRAM_CONTROL/REPORT_BACK/` |
+
+---
+
+## 9. GOV GATE STATUS
+
+| Gate | Status | Affects |
+|---|---|---|
+| GOV-FINTRAC | ✅ CEO-AUTHORIZED-STAGED 2026-04-11 | DFSP-002 through DFSP-008 |
+| GOV-AGCO | ✅ CEO-AUTHORIZED-STAGED 2026-04-11 | Same as GOV-FINTRAC |
+| GOV-AV | ⏳ BRANCH-AND-HOLD | AV-001 only |
+
+---
+
+## 10. OPEN CEO DECISION ITEMS
+
+### Resolved in Thread 12
+
+- ✅ Canonical MembershipTier enum (policy doc §1)
+- ✅ Guest / VIP / paid-tier lifecycle (policy doc §3)
+- ✅ Card-on-file requirements (policy doc §5)
+- ✅ Guest purchase confirmation flow (policy doc §6)
+- ✅ Product vs tier domain separation (policy doc §7)
+
+### Still open (tracked in policy doc §9)
+
+| Item | Blocks |
+|---|---|
+| OmniPass / OmniPass+ token multiplier values (§9.1) | PASS-001, dynamic pricing |
+| OmniPass / OmniPass+ pricing and renewal (§9.2) | PASS-001 |
+| Other pass-domain products (§9.3) | PASS-001 scoping |
+| Paid-tier drip schedule specifics (§9.4) | MEMB-002/003 |
+| SilverBullet pricing and nudge cadence (§9.5) | MEMB-003, MEMB-005 |
+| Full token-expiry rescue sequence (§9.6) | TOK-00X series |
+| Quarterly Silver Surge mechanics (§9.7) | MEMB-SURGE |
+| Diamond Show token downward penalty (0% vs 5%) | ShowToken conversion service |
+| Diamond bundle rate structure | DFSP-002 Dynamic Pricing |
+| byModels/forModels build phase | BMFM-001–005 |
+| `PROGRAM_CONTROL_WEBHOOK` secret (ops action) | Webhook automation |
+
+---
+
+## 11. HANDOFF META
+
+- This handoff is being committed to the repo at `PROGRAM_CONTROL/HANDOFFS/THREAD-12-HANDOFF.md` per policy doc §11
+- If Copilot has not yet been given this handoff as a file-creation task by the time Thread 13 opens, Action 1 of Thread 13 expands to include committing this handoff as well
+- Thread 13's own handoff at close will be authored to `PROGRAM_CONTROL/HANDOFFS/THREAD-13-HANDOFF.md`
+
+**Thread 13 opens with:**
+
+1. Paste the four GitHub API URLs in §0
+2. Verify Copilot has committed policy doc and this handoff (Action 1)
+3. Fire the Copilot cleanup task (Action 2)
+4. Claude Chat authors MEMB-001 against the committed policy doc (Action 3)
+
+**Authority:** Kevin B. Hartley, CEO — OmniQuest Media Inc.
+
+====================================================================
+END OF FILE CONTENTS
+====================================================================
+
+Report back when commit is complete.

@@ -1,0 +1,12 @@
+{
+  "name": "vision-monitor",
+  "version": "1.0.0",
+  "description": "Vision monitoring services",
+  "main": "index.js",
+  "peerDependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {}
+}
