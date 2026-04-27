@@ -30,6 +30,8 @@ import { ThreeBucketSpendGuardMiddleware } from './finance/three-bucket-spend-gu
 import { FfsModule } from '../../ffs/src/ffs.module';
 import { CreatorOnboardingModule } from '../../creator-onboarding/src/creator-onboarding.module';
 import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
+import { SparkTwinModule } from './spark-twin/spark-twin.module';
+import { AdminModule } from './admin/admin.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { BenefitsMiddleware } from './middleware/benefits.middleware';
 
@@ -63,6 +65,8 @@ import { BenefitsMiddleware } from './middleware/benefits.middleware';
     RewardsModule,
     CreatorOnboardingModule,
     CyranoAuthModule,
+    SparkTwinModule,
+    AdminModule,
     SubscriptionModule,
   ],
 })

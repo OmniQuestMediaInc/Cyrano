@@ -234,6 +234,28 @@ export class NarrativeService {
     };
   }
 
+  /**
+   * Inject a system upgrade nudge as a pinned STORY_BEAT memory entry.
+   * Called by the chat layer when a Spark user crosses the nudge threshold
+   * so the nudge is contextually recalled in subsequent LLM prompts.
+   */
+  async storeUpgradeNudge(params: {
+    twin_id: string;
+    user_id: string;
+    content: string;
+    correlation_id: string;
+  }): Promise<MemoryEntry> {
+    return this.storeMemory({
+      session_id: `nudge:${params.user_id}:${params.twin_id}`,
+      twin_id: params.twin_id,
+      user_id: params.user_id,
+      memory_type: 'STORY_BEAT',
+      content: params.content,
+      importance_score: 0.95,
+      correlation_id: params.correlation_id,
+    });
+  }
+
   // ─── Private helpers ──────────────────────────────────────────────────────
 
   private defaultImportanceScore(type: MemoryType): number {
