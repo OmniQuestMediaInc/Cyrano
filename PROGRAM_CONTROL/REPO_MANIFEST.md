@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `097ff709eb2007e143a4e7d8e8476ffa75f5e9b3`
-**Generated:** 2026-04-27T14:57:31Z
+**Branch:** `copilot/add-stripe-subscription-webhooks`
+**Commit:** `a21e0d3da1dddf82fcd716945c1ea44a6ab55684`
+**Generated:** 2026-04-27T15:19:23Z
 
 ## All Files
 
@@ -273,14 +273,32 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/next.config.js`
 - `apps/cyrano-standalone/package.json`
 - `apps/cyrano-standalone/tsconfig.json`
+- `apps/portals/LandingHero.tsx`
 - `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/barely-legal/page.tsx`
+- `apps/portals/barely-legal/portal.config.ts`
 - `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/dark-desires/page.tsx`
+- `apps/portals/dark-desires/portal.config.ts`
 - `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/desperate-housewives/page.tsx`
+- `apps/portals/desperate-housewives/portal.config.ts`
 - `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/ink-and-steel/page.tsx`
+- `apps/portals/ink-and-steel/portal.config.ts`
 - `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/lotus-bloom/page.tsx`
+- `apps/portals/lotus-bloom/portal.config.ts`
 - `apps/portals/main/.gitkeep`
+- `apps/portals/main/page.tsx`
+- `apps/portals/main/portal.config.ts`
+- `apps/portals/portal.types.ts`
 - `apps/shared-ui/components/.gitkeep`
+- `apps/shared-ui/components/AITwinCard.tsx`
+- `apps/shared-ui/components/PortalSwitcher.tsx`
+- `apps/shared-ui/components/TierBadge.tsx`
 - `apps/shared-ui/lib/.gitkeep`
+- `apps/shared-ui/lib/api.ts`
 - `apps/shared-ui/themes/.gitkeep`
 - `docker-compose.yml`
 - `docs/ARCHITECTURE_OVERVIEW.md`
@@ -446,6 +464,7 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/membership/membership.module.ts`
 - `services/core-api/src/membership/membership.service.ts`
 - `services/core-api/src/membership/stipend-distribution.job.ts`
+- `services/core-api/src/middleware/benefits.middleware.ts`
 - `services/core-api/src/nats/nats.module.ts`
 - `services/core-api/src/nats/nats.service.ts`
 - `services/core-api/src/payments/payments.module.ts`
@@ -479,6 +498,11 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/scheduling/zonebot.service.ts`
 - `services/core-api/src/studio/studio-report.controller.ts`
 - `services/core-api/src/studio/studio-report.service.ts`
+- `services/core-api/src/subscription/stripe-webhook.controller.ts`
+- `services/core-api/src/subscription/stripe.service.ts`
+- `services/core-api/src/subscription/subscription.module.ts`
+- `services/core-api/src/subscription/subscription.service.ts`
+- `services/core-api/src/subscription/subscription.types.ts`
 - `services/core-api/src/test/helpers/setTestEnv.ts`
 - `services/core-api/src/zone-access/zone-access.guard.ts`
 - `services/core-api/src/zone-access/zone-access.module.ts`
