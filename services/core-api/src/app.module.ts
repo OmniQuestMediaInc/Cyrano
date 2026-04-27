@@ -1,8 +1,9 @@
 // services/core-api/src/app.module.ts
-// CHORE: HOUSE-001 — restore missing module registrations dropped in merge
+// CYR: Cyrano standalone — stripped to Cyrano-essential modules only.
+//      Removed: ZoneGpt, Bijou, SenSync, GuestHeat, AffiliationNumber,
+//               StudioAffiliation (live-streaming / theatre surfaces removed).
 // PAYLOAD 3: wire GateGuardModule + GateGuardMiddleware in front of
 //            /purchase, /spend, /payout route trees.
-// HZ: register SenSyncModule + GuestHeatModule.
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { CreatorModule } from './creator/creator.module';
@@ -17,8 +18,6 @@ import { PrismaModule } from './prisma.module';
 import { GamesModule } from './games/games.module';
 import { GiftsModule } from './gifts/gifts.module';
 import { SovereignCaCMiddleware } from './compliance/sovereign-cac.middleware';
-import { ZoneGptModule } from '../../zone-gpt/src/zone-gpt.module';
-import { BijouModule } from '../../bijou/src/bijou.module';
 import { AuthModule } from './auth/auth.module';
 import { SchedulingModule } from './scheduling/scheduling.module';
 import { ZoneAccessModule } from './zone-access/zone-access.module';
@@ -29,10 +28,6 @@ import { AuditModule } from './audit/audit.module';
 import { RewardsModule } from './rewards/rewards.module';
 import { ThreeBucketSpendGuardMiddleware } from './finance/three-bucket-spend-guard.middleware';
 import { FfsModule } from '../../ffs/src/ffs.module';
-import { SenSyncModule } from '../../sensync/src/sensync.module';
-import { GuestHeatModule } from '../../guest-heat/src/guest-heat.module';
-import { AffiliationNumberModule } from '../../affiliation-number/src/affiliation-number.module';
-import { StudioAffiliationModule } from '../../studio-affiliation/src/studio-affiliation.module';
 import { CreatorOnboardingModule } from '../../creator-onboarding/src/creator-onboarding.module';
 import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
 
@@ -58,19 +53,12 @@ import { CyranoAuthModule } from './cyrano/cyrano-auth.module';
     PaymentsModule,
     GamesModule,
     GiftsModule,
-    ZoneGptModule,
-    BijouModule,
     AuthModule,
     SchedulingModule,
     MembershipModule,
     ZoneAccessModule,
-    FfsModule,
-    SenSyncModule,
-    GuestHeatModule,
+    FfsModule, // Flicker n'Flame Scoring — rewards earn/burn logic retained
     RewardsModule,
-    // RBAC-STUDIO-001 — Studio onboarding + affiliation + RBAC
-    AffiliationNumberModule,
-    StudioAffiliationModule,
     CreatorOnboardingModule,
     CyranoAuthModule,
   ],
