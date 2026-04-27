@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `097ff709eb2007e143a4e7d8e8476ffa75f5e9b3`
-**Generated:** 2026-04-27T14:57:31Z
+**Branch:** `copilot/create-portal-starter-templates`
+**Commit:** `566c615cb11d48763cdf4850ea3d11492e22d992`
+**Generated:** 2026-04-27T15:08:17Z
 
 ## All Files
 
@@ -274,14 +274,29 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/package.json`
 - `apps/cyrano-standalone/tsconfig.json`
 - `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/barely-legal/next.config.mjs`
+- `apps/portals/barely-legal/package.json`
 - `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/dark-desires/next.config.mjs`
+- `apps/portals/dark-desires/package.json`
 - `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/desperate-housewives/next.config.mjs`
+- `apps/portals/desperate-housewives/package.json`
 - `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/ink-and-steel/next.config.mjs`
+- `apps/portals/ink-and-steel/package.json`
 - `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/lotus-bloom/next.config.mjs`
+- `apps/portals/lotus-bloom/package.json`
 - `apps/portals/main/.gitkeep`
+- `apps/portals/main/next.config.mjs`
+- `apps/portals/main/package.json`
 - `apps/shared-ui/components/.gitkeep`
 - `apps/shared-ui/lib/.gitkeep`
+- `apps/shared-ui/package.json`
 - `apps/shared-ui/themes/.gitkeep`
+- `apps/shared-ui/themes/index.ts`
+- `apps/shared-ui/utils/index.ts`
 - `docker-compose.yml`
 - `docs/ARCHITECTURE_OVERVIEW.md`
 - `docs/AUDIT_CERTIFICATION_V1.md`
