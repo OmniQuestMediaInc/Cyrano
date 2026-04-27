@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/add-diamond-concierge-service`
-**Commit:** `8c21fdf0ee3d021c505765c8574c1bc8acd71fdb`
-**Generated:** 2026-04-27T16:22:54Z
+**Branch:** `copilot/deliver-final-launch-package`
+**Commit:** `128189d564755e2ff2822c0881c07e9a11ef0ae5`
+**Generated:** 2026-04-27T16:24:40Z
 
 ## All Files
 
@@ -669,6 +669,7 @@ Auto-generated on every push. Do not edit manually.
 - `services/voice-cloning/src/voice.module.ts`
 - `services/voice-cloning/src/voice.service.ts`
 - `services/voice-cloning/src/voice.types.ts`
+- `tests/e2e/subscription-flow.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
