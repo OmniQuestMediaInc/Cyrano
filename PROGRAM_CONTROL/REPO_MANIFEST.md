@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/create-portal-starter-templates`
-**Commit:** `9cf9e9ad4ea0dfa9831bd7a02de66ba0870254f7`
-**Generated:** 2026-04-27T15:14:56Z
+**Branch:** `copilot/add-free-spark-twin-logic`
+**Commit:** `7d7a67f4ada25748e9a3d2681b00273da64ced7b`
+**Generated:** 2026-04-27T15:35:49Z
 
 ## All Files
 
@@ -383,6 +383,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/ai-twin/src/ai-twin.module.ts`
 - `services/ai-twin/src/ai-twin.service.ts`
 - `services/ai-twin/src/ai-twin.types.ts`
+- `services/core-api/src/admin/admin-house-model.controller.ts`
+- `services/core-api/src/admin/admin.module.ts`
 - `services/core-api/src/analytics/analytics.module.ts`
 - `services/core-api/src/analytics/ffs-score.service.ts`
 - `services/core-api/src/app.module.ts`
@@ -492,6 +494,9 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/scheduling/shift-coverage.service.ts`
 - `services/core-api/src/scheduling/stat-holidays.seed.ts`
 - `services/core-api/src/scheduling/zonebot.service.ts`
+- `services/core-api/src/spark-twin/spark-twin.controller.ts`
+- `services/core-api/src/spark-twin/spark-twin.module.ts`
+- `services/core-api/src/spark-twin/spark-twin.service.ts`
 - `services/core-api/src/studio/studio-report.controller.ts`
 - `services/core-api/src/studio/studio-report.service.ts`
 - `services/core-api/src/test/helpers/setTestEnv.ts`
