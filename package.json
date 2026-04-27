@@ -29,12 +29,14 @@
     "@nestjs/platform-express": "^11.1.18",
     "@nestjs/typeorm": "^11.0.0",
     "@prisma/client": "^6.2.1",
+    "axios": "^1.15.2",
     "bcryptjs": "^2.4.3",
     "bull": "^4.16.5",
     "decimal.js": "10.6.0",
     "nats": "^2.29.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "stripe": "^17.0.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
