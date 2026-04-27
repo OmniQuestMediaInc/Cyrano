@@ -2,6 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
+**Branch:** `copilot/add-launch-promotion-engine`
+**Commit:** `a0cea1c8e0e2f5afcfe9c4ac36c83b957e363200`
+**Generated:** 2026-04-27T15:36:02Z
 **Branch:** `copilot/add-free-spark-twin-logic`
 **Commit:** `320058225f64170218a80d92a03727e29f43acb4`
 **Generated:** 2026-04-27T15:44:39Z
@@ -275,37 +278,46 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/tsconfig.json`
 - `apps/portals/LandingHero.tsx`
 - `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/barely-legal/app/page.tsx`
 - `apps/portals/barely-legal/next.config.mjs`
 - `apps/portals/barely-legal/package.json`
 - `apps/portals/barely-legal/page.tsx`
 - `apps/portals/barely-legal/portal.config.ts`
 - `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/dark-desires/app/page.tsx`
 - `apps/portals/dark-desires/next.config.mjs`
 - `apps/portals/dark-desires/package.json`
 - `apps/portals/dark-desires/page.tsx`
 - `apps/portals/dark-desires/portal.config.ts`
 - `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/desperate-housewives/app/page.tsx`
 - `apps/portals/desperate-housewives/next.config.mjs`
 - `apps/portals/desperate-housewives/package.json`
 - `apps/portals/desperate-housewives/page.tsx`
 - `apps/portals/desperate-housewives/portal.config.ts`
 - `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/ink-and-steel/app/page.tsx`
 - `apps/portals/ink-and-steel/next.config.mjs`
 - `apps/portals/ink-and-steel/package.json`
 - `apps/portals/ink-and-steel/page.tsx`
 - `apps/portals/ink-and-steel/portal.config.ts`
 - `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/lotus-bloom/app/page.tsx`
 - `apps/portals/lotus-bloom/next.config.mjs`
 - `apps/portals/lotus-bloom/package.json`
 - `apps/portals/lotus-bloom/page.tsx`
 - `apps/portals/lotus-bloom/portal.config.ts`
 - `apps/portals/main/.gitkeep`
+- `apps/portals/main/app/page.tsx`
 - `apps/portals/main/next.config.mjs`
 - `apps/portals/main/package.json`
 - `apps/portals/main/page.tsx`
 - `apps/portals/main/portal.config.ts`
 - `apps/portals/portal.types.ts`
 - `apps/shared-ui/components/.gitkeep`
+- `apps/shared-ui/components/HeroSection.tsx`
+- `apps/shared-ui/lib/.gitkeep`
+- `apps/shared-ui/lib/portal-seo.ts`
 - `apps/shared-ui/components/AITwinCard.tsx`
 - `apps/shared-ui/components/PortalSwitcher.tsx`
 - `apps/shared-ui/components/TierBadge.tsx`
@@ -481,6 +493,9 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/membership/membership.module.ts`
 - `services/core-api/src/membership/membership.service.ts`
 - `services/core-api/src/membership/stipend-distribution.job.ts`
+- `services/core-api/src/middleware/benefits.guard.ts`
+- `services/core-api/src/middleware/benefits.module.ts`
+- `services/core-api/src/middleware/usage.interceptor.ts`
 - `services/core-api/src/middleware/benefits.middleware.ts`
 - `services/core-api/src/nats/nats.module.ts`
 - `services/core-api/src/nats/nats.service.ts`
@@ -488,6 +503,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/payments/webhook-hardening.service.ts`
 - `services/core-api/src/prisma.module.ts`
 - `services/core-api/src/prisma.service.ts`
+- `services/core-api/src/promotion/promotion.module.ts`
+- `services/core-api/src/promotion/promotion.service.ts`
 - `services/core-api/src/refund/extension.service.ts`
 - `services/core-api/src/refund/refund-disclosure.service.ts`
 - `services/core-api/src/refund/refund-disclosure.types.ts`

@@ -343,6 +343,14 @@ export const NATS_TOPICS = {
   CREATOR_ONBOARDING_STARTED:        'creator.onboarding.started',
   CREATOR_ONBOARDING_AFFILIATED:     'creator.onboarding.affiliated',
   CREATOR_ONBOARDING_COMPLETED:      'creator.onboarding.completed',
+
+  // ── Promotion Engine (PROMO-001) ──────────────────────────────────────────
+  PROMO_APPLIED:                     'promo.applied',
+  PROMO_EXPIRED:                     'promo.expired',
+
+  // ── Benefit Usage (BENEFITS-001) ─────────────────────────────────────────
+  BENEFIT_LIMIT_REACHED:             'benefit.limit.reached',
+  BENEFIT_USAGE_INCREMENTED:         'benefit.usage.incremented',
 } as const;
 
 export type NatsTopic = typeof NATS_TOPICS[keyof typeof NATS_TOPICS];
