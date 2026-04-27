@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/add-stripe-subscription-webhooks`
-**Commit:** `85845d7d781d9ad65d72efea1cd24046034a62d4`
-**Generated:** 2026-04-27T15:28:11Z
-**Branch:** `copilot/create-portal-starter-templates`
-**Commit:** `9cf9e9ad4ea0dfa9831bd7a02de66ba0870254f7`
-**Generated:** 2026-04-27T15:14:56Z
+**Commit:** `c2036285b71a1a68d01f684241dbe03f13d9edde`
+**Generated:** 2026-04-27T15:29:22Z
 
 ## All Files
 
@@ -278,41 +275,36 @@ Auto-generated on every push. Do not edit manually.
 - `apps/cyrano-standalone/tsconfig.json`
 - `apps/portals/LandingHero.tsx`
 - `apps/portals/barely-legal/.gitkeep`
+- `apps/portals/barely-legal/next.config.mjs`
+- `apps/portals/barely-legal/package.json`
 - `apps/portals/barely-legal/page.tsx`
 - `apps/portals/barely-legal/portal.config.ts`
 - `apps/portals/dark-desires/.gitkeep`
+- `apps/portals/dark-desires/next.config.mjs`
+- `apps/portals/dark-desires/package.json`
 - `apps/portals/dark-desires/page.tsx`
 - `apps/portals/dark-desires/portal.config.ts`
 - `apps/portals/desperate-housewives/.gitkeep`
+- `apps/portals/desperate-housewives/next.config.mjs`
+- `apps/portals/desperate-housewives/package.json`
 - `apps/portals/desperate-housewives/page.tsx`
 - `apps/portals/desperate-housewives/portal.config.ts`
 - `apps/portals/ink-and-steel/.gitkeep`
+- `apps/portals/ink-and-steel/next.config.mjs`
+- `apps/portals/ink-and-steel/package.json`
 - `apps/portals/ink-and-steel/page.tsx`
 - `apps/portals/ink-and-steel/portal.config.ts`
 - `apps/portals/lotus-bloom/.gitkeep`
+- `apps/portals/lotus-bloom/next.config.mjs`
+- `apps/portals/lotus-bloom/package.json`
 - `apps/portals/lotus-bloom/page.tsx`
 - `apps/portals/lotus-bloom/portal.config.ts`
 - `apps/portals/main/.gitkeep`
+- `apps/portals/main/next.config.mjs`
+- `apps/portals/main/package.json`
 - `apps/portals/main/page.tsx`
 - `apps/portals/main/portal.config.ts`
 - `apps/portals/portal.types.ts`
-- `apps/portals/barely-legal/next.config.mjs`
-- `apps/portals/barely-legal/package.json`
-- `apps/portals/dark-desires/.gitkeep`
-- `apps/portals/dark-desires/next.config.mjs`
-- `apps/portals/dark-desires/package.json`
-- `apps/portals/desperate-housewives/.gitkeep`
-- `apps/portals/desperate-housewives/next.config.mjs`
-- `apps/portals/desperate-housewives/package.json`
-- `apps/portals/ink-and-steel/.gitkeep`
-- `apps/portals/ink-and-steel/next.config.mjs`
-- `apps/portals/ink-and-steel/package.json`
-- `apps/portals/lotus-bloom/.gitkeep`
-- `apps/portals/lotus-bloom/next.config.mjs`
-- `apps/portals/lotus-bloom/package.json`
-- `apps/portals/main/.gitkeep`
-- `apps/portals/main/next.config.mjs`
-- `apps/portals/main/package.json`
 - `apps/shared-ui/components/.gitkeep`
 - `apps/shared-ui/components/AITwinCard.tsx`
 - `apps/shared-ui/components/PortalSwitcher.tsx`
