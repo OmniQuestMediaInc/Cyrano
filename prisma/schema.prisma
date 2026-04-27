@@ -1051,6 +1051,7 @@ model MembershipSubscription {
   current_period_start  DateTime           @db.Timestamptz
   current_period_end    DateTime           @db.Timestamptz
   cancelled_at          DateTime?          @db.Timestamptz
+  promo_code            String?            @db.VarChar(50)
   organization_id       String             @db.VarChar(100)
   tenant_id             String             @db.VarChar(100)
   created_at            DateTime           @default(now()) @db.Timestamptz
@@ -2285,6 +2286,10 @@ model AiTwin {
   visibility        String         @default("PRIVATE") @db.VarChar(20)
   /// true = house model (platform-owned, 100% revenue to platform)
   is_house_model    Boolean        @default(false)
+  /// true = free Spark Twin provisioned on signup (limited to 15 messages/day)
+  is_spark_twin     Boolean        @default(false)
+  /// Portal brand this twin belongs to: MAIN | INK_AND_STEEL | LOTUS_BLOOM | DESPERATE_HOUSEWIVES | BARELY_LEGAL | DARK_DESIRES
+  portal            String?        @db.VarChar(30)
   /// "PENDING_UPLOAD" | "UPLOAD_COMPLETE" | "TRAINING_QUEUED" | "TRAINING_IN_PROGRESS" | "TRAINING_COMPLETE" | "TRAINING_FAILED" | "RETIRED"
   training_status   String         @default("PENDING_UPLOAD") @db.VarChar(30)
   lora_weights_url  String?        @db.Text
@@ -2303,6 +2308,7 @@ model AiTwin {
 
   @@index([creator_id, training_status])
   @@index([is_house_model, training_status])
+  @@index([creator_id, is_spark_twin])
   @@map("ai_twins")
 }
 
@@ -2431,4 +2437,59 @@ model NarrativeBranch {
 
   @@index([twin_id, user_id, resolved])
   @@map("narrative_branches")
+}
+
+// ─── Promotion Engine — PROMO-001 ────────────────────────────────────────────
+
+model PromoCode {
+  id               String    @id @default(uuid())
+  code             String    @unique @db.VarChar(50)
+  discount_percent Int
+  expires_at       DateTime  @db.Timestamptz
+  max_uses         Int
+  used_count       Int       @default(0)
+  correlation_id   String    @unique @db.VarChar(200)
+  reason_code      String    @default("PROMO_CREATED") @db.VarChar(50)
+  created_at       DateTime  @default(now()) @db.Timestamptz
+  updated_at       DateTime  @updatedAt @db.Timestamptz
+
+  @@map("promo_codes")
+}
+
+// ─── Benefits Usage — BENEFITS-001 ───────────────────────────────────────────
+
+model BenefitUsage {
+  id             String   @id @default(uuid())
+  user_id        String   @db.Uuid
+  month          String   @db.VarChar(7)   // YYYY-MM
+  images_used    Int      @default(0)
+  voice_minutes  Int      @default(0)
+  correlation_id String   @db.VarChar(200)
+  reason_code    String   @default("BENEFIT_USAGE_INIT") @db.VarChar(50)
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @updatedAt @db.Timestamptz
+
+  @@unique([user_id, month], name: "userId_month")
+  @@index([user_id, month])
+  @@map("benefit_usage")
+// ── Spark Twin — Free Tier Daily Usage Tracking ───────────────────────────────
+// Tracks per-user daily message count for the free Spark Twin tier.
+// Free users are capped at 15 messages per calendar day (usage_date = YYYY-MM-DD).
+// Increment is applied via upsert; no UPDATE on a balance column — compliant with
+// APPEND-ONLY FINANCE invariant (this is a counter, not a ledger balance).
+
+model SparkTwinDailyUsage {
+  usage_id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String   @db.Uuid
+  /// Calendar date of usage: YYYY-MM-DD (UTC)
+  usage_date     String   @db.VarChar(10)
+  messages_sent  Int      @default(0)
+  correlation_id String   @unique @db.VarChar(200)
+  reason_code    String   @default("SPARK_DAILY_USAGE") @db.VarChar(40)
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @updatedAt @db.Timestamptz
+
+  @@unique([user_id, usage_date])
+  @@index([user_id, usage_date])
+  @@map("spark_twin_daily_usages")
 }

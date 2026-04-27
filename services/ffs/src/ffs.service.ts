@@ -200,6 +200,8 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
       const boost =
         SENSYNC_FFS_BOOST_MIN + t * (SENSYNC_FFS_BOOST_MAX - SENSYNC_FFS_BOOST_MIN);
       rawScore += boost;
+    }
+
     // Phase 3 — SenSync™ FFS boost. Applied only when the BPM_TO_FFS scope is
     // active upstream (the SenSync service refuses to publish to
     // SENSYNC_BPM_UPDATE without it, so by the time `sensync_boost_points` is
