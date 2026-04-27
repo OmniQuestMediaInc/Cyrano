@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/add-launch-promotion-engine`
-**Commit:** `a0cea1c8e0e2f5afcfe9c4ac36c83b957e363200`
-**Generated:** 2026-04-27T15:36:02Z
-**Branch:** `copilot/add-free-spark-twin-logic`
-**Commit:** `320058225f64170218a80d92a03727e29f43acb4`
-**Generated:** 2026-04-27T15:44:39Z
+**Commit:** `6ddc8234310ac0a740655274fea555fd2ac8a362`
+**Generated:** 2026-04-27T15:46:42Z
 
 ## All Files
 
@@ -315,14 +312,13 @@ Auto-generated on every push. Do not edit manually.
 - `apps/portals/main/portal.config.ts`
 - `apps/portals/portal.types.ts`
 - `apps/shared-ui/components/.gitkeep`
-- `apps/shared-ui/components/HeroSection.tsx`
-- `apps/shared-ui/lib/.gitkeep`
-- `apps/shared-ui/lib/portal-seo.ts`
 - `apps/shared-ui/components/AITwinCard.tsx`
+- `apps/shared-ui/components/HeroSection.tsx`
 - `apps/shared-ui/components/PortalSwitcher.tsx`
 - `apps/shared-ui/components/TierBadge.tsx`
 - `apps/shared-ui/lib/.gitkeep`
 - `apps/shared-ui/lib/api.ts`
+- `apps/shared-ui/lib/portal-seo.ts`
 - `apps/shared-ui/package.json`
 - `apps/shared-ui/themes/.gitkeep`
 - `apps/shared-ui/themes/index.ts`
@@ -494,9 +490,9 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/membership/membership.service.ts`
 - `services/core-api/src/membership/stipend-distribution.job.ts`
 - `services/core-api/src/middleware/benefits.guard.ts`
+- `services/core-api/src/middleware/benefits.middleware.ts`
 - `services/core-api/src/middleware/benefits.module.ts`
 - `services/core-api/src/middleware/usage.interceptor.ts`
-- `services/core-api/src/middleware/benefits.middleware.ts`
 - `services/core-api/src/nats/nats.module.ts`
 - `services/core-api/src/nats/nats.service.ts`
 - `services/core-api/src/payments/payments.module.ts`
