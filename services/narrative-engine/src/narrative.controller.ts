@@ -71,4 +71,22 @@ export class NarrativeController {
       body.correlation_id,
     );
   }
+
+  /**
+   * Inject an upgrade nudge into the conversation as a pinned system memory.
+   * Called by the chat layer after SparkTwinService.trackMessage returns a
+   * non-null nudge_message for Spark users past the nudge threshold.
+   */
+  @Post('nudge')
+  async storeUpgradeNudge(
+    @Body()
+    body: {
+      twin_id: string;
+      user_id: string;
+      content: string;
+      correlation_id: string;
+    },
+  ) {
+    return this.narrativeService.storeUpgradeNudge(body);
+  }
 }
