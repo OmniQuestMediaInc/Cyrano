@@ -3,8 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `main`
-**Commit:** `c86467d2f037c6684a02545036d6971fe8428060`
-**Generated:** 2026-04-27T11:30:01Z
+**Commit:** `fb76a2c164e9575ba0f3dd0a1e7e88e31f9a1af0`
+**Generated:** 2026-04-27T11:57:29Z
 
 ## All Files
 
@@ -508,6 +508,9 @@ Auto-generated on every push. Do not edit manually.
 - `services/cyrano/ASSUMPTIONS.md`
 - `services/cyrano/FLAGS.md`
 - `services/cyrano/README.md`
+- `services/cyrano/src/cyrano-beta-analytics.service.ts`
+- `services/cyrano/src/cyrano-beta-registry.service.ts`
+- `services/cyrano/src/cyrano-beta.service.spec.ts`
 - `services/cyrano/src/cyrano-layer3-hcz.service.ts`
 - `services/cyrano/src/cyrano-layer4-api-key.service.ts`
 - `services/cyrano/src/cyrano-layer4-audit.service.ts`
@@ -520,6 +523,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/cyrano/src/cyrano-layer4.guard.ts`
 - `services/cyrano/src/cyrano-layer4.types.ts`
 - `services/cyrano/src/cyrano-prompt-templates.ts`
+- `services/cyrano/src/cyrano-translation.service.spec.ts`
+- `services/cyrano/src/cyrano-translation.service.ts`
 - `services/cyrano/src/cyrano.module.ts`
 - `services/cyrano/src/cyrano.service.ts`
 - `services/cyrano/src/cyrano.types.ts`
