@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/manage-cyrano-personas`
-**Commit:** `d872ee99fd66b5b58aca20a2cc2afdd720903719`
-**Generated:** 2026-04-28T17:51:59Z
+**Branch:** `copilot/add-cyrano-ux-integration-brief`
+**Commit:** `644dc2a4c58ed5519a3432062d261c9b7d20e81e`
+**Generated:** 2026-04-28T17:52:58Z
 
 ## All Files
 
@@ -336,9 +336,14 @@ Auto-generated on every push. Do not edit manually.
 - `docs/ROADMAP_MANIFEST.md`
 - `docs/RRR_CEO_DECISIONS_FINAL_2026-04-17.md`
 - `docs/UX_CROSS_STACK_ALIGNMENT.md`
+- `docs/UX_INTEGRATION_BRIEF.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
 - `docs/ux/00-shared-components.md`
+- `docs/ux/01-ai-twin-creator-dashboard.md`
+- `docs/ux/02-cyrano-session-chat.md`
+- `docs/ux/03-persona-management.md`
+- `docs/ux/04-session-top-up-recovery.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
