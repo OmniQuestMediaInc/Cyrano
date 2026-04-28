@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/manage-cyrano-personas-again`
-**Commit:** `1d83b5e24e233ae730984f57dc996be23509af1b`
-**Generated:** 2026-04-28T17:47:23Z
-**Branch:** `copilot/create-ai-twin-dashboard`
-**Commit:** `5ec81aea4bba0031deb33adf6fb8f8f8e6141c16`
-**Generated:** 2026-04-28T17:38:02Z
+**Commit:** `91844626b92649995f1dae761756e7d9bff8dc2b`
+**Generated:** 2026-04-28T17:48:24Z
 
 ## All Files
 
