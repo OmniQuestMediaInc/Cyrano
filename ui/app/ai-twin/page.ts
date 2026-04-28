@@ -493,7 +493,7 @@ function renderPublishStep(twinId: string, visibility: string): RenderElement {
             {
               test_id: 'ai-twin-visibility-select',
               on: { change: 'setVisibility' },
-              props: { value: visibility },
+              props: { id: 'visibility-select', value: visibility },
             },
             [
               el('option', { props: { value: 'PRIVATE' } }, ['Private']),

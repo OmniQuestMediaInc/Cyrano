@@ -62,6 +62,9 @@ function buildView(inputs: CyranoSessionPageInputs): CyranoSessionView {
           : 'Voice call not available for this tier',
   };
 
+  // Default to three zero-balance buckets when caller provides none.
+  // The real balances are populated by the wallet service at session start;
+  // zero values are expected for new/idle sessions before a spend event occurs.
   const defaultBuckets: SessionWalletBucket[] = inputs.wallet_buckets ?? [
     { bucket: 'purchased', label: 'Purchased', balance_tokens: '0', spend_priority: 1, will_drain_next: false },
     { bucket: 'membership', label: 'Membership', balance_tokens: '0', spend_priority: 2, will_drain_next: false },
