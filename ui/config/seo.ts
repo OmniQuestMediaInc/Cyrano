@@ -127,6 +127,25 @@ export const SEO: Record<string, SeoMetadata> = {
     robots: 'noindex,nofollow', // authenticated route
     keywords: [...COMMON_KEYWORDS, 'diamond', 'concierge', 'inferno', 'VIP'],
   },
+  cyrano_personas: {
+    title: 'Persona Management · Cyrano™ · ChatNow.Zone',
+    description:
+      'Manage global, template, and custom Cyrano™ personas. Drag to reorder priority, publish tier-gated personas to eligible VIPs.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/creator/cyrano/personas`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/cyrano-personas.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated creator route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'persona', 'creator tools'],
+  },
+  session_topup: {
+    title: 'Session Top-Up · Cyrano™ · ChatNow.Zone',
+    description:
+      'Your Cyrano™ session has expired. Purchase additional time, voice, or narrative minutes and resume with full context restore.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/vip/session/topup`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/session-topup.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated VIP route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'session', 'top-up', 'VIP'],
   ai_twin_dashboard: {
     title: 'AI Twin Creator Dashboard · ChatNow.Zone',
     description:

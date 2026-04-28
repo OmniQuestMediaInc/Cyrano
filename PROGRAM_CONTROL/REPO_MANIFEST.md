@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/create-ai-twin-dashboard`
-**Commit:** `5ec81aea4bba0031deb33adf6fb8f8f8e6141c16`
-**Generated:** 2026-04-28T17:38:02Z
+**Branch:** `copilot/manage-cyrano-personas-again`
+**Commit:** `91844626b92649995f1dae761756e7d9bff8dc2b`
+**Generated:** 2026-04-28T17:48:24Z
 
 ## All Files
 
@@ -681,6 +681,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
+- `tests/integration/cyrano-persona-management.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
 - `tests/integration/cyrano-session-page.spec.ts`
@@ -711,6 +712,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/seed-loader.ts`
 - `tests/integration/sensync-metrics.spec.ts`
 - `tests/integration/sensync-rate-limit.spec.ts`
+- `tests/integration/session-topup-page.spec.ts`
 - `tests/integration/stat-holidays.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
@@ -729,6 +731,7 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/admin/recovery/page.ts`
 - `ui/app/ai-twin/page.ts`
 - `ui/app/creator/control/page.ts`
+- `ui/app/creator/cyrano/personas/page.ts`
 - `ui/app/creator/gamification/page.ts`
 - `ui/app/creator/studio/page.ts`
 - `ui/app/cyrano/session/page.ts`
@@ -736,6 +739,7 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/diamond/purchase/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
+- `ui/app/vip/session/topup/page.ts`
 - `ui/app/wallet/page.ts`
 - `ui/components/dice-game.ts`
 - `ui/components/render-plan.ts`
@@ -751,10 +755,12 @@ Auto-generated on every push. Do not edit manually.
 - `ui/types/ai-twin-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-persona-contracts.ts`
 - `ui/types/cyrano-session-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
+- `ui/types/session-topup-contracts.ts`
 - `ui/view-models/creator-control.presenter.ts`
 - `ui/view-models/diamond-concierge.presenter.ts`
 - `ui/view-models/gamification.presenter.ts`
