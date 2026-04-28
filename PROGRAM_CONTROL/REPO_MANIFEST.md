@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/add-shared-components-docs`
-**Commit:** `b3e223194821e35dda9c72f0d21049bc5c08a40d`
-**Generated:** 2026-04-28T17:13:12Z
+**Branch:** `copilot/manage-cyrano-personas-again`
+**Commit:** `1d83b5e24e233ae730984f57dc996be23509af1b`
+**Generated:** 2026-04-28T17:47:23Z
 
 ## All Files
 
@@ -680,6 +680,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
+- `tests/integration/cyrano-persona-management.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
 - `tests/integration/diamond-concierge-service.spec.ts`
@@ -709,6 +710,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/seed-loader.ts`
 - `tests/integration/sensync-metrics.spec.ts`
 - `tests/integration/sensync-rate-limit.spec.ts`
+- `tests/integration/session-topup-page.spec.ts`
 - `tests/integration/stat-holidays.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
@@ -726,12 +728,14 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/admin/diamond/page.ts`
 - `ui/app/admin/recovery/page.ts`
 - `ui/app/creator/control/page.ts`
+- `ui/app/creator/cyrano/personas/page.ts`
 - `ui/app/creator/gamification/page.ts`
 - `ui/app/creator/studio/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
+- `ui/app/vip/session/topup/page.ts`
 - `ui/app/wallet/page.ts`
 - `ui/components/dice-game.ts`
 - `ui/components/render-plan.ts`
@@ -746,9 +750,11 @@ Auto-generated on every push. Do not edit manually.
 - `ui/types/admin-diamond-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-persona-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
+- `ui/types/session-topup-contracts.ts`
 - `ui/view-models/creator-control.presenter.ts`
 - `ui/view-models/diamond-concierge.presenter.ts`
 - `ui/view-models/gamification.presenter.ts`
