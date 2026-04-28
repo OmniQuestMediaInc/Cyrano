@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/add-shared-components-docs`
-**Commit:** `b3e223194821e35dda9c72f0d21049bc5c08a40d`
-**Generated:** 2026-04-28T17:13:12Z
+**Branch:** `copilot/create-ai-twin-dashboard`
+**Commit:** `5ec81aea4bba0031deb33adf6fb8f8f8e6141c16`
+**Generated:** 2026-04-28T17:38:02Z
 
 ## All Files
 
@@ -674,6 +674,7 @@ Auto-generated on every push. Do not edit manually.
 - `services/voice-cloning/src/voice.service.ts`
 - `services/voice-cloning/src/voice.types.ts`
 - `tests/e2e/subscription-flow.spec.ts`
+- `tests/integration/ai-twin-page.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
@@ -682,6 +683,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
+- `tests/integration/cyrano-session-page.spec.ts`
 - `tests/integration/diamond-concierge-service.spec.ts`
 - `tests/integration/ffs-sensync-boost.spec.ts`
 - `tests/integration/gamification-cooldown.spec.ts`
@@ -725,9 +727,11 @@ Auto-generated on every push. Do not edit manually.
 - `tsconfig.json`
 - `ui/app/admin/diamond/page.ts`
 - `ui/app/admin/recovery/page.ts`
+- `ui/app/ai-twin/page.ts`
 - `ui/app/creator/control/page.ts`
 - `ui/app/creator/gamification/page.ts`
 - `ui/app/creator/studio/page.ts`
+- `ui/app/cyrano/session/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
 - `ui/app/rewards/page.ts`
@@ -744,8 +748,10 @@ Auto-generated on every push. Do not edit manually.
 - `ui/config/seo.ts`
 - `ui/config/theme.ts`
 - `ui/types/admin-diamond-contracts.ts`
+- `ui/types/ai-twin-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-session-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
