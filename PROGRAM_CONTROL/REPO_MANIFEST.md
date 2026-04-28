@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/add-onboarding-gateflows-docs-ux`
-**Commit:** `ce79064d5a0f7f0ba97f3b699504b25896ab4fb3`
-**Generated:** 2026-04-28T18:01:14Z
-**Branch:** `copilot/add-cyrano-ux-integration-brief`
-**Commit:** `644dc2a4c58ed5519a3432062d261c9b7d20e81e`
-**Generated:** 2026-04-28T17:52:58Z
+**Commit:** `6850b3b4a0e4f5133f95c1cfa10e133082013cae`
+**Generated:** 2026-04-28T18:02:05Z
 
 ## All Files
 
@@ -342,9 +339,9 @@ Auto-generated on every push. Do not edit manually.
 - `docs/UX_INTEGRATION_BRIEF.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
-- `docs/ux/01-onboarding-gateflows.md`
 - `docs/ux/00-shared-components.md`
 - `docs/ux/01-ai-twin-creator-dashboard.md`
+- `docs/ux/01-onboarding-gateflows.md`
 - `docs/ux/02-cyrano-session-chat.md`
 - `docs/ux/03-persona-management.md`
 - `docs/ux/04-session-top-up-recovery.md`
