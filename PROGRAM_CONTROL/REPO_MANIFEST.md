@@ -2,14 +2,15 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/deliver-final-launch-package`
-**Commit:** `128189d564755e2ff2822c0881c07e9a11ef0ae5`
-**Generated:** 2026-04-27T16:24:40Z
+**Branch:** `claude/alpha-testing-ui-prep-oxRbC`
+**Commit:** `3a263b7363a3d6f394caf5b7a0146ce0de339e62`
+**Generated:** 2026-04-28T14:48:21Z
 
 ## All Files
 
 - `.devcontainer/devcontainer.json`
 - `.editorconfig`
+- `.env.example`
 - `.eslintrc.js`
 - `.github/CODEOWNERS`
 - `.github/ISSUE_TEMPLATE/directive.yml`
@@ -397,6 +398,7 @@ Auto-generated on every push. Do not edit manually.
 - `prisma/migrations/20260427000000_single_czt_enforcement_v1/migration.sql`
 - `prisma/migrations/20260427100000_sensync_consent_scopes_ttl/migration.sql`
 - `prisma/migrations/20260427120000_studio_onboarding_rbac/migration.sql`
+- `prisma/migrations/20260428000000_legal_holds_correlation_id/migration.sql`
 - `prisma/migrations/migration_lock.toml`
 - `prisma/schema.prisma`
 - `prisma/seed.test.ts`
