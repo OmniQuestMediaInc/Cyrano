@@ -5,6 +5,9 @@ Auto-generated on every push. Do not edit manually.
 **Branch:** `copilot/create-ai-twin-dashboard`
 **Commit:** `376c38f04d2143af9c3182f7af66cecf3aef437a`
 **Generated:** 2026-04-28T17:37:33Z
+**Branch:** `copilot/add-shared-components-docs`
+**Commit:** `b3e223194821e35dda9c72f0d21049bc5c08a40d`
+**Generated:** 2026-04-28T17:13:12Z
 
 ## All Files
 
@@ -338,6 +341,7 @@ Auto-generated on every push. Do not edit manually.
 - `docs/UX_CROSS_STACK_ALIGNMENT.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
+- `docs/ux/00-shared-components.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
