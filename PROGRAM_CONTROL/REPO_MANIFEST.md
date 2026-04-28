@@ -5,6 +5,9 @@ Auto-generated on every push. Do not edit manually.
 **Branch:** `copilot/add-cyrano-ux-integration-brief`
 **Commit:** `cd30357b2db18ee97775774b9aa2b74e0fb88585`
 **Generated:** 2026-04-28T17:51:01Z
+**Branch:** `copilot/manage-cyrano-personas`
+**Commit:** `d872ee99fd66b5b58aca20a2cc2afdd720903719`
+**Generated:** 2026-04-28T17:51:59Z
 
 ## All Files
 
@@ -679,14 +682,17 @@ Auto-generated on every push. Do not edit manually.
 - `services/voice-cloning/src/voice.service.ts`
 - `services/voice-cloning/src/voice.types.ts`
 - `tests/e2e/subscription-flow.spec.ts`
+- `tests/integration/ai-twin-page.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
 - `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
+- `tests/integration/cyrano-persona-management.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
+- `tests/integration/cyrano-session-page.spec.ts`
 - `tests/integration/diamond-concierge-service.spec.ts`
 - `tests/integration/ffs-sensync-boost.spec.ts`
 - `tests/integration/gamification-cooldown.spec.ts`
@@ -714,6 +720,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/seed-loader.ts`
 - `tests/integration/sensync-metrics.spec.ts`
 - `tests/integration/sensync-rate-limit.spec.ts`
+- `tests/integration/session-topup-page.spec.ts`
 - `tests/integration/stat-holidays.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
@@ -730,13 +737,21 @@ Auto-generated on every push. Do not edit manually.
 - `tsconfig.json`
 - `ui/app/admin/diamond/page.ts`
 - `ui/app/admin/recovery/page.ts`
+- `ui/app/ai-twin/page.ts`
 - `ui/app/creator/control/page.ts`
+- `ui/app/creator/cyrano/personas/page.ts`
 - `ui/app/creator/gamification/page.ts`
+- `ui/app/creator/personas/page.spec.ts`
+- `ui/app/creator/personas/page.ts`
 - `ui/app/creator/studio/page.ts`
+- `ui/app/cyrano/session/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
+- `ui/app/diamond/session-topup/page.spec.ts`
+- `ui/app/diamond/session-topup/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
+- `ui/app/vip/session/topup/page.ts`
 - `ui/app/wallet/page.ts`
 - `ui/components/dice-game.ts`
 - `ui/components/render-plan.ts`
@@ -749,11 +764,15 @@ Auto-generated on every push. Do not edit manually.
 - `ui/config/seo.ts`
 - `ui/config/theme.ts`
 - `ui/types/admin-diamond-contracts.ts`
+- `ui/types/ai-twin-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-persona-contracts.ts`
+- `ui/types/cyrano-session-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
+- `ui/types/session-topup-contracts.ts`
 - `ui/view-models/creator-control.presenter.ts`
 - `ui/view-models/diamond-concierge.presenter.ts`
 - `ui/view-models/gamification.presenter.ts`
