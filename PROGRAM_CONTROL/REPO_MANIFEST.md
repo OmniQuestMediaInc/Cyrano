@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/manage-cyrano-personas-again`
-**Commit:** `91844626b92649995f1dae761756e7d9bff8dc2b`
-**Generated:** 2026-04-28T17:48:24Z
+**Branch:** `copilot/manage-cyrano-personas`
+**Commit:** `d872ee99fd66b5b58aca20a2cc2afdd720903719`
+**Generated:** 2026-04-28T17:51:59Z
 
 ## All Files
 
@@ -733,10 +733,14 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/creator/control/page.ts`
 - `ui/app/creator/cyrano/personas/page.ts`
 - `ui/app/creator/gamification/page.ts`
+- `ui/app/creator/personas/page.spec.ts`
+- `ui/app/creator/personas/page.ts`
 - `ui/app/creator/studio/page.ts`
 - `ui/app/cyrano/session/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
+- `ui/app/diamond/session-topup/page.spec.ts`
+- `ui/app/diamond/session-topup/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
 - `ui/app/vip/session/topup/page.ts`
