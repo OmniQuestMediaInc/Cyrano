@@ -288,9 +288,11 @@ model LegalHold {
   lifted_by       String?
   lifted_at_utc   DateTime?
   reason_code     String
+  correlation_id  String    @db.VarChar(64)
   rule_applied_id String
   created_at      DateTime  @default(now())
 
+  @@index([correlation_id])
   @@map("legal_holds")
 }
 
@@ -1143,6 +1145,7 @@ model BenefitUsage {
   images_used     Int      @default(0)
   messages_used   Int      @default(0)
   videos_used     Int      @default(0)
+  voice_minutes   Int      @default(0)
   correlation_id  String   @unique @db.VarChar(200)
   reason_code     String   @default("BENEFIT_USAGE_INIT") @db.VarChar(60)
   created_at      DateTime @default(now()) @db.Timestamptz
@@ -2525,22 +2528,6 @@ model PromoCode {
   @@map("promo_codes")
 }
 
-// ─── Benefits Usage — BENEFITS-001 ───────────────────────────────────────────
-
-model BenefitUsage {
-  id             String   @id @default(uuid())
-  user_id        String   @db.Uuid
-  month          String   @db.VarChar(7)   // YYYY-MM
-  images_used    Int      @default(0)
-  voice_minutes  Int      @default(0)
-  correlation_id String   @db.VarChar(200)
-  reason_code    String   @default("BENEFIT_USAGE_INIT") @db.VarChar(50)
-  created_at     DateTime @default(now()) @db.Timestamptz
-  updated_at     DateTime @updatedAt @db.Timestamptz
-
-  @@unique([user_id, month], name: "userId_month")
-  @@index([user_id, month])
-  @@map("benefit_usage")
 // ── Spark Twin — Free Tier Daily Usage Tracking ───────────────────────────────
 // Tracks per-user daily message count for the free Spark Twin tier.
 // Free users are capped at 15 messages per calendar day (usage_date = YYYY-MM-DD).
