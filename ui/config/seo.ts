@@ -127,6 +127,26 @@ export const SEO: Record<string, SeoMetadata> = {
     robots: 'noindex,nofollow', // authenticated route
     keywords: [...COMMON_KEYWORDS, 'diamond', 'concierge', 'inferno', 'VIP'],
   },
+  cyrano_persona_management: {
+    title: 'Cyrano™ Personas · CreatorControl · ChatNow.Zone',
+    description:
+      'Manage global, template, and custom Cyrano™ personas — create, edit, reorder, and publish personas to tier-eligible VIPs.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/creator/personas`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/creator-control.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'persona', 'creator tools'],
+  },
+  cyrano_session_topup: {
+    title: 'Session Top-Up · ChatNow.Zone',
+    description:
+      'Seamlessly top up an expired Cyrano™ session — choose your time, voice, or narrative SKU and resume with full context restored.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/diamond/session-topup`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/diamond.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'session', 'top-up', 'VIP', 'cyrano'],
+  },
 };
 
 export function buildJsonLd(): Record<string, unknown> {
