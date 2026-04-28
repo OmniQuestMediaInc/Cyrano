@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `99906169c47ad6ea4a1f5480521c7acc5ae17311`
-**Generated:** 2026-04-28T16:36:37Z
+**Branch:** `copilot/add-onboarding-gateflows-docs-ux`
+**Commit:** `ce79064d5a0f7f0ba97f3b699504b25896ab4fb3`
+**Generated:** 2026-04-28T18:01:14Z
 
 ## All Files
 
@@ -338,6 +338,7 @@ Auto-generated on every push. Do not edit manually.
 - `docs/UX_CROSS_STACK_ALIGNMENT.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
+- `docs/ux/01-onboarding-gateflows.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
