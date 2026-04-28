@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `copilot/add-cyrano-ux-integration-brief`
-**Commit:** `cd30357b2db18ee97775774b9aa2b74e0fb88585`
-**Generated:** 2026-04-28T17:51:01Z
-**Branch:** `copilot/manage-cyrano-personas`
-**Commit:** `d872ee99fd66b5b58aca20a2cc2afdd720903719`
-**Generated:** 2026-04-28T17:51:59Z
+**Commit:** `644dc2a4c58ed5519a3432062d261c9b7d20e81e`
+**Generated:** 2026-04-28T17:52:58Z
 
 ## All Files
 
