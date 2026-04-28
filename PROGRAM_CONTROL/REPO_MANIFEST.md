@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `99906169c47ad6ea4a1f5480521c7acc5ae17311`
-**Generated:** 2026-04-28T16:36:37Z
+**Branch:** `copilot/manage-cyrano-personas`
+**Commit:** `c099a0b8859177e0cc081a2be2433550ed748cdd`
+**Generated:** 2026-04-28T17:50:22Z
 
 ## All Files
 
@@ -726,9 +726,13 @@ Auto-generated on every push. Do not edit manually.
 - `ui/app/admin/recovery/page.ts`
 - `ui/app/creator/control/page.ts`
 - `ui/app/creator/gamification/page.ts`
+- `ui/app/creator/personas/page.spec.ts`
+- `ui/app/creator/personas/page.ts`
 - `ui/app/creator/studio/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
+- `ui/app/diamond/session-topup/page.spec.ts`
+- `ui/app/diamond/session-topup/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
 - `ui/app/wallet/page.ts`
@@ -745,6 +749,7 @@ Auto-generated on every push. Do not edit manually.
 - `ui/types/admin-diamond-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-persona-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
