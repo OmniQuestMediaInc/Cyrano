@@ -146,6 +146,25 @@ export const SEO: Record<string, SeoMetadata> = {
     twitter_card: 'summary',
     robots: 'noindex,nofollow', // authenticated VIP route
     keywords: [...COMMON_KEYWORDS, 'cyrano', 'session', 'top-up', 'VIP'],
+  ai_twin_dashboard: {
+    title: 'AI Twin Creator Dashboard · ChatNow.Zone',
+    description:
+      'Train your photorealistic AI Twin — upload photos, fine-tune LoRA, test generation, and publish to subscribers. Creator-only. Powered by Cyrano™.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/ai-twin`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/ai-twin.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'AI twin', 'LoRA', 'Cyrano', 'creator', 'photo upload'],
+  },
+  cyrano_session: {
+    title: 'Cyrano Session · ChatNow.Zone',
+    description:
+      'Persistent voice and narrative role-play with your AI companion — memory bank, cinematic branching, and real-time haptic effects. VIP Members only.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/cyrano/session`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/cyrano-session.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'Cyrano', 'AI companion', 'narrative', 'voice', 'VIP'],
   },
 };
 
