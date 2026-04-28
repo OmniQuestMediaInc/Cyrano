@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `claude/alpha-testing-ui-prep-oxRbC`
-**Commit:** `3a263b7363a3d6f394caf5b7a0146ce0de339e62`
-**Generated:** 2026-04-28T14:48:21Z
+**Branch:** `main`
+**Commit:** `99906169c47ad6ea4a1f5480521c7acc5ae17311`
+**Generated:** 2026-04-28T16:36:37Z
 
 ## All Files
 
@@ -335,6 +335,7 @@ Auto-generated on every push. Do not edit manually.
 - `docs/REQUIREMENTS_MASTER.md`
 - `docs/ROADMAP_MANIFEST.md`
 - `docs/RRR_CEO_DECISIONS_FINAL_2026-04-17.md`
+- `docs/UX_CROSS_STACK_ALIGNMENT.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
 - `finance/audit-dashboard.service.ts`
