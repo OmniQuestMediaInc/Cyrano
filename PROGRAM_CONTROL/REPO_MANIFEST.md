@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `99906169c47ad6ea4a1f5480521c7acc5ae17311`
-**Generated:** 2026-04-28T16:36:37Z
+**Branch:** `copilot/add-shared-components-docs`
+**Commit:** `b3e223194821e35dda9c72f0d21049bc5c08a40d`
+**Generated:** 2026-04-28T17:13:12Z
 
 ## All Files
 
@@ -338,6 +338,7 @@ Auto-generated on every push. Do not edit manually.
 - `docs/UX_CROSS_STACK_ALIGNMENT.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
 - `docs/doctrine/COPILOT_GUARDRAILS.md`
+- `docs/ux/00-shared-components.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
