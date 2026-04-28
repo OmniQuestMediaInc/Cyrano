@@ -314,11 +314,13 @@ function renderWalletBucketRow(
           [`${bucket.balance_tokens} CZT`],
         ),
       ]),
-      !bucket.sufficient
-        ? el('span', { classes: ['cnz-help-text', 'cnz-help-text--warn'] }, [
-            'Insufficient balance for selected package.',
-          ])
-        : null,
+      ...(!bucket.sufficient
+        ? [
+            el('span', { classes: ['cnz-help-text', 'cnz-help-text--warn'] }, [
+              'Insufficient balance for selected package.',
+            ]),
+          ]
+        : []),
       el(
         'button',
         {
