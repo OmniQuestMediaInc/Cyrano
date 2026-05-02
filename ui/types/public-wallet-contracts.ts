@@ -4,6 +4,11 @@
 // in services/core-api/src/config/governance.config.ts. These UI types
 // mirror but do not import the service constants — the presenter layer
 // is responsible for translating governance constants into view models.
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). Field additions require a versioned
+// migration; field removals require CEO sign-off. GuestTier is a
+// presenter-layer simplification of MembershipTier — see brief §5.
 
 export type GuestTier = 'GUEST' | 'MEMBER' | 'DIAMOND';
 

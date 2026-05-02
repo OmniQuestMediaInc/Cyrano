@@ -1,11 +1,18 @@
 // PAYLOAD G1 — Slot Machine render plan.
+//
+// @retired — RETIRED across OQMI properties (CEO directive 2026-05-02 via
+// docs/UX_INTEGRATION_BRIEF.md §8). Slot machine has no place in the
+// product. Presenter is a throw-stub: any caller surfaces a clear runtime
+// error, preventing accidental render. SLOT_MACHINE remains on the
+// gamification-contracts.ts GameType enum for backend type-compat only
+// (the service DTO still emits it on inventory queries) and is marked
+// @deprecated there.
+//
+// Wheel of Fortune (./wheel-of-fortune.ts) and Dice (./dice-game.ts) are
+// the in-scope gamification UI surfaces. See docs/UX_INTEGRATION_BRIEF.md §8.
 
-import { el, RenderElement } from './render-plan';
-import { renderHoldRelease } from './wheel-of-fortune';
-import type {
-  PrizePoolEntryViewModel,
-  PaymentMethod,
-} from '../types/gamification-contracts';
+import type { RenderElement } from './render-plan';
+import type { PrizePoolEntryViewModel, PaymentMethod } from '../types/gamification-contracts';
 
 export interface SlotMachineInputs {
   creator_id: string;
@@ -16,57 +23,15 @@ export interface SlotMachineInputs {
   cooldown_message: string | null;
 }
 
-export function renderSlotMachine(inputs: SlotMachineInputs): RenderElement {
-  const symbols = inputs.entries.slice(0, 8); // visual symbol set capped at 8
-
-  return el(
-    'section',
-    {
-      test_id: 'game-slot-machine',
-      classes: ['cnz-game', 'cnz-game--slots'],
-      aria: { 'aria-label': 'Slot Machine' },
-      props: {
-        creator_id: inputs.creator_id,
-        token_tier: inputs.selected_token_tier,
-        payment_method: inputs.selected_payment,
-      },
-    },
-    [
-      el('h2', {}, ['Slot Machine']),
-      el(
-        'div',
-        { classes: ['cnz-slots__reels'] },
-        ['reel1', 'reel2', 'reel3'].map((reel) =>
-          el(
-            'div',
-            {
-              test_id: `game-slot-${reel}`,
-              classes: ['cnz-slots__reel'],
-              props: { reel_id: reel, symbol_count: symbols.length },
-            },
-            symbols.map((s, i) =>
-              el(
-                'span',
-                {
-                  test_id: `game-slot-${reel}-symbol-${i}`,
-                  classes: ['cnz-slots__symbol', `cnz-rarity-${s.rarity.toLowerCase()}`],
-                  props: { rarity: s.rarity, prize_slot: s.prize_slot },
-                },
-                [s.name],
-              ),
-            ),
-          ),
-        ),
-      ),
-      renderHoldRelease({
-        test_id: 'game-slot-pull-button',
-        label: inputs.ready
-          ? 'Hold to pull'
-          : (inputs.cooldown_message ?? 'Cooling down'),
-        disabled: !inputs.ready,
-        on_release: 'slotPullRelease',
-        require_shake: false,
-      }),
-    ],
+/**
+ * @retired — see file header. Throws on call.
+ * Type signature retained for compile-time compatibility with any historical
+ * import; runtime invocation is blocked by design.
+ */
+export function renderSlotMachine(_inputs: SlotMachineInputs): RenderElement {
+  throw new Error(
+    '[RETIRED] Slot machine has been retired across OQMI properties ' +
+      '(CEO directive 2026-05-02). See docs/UX_INTEGRATION_BRIEF.md §8. ' +
+      'Use renderSpinWheel or renderDiceGame instead.',
   );
 }

@@ -1,6 +1,10 @@
 // PAYLOAD K+M — UI contracts for the guest-facing Rewards Dashboard + Diamond
 // Concierge surface. Mirrors the service DTOs so the presenter can bind without
 // re-deriving field names.
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). Field additions require a versioned
+// migration; field removals require CEO sign-off.
 
 // ─── Rewards Dashboard ─────────────────────────────────────────────────────────
 

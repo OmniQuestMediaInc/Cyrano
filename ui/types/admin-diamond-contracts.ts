@@ -3,6 +3,11 @@
 // so a Next.js frontend can bind without re-deriving field names. Pure types —
 // no runtime imports from the service layer (UI layer must remain shippable
 // independently of the NestJS bootstrap graph).
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). Field additions require a versioned
+// migration; field removals require CEO sign-off. Do not rename fields
+// without coordinating with the wireframe handoff packet.
 
 export type DiamondVelocityBand = 'DAYS_14' | 'DAYS_30' | 'DAYS_90' | 'DAYS_180' | 'DAYS_366';
 

@@ -2,6 +2,10 @@
 // Shapes mirror the service-side exports so a future Next.js frontend can
 // bind without re-deriving field names. The live Next.js app is not yet
 // bootstrapped — these contracts keep the frontend integration gap narrow.
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). FfsTier values (COLD/WARM/HOT/INFERNO)
+// are canonical — do not introduce drift like cool/warm/hot/high-heat.
 
 export type FfsTier = 'COLD' | 'WARM' | 'HOT' | 'INFERNO';
 
