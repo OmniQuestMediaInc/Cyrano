@@ -5,6 +5,9 @@ Auto-generated on every push. Do not edit manually.
 **Branch:** `claude/alpha-testing-ux-brief-N8M57`
 **Commit:** `cbae9a4c928f7049a6f43f42e1f0cd50a6ec93ef`
 **Generated:** 2026-05-02T09:36:57Z
+**Branch:** `copilot/add-onboarding-gateflows-docs-ux`
+**Commit:** `6850b3b4a0e4f5133f95c1cfa10e133082013cae`
+**Generated:** 2026-04-28T18:02:05Z
 
 ## All Files
 
@@ -343,6 +346,16 @@ Auto-generated on every push. Do not edit manually.
 - `docs/ux/03-creator-control.md`
 - `docs/ux/ERROR_REASON_CODES.md`
 - `docs/ux/STATE_MACHINES.md`
+- `docs/UX_CROSS_STACK_ALIGNMENT.md`
+- `docs/UX_INTEGRATION_BRIEF.md`
+- `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
+- `docs/doctrine/COPILOT_GUARDRAILS.md`
+- `docs/ux/00-shared-components.md`
+- `docs/ux/01-ai-twin-creator-dashboard.md`
+- `docs/ux/01-onboarding-gateflows.md`
+- `docs/ux/02-cyrano-session-chat.md`
+- `docs/ux/03-persona-management.md`
+- `docs/ux/04-session-top-up-recovery.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
@@ -684,14 +697,17 @@ Auto-generated on every push. Do not edit manually.
 - `tests/e2e/rbac-step-up-enforcement.spec.ts`
 - `tests/e2e/subscription-flow.spec.ts`
 - `tests/e2e/ui-presenters.spec.ts`
+- `tests/integration/ai-twin-page.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
 - `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
+- `tests/integration/cyrano-persona-management.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
+- `tests/integration/cyrano-session-page.spec.ts`
 - `tests/integration/diamond-concierge-service.spec.ts`
 - `tests/integration/ffs-sensync-boost.spec.ts`
 - `tests/integration/gamification-cooldown.spec.ts`
@@ -719,6 +735,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/seed-loader.ts`
 - `tests/integration/sensync-metrics.spec.ts`
 - `tests/integration/sensync-rate-limit.spec.ts`
+- `tests/integration/session-topup-page.spec.ts`
 - `tests/integration/stat-holidays.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
@@ -735,13 +752,21 @@ Auto-generated on every push. Do not edit manually.
 - `tsconfig.json`
 - `ui/app/admin/diamond/page.ts`
 - `ui/app/admin/recovery/page.ts`
+- `ui/app/ai-twin/page.ts`
 - `ui/app/creator/control/page.ts`
+- `ui/app/creator/cyrano/personas/page.ts`
 - `ui/app/creator/gamification/page.ts`
+- `ui/app/creator/personas/page.spec.ts`
+- `ui/app/creator/personas/page.ts`
 - `ui/app/creator/studio/page.ts`
+- `ui/app/cyrano/session/page.ts`
 - `ui/app/diamond/concierge/page.ts`
 - `ui/app/diamond/purchase/page.ts`
+- `ui/app/diamond/session-topup/page.spec.ts`
+- `ui/app/diamond/session-topup/page.ts`
 - `ui/app/rewards/page.ts`
 - `ui/app/tokens/page.ts`
+- `ui/app/vip/session/topup/page.ts`
 - `ui/app/wallet/page.ts`
 - `ui/components/dice-game.ts`
 - `ui/components/render-plan.ts`
@@ -754,11 +779,15 @@ Auto-generated on every push. Do not edit manually.
 - `ui/config/seo.ts`
 - `ui/config/theme.ts`
 - `ui/types/admin-diamond-contracts.ts`
+- `ui/types/ai-twin-contracts.ts`
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
+- `ui/types/cyrano-persona-contracts.ts`
+- `ui/types/cyrano-session-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`
 - `ui/types/rewards-contracts.ts`
+- `ui/types/session-topup-contracts.ts`
 - `ui/view-models/creator-control.presenter.ts`
 - `ui/view-models/diamond-concierge.presenter.ts`
 - `ui/view-models/gamification.presenter.ts`

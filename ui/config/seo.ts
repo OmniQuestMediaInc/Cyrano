@@ -127,6 +127,64 @@ export const SEO: Record<string, SeoMetadata> = {
     robots: 'noindex,nofollow', // authenticated route
     keywords: [...COMMON_KEYWORDS, 'diamond', 'concierge', 'inferno', 'VIP'],
   },
+  cyrano_persona_management: {
+    title: 'Cyrano™ Personas · CreatorControl · ChatNow.Zone',
+    description:
+      'Manage global, template, and custom Cyrano™ personas — create, edit, reorder, and publish personas to tier-eligible VIPs.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/creator/personas`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/creator-control.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'persona', 'creator tools'],
+  },
+  cyrano_session_topup: {
+    title: 'Session Top-Up · ChatNow.Zone',
+    description:
+      'Seamlessly top up an expired Cyrano™ session — choose your time, voice, or narrative SKU and resume with full context restored.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/diamond/session-topup`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/diamond.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'session', 'top-up', 'VIP', 'cyrano'],
+  cyrano_personas: {
+    title: 'Persona Management · Cyrano™ · ChatNow.Zone',
+    description:
+      'Manage global, template, and custom Cyrano™ personas. Drag to reorder priority, publish tier-gated personas to eligible VIPs.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/creator/cyrano/personas`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/cyrano-personas.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated creator route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'persona', 'creator tools'],
+  },
+  session_topup: {
+    title: 'Session Top-Up · Cyrano™ · ChatNow.Zone',
+    description:
+      'Your Cyrano™ session has expired. Purchase additional time, voice, or narrative minutes and resume with full context restore.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/vip/session/topup`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/session-topup.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated VIP route
+    keywords: [...COMMON_KEYWORDS, 'cyrano', 'session', 'top-up', 'VIP'],
+  ai_twin_dashboard: {
+    title: 'AI Twin Creator Dashboard · ChatNow.Zone',
+    description:
+      'Train your photorealistic AI Twin — upload photos, fine-tune LoRA, test generation, and publish to subscribers. Creator-only. Powered by Cyrano™.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/ai-twin`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/ai-twin.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'AI twin', 'LoRA', 'Cyrano', 'creator', 'photo upload'],
+  },
+  cyrano_session: {
+    title: 'Cyrano Session · ChatNow.Zone',
+    description:
+      'Persistent voice and narrative role-play with your AI companion — memory bank, cinematic branching, and real-time haptic effects. VIP Members only.',
+    canonical_url: `https://${PRIMARY_DOMAIN}/cyrano/session`,
+    og_image: `https://${PRIMARY_DOMAIN}/og/cyrano-session.png`,
+    twitter_card: 'summary',
+    robots: 'noindex,nofollow', // authenticated route
+    keywords: [...COMMON_KEYWORDS, 'Cyrano', 'AI companion', 'narrative', 'voice', 'VIP'],
+  },
 };
 
 export function buildJsonLd(): Record<string, unknown> {
