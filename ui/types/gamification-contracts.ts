@@ -5,14 +5,17 @@
 // @alpha-frozen — wireframe binding target for Grok handoff
 // (docs/UX_INTEGRATION_BRIEF.md §1). Note: SLOT_MACHINE is RETIRED across
 // OQMI properties — kept on this enum only for backend type-compat with the
-// gamification service DTO. The UI presenter at ui/components/slot-machine.ts
-// is a throw-stub. Wireframes must not surface slot machine. See brief §8.
+// gamification service DTO. The dedicated UI presenter at
+// ui/components/slot-machine.ts is a throw-stub, but this value may still
+// appear in current payloads until remaining UI surfaces are filtered. New
+// UI work must not introduce slot machine rendering. See brief §8.
 
 /**
  * @alpha-frozen — see brief §8.
  * SPIN_WHEEL and DICE are the in-scope gamification UI surfaces.
- * @deprecated SLOT_MACHINE — RETIRED across OQMI properties. Backend
- * type-compat only. Never render. See ui/components/slot-machine.ts.
+ * @deprecated SLOT_MACHINE — RETIRED across OQMI properties and retained
+ * for backend type-compat. Treat as deprecated in UI code; filtering of
+ * legacy Slot Machine surfaces is handled outside this file.
  */
 export type GameType = 'SPIN_WHEEL' | 'SLOT_MACHINE' | 'DICE';
 export type RarityTier = 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
