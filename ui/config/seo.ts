@@ -146,6 +146,7 @@ export const SEO: Record<string, SeoMetadata> = {
     twitter_card: 'summary',
     robots: 'noindex,nofollow', // authenticated route
     keywords: [...COMMON_KEYWORDS, 'session', 'top-up', 'VIP', 'cyrano'],
+  },
   cyrano_personas: {
     title: 'Persona Management · Cyrano™ · ChatNow.Zone',
     description:
@@ -165,6 +166,7 @@ export const SEO: Record<string, SeoMetadata> = {
     twitter_card: 'summary',
     robots: 'noindex,nofollow', // authenticated VIP route
     keywords: [...COMMON_KEYWORDS, 'cyrano', 'session', 'top-up', 'VIP'],
+  },
   ai_twin_dashboard: {
     title: 'AI Twin Creator Dashboard · ChatNow.Zone',
     description:
