@@ -3,11 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `claude/alpha-testing-ux-brief-N8M57`
-**Commit:** `cbae9a4c928f7049a6f43f42e1f0cd50a6ec93ef`
-**Generated:** 2026-05-02T09:36:57Z
-**Branch:** `copilot/add-onboarding-gateflows-docs-ux`
-**Commit:** `6850b3b4a0e4f5133f95c1cfa10e133082013cae`
-**Generated:** 2026-04-28T18:02:05Z
+**Commit:** `a6d2d70e17f26507ddc2358d0c0d4a5a999fa383`
+**Generated:** 2026-05-02T09:37:55Z
 
 ## All Files
 
@@ -338,14 +335,6 @@ Auto-generated on every push. Do not edit manually.
 - `docs/REQUIREMENTS_MASTER.md`
 - `docs/ROADMAP_MANIFEST.md`
 - `docs/RRR_CEO_DECISIONS_FINAL_2026-04-17.md`
-- `docs/UX_INTEGRATION_BRIEF.md`
-- `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
-- `docs/doctrine/COPILOT_GUARDRAILS.md`
-- `docs/ux/01-wallet-three-bucket.md`
-- `docs/ux/02-diamond-command-center.md`
-- `docs/ux/03-creator-control.md`
-- `docs/ux/ERROR_REASON_CODES.md`
-- `docs/ux/STATE_MACHINES.md`
 - `docs/UX_CROSS_STACK_ALIGNMENT.md`
 - `docs/UX_INTEGRATION_BRIEF.md`
 - `docs/compliance/evidence_templates/NCII_TAKEDOWN_LOG.md`
@@ -353,9 +342,14 @@ Auto-generated on every push. Do not edit manually.
 - `docs/ux/00-shared-components.md`
 - `docs/ux/01-ai-twin-creator-dashboard.md`
 - `docs/ux/01-onboarding-gateflows.md`
+- `docs/ux/01-wallet-three-bucket.md`
 - `docs/ux/02-cyrano-session-chat.md`
+- `docs/ux/02-diamond-command-center.md`
+- `docs/ux/03-creator-control.md`
 - `docs/ux/03-persona-management.md`
 - `docs/ux/04-session-top-up-recovery.md`
+- `docs/ux/ERROR_REASON_CODES.md`
+- `docs/ux/STATE_MACHINES.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
