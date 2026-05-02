@@ -1,7 +1,22 @@
 // PAYLOAD G1 — UI contracts for the creator gamification dashboard +
 // player game surfaces. Mirrors services/gamification/src/dto/gamification.dto.ts
 // 1:1 so a future Next.js page can bind without re-deriving field names.
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). Note: SLOT_MACHINE is RETIRED across
+// OQMI properties — kept on this enum only for backend type-compat with the
+// gamification service DTO. The dedicated UI presenter at
+// ui/components/slot-machine.ts is a throw-stub, but this value may still
+// appear in current payloads until remaining UI surfaces are filtered. New
+// UI work must not introduce slot machine rendering. See brief §8.
 
+/**
+ * @alpha-frozen — see brief §8.
+ * SPIN_WHEEL and DICE are the in-scope gamification UI surfaces.
+ * @deprecated SLOT_MACHINE — RETIRED across OQMI properties and retained
+ * for backend type-compat. Treat as deprecated in UI code; filtering of
+ * legacy Slot Machine surfaces is handled outside this file.
+ */
 export type GameType = 'SPIN_WHEEL' | 'SLOT_MACHINE' | 'DICE';
 export type RarityTier = 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 export type PaymentMethod = 'CZT' | 'RRR';

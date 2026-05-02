@@ -2,6 +2,10 @@
 // Extends the Payload-5 creator-control-contracts.ts with view-model shapes
 // specific to the CreatorControl command pane: FFS (Flicker n'Flame Scoring) meter, Cyrano panel,
 // broadcast timing copilot, persona switcher, payout rate indicator.
+//
+// @alpha-frozen — wireframe binding target for Grok handoff
+// (docs/UX_INTEGRATION_BRIEF.md §1). Field additions require a versioned
+// migration; field removals require CEO sign-off.
 
 import type {
   FfsTier,

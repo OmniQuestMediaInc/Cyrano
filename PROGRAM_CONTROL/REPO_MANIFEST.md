@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/add-onboarding-gateflows-docs-ux`
-**Commit:** `6850b3b4a0e4f5133f95c1cfa10e133082013cae`
-**Generated:** 2026-04-28T18:02:05Z
+**Branch:** `claude/alpha-testing-ux-brief-N8M57`
+**Commit:** `a6d2d70e17f26507ddc2358d0c0d4a5a999fa383`
+**Generated:** 2026-05-02T09:37:55Z
 
 ## All Files
 
@@ -342,9 +342,14 @@ Auto-generated on every push. Do not edit manually.
 - `docs/ux/00-shared-components.md`
 - `docs/ux/01-ai-twin-creator-dashboard.md`
 - `docs/ux/01-onboarding-gateflows.md`
+- `docs/ux/01-wallet-three-bucket.md`
 - `docs/ux/02-cyrano-session-chat.md`
+- `docs/ux/02-diamond-command-center.md`
+- `docs/ux/03-creator-control.md`
 - `docs/ux/03-persona-management.md`
 - `docs/ux/04-session-top-up-recovery.md`
+- `docs/ux/ERROR_REASON_CODES.md`
+- `docs/ux/STATE_MACHINES.md`
 - `finance/audit-dashboard.service.ts`
 - `finance/batch-payout.service.ts`
 - `finance/commission-splitting.service.ts`
@@ -679,7 +684,13 @@ Auto-generated on every push. Do not edit manually.
 - `services/voice-cloning/src/voice.module.ts`
 - `services/voice-cloning/src/voice.service.ts`
 - `services/voice-cloning/src/voice.types.ts`
+- `tests/e2e/audit-chain-replay.spec.ts`
+- `tests/e2e/diamond-recovery-flows.spec.ts`
+- `tests/e2e/full-token-purchase-flow.spec.ts`
+- `tests/e2e/high-heat-cyrano-payout-flow.spec.ts`
+- `tests/e2e/rbac-step-up-enforcement.spec.ts`
 - `tests/e2e/subscription-flow.spec.ts`
+- `tests/e2e/ui-presenters.spec.ts`
 - `tests/integration/ai-twin-page.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
