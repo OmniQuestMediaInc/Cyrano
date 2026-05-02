@@ -1,6 +1,12 @@
 // PAYLOAD G1 — server-side presenter for the creator gamification dashboard.
 // Pure transformation: takes the raw service output and renders the
 // CreatorGamificationDashboard shape. No service calls, no HTTP, no IO.
+//
+// SLOT_MACHINE retirement (CEO directive 2026-05-02; see
+// docs/UX_INTEGRATION_BRIEF.md §8): SLOT_MACHINE is filtered out of every
+// dashboard surface this presenter emits, regardless of whether it remains
+// on backend GAMIFICATION.GAME_TYPES (backend cleanup is a v2 follow-up).
+// The presenter is the single chokepoint that prevents UI exposure.
 
 import { GAMIFICATION } from '../../services/core-api/src/config/governance.config';
 import type {
@@ -16,10 +22,14 @@ import type {
   PrizePoolViewModel,
 } from '../types/gamification-contracts';
 
-const DISPLAY_NAME: Record<GameType, string> = {
+/** Game types the UI must never surface. CEO directive 2026-05-02. */
+export const RETIRED_GAME_TYPES: ReadonlyArray<GameType> = ['SLOT_MACHINE'];
+
+const DISPLAY_NAME: Partial<Record<GameType, string>> = {
   SPIN_WHEEL: 'Wheel of Fortune',
-  SLOT_MACHINE: 'Slot Machine',
   DICE: 'Dice Game',
+  // SLOT_MACHINE intentionally absent — RETIRED_GAME_TYPES filter blocks
+  // any iteration that would attempt to look it up.
 };
 
 export interface GamificationPresenterInput {
@@ -36,7 +46,9 @@ export function presentCreatorGamificationDashboard(
 ): CreatorGamificationDashboard {
   const { creator_id, pools, configs, analytics, rrr_burn_globally_enabled } = input;
 
-  const pool_views: PrizePoolViewModel[] = pools.map((p) => ({
+  const pool_views: PrizePoolViewModel[] = pools
+    .filter((p) => !p.scoped_game_type || !RETIRED_GAME_TYPES.includes(p.scoped_game_type))
+    .map((p) => ({
     pool_id: p.pool_id,
     name: p.name,
     scoped_game_type: p.scoped_game_type,
@@ -54,7 +66,9 @@ export function presentCreatorGamificationDashboard(
       })),
   }));
 
-  const cards: CreatorGameCard[] = GAMIFICATION.GAME_TYPES.map((gt) => {
+  const cards: CreatorGameCard[] = GAMIFICATION.GAME_TYPES
+    .filter((gt) => !RETIRED_GAME_TYPES.includes(gt))
+    .map((gt) => {
     const cfg = configs.find((c) => c.game_type === gt);
     const tier_stat = analytics.per_game.find((g) => g.game_type === gt);
     const active_pool = cfg
@@ -62,7 +76,7 @@ export function presentCreatorGamificationDashboard(
       : pools.find((p) => p.scoped_game_type === gt || p.scoped_game_type === null) ?? null;
     return {
       game_type: gt,
-      display_name: DISPLAY_NAME[gt],
+      display_name: DISPLAY_NAME[gt] ?? gt,
       enabled: cfg ? cfg.enabled : true,
       token_tiers: cfg ? cfg.token_tiers : [...GAMIFICATION.TOKEN_TIERS],
       cooldown_seconds: cfg?.cooldown_seconds_override ?? PLATFORM_DEFAULT_COOLDOWN_SECONDS,

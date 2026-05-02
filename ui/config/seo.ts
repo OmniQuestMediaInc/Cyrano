@@ -80,12 +80,12 @@ export const SEO: Record<string, SeoMetadata> = {
   creator_gamification: {
     title: 'Gamification · CreatorControl · ChatNow.Zone',
     description:
-      'Configure Wheel of Fortune, Slot Machine, and Dice — manage prize pools, price points, cooldowns, and per-game analytics.',
+      'Configure Wheel of Fortune and Dice — manage prize pools, price points, cooldowns, and per-game analytics.',
     canonical_url: `https://${PRIMARY_DOMAIN}/creator/gamification`,
     og_image: `https://${PRIMARY_DOMAIN}/og/creator-gamification.png`,
     twitter_card: 'summary',
     robots: 'noindex,nofollow',
-    keywords: [...COMMON_KEYWORDS, 'gamification', 'prize pool', 'wheel of fortune', 'slots', 'dice'],
+    keywords: [...COMMON_KEYWORDS, 'gamification', 'prize pool', 'wheel of fortune', 'dice'],
   },
   admin_diamond: {
     title: 'Diamond Concierge · Admin · ChatNow.Zone',

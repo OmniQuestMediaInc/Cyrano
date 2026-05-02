@@ -14,7 +14,12 @@ import {
   DiamondConciergePresenter,
   RecoveryPresenter,
 } from '../../ui/view-models/diamond-concierge.presenter';
+import {
+  presentCreatorGamificationDashboard,
+  RETIRED_GAME_TYPES,
+} from '../../ui/view-models/gamification.presenter';
 import { renderSlotMachine } from '../../ui/components/slot-machine';
+import { SEO } from '../../ui/config/seo';
 import type {
   CreatorCommandCenterView,
 } from '../../ui/types/creator-panel-contracts';
@@ -137,6 +142,80 @@ describe('RecoveryPresenter — /admin/recovery', () => {
     expect(view.open_cases).toEqual([]);
     expect(view.audit_trail_window).toEqual([]);
     expect(view.rule_applied_id).toBeTruthy();
+  });
+});
+
+describe('Gamification dashboard — slot machine never surfaces in UI', () => {
+  // Defends against regressions where SLOT_MACHINE re-enters via the
+  // backend GAMIFICATION.GAME_TYPES constant or via a creator-config row.
+  // The presenter's RETIRED_GAME_TYPES filter is the single chokepoint.
+
+  it('RETIRED_GAME_TYPES includes SLOT_MACHINE', () => {
+    expect(RETIRED_GAME_TYPES).toContain('SLOT_MACHINE');
+  });
+
+  it('dashboard cards never contain a SLOT_MACHINE entry, even when configs include one', () => {
+    const dashboard = presentCreatorGamificationDashboard({
+      creator_id: 'crt_retired_1',
+      pools: [
+        {
+          pool_id: 'pool_slot',
+          creator_id: 'crt_retired_1',
+          name: 'Retired Slot Pool',
+          scoped_game_type: 'SLOT_MACHINE',
+          version: 'v1',
+          rule_applied_id: 'TEST',
+          created_at_utc: new Date().toISOString(),
+          is_active: true,
+          entries: [],
+        },
+        {
+          pool_id: 'pool_wheel',
+          creator_id: 'crt_retired_1',
+          name: 'Wheel Pool',
+          scoped_game_type: 'SPIN_WHEEL',
+          version: 'v1',
+          rule_applied_id: 'TEST',
+          created_at_utc: new Date().toISOString(),
+          is_active: true,
+          entries: [],
+        },
+      ],
+      configs: [
+        {
+          config_id: 'cfg_slot',
+          creator_id: 'crt_retired_1',
+          game_type: 'SLOT_MACHINE',
+          token_tiers: [25],
+          prize_pool_id: 'pool_slot',
+          cooldown_seconds_override: null,
+          enabled: true,
+          accepts_rrr_burn: false,
+          version: 'v1',
+          rule_applied_id: 'TEST',
+        } as never,
+      ],
+      analytics: {
+        creator_id: 'crt_retired_1',
+        window_days: 30,
+        per_game: [],
+        generated_at_utc: new Date().toISOString(),
+      } as never,
+      rrr_burn_globally_enabled: false,
+    });
+
+    const slotCards = dashboard.cards.filter((c) => c.game_type === 'SLOT_MACHINE');
+    expect(slotCards).toHaveLength(0);
+    const slotPools = dashboard.pools.filter((p) => p.scoped_game_type === 'SLOT_MACHINE');
+    expect(slotPools).toHaveLength(0);
+  });
+
+  it('SEO copy for /creator/gamification does not mention Slot Machine', () => {
+    const meta = SEO.creator_gamification;
+    expect(meta).toBeDefined();
+    expect(meta.description.toLowerCase()).not.toContain('slot');
+    expect(meta.keywords.map((k) => k.toLowerCase())).not.toContain('slots');
+    expect(meta.keywords.map((k) => k.toLowerCase())).not.toContain('slot machine');
   });
 });
 

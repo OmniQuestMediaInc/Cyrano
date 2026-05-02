@@ -17,7 +17,10 @@ import {
   computeWelfareGuardianScore,
   DECISION_THRESHOLDS,
 } from '../../services/core-api/src/gateguard/welfare-guardian.scorer';
-import { PublicWalletPresenter } from '../../ui/view-models/public-wallet.presenter';
+import {
+  DEFAULT_GOVERNANCE_SNAPSHOT,
+  PublicWalletPresenter,
+} from '../../ui/view-models/public-wallet.presenter';
 import type { WalletThreeBucketView } from '../../ui/types/public-wallet-contracts';
 
 describe('SM-01 — Token purchase + three-bucket allocation', () => {
@@ -32,6 +35,46 @@ describe('SM-01 — Token purchase + three-bucket allocation', () => {
 
   it('DIAMOND_TIER enforces the $0.077 platform floor', () => {
     expect(DIAMOND_TIER.PLATFORM_FLOOR_PER_TOKEN).toBe(0.077);
+  });
+});
+
+describe('Config drift guard — presenter snapshot ↔ governance constants', () => {
+  // The PublicWalletPresenter exposes a DEFAULT_GOVERNANCE_SNAPSHOT for
+  // hermetic UI tests. In production the caller MUST pass a live snapshot
+  // (per the presenter docstring), but the defaults still need to track
+  // the canonical governance constants — otherwise the hermetic tests
+  // green-light a UI that diverges from the ledger.
+
+  it('ledger_spend_order matches LEDGER_SPEND_ORDER', () => {
+    expect([...DEFAULT_GOVERNANCE_SNAPSHOT.ledger_spend_order]).toEqual([...LEDGER_SPEND_ORDER]);
+  });
+
+  it('diamond_platform_floor_per_token_usd matches DIAMOND_TIER.PLATFORM_FLOOR_PER_TOKEN', () => {
+    expect(DEFAULT_GOVERNANCE_SNAPSHOT.diamond_platform_floor_per_token_usd).toBe(
+      DIAMOND_TIER.PLATFORM_FLOOR_PER_TOKEN,
+    );
+  });
+
+  it('diamond_velocity_multipliers match DIAMOND_TIER.VELOCITY_MULTIPLIERS for every band', () => {
+    const bands = ['DAYS_14', 'DAYS_30', 'DAYS_90', 'DAYS_180', 'DAYS_366'] as const;
+    for (const band of bands) {
+      expect(DEFAULT_GOVERNANCE_SNAPSHOT.diamond_velocity_multipliers[band]).toBe(
+        DIAMOND_TIER.VELOCITY_MULTIPLIERS[band],
+      );
+    }
+  });
+
+  it('diamond_volume_tiers match DIAMOND_TIER.VOLUME_TIERS on min_tokens + base_rate', () => {
+    // max_tokens uses Infinity in governance.config and Number.MAX_SAFE_INTEGER
+    // in the presenter snapshot — both serve as "no upper bound" sentinels and
+    // are equivalent for runtime range checks. Compare the load-bearing fields.
+    const govTiers = DIAMOND_TIER.VOLUME_TIERS;
+    const snapTiers = DEFAULT_GOVERNANCE_SNAPSHOT.diamond_volume_tiers;
+    expect(snapTiers.length).toBe(govTiers.length);
+    for (let i = 0; i < govTiers.length; i++) {
+      expect(snapTiers[i].min_tokens).toBe(govTiers[i].min_tokens);
+      expect(snapTiers[i].base_rate).toBe(govTiers[i].base_rate);
+    }
   });
 });
 

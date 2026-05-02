@@ -286,11 +286,19 @@ Component-ontology cross-walk:
 
 ## §8. What's NOT in the UI for Alpha (do not wireframe)
 
-- **Slot machine** — RETIRED across all OQMI properties (CEO directive,
-  this thread). `ui/components/slot-machine.ts` is a throw-stub; the
-  `SLOT_MACHINE` value on `GameType` (`gamification-contracts.ts:5`) is
-  marked `@deprecated` for backend type-compat only, never rendered. Wheel
-  of Fortune and Dice remain in scope for the gamification surface.
+- **Slot machine** — RETIRED from every UI surface (CEO directive, this
+  thread). The retirement is enforced at the presenter chokepoint:
+  `ui/view-models/gamification.presenter.ts` defines
+  `RETIRED_GAME_TYPES = ['SLOT_MACHINE']` and filters every output (cards
+  + scoped pools) so SLOT_MACHINE never reaches the dashboard regardless
+  of what the backend `GAMIFICATION.GAME_TYPES` constant still lists.
+  `ui/components/slot-machine.ts` is a throw-stub; SEO copy at
+  `ui/config/seo.ts` no longer mentions Slot Machine; the `SLOT_MACHINE`
+  value on `GameType` is `@deprecated` for backend type-compat only.
+  Backend cleanup (`services/gamification/`, `services/core-api/games/`,
+  `governance.config.GAMIFICATION.GAME_TYPES`) is a v2 follow-up since
+  it is unreachable from the UI today. Wheel of Fortune and Dice remain
+  in scope for the gamification surface.
 - **Black-Glass Interface visual treatment** — deferred to v2 per
   `OQMI_SYSTEM_STATE.md` §4 (Payload 7 ships brand tokens + dark-mode
   default; full treatment is post-alpha)

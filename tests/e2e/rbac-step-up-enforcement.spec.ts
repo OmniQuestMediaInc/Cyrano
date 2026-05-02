@@ -3,14 +3,18 @@
  * CYR: RBAC + step-up auth — every gated permission requires step-up
  *
  * Closes ship-gate E2E-1. Verifies the seven canonical step-up
- * permissions are present, each maps to its step-up action, and the
- * shared step-up modal shape is consistent across all of them.
- * Hermetic — exercises constants and the source-of-truth file.
+ * permissions resolve at runtime through RbacService.requiresStepUp,
+ * not just by source-text grep. Also keeps a defence-in-depth
+ * source-scan check so a refactor that drops the runtime mapping
+ * still gets caught even if the function signature changes. Hermetic.
  */
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { RBAC_SERVICE_RULE_ID } from '../../services/core-api/src/auth/rbac.service';
+import {
+  RbacService,
+  RBAC_SERVICE_RULE_ID,
+} from '../../services/core-api/src/auth/rbac.service';
 import { NATS_TOPICS } from '../../services/nats/topics.registry';
 
 const RBAC_SOURCE = readFileSync(
@@ -18,34 +22,75 @@ const RBAC_SOURCE = readFileSync(
   'utf8',
 );
 
+/**
+ * Build an RbacService with no-op deps. requiresStepUp() does not touch
+ * the guard or audit injectables — the call goes straight to the
+ * PERMISSION_TO_STEP_UP table — so passing nulls is safe and keeps the
+ * test hermetic (no NestJS bootstrap, no Prisma, no NATS).
+ */
+function buildHermeticRbac(): RbacService {
+  return new RbacService(null as never, null as never);
+}
+
 describe('RBAC service — canonical rule id', () => {
   it('RBAC_SERVICE_RULE_ID is the canonical id', () => {
     expect(RBAC_SERVICE_RULE_ID).toBe('RBAC_SERVICE_v1');
   });
 });
 
-describe('Step-up permission inventory — all seven canonical actions present', () => {
-  // Mirrors ship-gate-verifier.ts RBAC-1 (lines 192-213).
+describe('RbacService.requiresStepUp — runtime mapping (primary check)', () => {
+  // Mirrors ship-gate-verifier.ts RBAC-1 (lines 192-213) and the
+  // PERMISSION_TO_STEP_UP table at services/core-api/src/auth/rbac.service.ts:33.
   const required: ReadonlyArray<{ permission: string; action: string }> = [
-    { permission: "'refund:override'", action: 'REFUND_OVERRIDE' },
-    { permission: "'suspension:override'", action: 'ACCOUNT_FREEZE' },
-    { permission: "'ncii:suppress'", action: 'CONTENT_DELETION' },
-    { permission: "'legal_hold:trigger'", action: 'TAKEDOWN_SUBMISSION' },
-    { permission: "'geo_block:modify'", action: 'GEO_BLOCK_MODIFICATION' },
-    { permission: "'rate_card:configure'", action: 'PAYOUT_CHANGE' },
-    { permission: "'worm:export'", action: 'WALLET_MODIFICATION' },
+    { permission: 'refund:override',     action: 'REFUND_OVERRIDE' },
+    { permission: 'suspension:override', action: 'ACCOUNT_FREEZE' },
+    { permission: 'ncii:suppress',       action: 'CONTENT_DELETION' },
+    { permission: 'legal_hold:trigger',  action: 'TAKEDOWN_SUBMISSION' },
+    { permission: 'geo_block:modify',    action: 'GEO_BLOCK_MODIFICATION' },
+    { permission: 'rate_card:configure', action: 'PAYOUT_CHANGE' },
+    { permission: 'worm:export',         action: 'WALLET_MODIFICATION' },
   ];
-
-  it.each(required)('PERMISSION_TO_STEP_UP contains $permission', ({ permission }) => {
-    expect(RBAC_SOURCE).toContain(permission);
-  });
-
-  it.each(required)('PERMISSION_TO_STEP_UP maps $permission → $action', ({ action }) => {
-    expect(RBAC_SOURCE).toContain(action);
-  });
 
   it('exposes exactly seven step-up actions (no drift)', () => {
     expect(required).toHaveLength(7);
+  });
+
+  it.each(required)(
+    'requiresStepUp("$permission") returns "$action" at runtime',
+    ({ permission, action }) => {
+      const rbac = buildHermeticRbac();
+      expect(rbac.requiresStepUp(permission)).toBe(action);
+    },
+  );
+
+  it('requiresStepUp returns null for non-gated permissions', () => {
+    const rbac = buildHermeticRbac();
+    expect(rbac.requiresStepUp('chat:send')).toBeNull();
+    expect(rbac.requiresStepUp('wallet:read')).toBeNull();
+    expect(rbac.requiresStepUp('not:a:real:permission')).toBeNull();
+  });
+
+  it('returns null for the empty permission string', () => {
+    const rbac = buildHermeticRbac();
+    expect(rbac.requiresStepUp('')).toBeNull();
+  });
+});
+
+describe('RBAC source-scan — defence in depth', () => {
+  // These greps are a backstop against a refactor that drops requiresStepUp
+  // or replaces the const map with a different mechanism. The runtime test
+  // above is the primary assertion; this catches the case where the
+  // function signature is renamed but the table content is correct.
+  it('source references ImmutableAuditService.emit for audit binding', () => {
+    expect(RBAC_SOURCE).toContain('this.audit.emit');
+  });
+
+  it('source references ImmutableAuditService import', () => {
+    expect(RBAC_SOURCE).toContain('ImmutableAuditService');
+  });
+
+  it('source defines the PERMISSION_TO_STEP_UP map', () => {
+    expect(RBAC_SOURCE).toContain('PERMISSION_TO_STEP_UP');
   });
 });
 
@@ -56,16 +101,6 @@ describe('AuthorizeResult shape — { permitted, step_up_required }', () => {
 
   it('AuthorizeResult interface exposes the permitted field', () => {
     expect(RBAC_SOURCE).toMatch(/permitted:\s*boolean/);
-  });
-});
-
-describe('RbacService.authorize emits an immutable audit event for every decision', () => {
-  it('source references ImmutableAuditService.emit for audit binding', () => {
-    expect(RBAC_SOURCE).toContain('this.audit.emit');
-  });
-
-  it('source references ImmutableAuditService import', () => {
-    expect(RBAC_SOURCE).toContain('ImmutableAuditService');
   });
 });
 
