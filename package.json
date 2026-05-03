@@ -53,5 +53,8 @@
     "prisma": "^6.19.3",
     "ts-jest": "^29.4.9",
     "typescript": "5.9.3"
+  },
+  "resolutions": {
+    "uuid": "^14.0.0"
   }
 }
