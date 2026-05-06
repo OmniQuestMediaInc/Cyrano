@@ -170,6 +170,9 @@ const checks: Array<() => CheckResult> = [
   },
   () => {
     const recovery = readSafe('services/recovery/src/recovery.service.ts') ?? '';
+    // Match the JS canonical numeric form (`0.2` and `0.6`) and tolerate the
+    // optional trailing zero. Word boundary prevents false-pass on `0.65` /
+    // `0.25`.
     // Match either prettier-normalized (`0.2`) or canonical (`0.20`) forms —
     // the invariant is the VALUE, not the string representation.
     const ok =

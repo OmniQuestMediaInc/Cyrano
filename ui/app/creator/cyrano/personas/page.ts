@@ -16,6 +16,10 @@ import { THEME } from '../../../../config/theme';
 import { el, RenderElement } from '../../../../components/render-plan';
 import type {
   CyranoPersonaCard,
+  CyranoPersonaManagementPageInputs,
+  CyranoPersonaManagementPageView,
+  CyranoPersonaManagementTab,
+} from '../../../../types/cyrano-persona-contracts';
   CyranoPersonaManagementTab,
   PersonaManagementPageInputs,
   PersonaManagementPageView,
@@ -31,17 +35,17 @@ const TAB_LABELS: Record<CyranoPersonaManagementTab, string> = {
 
 export interface PersonaManagementPageRender {
   metadata: typeof SEO.cyrano_personas;
-  view: PersonaManagementPageView;
+  view: CyranoPersonaManagementPageView;
   tree: RenderElement;
   rule_applied_id: string;
 }
 
 export function renderPersonaManagementPage(
-  inputs: PersonaManagementPageInputs,
+  inputs: CyranoPersonaManagementPageInputs,
 ): PersonaManagementPageRender {
   const active_personas = personasForTab(inputs);
 
-  const view: PersonaManagementPageView = {
+  const view: CyranoPersonaManagementPageView = {
     creator_id: inputs.creator_id,
     active_tab: inputs.active_tab,
     active_personas,
@@ -76,7 +80,7 @@ export function renderPersonaManagementPage(
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function personasForTab(inputs: PersonaManagementPageInputs): CyranoPersonaCard[] {
+function personasForTab(inputs: CyranoPersonaManagementPageInputs): CyranoPersonaCard[] {
   switch (inputs.active_tab) {
     case 'global':
       return [...inputs.global_personas].sort((a, b) => a.sort_order - b.sort_order);
@@ -109,6 +113,7 @@ function renderHeader(): RenderElement {
 
 function renderTabs(
   activeTab: CyranoPersonaManagementTab,
+  view: CyranoPersonaManagementPageView,
   view: PersonaManagementPageView,
 ): RenderElement {
   const tabs: CyranoPersonaManagementTab[] = ['global', 'template', 'custom'];
@@ -141,6 +146,7 @@ function renderTabs(
   );
 }
 
+function tabCount(tab: CyranoPersonaManagementTab, view: CyranoPersonaManagementPageView): number {
 function tabCount(tab: CyranoPersonaManagementTab, view: PersonaManagementPageView): number {
   switch (tab) {
     case 'global':

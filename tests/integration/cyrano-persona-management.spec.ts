@@ -11,6 +11,8 @@ import {
 import { findByTestId, collectTestIds } from '../../ui/components/render-plan';
 import type {
   CyranoPersonaCard,
+  CyranoPersonaManagementPageInputs,
+} from '../../ui/types/cyrano-persona-contracts';
   PersonaManagementPageInputs,
 } from '../../ui/types/cyrano-persona-management-contracts';
 
@@ -32,8 +34,8 @@ function makePersona(overrides: Partial<CyranoPersonaCard> = {}): CyranoPersonaC
 }
 
 function makeInputs(
-  overrides: Partial<PersonaManagementPageInputs> = {},
-): PersonaManagementPageInputs {
+  overrides: Partial<CyranoPersonaManagementPageInputs> = {},
+): CyranoPersonaManagementPageInputs {
   return {
     creator_id: 'c1',
     active_tab: 'custom',

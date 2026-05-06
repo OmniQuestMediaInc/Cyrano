@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `claude/phase-1-hygiene-refresh-EAURk`
-**Commit:** `f2b611717326aca522a793b158caf233bac7fe34`
-**Generated:** 2026-05-06T05:02:38Z
+**Branch:** `claude/cyrano-audit-hygiene-ovYDN`
+**Commit:** `e57678ce6d32ba0bdf302886c555852cb387370f`
+**Generated:** 2026-05-06T11:00:06Z
 
 ## All Files
 

@@ -26,6 +26,7 @@ export interface TrainingJobPayload {
   lora_rank: number;
   trigger_word: string;
   correlation_id: string;
+  [key: string]: unknown;
 }
 
 export interface TrainingJobResult {
@@ -35,6 +36,7 @@ export interface TrainingJobResult {
   lora_weights_url?: string;
   error_message?: string;
   completed_at_utc?: string;
+  [key: string]: unknown;
 }
 
 export interface CreateTwinRequest {
