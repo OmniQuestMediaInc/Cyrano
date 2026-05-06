@@ -17,9 +17,18 @@ import { SubscriptionTier, Portal, BillingCycle } from './subscription.types';
 // Stripe price IDs per tier and billing cycle.
 // Replace placeholder values with real Stripe Price IDs before go-live.
 const STRIPE_PRICES: Record<Exclude<SubscriptionTier, never>, Record<BillingCycle, string>> = {
-  SPARK:   { monthly: process.env.STRIPE_PRICE_SPARK_MONTHLY   ?? 'price_spark_monthly',   annual: process.env.STRIPE_PRICE_SPARK_ANNUAL   ?? 'price_spark_annual'   },
-  FLAME:   { monthly: process.env.STRIPE_PRICE_FLAME_MONTHLY   ?? 'price_flame_monthly',   annual: process.env.STRIPE_PRICE_FLAME_ANNUAL   ?? 'price_flame_annual'   },
-  INFERNO: { monthly: process.env.STRIPE_PRICE_INFERNO_MONTHLY ?? 'price_inferno_monthly', annual: process.env.STRIPE_PRICE_INFERNO_ANNUAL ?? 'price_inferno_annual' },
+  SPARK: {
+    monthly: process.env.STRIPE_PRICE_SPARK_MONTHLY ?? 'price_spark_monthly',
+    annual: process.env.STRIPE_PRICE_SPARK_ANNUAL ?? 'price_spark_annual',
+  },
+  FLAME: {
+    monthly: process.env.STRIPE_PRICE_FLAME_MONTHLY ?? 'price_flame_monthly',
+    annual: process.env.STRIPE_PRICE_FLAME_ANNUAL ?? 'price_flame_annual',
+  },
+  INFERNO: {
+    monthly: process.env.STRIPE_PRICE_INFERNO_MONTHLY ?? 'price_inferno_monthly',
+    annual: process.env.STRIPE_PRICE_INFERNO_ANNUAL ?? 'price_inferno_annual',
+  },
 };
 
 @Injectable()

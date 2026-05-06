@@ -78,9 +78,7 @@ export async function establishCyranoSession(
   };
 }
 
-export function readPlatformIdentityFromHeaders(
-  headers: Headers,
-): PlatformIdentity | null {
+export function readPlatformIdentityFromHeaders(headers: Headers): PlatformIdentity | null {
   const userId = headers.get(PLATFORM_IDENTITY_HEADERS.USER_ID);
   const organizationId = headers.get(PLATFORM_IDENTITY_HEADERS.ORGANIZATION_ID);
   const tenantId = headers.get(PLATFORM_IDENTITY_HEADERS.TENANT_ID);

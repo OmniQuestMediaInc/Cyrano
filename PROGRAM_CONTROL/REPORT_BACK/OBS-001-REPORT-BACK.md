@@ -34,7 +34,7 @@
 
 - `services/core-api/src/app.module.ts` — not modified. (Integration of `OBSBridgeModule` into the application graph is a separate integration step; the directive scope is foundational module only.)
 - `services/core-api/src/finance/*` — untouched.
-- All MEMB-* / BJ-* artefacts — untouched.
+- All MEMB-_ / BJ-_ artefacts — untouched.
 
 ## Stream Key — Confirmed Stored as Hash, Not Plaintext
 
@@ -91,7 +91,7 @@ No raw topic strings used.
 6. **`organization_id` + `tenant_id` on all Prisma writes** —
    required on `Creator` model; required on every service input;
    echoed to every NATS payload ✅
-7. **NATS_TOPICS.* constants only** — no raw strings ✅
+7. **NATS_TOPICS.\* constants only** — no raw strings ✅
 
 ## Multi-tenant Mandate
 
@@ -132,6 +132,7 @@ merge, `THREAD11-COPILOT-INTAKE.md` is moved from `QUEUE/` to `DONE/`
 **SUCCESS**
 
 All OBS-001 scope items delivered:
+
 - ✅ `OBSBridgeService` with SHA-256 stream-key validation
 - ✅ `ChatAggregatorService` with jitter delivery per GovernanceConfig
 - ✅ `PersonaEngineService` with CREATOR_AUTO gate + Bill 149 prefix

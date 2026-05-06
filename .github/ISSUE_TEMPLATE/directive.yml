@@ -3,7 +3,7 @@
 # 'copilot-task' label so Copilot picks it up via the active-mission pipeline.
 name: Directive
 description: File a directive for Copilot / Claude to execute.
-title: "DIRECTIVE: <ID> — <short description>"
+title: 'DIRECTIVE: <ID> — <short description>'
 labels:
   - copilot-task
 body:
@@ -17,7 +17,7 @@ body:
     id: agent
     attributes:
       label: Agent
-      description: "COPILOT or CLAUDE_CODE"
+      description: 'COPILOT or CLAUDE_CODE'
     validations:
       required: true
 
@@ -25,7 +25,7 @@ body:
     id: parallel_safe
     attributes:
       label: Parallel-safe
-      description: "YES or NO"
+      description: 'YES or NO'
     validations:
       required: true
 
@@ -33,7 +33,7 @@ body:
     id: touches
     attributes:
       label: Touches (file paths)
-      description: "Primary files this directive creates or modifies"
+      description: 'Primary files this directive creates or modifies'
     validations:
       required: true
 

@@ -1,4 +1,5 @@
 # OQMInc Project Decisions Log
+
 Authority: Kevin B. Hartley, CEO — OmniQuest Media Inc.
 Repo: OmniQuestMediaInc/ChatNowZone--BUILD
 
@@ -7,11 +8,13 @@ Repo: OmniQuestMediaInc/ChatNowZone--BUILD
 ## DECISIONS LOG
 
 ### DEC-001: (Reserved)
+
 Status: PLACEHOLDER
 
 ---
 
 ### DEC-002: BUILDD CONTROL - CNZ Drive Folder Established
+
 Date: 2026-04-18
 Thread: 14
 Decision: The Google Drive folder "BUILDD CONTROL - CNZ"

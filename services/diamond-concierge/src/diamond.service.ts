@@ -23,9 +23,9 @@ export interface PricingQuote {
   tokens: number;
   velocity_days: number;
   velocity_band: VelocityBand;
-  base_rate_usd: number;       // resolved volume-tier rate
+  base_rate_usd: number; // resolved volume-tier rate
   velocity_multiplier: number; // resolved from VELOCITY_MULTIPLIERS
-  platform_rate_usd: number;   // effective after multiplier
+  platform_rate_usd: number; // effective after multiplier
   platform_floor_applied: boolean;
   usd_total_cents: bigint;
   expires_at_utc: string;
@@ -52,10 +52,10 @@ export interface ConciergeSurface {
 
 export interface LiquiditySnapshot {
   open_diamond_wallets: number;
-  total_remaining_tokens: string;    // bigint as string
+  total_remaining_tokens: string; // bigint as string
   total_remaining_usd_cents: string; // bigint as string
   expiring_within_48h: number;
-  high_balance_wallets: number;      // > $10k USD equivalent
+  high_balance_wallets: number; // > $10k USD equivalent
   rule_applied_id: string;
 }
 
@@ -189,8 +189,7 @@ export class DiamondConciergeService {
   /** Aggregates liquidity data for the CS Recovery Dashboard Diamond panel. */
   liquiditySnapshot(input?: DiamondLiquidityInput): LiquiditySnapshot {
     const wallets = input?.open_wallets ?? [];
-    const threshold =
-      input?.high_balance_threshold_usd_cents ?? BigInt(10_000 * 100);
+    const threshold = input?.high_balance_threshold_usd_cents ?? BigInt(10_000 * 100);
     const now = Date.now();
     const fortyEightHoursMs = 48 * 60 * 60 * 1000;
 

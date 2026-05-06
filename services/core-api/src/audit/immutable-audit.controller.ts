@@ -3,10 +3,7 @@
 // Mutating audit rows directly is never exposed — emission goes through
 // ImmutableAuditService.emit() from inside the originating service.
 import { Controller, Get, Post, Query } from '@nestjs/common';
-import {
-  ImmutableAuditService,
-  ChainIntegrityResult,
-} from './immutable-audit.service';
+import { ImmutableAuditService, ChainIntegrityResult } from './immutable-audit.service';
 
 @Controller('audit/chain')
 export class ImmutableAuditController {

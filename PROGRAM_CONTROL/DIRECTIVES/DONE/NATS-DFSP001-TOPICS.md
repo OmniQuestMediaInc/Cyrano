@@ -14,9 +14,11 @@ compliance on day one of DFSP-001 execution.
 ## Scope
 
 ### File to Modify
+
 `services/nats/topics.registry.ts`
 
 ### Topics to Add
+
 Add the following under a clearly labelled DFSP Module 3 + 4 section:
 
 ```typescript
@@ -32,6 +34,7 @@ DFSP_ACCOUNT_HOLD_RELEASED:   'dfsp.account.hold.released',
 ```
 
 ### Nothing Else
+
 - No other files touched
 - No services modified
 - No GovernanceConfig changes
@@ -40,19 +43,23 @@ DFSP_ACCOUNT_HOLD_RELEASED:   'dfsp.account.hold.released',
 ---
 
 ## Invariant Checklist
+
 - [ ] No hardcoded string literals — topics added to registry only
 - [ ] No @angular/core imports
 - [ ] npx tsc --noEmit zero new errors
 - [ ] No financial logic introduced
 
 ## Commit Format
+
 NATS: Add DFSP Module 3 + 4 topics to topics.registry.ts —
 pre-work for DFSP-001 (PlatformOtpService + AccountRecoveryHoldService)
 
 ## Report-Back
+
 File to: `PROGRAM_CONTROL/REPORT_BACK/NATS-DFSP001-TOPICS-REPORT-BACK.md`
 
 Must include:
+
 - Commit hash
 - Exact topic strings added (6 total)
 - npx tsc --noEmit result

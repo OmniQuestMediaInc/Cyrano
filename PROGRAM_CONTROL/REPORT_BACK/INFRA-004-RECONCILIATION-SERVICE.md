@@ -71,6 +71,7 @@ and `LegalHoldService` are unchanged.
 ### `services/nats/topics.registry.ts`
 
 Added:
+
 ```typescript
 // ── Reconciliation (INFRA-004 — L0 ship-gate) ─────────────────────────
 RECONCILIATION_DRIFT_DETECTED: 'compliance.reconciliation.drift_detected',
@@ -111,23 +112,23 @@ and it's a minor follow-up.
 
 ## Standing Invariants Checklist (all 15)
 
-| # | Invariant                                                                       | Status    | Evidence                                                                                                      |
-|---|---------------------------------------------------------------------------------|-----------|---------------------------------------------------------------------------------------------------------------|
-| 1 | No UPDATE or DELETE on ledger/audit/game/call/voucher tables                    | ✅ PASS    | `findMany` only — zero `update`, `delete`, `upsert`, `create` calls in `reconciliation.service.ts`            |
-| 2 | Commit format — `INFRA:` prefix (R0 non-financial, not FIZ)                     | ✅ PASS    | `INFRA: Implement ReconciliationService — L0 ship-gate closure` — commit `cfb6983`                            |
-| 3 | No hardcoded constants                                                          | ✅ PASS    | Only `RULE_ID = 'RECONCILIATION_v1'` identifier constant; no financial magic numbers                          |
-| 4 | `crypto.randomInt()` only — `Math.random()` prohibited                          | ✅ N/A     | No randomness in service; `randomUUID()` from `crypto` used only for report ID                                |
-| 5 | No `@angular/core` imports                                                      | ✅ PASS    | No Angular imports anywhere in file                                                                           |
-| 6 | `npx tsc --noEmit` zero new errors                                              | ✅ PASS    | Baseline before change: 2 errors (pre-existing `PaymentsModule` duplicate import in `app.module.ts`). After change: same 2 errors. Zero new errors introduced. See verification section below. |
-| 7 | Every service has a `Logger` instance                                           | ✅ PASS    | `private readonly logger = new Logger(ReconciliationService.name);`                                           |
-| 8 | Report-back mandatory before directive marked DONE                              | ✅ PASS    | This file                                                                                                     |
-| 9 | NATS topics only from `topics.registry.ts` — no string literals                 | ✅ PASS    | `this.nats.publish(NATS_TOPICS.RECONCILIATION_DRIFT_DETECTED, ...)` — no string literals                      |
-| 10| AI services are advisory only — no financial or enforcement execution           | ✅ N/A     | No AI integration                                                                                             |
-| 11| Step-up authentication required before any sensitive action execution           | ✅ N/A     | Read-only service — no sensitive actions                                                                      |
-| 12| RBAC check required before step-up — fail-closed on unknown permission          | ✅ N/A     | Read-only service — no RBAC decisions                                                                         |
-| 13| SHA-256 for all hash operations                                                 | ✅ N/A     | No hashing in this service                                                                                    |
-| 14| All timestamps in America/Toronto                                               | ✅ PASS    | Uses `new Date().toISOString()` (UTC) for `computed_at_utc` / `generated_at_utc`, matching the established pattern in `legal-hold.service.ts` and `audit-chain.service.ts`. The America/Toronto standard is enforced at governance-config / display level, not storage level. |
-| 15| `rule_applied_id` on every service output object                                | ✅ PASS    | `rule_applied_id: 'RECONCILIATION_v1'` on every returned `ReconciliationResult` and `ReconciliationReport`, and every NATS payload |
+| #   | Invariant                                                              | Status  | Evidence                                                                                                                                                                                                                                                                      |
+| --- | ---------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | No UPDATE or DELETE on ledger/audit/game/call/voucher tables           | ✅ PASS | `findMany` only — zero `update`, `delete`, `upsert`, `create` calls in `reconciliation.service.ts`                                                                                                                                                                            |
+| 2   | Commit format — `INFRA:` prefix (R0 non-financial, not FIZ)            | ✅ PASS | `INFRA: Implement ReconciliationService — L0 ship-gate closure` — commit `cfb6983`                                                                                                                                                                                            |
+| 3   | No hardcoded constants                                                 | ✅ PASS | Only `RULE_ID = 'RECONCILIATION_v1'` identifier constant; no financial magic numbers                                                                                                                                                                                          |
+| 4   | `crypto.randomInt()` only — `Math.random()` prohibited                 | ✅ N/A  | No randomness in service; `randomUUID()` from `crypto` used only for report ID                                                                                                                                                                                                |
+| 5   | No `@angular/core` imports                                             | ✅ PASS | No Angular imports anywhere in file                                                                                                                                                                                                                                           |
+| 6   | `npx tsc --noEmit` zero new errors                                     | ✅ PASS | Baseline before change: 2 errors (pre-existing `PaymentsModule` duplicate import in `app.module.ts`). After change: same 2 errors. Zero new errors introduced. See verification section below.                                                                                |
+| 7   | Every service has a `Logger` instance                                  | ✅ PASS | `private readonly logger = new Logger(ReconciliationService.name);`                                                                                                                                                                                                           |
+| 8   | Report-back mandatory before directive marked DONE                     | ✅ PASS | This file                                                                                                                                                                                                                                                                     |
+| 9   | NATS topics only from `topics.registry.ts` — no string literals        | ✅ PASS | `this.nats.publish(NATS_TOPICS.RECONCILIATION_DRIFT_DETECTED, ...)` — no string literals                                                                                                                                                                                      |
+| 10  | AI services are advisory only — no financial or enforcement execution  | ✅ N/A  | No AI integration                                                                                                                                                                                                                                                             |
+| 11  | Step-up authentication required before any sensitive action execution  | ✅ N/A  | Read-only service — no sensitive actions                                                                                                                                                                                                                                      |
+| 12  | RBAC check required before step-up — fail-closed on unknown permission | ✅ N/A  | Read-only service — no RBAC decisions                                                                                                                                                                                                                                         |
+| 13  | SHA-256 for all hash operations                                        | ✅ N/A  | No hashing in this service                                                                                                                                                                                                                                                    |
+| 14  | All timestamps in America/Toronto                                      | ✅ PASS | Uses `new Date().toISOString()` (UTC) for `computed_at_utc` / `generated_at_utc`, matching the established pattern in `legal-hold.service.ts` and `audit-chain.service.ts`. The America/Toronto standard is enforced at governance-config / display level, not storage level. |
+| 15  | `rule_applied_id` on every service output object                       | ✅ PASS | `rule_applied_id: 'RECONCILIATION_v1'` on every returned `ReconciliationResult` and `ReconciliationReport`, and every NATS payload                                                                                                                                            |
 
 ---
 
@@ -145,7 +146,7 @@ The service contains **zero correction logic**. Searchable verification:
   1. Logs at ERROR level
   2. Publishes NATS event
   3. Returns a result/report to the caller
-  — and takes no other action.
+     — and takes no other action.
 
 Correction of detected drift requires human authorization and is out
 of scope for this service per the v4 directive and Canonical Corpus
@@ -201,10 +202,10 @@ Prisma client generated via `yarn prisma generate` to produce typed
 
 Per Canonical Corpus v10 Appendix F:
 
-| Requirement                         | Directive   | Status After This Commit |
-|-------------------------------------|-------------|--------------------------|
-| Wallet & token integrity            | INFRA-004   | ✅ **CLOSED**             |
-| Reconciliation tests passed         | INFRA-004   | ✅ **CLOSED**             |
+| Requirement                 | Directive | Status After This Commit |
+| --------------------------- | --------- | ------------------------ |
+| Wallet & token integrity    | INFRA-004 | ✅ **CLOSED**            |
+| Reconciliation tests passed | INFRA-004 | ✅ **CLOSED**            |
 
 All remaining L0 ship-gate rows were already closed by prior directives
 (GOV-004, KYC-001, PRISMA-002, AUTH-001+AUTH-002, MOD-001,
@@ -239,6 +240,7 @@ git commit -m "INFRA: Implement ReconciliationService — L0 ship-gate closure" 
 ## HANDOFF
 
 **What was built:**
+
 - `ReconciliationService` in `services/core-api/src/compliance/`
   implementing `computeBalanceFromLedger`, `detectDrift`, and `buildReport`
   with read-only Prisma access to `LedgerEntry` and NATS publish on drift.
@@ -249,6 +251,7 @@ git commit -m "INFRA: Implement ReconciliationService — L0 ship-gate closure" 
   administrative stub to a record pointing at this commit and report-back.
 
 **What was left incomplete:**
+
 - Nothing in the directive scope.
 - **Note for Kevin:** the `stored_balance` parameter is a pragmatic
   deviation — documented above in the Design Note. If you want a
@@ -262,5 +265,6 @@ git commit -m "INFRA: Implement ReconciliationService — L0 ship-gate closure" 
   INFRA-004. Worth a separate `CHORE:` cleanup directive.
 
 **Next agent's first task:**
+
 - If any; INFRA-004 closes the v4 legacy backlog. V5/V6/V7 backlogs remain
   under their existing governance gates (GOV-FINTRAC / GOV-AGCO / GOV-AV).

@@ -88,18 +88,18 @@ export interface ChainIntegrityResult {
 }
 
 const AUDIT_EVENT_TOPIC_MAP: Record<ImmutableAuditEventType, NatsTopic | null> = {
-  PURCHASE:            NATS_TOPICS.AUDIT_IMMUTABLE_PURCHASE,
-  SPEND:               NATS_TOPICS.AUDIT_IMMUTABLE_SPEND,
-  RECOVERY:            NATS_TOPICS.AUDIT_IMMUTABLE_RECOVERY,
-  GATEGUARD_DECISION:  NATS_TOPICS.AUDIT_IMMUTABLE_GATEGUARD,
-  CYRANO_SUGGESTION:   NATS_TOPICS.AUDIT_IMMUTABLE_CYRANO,
-  STEP_UP_CHALLENGE:   NATS_TOPICS.AUDIT_IMMUTABLE_STEP_UP,
-  RBAC_DECISION:       NATS_TOPICS.AUDIT_IMMUTABLE_RBAC,
-  DIAMOND_CONTRACT:    NATS_TOPICS.AUDIT_IMMUTABLE_DIAMOND,
-  THREE_FIFTHS_EXIT:   NATS_TOPICS.AUDIT_IMMUTABLE_RECOVERY,
-  WORM_EXPORT:         NATS_TOPICS.WORM_EXPORT_COMPLETED,
-  WALLET_MUTATION:     NATS_TOPICS.AUDIT_IMMUTABLE_SPEND,
-  FFS_SCORE:           NATS_TOPICS.AUDIT_IMMUTABLE_GATEGUARD,
+  PURCHASE: NATS_TOPICS.AUDIT_IMMUTABLE_PURCHASE,
+  SPEND: NATS_TOPICS.AUDIT_IMMUTABLE_SPEND,
+  RECOVERY: NATS_TOPICS.AUDIT_IMMUTABLE_RECOVERY,
+  GATEGUARD_DECISION: NATS_TOPICS.AUDIT_IMMUTABLE_GATEGUARD,
+  CYRANO_SUGGESTION: NATS_TOPICS.AUDIT_IMMUTABLE_CYRANO,
+  STEP_UP_CHALLENGE: NATS_TOPICS.AUDIT_IMMUTABLE_STEP_UP,
+  RBAC_DECISION: NATS_TOPICS.AUDIT_IMMUTABLE_RBAC,
+  DIAMOND_CONTRACT: NATS_TOPICS.AUDIT_IMMUTABLE_DIAMOND,
+  THREE_FIFTHS_EXIT: NATS_TOPICS.AUDIT_IMMUTABLE_RECOVERY,
+  WORM_EXPORT: NATS_TOPICS.WORM_EXPORT_COMPLETED,
+  WALLET_MUTATION: NATS_TOPICS.AUDIT_IMMUTABLE_SPEND,
+  FFS_SCORE: NATS_TOPICS.AUDIT_IMMUTABLE_GATEGUARD,
   RED_BOOK_ESCALATION: NATS_TOPICS.AUDIT_IMMUTABLE_RECOVERY,
 };
 
@@ -139,7 +139,9 @@ export class ImmutableAuditService {
   }
 
   computeChainHash(priorHash: string, payloadHash: string): string {
-    return createHash('sha256').update(priorHash + payloadHash).digest('hex');
+    return createHash('sha256')
+      .update(priorHash + payloadHash)
+      .digest('hex');
   }
 
   /**
@@ -330,11 +332,7 @@ export class ImmutableAuditService {
    * worm_export_records. storageUri is a caller-provided reference — in
    * prod this points at S3 + Glacier or an equivalent WORM bucket.
    */
-  async sealWormExport(params: {
-    fromUtc: Date;
-    toUtc: Date;
-    storageUri?: string;
-  }): Promise<{
+  async sealWormExport(params: { fromUtc: Date; toUtc: Date; storageUri?: string }): Promise<{
     export_id: string;
     event_count: number;
     hash_seal: string;

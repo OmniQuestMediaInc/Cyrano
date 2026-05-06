@@ -23,7 +23,7 @@ export const RARITY_RANK: Record<RarityTier, number> = {
 export interface PrizePoolEntry {
   entry_id: string;
   pool_id: string;
-  prize_slot: string;            // e.g. '7' for dice, 'SEG_A' for wheel, 'THREE_OF_A_KIND'
+  prize_slot: string; // e.g. '7' for dice, 'SEG_A' for wheel, 'THREE_OF_A_KIND'
   name: string;
   description: string;
   rarity: RarityTier;

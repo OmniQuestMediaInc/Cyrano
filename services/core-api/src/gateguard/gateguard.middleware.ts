@@ -15,11 +15,7 @@
 import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { randomUUID } from 'crypto';
-import {
-  GateGuardAction,
-  GateGuardResult,
-  GateGuardInput,
-} from './gateguard.types';
+import { GateGuardAction, GateGuardResult, GateGuardInput } from './gateguard.types';
 import { GateGuardService } from './gateguard.service';
 
 /** Paths handled by the pre-processor, mapped to their canonical action. */
@@ -44,7 +40,7 @@ function resolveAction(req: Request): GateGuardAction | undefined {
   if (header === 'PURCHASE' || header === 'SPEND' || header === 'PAYOUT') {
     return header;
   }
-  const match = GATED_ROUTES.find(r => req.path.startsWith(r.prefix));
+  const match = GATED_ROUTES.find((r) => req.path.startsWith(r.prefix));
   return match?.action;
 }
 
@@ -99,9 +95,7 @@ function buildInputFromRequest(req: Request, action: GateGuardAction): GateGuard
     throw new Error('GateGuardMiddleware: userId is required on gated routes');
   }
 
-  const amountTokens = coerceBigInt(
-    body.amountTokens ?? body.amount_tokens ?? body.amount,
-  );
+  const amountTokens = coerceBigInt(body.amountTokens ?? body.amount_tokens ?? body.amount);
 
   return {
     transactionId,

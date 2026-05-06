@@ -15,7 +15,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import { NATS_TOPICS } from '../../nats/topics.registry';
-import { CYRANO_LAYER4_RULE_ID } from './cyrano-layer4.types';
 
 /** Maximum number of creators that may be enrolled in the beta at any time. */
 export const BETA_MAX_CREATORS = 30;

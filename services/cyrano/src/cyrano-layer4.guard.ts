@@ -38,8 +38,7 @@ export class CyranoLayer4Guard implements CanActivate {
 
     const claimed_tenant: string | undefined = headers[CYRANO_LAYER4_HEADERS.TENANT];
     const raw_key: string | undefined = headers[CYRANO_LAYER4_HEADERS.API_KEY];
-    const correlation_id: string | undefined =
-      headers[CYRANO_LAYER4_HEADERS.CORRELATION];
+    const correlation_id: string | undefined = headers[CYRANO_LAYER4_HEADERS.CORRELATION];
 
     if (!claimed_tenant) {
       this.deny('TENANT_NOT_FOUND', { correlation_id, claimed_tenant: null });

@@ -11,13 +11,13 @@
 
 Restored four missing registrations that were dropped during merge consolidation:
 
-| Item | Type | Status |
-|------|------|--------|
-| `NatsModule` | Module import + registration (first position) | Restored |
-| `GamesModule` | Module import + registration | Restored |
-| `ZoneGptModule` | Module import + registration | Restored |
-| `ComplianceModule` | Import statement added (was referenced but not imported) | Restored |
-| `SovereignCaCMiddleware` | Import statement (was already present) | Confirmed present |
+| Item                     | Type                                                     | Status            |
+| ------------------------ | -------------------------------------------------------- | ----------------- |
+| `NatsModule`             | Module import + registration (first position)            | Restored          |
+| `GamesModule`            | Module import + registration                             | Restored          |
+| `ZoneGptModule`          | Module import + registration                             | Restored          |
+| `ComplianceModule`       | Import statement added (was referenced but not imported) | Restored          |
+| `SovereignCaCMiddleware` | Import statement (was already present)                   | Confirmed present |
 
 ## Validation
 

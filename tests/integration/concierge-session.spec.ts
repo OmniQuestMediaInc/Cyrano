@@ -24,29 +24,33 @@ describe('DiamondConciergeSessionService — tier gate', () => {
 
   it('throws ConciergeAccessDeniedError when user has no subscription', async () => {
     const { svc } = makeService();
-    await expect(svc.createConciergeSession('user_no_sub', 'Book a private event'))
-      .rejects.toBeInstanceOf(ConciergeAccessDeniedError);
+    await expect(
+      svc.createConciergeSession('user_no_sub', 'Book a private event'),
+    ).rejects.toBeInstanceOf(ConciergeAccessDeniedError);
   });
 
   it('throws ConciergeAccessDeniedError for SPARK tier', async () => {
     const { svc, repo } = makeService();
     repo.seedSubscription('user_spark', { tier: 'SPARK', status: 'ACTIVE' });
-    await expect(svc.createConciergeSession('user_spark', 'Request'))
-      .rejects.toBeInstanceOf(ConciergeAccessDeniedError);
+    await expect(svc.createConciergeSession('user_spark', 'Request')).rejects.toBeInstanceOf(
+      ConciergeAccessDeniedError,
+    );
   });
 
   it('throws ConciergeAccessDeniedError for FLAME tier', async () => {
     const { svc, repo } = makeService();
     repo.seedSubscription('user_flame', { tier: 'FLAME', status: 'ACTIVE' });
-    await expect(svc.createConciergeSession('user_flame', 'Request'))
-      .rejects.toBeInstanceOf(ConciergeAccessDeniedError);
+    await expect(svc.createConciergeSession('user_flame', 'Request')).rejects.toBeInstanceOf(
+      ConciergeAccessDeniedError,
+    );
   });
 
   it('throws ConciergeAccessDeniedError for INFERNO with CANCELLED status', async () => {
     const { svc, repo } = makeService();
     repo.seedSubscription('user_cancelled', { tier: 'INFERNO', status: 'CANCELLED' });
-    await expect(svc.createConciergeSession('user_cancelled', 'Request'))
-      .rejects.toBeInstanceOf(ConciergeAccessDeniedError);
+    await expect(svc.createConciergeSession('user_cancelled', 'Request')).rejects.toBeInstanceOf(
+      ConciergeAccessDeniedError,
+    );
   });
 
   it('creates a session for an ACTIVE INFERNO subscriber', async () => {
@@ -117,8 +121,9 @@ describe('DiamondConciergeSessionService — request validation', () => {
 
   it('throws ConciergeRequestTooLongError for requests over 2000 chars', async () => {
     const request = 'A'.repeat(2001);
-    await expect(svc.createConciergeSession('user_vip', request))
-      .rejects.toBeInstanceOf(ConciergeRequestTooLongError);
+    await expect(svc.createConciergeSession('user_vip', request)).rejects.toBeInstanceOf(
+      ConciergeRequestTooLongError,
+    );
   });
 });
 

@@ -14,10 +14,7 @@
 //     • emitSummary emits CYRANO_BETA_SUMMARY_EMITTED
 
 import { NatsService } from '../../core-api/src/nats/nats.service';
-import {
-  BETA_MAX_CREATORS,
-  CyranoBetaRegistryService,
-} from './cyrano-beta-registry.service';
+import { BETA_MAX_CREATORS, CyranoBetaRegistryService } from './cyrano-beta-registry.service';
 import { CyranoBetaAnalyticsService } from './cyrano-beta-analytics.service';
 
 function buildRegistry() {
@@ -118,9 +115,7 @@ describe('CyranoBetaRegistryService', () => {
       svc.enroll('creator-7');
       const list = svc.listEnrolled();
       expect(list).toHaveLength(2);
-      expect(list.map((r) => r.creator_id).sort()).toEqual(
-        ['creator-6', 'creator-7'].sort(),
-      );
+      expect(list.map((r) => r.creator_id).sort()).toEqual(['creator-6', 'creator-7'].sort());
     });
   });
 });
@@ -204,7 +199,13 @@ describe('CyranoBetaAnalyticsService', () => {
       const { svc } = buildAnalytics();
       svc.trackPrompt({ creator_id: 'cr1', blocked: false, voice_used: false, translated: false });
       svc.trackPrompt({ creator_id: 'cr1', blocked: true, voice_used: false, translated: false });
-      svc.trackPrompt({ creator_id: 'cr2', blocked: false, voice_used: true, translated: true, target_locale: 'fr-FR' });
+      svc.trackPrompt({
+        creator_id: 'cr2',
+        blocked: false,
+        voice_used: true,
+        translated: true,
+        target_locale: 'fr-FR',
+      });
 
       const summary = svc.emitSummary('test-corr');
       expect(summary.total_creators).toBe(2);
@@ -242,8 +243,8 @@ describe('CyranoBetaAnalyticsService', () => {
         target_locale: 'es-ES',
         correlation_id: 'int-corr-1',
       });
-      const promptCall = publishSpy.mock.calls.find(([topic]) =>
-        topic === 'cyrano.beta.prompt.tracked',
+      const promptCall = publishSpy.mock.calls.find(
+        ([topic]) => topic === 'cyrano.beta.prompt.tracked',
       );
       expect(promptCall).toBeTruthy();
       expect(promptCall?.[1]).toMatchObject({

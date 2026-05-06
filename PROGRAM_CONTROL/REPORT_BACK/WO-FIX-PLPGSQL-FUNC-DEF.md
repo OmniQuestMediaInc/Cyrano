@@ -1,6 +1,7 @@
 # WO Report-Back: Fix invalid PL/pgSQL function definition in init-ledger.sql
 
 ## Branch + HEAD Commit
+
 - **Branch:** `copilot/fix-invalid-plpgsql-function-definition`
 - **HEAD:** `c8de9b49ec92ef0d898190582326e290777f0142`
 
@@ -30,23 +31,25 @@ The original fix was delivered in PR #40 and has been stable across all subseque
 
 ## Audit of ALL CREATE OR REPLACE FUNCTION Statements
 
-| Line | Function | Opening delimiter | Closing delimiter | Status |
-|------|----------|-------------------|-------------------|--------|
+| Line | Function                          | Opening delimiter                  | Closing delimiter                 | Status     |
+| ---- | --------------------------------- | ---------------------------------- | --------------------------------- | ---------- |
 | 172  | `ledger_entries_block_mutation()` | `RETURNS TRIGGER AS $$` (line 173) | `$$ LANGUAGE plpgsql;` (line 181) | ✅ Correct |
-| 299  | `transactions_block_mutation()` | `RETURNS TRIGGER AS $$` (line 300) | `$$ LANGUAGE plpgsql;` (line 328) | ✅ Correct |
-| 337  | `set_transactions_updated_at()` | `RETURNS TRIGGER AS $$` (line 338) | `$$ LANGUAGE plpgsql;` (line 345) | ✅ Correct |
+| 299  | `transactions_block_mutation()`   | `RETURNS TRIGGER AS $$` (line 300) | `$$ LANGUAGE plpgsql;` (line 328) | ✅ Correct |
+| 337  | `set_transactions_updated_at()`   | `RETURNS TRIGGER AS $$` (line 338) | `$$ LANGUAGE plpgsql;` (line 345) | ✅ Correct |
 
 No `$${` patterns remain anywhere in the file.
 
 ## Commands Run + Verbatim Outputs
 
 ### 1. Verify no `$${` pattern remains
+
 ```
 $ grep -n '\$\${' infra/postgres/init-ledger.sql
 (no output — exit code 1, meaning no matches found)
 ```
 
 ### 2. Confirm all CREATE OR REPLACE FUNCTION delimiters
+
 ```
 $ grep -n '\$\$' infra/postgres/init-ledger.sql
 173:RETURNS TRIGGER AS $$
@@ -62,11 +65,13 @@ dollar-quoting norms. Function bodies are untouched; only delimiters were correc
 in the prior fix.
 
 ### 3. CI validate-schema reference
+
 - The `validate-schema` job applies `infra/postgres/init-ledger.sql` against a
   live `postgres:16` instance using `psql -v ON_ERROR_STOP=1`.
 - CI passes on `main` after the prior fix was merged.
 
 ## Result
+
 ✅ SUCCESS — All PL/pgSQL dollar-quote delimiters in `infra/postgres/init-ledger.sql`
 conform to PostgreSQL norms. The three affected functions (`ledger_entries_block_mutation`,
 `transactions_block_mutation`, `set_transactions_updated_at`) all use correct `$$ ... $$`

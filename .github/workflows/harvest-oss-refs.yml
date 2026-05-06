@@ -11,14 +11,14 @@ on:
   workflow_dispatch:
     inputs:
       seed_content:
-        description: "Seed with full OSS source content (requires internet access to github.com)"
+        description: 'Seed with full OSS source content (requires internet access to github.com)'
         required: false
-        default: "false"
+        default: 'false'
         type: boolean
       dry_run:
-        description: "Dry run — print what would be done without pushing"
+        description: 'Dry run — print what would be done without pushing'
         required: false
-        default: "false"
+        default: 'false'
         type: boolean
 
 permissions:
@@ -33,50 +33,50 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - branch_ref: "refs/oss/booking-api"
-            source_repo: "CelaDaniel/Full-Stack-Booking-Management-API"
-            seed_dir: "refs-oss-booking-api"
-            directive_series: "CCZ-004, DISC-001/004, OPS-006"
+          - branch_ref: 'refs/oss/booking-api'
+            source_repo: 'CelaDaniel/Full-Stack-Booking-Management-API'
+            seed_dir: 'refs-oss-booking-api'
+            directive_series: 'CCZ-004, DISC-001/004, OPS-006'
 
-          - branch_ref: "refs/oss/socketio-chat"
-            source_repo: "CelaDaniel/nodejs-socketio-chat-application"
-            seed_dir: "refs-oss-socketio-chat"
-            directive_series: "OBS-001/002, CCZ-001, OPS-003"
+          - branch_ref: 'refs/oss/socketio-chat'
+            source_repo: 'CelaDaniel/nodejs-socketio-chat-application'
+            seed_dir: 'refs-oss-socketio-chat'
+            directive_series: 'OBS-001/002, CCZ-001, OPS-003'
 
-          - branch_ref: "refs/oss/react-chat-app"
-            source_repo: "CelaDaniel/React-Chat-App"
-            seed_dir: "refs-oss-react-chat-app"
-            directive_series: "CCZ-001/002, OBS-001"
+          - branch_ref: 'refs/oss/react-chat-app'
+            source_repo: 'CelaDaniel/React-Chat-App'
+            seed_dir: 'refs-oss-react-chat-app'
+            directive_series: 'CCZ-001/002, OBS-001'
 
-          - branch_ref: "refs/oss/discussion-platform"
-            source_repo: "CelaDaniel/next_discussion_platform"
-            seed_dir: "refs-oss-discussion-platform"
-            directive_series: "FC-001-006, OPS-004"
+          - branch_ref: 'refs/oss/discussion-platform'
+            source_repo: 'CelaDaniel/next_discussion_platform'
+            seed_dir: 'refs-oss-discussion-platform'
+            directive_series: 'FC-001-006, OPS-004'
 
-          - branch_ref: "refs/oss/live-polling"
-            source_repo: "CelaDaniel/react-polling"
-            seed_dir: "refs-oss-live-polling"
-            directive_series: "OBS Room-Heat Engine"
+          - branch_ref: 'refs/oss/live-polling'
+            source_repo: 'CelaDaniel/react-polling'
+            seed_dir: 'refs-oss-live-polling'
+            directive_series: 'OBS Room-Heat Engine'
 
-          - branch_ref: "refs/oss/zoom-clone"
-            source_repo: "CelaDaniel/zoom-clone"
-            seed_dir: "refs-oss-zoom-clone"
-            directive_series: "OBS ShowZone Theatre UI, DISC"
+          - branch_ref: 'refs/oss/zoom-clone'
+            source_repo: 'CelaDaniel/zoom-clone'
+            seed_dir: 'refs-oss-zoom-clone'
+            directive_series: 'OBS ShowZone Theatre UI, DISC'
 
-          - branch_ref: "refs/oss/loadbalancer-nginx"
-            source_repo: "CelaDaniel/loadbalancer-nginx-docker-nodejs"
-            seed_dir: "refs-oss-loadbalancer-nginx"
-            directive_series: "Bijou SFU infra, OPS deployment"
+          - branch_ref: 'refs/oss/loadbalancer-nginx'
+            source_repo: 'CelaDaniel/loadbalancer-nginx-docker-nodejs'
+            seed_dir: 'refs-oss-loadbalancer-nginx'
+            directive_series: 'Bijou SFU infra, OPS deployment'
 
-          - branch_ref: "refs/oss/social-media-app"
-            source_repo: "CelaDaniel/Social-media-react-app"
-            seed_dir: "refs-oss-social-media-app"
-            directive_series: "FC-003, CCZ-003, OPS-006"
+          - branch_ref: 'refs/oss/social-media-app'
+            source_repo: 'CelaDaniel/Social-media-react-app'
+            seed_dir: 'refs-oss-social-media-app'
+            directive_series: 'FC-003, CCZ-003, OPS-006'
 
-          - branch_ref: "refs/oqminc/ai-resources"
-            source_repo: "CelaDaniel/free-ai-resources-x"
-            seed_dir: "refs-oqminc-ai-resources"
-            directive_series: "OBS-005, HZ, NN-001/002, DFSP"
+          - branch_ref: 'refs/oqminc/ai-resources'
+            source_repo: 'CelaDaniel/free-ai-resources-x'
+            seed_dir: 'refs-oqminc-ai-resources'
+            directive_series: 'OBS-005, HZ, NN-001/002, DFSP'
 
     steps:
       - name: Checkout main branch

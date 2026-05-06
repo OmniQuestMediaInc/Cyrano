@@ -36,8 +36,7 @@ const TOP_UP_CTA_THRESHOLD_MINUTES = 5;
 function buildView(inputs: CyranoSessionPageInputs): CyranoSessionView {
   const tierBadge = TIER_BADGE_MAP[inputs.tier];
   const isExpiring =
-    inputs.session_status === 'ACTIVE' &&
-    inputs.minutes_remaining <= TOP_UP_CTA_THRESHOLD_MINUTES;
+    inputs.session_status === 'ACTIVE' && inputs.minutes_remaining <= TOP_UP_CTA_THRESHOLD_MINUTES;
   const effectiveStatus: SessionStatus =
     isExpiring && inputs.session_status === 'ACTIVE' ? 'EXPIRING' : inputs.session_status;
 
@@ -54,21 +53,38 @@ function buildView(inputs: CyranoSessionPageInputs): CyranoSessionView {
   const voiceCall: VoiceCallButton = {
     available: inputs.voice_call_available ?? false,
     label: 'Voice Call',
-    disabled_reason:
-      inputs.voice_call_available
-        ? null
-        : effectiveStatus === 'EXPIRED'
-          ? 'Session expired — top up to enable voice'
-          : 'Voice call not available for this tier',
+    disabled_reason: inputs.voice_call_available
+      ? null
+      : effectiveStatus === 'EXPIRED'
+        ? 'Session expired — top up to enable voice'
+        : 'Voice call not available for this tier',
   };
 
   // Default to three zero-balance buckets when caller provides none.
   // The real balances are populated by the wallet service at session start;
   // zero values are expected for new/idle sessions before a spend event occurs.
   const defaultBuckets: SessionWalletBucket[] = inputs.wallet_buckets ?? [
-    { bucket: 'purchased', label: 'Purchased', balance_tokens: '0', spend_priority: 1, will_drain_next: false },
-    { bucket: 'membership', label: 'Membership', balance_tokens: '0', spend_priority: 2, will_drain_next: false },
-    { bucket: 'bonus', label: 'Bonus', balance_tokens: '0', spend_priority: 3, will_drain_next: false },
+    {
+      bucket: 'purchased',
+      label: 'Purchased',
+      balance_tokens: '0',
+      spend_priority: 1,
+      will_drain_next: false,
+    },
+    {
+      bucket: 'membership',
+      label: 'Membership',
+      balance_tokens: '0',
+      spend_priority: 2,
+      will_drain_next: false,
+    },
+    {
+      bucket: 'bonus',
+      label: 'Bonus',
+      balance_tokens: '0',
+      spend_priority: 3,
+      will_drain_next: false,
+    },
   ];
 
   return {
@@ -97,9 +113,7 @@ export interface CyranoSessionPageRender {
   rule_applied_id: string;
 }
 
-export function renderCyranoSessionPage(
-  inputs: CyranoSessionPageInputs,
-): CyranoSessionPageRender {
+export function renderCyranoSessionPage(inputs: CyranoSessionPageInputs): CyranoSessionPageRender {
   const view = buildView(inputs);
 
   const tree = el(
@@ -180,10 +194,7 @@ function renderVoiceCallButton(voice: VoiceCallButton, sessionId: string): Rende
     'button',
     {
       test_id: 'cyrano-session-voice-call-btn',
-      classes: [
-        'cnz-button',
-        voice.available ? 'cnz-button--secondary' : 'cnz-button--disabled',
-      ],
+      classes: ['cnz-button', voice.available ? 'cnz-button--secondary' : 'cnz-button--disabled'],
       on: { click: 'initiateVoiceCall' },
       props: {
         session_id: sessionId,
@@ -191,7 +202,9 @@ function renderVoiceCallButton(voice: VoiceCallButton, sessionId: string): Rende
         disabled_reason: voice.disabled_reason ?? null,
       },
       aria: {
-        'aria-label': voice.available ? 'Start voice call' : (voice.disabled_reason ?? 'Voice call unavailable'),
+        'aria-label': voice.available
+          ? 'Start voice call'
+          : (voice.disabled_reason ?? 'Voice call unavailable'),
         'aria-disabled': voice.available ? 'false' : 'true',
       },
     },
@@ -207,10 +220,7 @@ function renderSessionLayout(view: CyranoSessionView): RenderElement {
       test_id: 'cyrano-session-layout',
       classes: ['cnz-cyrano-session__layout'],
     },
-    [
-      renderChatArea(view),
-      renderMemorySidebar(view.memory_sidebar),
-    ],
+    [renderChatArea(view), renderMemorySidebar(view.memory_sidebar)],
   );
 }
 
@@ -266,24 +276,28 @@ function renderChatMessages(messages: ChatMessage[]): RenderElement {
           },
         },
         [
-          el('header', { classes: ['cnz-chat__message-header'] }, [
-            el('strong', { classes: ['cnz-chat__role'] }, [m.role]),
-            m.is_haptic
-              ? el(
-                  'span',
-                  { classes: ['cnz-haptic-indicator'], aria: { 'aria-label': 'Haptic event' } },
-                  ['⚡'],
-                )
-              : null,
-            el(
-              'time',
-              {
-                classes: ['cnz-chat__timestamp'],
-                props: { datetime: m.timestamp_utc },
-              },
-              [m.timestamp_utc],
-            ),
-          ].filter(Boolean) as RenderElement[]),
+          el(
+            'header',
+            { classes: ['cnz-chat__message-header'] },
+            [
+              el('strong', { classes: ['cnz-chat__role'] }, [m.role]),
+              m.is_haptic
+                ? el(
+                    'span',
+                    { classes: ['cnz-haptic-indicator'], aria: { 'aria-label': 'Haptic event' } },
+                    ['⚡'],
+                  )
+                : null,
+              el(
+                'time',
+                {
+                  classes: ['cnz-chat__timestamp'],
+                  props: { datetime: m.timestamp_utc },
+                },
+                [m.timestamp_utc],
+              ),
+            ].filter(Boolean) as RenderElement[],
+          ),
           el('p', { classes: ['cnz-chat__content'] }, [m.content]),
         ],
       ),
@@ -357,15 +371,19 @@ function renderChatInput(status: SessionStatus, sessionId: string): RenderElemen
         'textarea',
         {
           test_id: 'cyrano-session-chat-input',
-          classes: [
-            'cnz-chat__input',
-            inputDisabled ? 'cnz-chat__input--disabled' : '',
-          ].filter(Boolean),
+          classes: ['cnz-chat__input', inputDisabled ? 'cnz-chat__input--disabled' : ''].filter(
+            Boolean,
+          ),
           props: {
             disabled: inputDisabled,
-            placeholder: inputDisabled ? 'Session expired — top up to continue' : 'Continue the story…',
+            placeholder: inputDisabled
+              ? 'Session expired — top up to continue'
+              : 'Continue the story…',
           },
-          aria: { 'aria-label': 'Message input', 'aria-disabled': inputDisabled ? 'true' : 'false' },
+          aria: {
+            'aria-label': 'Message input',
+            'aria-disabled': inputDisabled ? 'true' : 'false',
+          },
         },
         [],
       ),
@@ -373,10 +391,7 @@ function renderChatInput(status: SessionStatus, sessionId: string): RenderElemen
         'button',
         {
           test_id: 'cyrano-session-send-btn',
-          classes: [
-            'cnz-button',
-            inputDisabled ? 'cnz-button--disabled' : 'cnz-button--primary',
-          ],
+          classes: ['cnz-button', inputDisabled ? 'cnz-button--disabled' : 'cnz-button--primary'],
           props: { type: 'submit', disabled: inputDisabled },
         },
         ['Send'],
@@ -423,11 +438,7 @@ function renderMemorySidebar(entries: MemorySidebarEntry[]): RenderElement {
               },
             },
             [
-              el(
-                'span',
-                { classes: ['cnz-memory-sidebar__type-chip'] },
-                [e.memory_type],
-              ),
+              el('span', { classes: ['cnz-memory-sidebar__type-chip'] }, [e.memory_type]),
               el('p', { classes: ['cnz-memory-sidebar__preview'] }, [e.content_preview]),
             ],
           ),

@@ -1,12 +1,15 @@
 # WO: INSTALL PAYROLL SPLITTER LOGIC
 
 ## Branch
+
 `copilot/implement-payroll-split-logic`
 
 ## HEAD
+
 `bb322c1`
 
 ## Files Changed
+
 ```
 PROGRAM_CONTROL/REPORT_BACK/WO-PAYROLL-SPLIT-001.md |  59 +++++++++++++++++
 services/core-api/src/db.ts                         |  10 +++
@@ -37,9 +40,11 @@ $ git diff --stat d1faf7b HEAD
 ## Changes Applied
 
 ### `services/core-api/src/db.ts`
+
 Prisma singleton client — reuse the same `PrismaClient` instance across the process to prevent connection pool exhaustion. Added `// WO: WO-PAYROLL-SPLIT-001` governance header.
 
 ### `services/core-api/src/finance/ledger.service.ts`
+
 - `@Injectable()` NestJS decorator with `PrismaService` constructor injection (no dual-pool risk)
 - `REGULAR_PAYOUT_RATE = 0.065` and `VIP_PAYOUT_RATE = 0.080` rate constants
 - Uses shared `TipTransaction` type from `ledger.types.ts` (no inline type duplication)
@@ -48,16 +53,18 @@ Prisma singleton client — reuse the same `PrismaClient` instance across the pr
 - Atomic `$transaction([ledger_entries.create(...)])` INSERT with `entry_type: 'CHARGE'`; `performer_id`, `studio_id`, `contract_id` populated from resolved contract
 
 ### `services/core-api/src/finance/ledger.module.ts`
+
 NestJS `LedgerModule` providing both `PrismaService` and `LedgerService`; exports `LedgerService`. Added `// WO: WO-PAYROLL-SPLIT-001` governance header.
 
 ## Doctrine Compliance
 
-| Invariant | Status |
-|---|---|
-| Append-Only Ledger | ✅ `this.db.$transaction([this.db.ledger_entries.create(...)])` — INSERT only, no UPDATE/DELETE |
+| Invariant           | Status                                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Append-Only Ledger  | ✅ `this.db.$transaction([this.db.ledger_entries.create(...)])` — INSERT only, no UPDATE/DELETE              |
 | Deterministic Logic | ✅ Split calculation is deterministic: same inputs → same outputs; `Math.round` for reproducible cent values |
-| Atomic Write | ✅ Wrapped in `this.db.$transaction([...])` |
-| No Secrets / PII | ✅ No credentials or PII logged |
+| Atomic Write        | ✅ Wrapped in `this.db.$transaction([...])`                                                                  |
+| No Secrets / PII    | ✅ No credentials or PII logged                                                                              |
 
 ## Result
+
 ✅ SUCCESS

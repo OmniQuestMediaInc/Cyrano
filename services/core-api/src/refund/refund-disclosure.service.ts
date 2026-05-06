@@ -15,9 +15,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { NatsService } from '../nats/nats.service';
 import { NATS_TOPICS } from '../../../nats/topics.registry';
-import {
-  RefundPolicyAcknowledgmentEvent,
-} from './refund-disclosure.types';
+import { RefundPolicyAcknowledgmentEvent } from './refund-disclosure.types';
 
 const RULE_ID = 'REFUND_DISCLOSURE_v1';
 

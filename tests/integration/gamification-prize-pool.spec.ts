@@ -51,12 +51,18 @@ describe('PrizePoolService — validation', () => {
         scoped_game_type: null,
         entries: [
           {
-            prize_slot: 'A', name: 'a', description: 'a',
-            rarity: 'COMMON', base_weight: 1,
+            prize_slot: 'A',
+            name: 'a',
+            description: 'a',
+            rarity: 'COMMON',
+            base_weight: 1,
           },
           {
-            prize_slot: 'A', name: 'b', description: 'b',
-            rarity: 'RARE', base_weight: 2,
+            prize_slot: 'A',
+            name: 'b',
+            description: 'b',
+            rarity: 'RARE',
+            base_weight: 2,
           },
         ],
       }),
@@ -70,8 +76,11 @@ describe('PrizePoolService — validation', () => {
         scoped_game_type: null,
         entries: [
           {
-            prize_slot: 'A', name: 'a', description: 'a',
-            rarity: 'COMMON', base_weight: 0,
+            prize_slot: 'A',
+            name: 'a',
+            description: 'a',
+            rarity: 'COMMON',
+            base_weight: 0,
           },
         ],
       }),
@@ -84,8 +93,11 @@ describe('PrizePoolService — validation', () => {
       scoped_game_type: null,
       entries: [
         {
-          prize_slot: 'A', name: 'A', description: 'a',
-          rarity: 'COMMON', base_weight: 1,
+          prize_slot: 'A',
+          name: 'A',
+          description: 'a',
+          rarity: 'COMMON',
+          base_weight: 1,
         },
       ],
     });
@@ -103,16 +115,25 @@ describe('PrizePoolService — resolveForPlay precedence', () => {
     repo = new InMemoryPrizePoolRepo();
     svc = new PrizePoolService(repo);
     await svc.upsert('creator-1', {
-      name: 'Shared', scoped_game_type: null,
+      name: 'Shared',
+      scoped_game_type: null,
       entries: [{ prize_slot: 'X', name: 'x', description: 'x', rarity: 'COMMON', base_weight: 1 }],
     });
   });
 
   it('returns the scoped pool when one matches the game_type', async () => {
     await svc.upsert('creator-1', {
-      name: 'Dice-only', scoped_game_type: 'DICE',
-      entries: [{ prize_slot: '7', name: 'lucky 7', description: 'jackpot',
-        rarity: 'LEGENDARY', base_weight: 1 }],
+      name: 'Dice-only',
+      scoped_game_type: 'DICE',
+      entries: [
+        {
+          prize_slot: '7',
+          name: 'lucky 7',
+          description: 'jackpot',
+          rarity: 'LEGENDARY',
+          base_weight: 1,
+        },
+      ],
     });
     const resolved = await svc.resolveForPlay('creator-1', 'DICE');
     expect(resolved?.scoped_game_type).toBe('DICE');

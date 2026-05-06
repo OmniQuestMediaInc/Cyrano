@@ -11,7 +11,7 @@
 - Verified `archive/governance/` directory exists.
 - Moved `Sovereign_Kernel.md.pdf` (120730 bytes) from repo root to `archive/governance/Sovereign_Kernel.md.pdf` via `git mv` (preserves history).
 - Updated inbound references found by grep:
-  - `PROGRAM_CONTROL/REPO_MANIFEST.md` — replaced `- \`Sovereign_Kernel.md.pdf\`` with `- \`archive/governance/Sovereign_Kernel.md.pdf\`` and reordered alphabetically.
+  - `PROGRAM_CONTROL/REPO_MANIFEST.md` — replaced `- \`Sovereign_Kernel.md.pdf\``with`- \`archive/governance/Sovereign_Kernel.md.pdf\`` and reordered alphabetically.
   - `.github/copilot-instructions.md` — header line `**Source of Truth:** Sovereign_Kernel.md.pdf (repo root)` replaced with current SoT pointers (OQMI_GOVERNANCE.md, OQMI_SYSTEM_STATE.md, CNZ-WORK-001.md, DOMAIN_GLOSSARY.md) plus a RETIRED note for Sovereign_Kernel.
   - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md §8 PROVENANCE` — template "Pending archive" placeholder replaced with concrete archive provenance.
 - References left in place (intentional):

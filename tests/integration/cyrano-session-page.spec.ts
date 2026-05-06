@@ -104,8 +104,18 @@ describe('renderCyranoSessionPage', () => {
       const { tree } = renderCyranoSessionPage({
         ...MINIMAL_INPUTS,
         messages: [
-          { message_id: 'msg_1', role: 'twin', content: 'Hello!', timestamp_utc: '2026-04-28T10:00:00Z' },
-          { message_id: 'msg_2', role: 'user', content: 'Hi there', timestamp_utc: '2026-04-28T10:00:05Z' },
+          {
+            message_id: 'msg_1',
+            role: 'twin',
+            content: 'Hello!',
+            timestamp_utc: '2026-04-28T10:00:00Z',
+          },
+          {
+            message_id: 'msg_2',
+            role: 'user',
+            content: 'Hi there',
+            timestamp_utc: '2026-04-28T10:00:05Z',
+          },
         ],
       });
       expect(findByTestId(tree, 'cyrano-session-msg-msg_1')).toBeDefined();
@@ -214,8 +224,18 @@ describe('renderCyranoSessionPage', () => {
       const { tree } = renderCyranoSessionPage({
         ...MINIMAL_INPUTS,
         memory_sidebar: [
-          { memory_id: 'mem_1', memory_type: 'FACT', content_preview: 'Coffee lover', importance_score: 0.7 },
-          { memory_id: 'mem_2', memory_type: 'SECRET', content_preview: 'A confession…', importance_score: 1.0 },
+          {
+            memory_id: 'mem_1',
+            memory_type: 'FACT',
+            content_preview: 'Coffee lover',
+            importance_score: 0.7,
+          },
+          {
+            memory_id: 'mem_2',
+            memory_type: 'SECRET',
+            content_preview: 'A confession…',
+            importance_score: 1.0,
+          },
         ],
       });
       const sidebar = findByTestId(tree, 'cyrano-session-memory-sidebar');
@@ -268,9 +288,27 @@ describe('renderCyranoSessionPage', () => {
         session_status: 'EXPIRED',
         minutes_remaining: 0,
         wallet_buckets: [
-          { bucket: 'purchased', label: 'Purchased', balance_tokens: '500', spend_priority: 1, will_drain_next: true },
-          { bucket: 'membership', label: 'Membership', balance_tokens: '0', spend_priority: 2, will_drain_next: false },
-          { bucket: 'bonus', label: 'Bonus', balance_tokens: '0', spend_priority: 3, will_drain_next: false },
+          {
+            bucket: 'purchased',
+            label: 'Purchased',
+            balance_tokens: '500',
+            spend_priority: 1,
+            will_drain_next: true,
+          },
+          {
+            bucket: 'membership',
+            label: 'Membership',
+            balance_tokens: '0',
+            spend_priority: 2,
+            will_drain_next: false,
+          },
+          {
+            bucket: 'bonus',
+            label: 'Bonus',
+            balance_tokens: '0',
+            spend_priority: 3,
+            will_drain_next: false,
+          },
         ],
       });
       expect(findByTestId(tree, 'cyrano-session-wallet-bucket-purchased')).toBeDefined();
@@ -290,7 +328,12 @@ describe('renderCyranoSessionPage', () => {
         { message_id: 'm1', role: 'twin', content: 'Hi', timestamp_utc: '2026-04-28T10:00:00Z' },
       ],
       memory_sidebar: [
-        { memory_id: 'x1', memory_type: 'FACT', content_preview: 'likes cats', importance_score: 0.6 },
+        {
+          memory_id: 'x1',
+          memory_type: 'FACT',
+          content_preview: 'likes cats',
+          importance_score: 0.6,
+        },
       ],
     });
     const ids = collectTestIds(tree);

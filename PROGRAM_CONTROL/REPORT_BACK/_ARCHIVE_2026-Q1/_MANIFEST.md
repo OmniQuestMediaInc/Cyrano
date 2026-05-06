@@ -11,30 +11,30 @@ Files may be read at `PROGRAM_CONTROL/DIRECTIVES/DONE/<DONE-FILE>` for the paire
 
 ---
 
-| Original path | DONE directive | 1-line title |
-|---|---|---|
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-INFRA-BCRYPT-001.md` | `CHORE-INFRA-BCRYPT-001.md` | CHORE-INFRA-BCRYPT-001 — Install bcrypt + @types/bcrypt for DFSP-001 Module 3 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-001.md` | `CHORE-PIPELINE-001.md` | DIRECTIVE: CHORE-PIPELINE-001 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-002.md` | `CHORE-PIPELINE-002.md` | DIRECTIVE: CHORE-PIPELINE-002 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-003.md` | `CHORE-PIPELINE-003.md` | DIRECTIVE: CHORE-PIPELINE-003 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-004.md` | `CHORE-PIPELINE-004.md` | DIRECTIVE: CHORE-PIPELINE-004 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-005.md` | `CHORE-PIPELINE-005.md` | DIRECTIVE — CHORE-PIPELINE-005 |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-006.md` | `CHORE-PIPELINE-006.md` | DIRECTIVE: CHORE-PIPELINE-006 |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A002-report.md` | `CNZ-WORK-001-A002-DONE.md` | CNZ-WORK-001-A002 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A003-report.md` | `CNZ-WORK-001-A003-DONE.md` | CNZ-WORK-001-A003 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A004-report.md` | `CNZ-WORK-001-A004-DONE.md` | CNZ-WORK-001-A004 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A005-report.md` | `CNZ-WORK-001-A005-DONE.md` | CNZ-WORK-001-A005 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A006-report.md` | `CNZ-WORK-001-A006-DONE.md` | CNZ-WORK-001-A006 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A007-report.md` | `CNZ-WORK-001-A007-DONE.md` | CNZ-WORK-001-A007 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A008-report.md` | `CNZ-WORK-001-A008-DONE.md` | CNZ-WORK-001-A008 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A009-report.md` | `CNZ-WORK-001-A009-DONE.md` | CNZ-WORK-001-A009 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A010-report.md` | `CNZ-WORK-001-A010-DONE.md` | CNZ-WORK-001-A010 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A011-report.md` | `CNZ-WORK-001-A011-DONE.md` | CNZ-WORK-001-A011 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A012-report.md` | `CNZ-WORK-001-A012-DONE.md` | CNZ-WORK-001-A012 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A013-report.md` | `CNZ-WORK-001-A013-DONE.md` | CNZ-WORK-001-A013 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A014-report.md` | `CNZ-WORK-001-A014-DONE.md` | CNZ-WORK-001-A014 — DONE |
-| `PROGRAM_CONTROL/REPORT_BACK/GOV-CONST-001.md` | `GOV-CONST-001.md` | DIRECTIVE: GOV-CONST-001 — CEO April 12 Governance Constants + GitHub Actions Workflow |
-| `PROGRAM_CONTROL/REPORT_BACK/NATS-DFSP001-TOPICS-REPORT-BACK.md` | `NATS-DFSP001-TOPICS.md` | NATS-DFSP001-TOPICS — Pre-work: Add DFSP-001 NATS Topics to Registry |
-| `PROGRAM_CONTROL/REPORT_BACK/PAY-RATES-001.md` | `PAY-RATES-001.md` | DIRECTIVE: PAY-RATES-001 |
-| `PROGRAM_CONTROL/REPORT_BACK/TOK-AUDIT-001.md` | `TOK-AUDIT-001.md` | DIRECTIVE: TOK-AUDIT-001 |
-| `PROGRAM_CONTROL/REPORT_BACK/TOK-RETIRE-001.md` | `TOK-RETIRE-001.md` | DIRECTIVE: TOK-RETIRE-001 |
+| Original path                                                    | DONE directive              | 1-line title                                                                           |
+| ---------------------------------------------------------------- | --------------------------- | -------------------------------------------------------------------------------------- |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-INFRA-BCRYPT-001.md`          | `CHORE-INFRA-BCRYPT-001.md` | CHORE-INFRA-BCRYPT-001 — Install bcrypt + @types/bcrypt for DFSP-001 Module 3          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-001.md`              | `CHORE-PIPELINE-001.md`     | DIRECTIVE: CHORE-PIPELINE-001                                                          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-002.md`              | `CHORE-PIPELINE-002.md`     | DIRECTIVE: CHORE-PIPELINE-002                                                          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-003.md`              | `CHORE-PIPELINE-003.md`     | DIRECTIVE: CHORE-PIPELINE-003                                                          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-004.md`              | `CHORE-PIPELINE-004.md`     | DIRECTIVE: CHORE-PIPELINE-004                                                          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-005.md`              | `CHORE-PIPELINE-005.md`     | DIRECTIVE — CHORE-PIPELINE-005                                                         |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-006.md`              | `CHORE-PIPELINE-006.md`     | DIRECTIVE: CHORE-PIPELINE-006                                                          |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A002-report.md`        | `CNZ-WORK-001-A002-DONE.md` | CNZ-WORK-001-A002 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A003-report.md`        | `CNZ-WORK-001-A003-DONE.md` | CNZ-WORK-001-A003 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A004-report.md`        | `CNZ-WORK-001-A004-DONE.md` | CNZ-WORK-001-A004 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A005-report.md`        | `CNZ-WORK-001-A005-DONE.md` | CNZ-WORK-001-A005 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A006-report.md`        | `CNZ-WORK-001-A006-DONE.md` | CNZ-WORK-001-A006 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A007-report.md`        | `CNZ-WORK-001-A007-DONE.md` | CNZ-WORK-001-A007 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A008-report.md`        | `CNZ-WORK-001-A008-DONE.md` | CNZ-WORK-001-A008 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A009-report.md`        | `CNZ-WORK-001-A009-DONE.md` | CNZ-WORK-001-A009 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A010-report.md`        | `CNZ-WORK-001-A010-DONE.md` | CNZ-WORK-001-A010 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A011-report.md`        | `CNZ-WORK-001-A011-DONE.md` | CNZ-WORK-001-A011 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A012-report.md`        | `CNZ-WORK-001-A012-DONE.md` | CNZ-WORK-001-A012 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A013-report.md`        | `CNZ-WORK-001-A013-DONE.md` | CNZ-WORK-001-A013 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A014-report.md`        | `CNZ-WORK-001-A014-DONE.md` | CNZ-WORK-001-A014 — DONE                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/GOV-CONST-001.md`                   | `GOV-CONST-001.md`          | DIRECTIVE: GOV-CONST-001 — CEO April 12 Governance Constants + GitHub Actions Workflow |
+| `PROGRAM_CONTROL/REPORT_BACK/NATS-DFSP001-TOPICS-REPORT-BACK.md` | `NATS-DFSP001-TOPICS.md`    | NATS-DFSP001-TOPICS — Pre-work: Add DFSP-001 NATS Topics to Registry                   |
+| `PROGRAM_CONTROL/REPORT_BACK/PAY-RATES-001.md`                   | `PAY-RATES-001.md`          | DIRECTIVE: PAY-RATES-001                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/TOK-AUDIT-001.md`                   | `TOK-AUDIT-001.md`          | DIRECTIVE: TOK-AUDIT-001                                                               |
+| `PROGRAM_CONTROL/REPORT_BACK/TOK-RETIRE-001.md`                  | `TOK-RETIRE-001.md`         | DIRECTIVE: TOK-RETIRE-001                                                              |

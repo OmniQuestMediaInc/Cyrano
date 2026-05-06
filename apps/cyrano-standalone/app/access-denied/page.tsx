@@ -20,11 +20,7 @@ const REASON_COPY: Record<string, string> = {
   NO_USER_CONTEXT: 'We could not identify you on this request. Please re-enter via ChatNow.Zone.',
 };
 
-export default function AccessDeniedPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default function AccessDeniedPage({ searchParams }: { searchParams: SearchParams }) {
   const reason = searchParams.reason ?? 'NO_SESSION';
   const tier = searchParams.tier;
   const next = searchParams.next ?? '/';
@@ -70,17 +66,14 @@ export default function AccessDeniedPage({
         >
           Re-establish session
         </button>
-        <Link
-          href="/"
-          style={{ padding: '10px 18px', alignSelf: 'center', color: '#444' }}
-        >
+        <Link href="/" style={{ padding: '10px 18px', alignSelf: 'center', color: '#444' }}>
           Back to home
         </Link>
       </form>
 
       <p style={{ marginTop: 32, fontSize: 12, color: '#888' }}>
-        If you believe you should have access, contact Diamond Concierge from your{' '}
-        ChatNow.Zone account dashboard.
+        If you believe you should have access, contact Diamond Concierge from your ChatNow.Zone
+        account dashboard.
       </p>
     </main>
   );

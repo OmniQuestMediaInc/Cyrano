@@ -77,8 +77,8 @@ ba1ccf5865c54b24bb6b924f70ccef8cd9055991	refs/heads/copilot/update-project-struc
 318b15f5405c2eae8183b6bdd412481e44aa3607	refs/heads/main
 ```
 
-Protected refs/* (out-of-scope, not heads):
-refs/oqminc/* and refs/oss/* are excluded per directive — not returned by `--heads`.
+Protected refs/_ (out-of-scope, not heads):
+refs/oqminc/_ and refs/oss/\* are excluded per directive — not returned by `--heads`.
 
 Open PRs (list_pull_requests state=open perPage=100):
 
@@ -89,7 +89,7 @@ Open PRs (list_pull_requests state=open perPage=100):
 ## STEP 2 — Per-Branch Qualification
 
 Command: `git rev-list --count origin/main..origin/<branch>` for each non-main branch.
-Criteria: NOT main | NOT refs/oss/* or refs/oqminc/* | count == 0
+Criteria: NOT main | NOT refs/oss/_ or refs/oqminc/_ | count == 0
 
 ```
 0  claude/chore-thread-12-cleanup          → QUALIFIES
@@ -124,42 +124,42 @@ Criteria: NOT main | NOT refs/oss/* or refs/oqminc/* | count == 0
 
 **Deletion list (26 branches):**
 
-| # | Branch |
-|---|--------|
-| 1 | claude/chore-thread-12-cleanup |
-| 2 | claude/dfsp-001-otp-account-hold-report-back |
-| 3 | claude/thread-9-handoff-document |
-| 4 | copilot/add-status-queued-to-dfsp-001 |
-| 5 | copilot/bootstrap-program-control-directory-structure-again |
-| 6 | copilot/chore-add-autonomous-directive-protocol-again |
-| 7 | copilot/chore-add-tech-debt-delta-2026-04-16 |
-| 8 | copilot/chore-create-domain-glossary |
-| 9 | copilot/chore-fetch-urls-for-testing-data |
-| 10 | copilot/chore-ts-legal-hold-g-geo-001 |
-| 11 | copilot/chorebump-github-actions-node-24 |
-| 12 | copilot/choreprogram-control-bootstrap |
-| 13 | copilot/connect-caude-to-repo |
-| 14 | copilot/fetch-repo-directory-tree |
-| 15 | copilot/fix-branch-count-discrepancy |
-| 16 | copilot/fix-commitment-errors |
-| 17 | copilot/hard-stop-dfsp-001 |
-| 18 | copilot/housekeeping-check-legacy-files |
-| 19 | copilot/infra-004-fetch-status |
-| 20 | copilot/infra-004-fill-commit-hash |
-| 21 | copilot/intake-thread11-directive-series-001 |
-| 22 | copilot/move-directive-gov-const-001 |
-| 23 | copilot/proc-001-main-merge |
-| 24 | copilot/setup-and-run-node24 |
-| 25 | copilot/thread16-cleanup-v2-again |
-| 26 | copilot/update-project-structure |
+| #   | Branch                                                      |
+| --- | ----------------------------------------------------------- |
+| 1   | claude/chore-thread-12-cleanup                              |
+| 2   | claude/dfsp-001-otp-account-hold-report-back                |
+| 3   | claude/thread-9-handoff-document                            |
+| 4   | copilot/add-status-queued-to-dfsp-001                       |
+| 5   | copilot/bootstrap-program-control-directory-structure-again |
+| 6   | copilot/chore-add-autonomous-directive-protocol-again       |
+| 7   | copilot/chore-add-tech-debt-delta-2026-04-16                |
+| 8   | copilot/chore-create-domain-glossary                        |
+| 9   | copilot/chore-fetch-urls-for-testing-data                   |
+| 10  | copilot/chore-ts-legal-hold-g-geo-001                       |
+| 11  | copilot/chorebump-github-actions-node-24                    |
+| 12  | copilot/choreprogram-control-bootstrap                      |
+| 13  | copilot/connect-caude-to-repo                               |
+| 14  | copilot/fetch-repo-directory-tree                           |
+| 15  | copilot/fix-branch-count-discrepancy                        |
+| 16  | copilot/fix-commitment-errors                               |
+| 17  | copilot/hard-stop-dfsp-001                                  |
+| 18  | copilot/housekeeping-check-legacy-files                     |
+| 19  | copilot/infra-004-fetch-status                              |
+| 20  | copilot/infra-004-fill-commit-hash                          |
+| 21  | copilot/intake-thread11-directive-series-001                |
+| 22  | copilot/move-directive-gov-const-001                        |
+| 23  | copilot/proc-001-main-merge                                 |
+| 24  | copilot/setup-and-run-node24                                |
+| 25  | copilot/thread16-cleanup-v2-again                           |
+| 26  | copilot/update-project-structure                            |
 
 **Excluded from deletion (count > 0):**
 
-| Branch | Commits ahead | Reason |
-|--------|--------------|--------|
-| copilot/chore-update-program-control | 1 | uncommitted work ahead of main |
-| copilot/thread16-cleanup-v2 | 2 | uncommitted work ahead of main |
-| main | N/A | protected |
+| Branch                               | Commits ahead | Reason                         |
+| ------------------------------------ | ------------- | ------------------------------ |
+| copilot/chore-update-program-control | 1             | uncommitted work ahead of main |
+| copilot/thread16-cleanup-v2          | 2             | uncommitted work ahead of main |
+| main                                 | N/A           | protected                      |
 
 ## STEP 3 — Deletion Attempts
 
@@ -180,20 +180,20 @@ Same 403 on all 26 branches. Sandbox does not have write access to origin remote
 
 ## FINAL COUNTS
 
-| Metric | Count |
-|--------|-------|
-| Branches scanned (non-main, non-refs/*) | 28 |
-| Branches qualified for deletion (count=0) | 26 |
-| Branches excluded (count>0) | 2 |
-| Deletion attempts | 26 |
-| Deleted successfully | 0 |
-| Blocked (HTTP 403) | 26 |
+| Metric                                    | Count |
+| ----------------------------------------- | ----- |
+| Branches scanned (non-main, non-refs/\*)  | 28    |
+| Branches qualified for deletion (count=0) | 26    |
+| Branches excluded (count>0)               | 2     |
+| Deletion attempts                         | 26    |
+| Deleted successfully                      | 0     |
+| Blocked (HTTP 403)                        | 26    |
 
 `gh` CLI is not installed in this sandbox. No `delete_branch` or `delete_ref`
 MCP tool is available on the MCP surface. Method B: UNAVAILABLE.
 
-| Branch | Method A | Method B | Final |
-|---|---|---|---|
+| Branch                 | Method A           | Method B                                | Final   |
+| ---------------------- | ------------------ | --------------------------------------- | ------- |
 | 26 qualifying branches | BLOCKED — HTTP 403 | UNAVAILABLE (no gh / no MCP delete-ref) | BLOCKED |
 
 **Branches deleted successfully: 0**

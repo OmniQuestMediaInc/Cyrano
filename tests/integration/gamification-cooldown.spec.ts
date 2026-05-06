@@ -17,7 +17,9 @@ class InMemoryCooldownRepo implements CooldownRepository {
   }
   async latestFor(user_id: string, creator_id: string, game_type: string) {
     const matches = this.rows
-      .filter((r) => r.user_id === user_id && r.creator_id === creator_id && r.game_type === game_type)
+      .filter(
+        (r) => r.user_id === user_id && r.creator_id === creator_id && r.game_type === game_type,
+      )
       .sort((a, b) => b.played_at_utc.localeCompare(a.played_at_utc));
     return matches[0] ?? null;
   }
@@ -88,8 +90,6 @@ describe('CooldownService', () => {
       clock: () => now,
     });
     const after = new Date(now.getTime() + 31_000);
-    await expect(
-      svc.assertEligible('u1', 'c1', 'DICE', () => after),
-    ).resolves.toBeUndefined();
+    await expect(svc.assertEligible('u1', 'c1', 'DICE', () => after)).resolves.toBeUndefined();
   });
 });

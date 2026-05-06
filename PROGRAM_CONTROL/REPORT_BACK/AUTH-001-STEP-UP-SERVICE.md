@@ -1,6 +1,7 @@
 # AUTH-001 — StepUpService Report-Back
 
 ## Identifiers
+
 - **Directive:** AUTH-001
 - **Prefix:** AUTH:
 - **Risk:** R1
@@ -21,15 +22,15 @@
 
 ## Validation Checks
 
-| # | Check | Result |
-|---|-------|--------|
-| 1 | `step-up.service.ts` created with all 8 StepUpAction types | PASS |
-| 2 | `auth.module.ts` created, exports StepUpService | PASS |
-| 3 | AuthModule added to AppModule imports after BijouModule | PASS |
-| 4 | NATS topics added: `STEP_UP_CHALLENGE_ISSUED`, `STEP_UP_CHALLENGE_VERIFIED`, `STEP_UP_CHALLENGE_FAILED` | PASS |
-| 5 | `npx tsc --noEmit` — zero new errors (pre-existing `baseUrl` deprecation only) | PASS |
-| 6 | TOTP-only enforcement (SMS prohibited) — StepUpMethod = `'TOTP' \| 'BACKUP_CODE'` | PASS |
-| 7 | NATS publish on issue/verify/fail paths confirmed | PASS |
+| #   | Check                                                                                                   | Result |
+| --- | ------------------------------------------------------------------------------------------------------- | ------ |
+| 1   | `step-up.service.ts` created with all 8 StepUpAction types                                              | PASS   |
+| 2   | `auth.module.ts` created, exports StepUpService                                                         | PASS   |
+| 3   | AuthModule added to AppModule imports after BijouModule                                                 | PASS   |
+| 4   | NATS topics added: `STEP_UP_CHALLENGE_ISSUED`, `STEP_UP_CHALLENGE_VERIFIED`, `STEP_UP_CHALLENGE_FAILED` | PASS   |
+| 5   | `npx tsc --noEmit` — zero new errors (pre-existing `baseUrl` deprecation only)                          | PASS   |
+| 6   | TOTP-only enforcement (SMS prohibited) — StepUpMethod = `'TOTP' \| 'BACKUP_CODE'`                       | PASS   |
+| 7   | NATS publish on issue/verify/fail paths confirmed                                                       | PASS   |
 
 ## tsc Result
 

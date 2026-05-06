@@ -64,9 +64,7 @@ export interface CyranoLayer2SessionDenied {
   rule_applied_id: string;
 }
 
-export type CyranoLayer2SessionDecision =
-  | CyranoLayer2SessionGranted
-  | CyranoLayer2SessionDenied;
+export type CyranoLayer2SessionDecision = CyranoLayer2SessionGranted | CyranoLayer2SessionDenied;
 
 /** Canonical rule id for every Cyrano Layer 2 gate decision. */
 export const CYRANO_LAYER2_RULE_APPLIED_ID = 'CYRANO_LAYER2_GATE_v1';

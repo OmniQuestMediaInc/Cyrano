@@ -11,14 +11,8 @@ import {
   REDBOOK_PAYOUT_FLOOR,
   REDBOOK_PAYOUT_CEILING,
 } from '../../ui/view-models/creator-control.presenter';
-import type {
-  CreatorCommandCenterView,
-  FfsMeter,
-} from '../../ui/types/creator-panel-contracts';
-import type {
-  CyranoCategory,
-  FfsTier,
-} from '../../ui/types/creator-control-contracts';
+import type { CreatorCommandCenterView, FfsMeter } from '../../ui/types/creator-panel-contracts';
+import type { CyranoCategory, FfsTier } from '../../ui/types/creator-control-contracts';
 
 describe('SM-07 — FFS tier vocabulary (COLD | WARM | HOT | INFERNO)', () => {
   it('FfsTier values are exactly the canonical four', () => {
@@ -67,12 +61,7 @@ describe('Payout rate envelope — REDBOOK §3', () => {
 });
 
 describe('CreatorControlPresenter — high-heat session with payout scaling', () => {
-  function inputs(args: {
-    id: string;
-    score: number | null;
-    obs?: boolean;
-    chat?: boolean;
-  }) {
+  function inputs(args: { id: string; score: number | null; obs?: boolean; chat?: boolean }) {
     const heat =
       args.score === null
         ? null

@@ -27,12 +27,12 @@ all pass; this gap is an implementation-time blocker that emerges at STEP 3.
 
 All four STEP 2 preconditions pass:
 
-| Check | Result | Evidence |
-| --- | --- | --- |
-| (a) `services/core-api/src/dfsp/dfsp.module.ts` exists & read | ✅ PASS | Read. Registers five PV-001 services; no DFSP-001 services yet. |
-| (b) `services/core-api/src/governance/governance.config.ts` read | ✅ PASS | `DFSP_OTP_TTL_SECONDS: 900` ✅ present; `DFSP_ACCOUNT_RECOVERY_HOLD_HOURS: 48` ✅ present; `DFSP_OTP_MAX_ATTEMPTS: 5` ✅ **already present** (directive says ADD IF ABSENT); `DFSP_OTP_BCRYPT_COST` ❌ absent — additive insert required. |
-| (c) `services/nats/topics.registry.ts` read | ✅ PASS | All six topics registered: `DFSP_OTP_ISSUED`, `DFSP_OTP_VERIFIED`, `DFSP_OTP_FAILED`, `DFSP_OTP_EXPIRED`, `DFSP_ACCOUNT_HOLD_APPLIED`, `DFSP_ACCOUNT_HOLD_RELEASED`. |
-| (d) `prisma/schema.prisma` OtpEvent + AccountHold present | ✅ PASS | `OtpEvent` at line 391 — columns: `code_hash`, `failed_attempts`, `status`, `used_at`, `organization_id`, `tenant_id`, etc. `AccountHold` at line 408 — columns: `trigger_type`, `triggered_at`, `hold_until`, `released_at`, `identity_reverified`, etc. No schema change needed. |
+| Check                                                            | Result  | Evidence                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| (a) `services/core-api/src/dfsp/dfsp.module.ts` exists & read    | ✅ PASS | Read. Registers five PV-001 services; no DFSP-001 services yet.                                                                                                                                                                                                                    |
+| (b) `services/core-api/src/governance/governance.config.ts` read | ✅ PASS | `DFSP_OTP_TTL_SECONDS: 900` ✅ present; `DFSP_ACCOUNT_RECOVERY_HOLD_HOURS: 48` ✅ present; `DFSP_OTP_MAX_ATTEMPTS: 5` ✅ **already present** (directive says ADD IF ABSENT); `DFSP_OTP_BCRYPT_COST` ❌ absent — additive insert required.                                          |
+| (c) `services/nats/topics.registry.ts` read                      | ✅ PASS | All six topics registered: `DFSP_OTP_ISSUED`, `DFSP_OTP_VERIFIED`, `DFSP_OTP_FAILED`, `DFSP_OTP_EXPIRED`, `DFSP_ACCOUNT_HOLD_APPLIED`, `DFSP_ACCOUNT_HOLD_RELEASED`.                                                                                                               |
+| (d) `prisma/schema.prisma` OtpEvent + AccountHold present        | ✅ PASS | `OtpEvent` at line 391 — columns: `code_hash`, `failed_attempts`, `status`, `used_at`, `organization_id`, `tenant_id`, etc. `AccountHold` at line 408 — columns: `trigger_type`, `triggered_at`, `hold_until`, `released_at`, `identity_reverified`, etc. No schema change needed. |
 
 No STEP 2 blocker. The blocker is at STEP 3 (implementation).
 

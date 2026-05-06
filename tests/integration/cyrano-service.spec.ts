@@ -8,10 +8,7 @@
 import { CyranoService, CYRANO_LATENCY } from '../../services/cyrano/src/cyrano.service';
 import { PersonaManager } from '../../services/cyrano/src/persona.manager';
 import { SessionMemoryStore } from '../../services/cyrano/src/session-memory.store';
-import type {
-  CyranoInputFrame,
-  MemoryFact,
-} from '../../services/cyrano/src/cyrano.types';
+import type { CyranoInputFrame, MemoryFact } from '../../services/cyrano/src/cyrano.types';
 import type { FfsScore, FfsTier } from '../../services/creator-control/src/ffs.engine';
 import { NATS_TOPICS } from '../../services/nats/topics.registry';
 
@@ -97,9 +94,7 @@ describe('CyranoService.selectCategory — tier weighting', () => {
 
   it('HOT tier prefers escalation over lower-weighted categories', () => {
     const { svc } = makeService();
-    const out = svc.evaluate(
-      frame({ phase: 'MID', heat: heat('HOT'), guest_has_tipped: true }),
-    );
+    const out = svc.evaluate(frame({ phase: 'MID', heat: heat('HOT'), guest_has_tipped: true }));
     // HOT has escalation=85, monetization=80, narrative=70 — escalation wins.
     expect(out?.category).toBe('CAT_ESCALATION');
   });
@@ -126,9 +121,7 @@ describe('CyranoService.computeWeight — modulators', () => {
 
   it('CAT_SESSION_OPEN weight is reduced when dwell_minutes >= 5', () => {
     const { svc } = makeService();
-    const out = svc.evaluate(
-      frame({ phase: 'OPENING', dwell_minutes: 7, heat: heat('COLD') }),
-    );
+    const out = svc.evaluate(frame({ phase: 'OPENING', dwell_minutes: 7, heat: heat('COLD') }));
     // Base 90 − 20 = 70.
     expect(out?.category).toBe('CAT_SESSION_OPEN');
     expect(out?.weight).toBe(70);
@@ -169,7 +162,11 @@ describe('CyranoService — memory + persona integration', () => {
       style_notes: 'short, assertive',
       active: true,
     });
-    personas.activateForSession({ session_id: 'sess-1', creator_id: 'creator-1', persona_id: 'p1' });
+    personas.activateForSession({
+      session_id: 'sess-1',
+      creator_id: 'creator-1',
+      persona_id: 'p1',
+    });
     const out = svc.evaluate(frame({ phase: 'PEAK', heat: heat('INFERNO') }));
     expect(out?.copy).toContain('[playful_dominant]');
     expect(out?.persona_id).toBe('p1');

@@ -31,16 +31,16 @@ services/core-api/src/app.module.ts          (MODIFY — +BijouModule import)
 
 ## Validation
 
-| Check | Result |
-|-------|--------|
-| `admitParticipant()` throws when vipCount >= 24 | PASS (hard cap enforced) |
-| `evaluateCameraCompliance()` returns NONE when camera active | PASS |
-| `evaluateCameraCompliance()` returns WARN after grace expires | PASS |
-| `evaluateCameraCompliance()` returns EJECT after warning expires | PASS |
-| `joinStandby()` does not add duplicate entries | PASS |
-| `notifyNextStandby()` returns null when queue empty | PASS |
-| NATS publish called on eject and standby alert | PASS |
-| `npx tsc --noEmit` zero new errors | PASS |
+| Check                                                            | Result                   |
+| ---------------------------------------------------------------- | ------------------------ |
+| `admitParticipant()` throws when vipCount >= 24                  | PASS (hard cap enforced) |
+| `evaluateCameraCompliance()` returns NONE when camera active     | PASS                     |
+| `evaluateCameraCompliance()` returns WARN after grace expires    | PASS                     |
+| `evaluateCameraCompliance()` returns EJECT after warning expires | PASS                     |
+| `joinStandby()` does not add duplicate entries                   | PASS                     |
+| `notifyNextStandby()` returns null when queue empty              | PASS                     |
+| NATS publish called on eject and standby alert                   | PASS                     |
+| `npx tsc --noEmit` zero new errors                               | PASS                     |
 
 ## Result
 

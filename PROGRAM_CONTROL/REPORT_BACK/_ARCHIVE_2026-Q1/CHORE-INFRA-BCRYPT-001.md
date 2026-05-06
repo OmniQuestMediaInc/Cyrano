@@ -66,12 +66,14 @@ Exit code: 0
 ## Installed Versions
 
 ### bcrypt
+
 - **Package.json range:** `^5.1.1`
 - **Resolved version:** `5.1.1`
 - **Registry:** https://registry.yarnpkg.com/bcrypt/-/bcrypt-5.1.1.tgz
 - **Integrity:** sha512-AGBHOG5hPYZ5Xl9KXzU5iKq9516yEmvCKDg3ecP5kX2aB6UqTeXZxk2ELnDgDm6BQSMlLt9rDB4LoSMx0rYwww==
 
 ### @types/bcrypt
+
 - **Package.json range:** `^5.0.2`
 - **Resolved version:** `5.0.2`
 - **Registry:** https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-5.0.2.tgz
@@ -94,6 +96,7 @@ find services -name "*.ts" -type f -exec grep -l "import.*bcrypt" {} \; 2>/dev/n
 
 **Hash:** 739df58
 **Message:**
+
 ```
 chore(infra): add bcrypt + @types/bcrypt to unblock DFSP-001 Module 3 Invariant #13 carve-out
 ```

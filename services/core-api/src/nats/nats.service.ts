@@ -38,7 +38,7 @@ export class NatsService implements OnModuleInit, OnModuleDestroy {
    * Topic must be from NATS_TOPICS registry.
    * Payload is serialised to JSON automatically.
    */
-  publish(topic: NatsTopic | string, payload: Record<string, unknown>): void {
+  publish(topic: NatsTopic | string, payload: object): void {
     if (!this.connection) {
       this.logger.warn('NatsService: publish skipped — no connection', { topic });
       return;

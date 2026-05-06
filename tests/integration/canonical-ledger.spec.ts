@@ -123,9 +123,7 @@ describe('LedgerService — three-bucket spend order (Payload 1)', () => {
 
     const entries = await repo.listLedgerEntries(wallet.id);
     const debits = entries.filter((e) => e.amount < 0);
-    const byBucket = Object.fromEntries(
-      debits.map((e) => [e.bucket, e.metadata?.spend_priority]),
-    );
+    const byBucket = Object.fromEntries(debits.map((e) => [e.bucket, e.metadata?.spend_priority]));
     expect(byBucket.purchased).toBe(1);
     expect(byBucket.membership).toBe(2);
     expect(byBucket.bonus).toBe(3);
@@ -173,7 +171,7 @@ describe('LedgerService — idempotency', () => {
     expect(b.totalDebited).toBe(a.totalDebited);
 
     const wallet2 = await repo.findWalletById(wallet.id);
-    expect(wallet2?.totalTokens).toBe(30);    // 100 - 70, not 100 - 140
+    expect(wallet2?.totalTokens).toBe(30); // 100 - 70, not 100 - 140
   });
 
   it('rejects a replay with a diverging payload', async () => {
@@ -189,7 +187,7 @@ describe('LedgerService — idempotency', () => {
       ledger.credit({
         walletId: wallet.id,
         bucket: 'purchased',
-        amount: 200,                       // different amount
+        amount: 200, // different amount
         correlationId: 'diverge-1',
         reasonCode: 'PURCHASE',
       }),
@@ -220,7 +218,7 @@ describe('LedgerService — hash chain', () => {
     const { repo, ledger, wallet } = await bootstrap();
     await creditAll(ledger, wallet.id, { purchased: 50, membership: 0, bonus: 0 });
     const entries = await repo.listLedgerEntries(wallet.id);
-    (entries[0] as { amount: number }).amount = 9999;    // tamper — hash no longer matches
+    (entries[0] as { amount: number }).amount = 9999; // tamper — hash no longer matches
 
     await expect(ledger.verifyChain(wallet.id)).rejects.toBeInstanceOf(HashChainBrokenError);
   });

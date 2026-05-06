@@ -49,9 +49,7 @@ export class ContainmentHoldService {
     action: ContainmentAction = 'wallet_hold',
   ): ContainmentResult {
     if (!userId || !disputeId) {
-      throw new Error(
-        'ContainmentHoldService: userId and disputeId are required.',
-      );
+      throw new Error('ContainmentHoldService: userId and disputeId are required.');
     }
 
     const issuedAt = new Date().toISOString();

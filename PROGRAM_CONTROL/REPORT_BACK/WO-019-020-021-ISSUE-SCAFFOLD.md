@@ -1,7 +1,9 @@
 # PROGRAM CONTROL — REPORT BACK
+
 ## Action: Populate Issues from Manifest (WO-019, WO-020, WO-021)
 
 ### Branch + HEAD
+
 - Branch: `copilot/create-issues-for-active-objectives`
 - HEAD: c296704
 
@@ -14,6 +16,7 @@ gh issue create --title "WO-021: Batch Payout Service" --body "Deterministic agg
 ```
 
 ### GitHub Issue Creation Status
+
 - `gh issue create` → `HTTP 403: Forbidden` — GITHUB_TOKEN lacks `issues: write` permission in this workflow context.
 - Labels `critical` and `high-priority` confirmed absent; creation also blocked by same 403.
 - **Manual action required:** A repository admin must create labels and issues, or grant the workflow token `issues: write`.
@@ -32,13 +35,13 @@ $ git diff --stat HEAD~1 HEAD  (after commit)
 
 ### Files Created
 
-| File | WO | Purpose |
-|---|---|---|
+| File                                                        | WO     | Purpose                                                                                       |
+| ----------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------- |
 | `services/core-api/src/audit/audit-dashboard.controller.ts` | WO-019 | Audit Dashboard controller stub — compliance visualization, Red Book scenario audit log query |
-| `services/core-api/src/audit/audit.module.ts` | WO-019 | NestJS module wiring for Audit Dashboard |
-| `services/core-api/src/ingestion/ingestion.service.ts` | WO-020 | Frontend Ingestion Layer service stub — Studio/Model UI event routing |
-| `services/core-api/src/ingestion/ingestion.module.ts` | WO-020 | NestJS module wiring for Ingestion Layer |
-| `services/core-api/src/finance/batch-payout.service.ts` | WO-021 | Batch Payout Service stub — deterministic ledger aggregation for bulk processing |
+| `services/core-api/src/audit/audit.module.ts`               | WO-019 | NestJS module wiring for Audit Dashboard                                                      |
+| `services/core-api/src/ingestion/ingestion.service.ts`      | WO-020 | Frontend Ingestion Layer service stub — Studio/Model UI event routing                         |
+| `services/core-api/src/ingestion/ingestion.module.ts`       | WO-020 | NestJS module wiring for Ingestion Layer                                                      |
+| `services/core-api/src/finance/batch-payout.service.ts`     | WO-021 | Batch Payout Service stub — deterministic ledger aggregation for bulk processing              |
 
 ### Commands Run
 
@@ -60,6 +63,7 @@ mkdir -p services/core-api/src/ingestion
 ```
 
 ### Governance Compliance
+
 - All new TypeScript files include `// WO: WO-019`, `// WO: WO-020`, or `// WO: WO-021` as the first line per `.github/copilot-instructions.md`.
 - No financial ledger tables or existing records were modified (Append-Only Ledger Doctrine upheld).
 - No UPDATE or DELETE statements introduced.
@@ -67,4 +71,5 @@ mkdir -p services/core-api/src/ingestion
 - Scope limited to scaffolds — no full-feature implementation without explicit WO authorization.
 
 ### Result
+
 ⚠️ PARTIAL — Issue creation blocked (HTTP 403). Repository scaffolds for WO-019, WO-020, WO-021 committed. Manual issue creation required by a repository admin.

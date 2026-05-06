@@ -163,10 +163,12 @@ export function AITwinCreator() {
       {step === 'TRAINING' && (
         <div style={styles.card}>
           <h2>Training in Progress</h2>
-          <p>Status: <strong>{trainingStatus}</strong></p>
           <p>
-            Your AI twin is being trained. This typically takes 15–30 minutes.
-            You will receive a notification when it is ready.
+            Status: <strong>{trainingStatus}</strong>
+          </p>
+          <p>
+            Your AI twin is being trained. This typically takes 15–30 minutes. You will receive a
+            notification when it is ready.
           </p>
         </div>
       )}
@@ -175,7 +177,9 @@ export function AITwinCreator() {
         <div style={styles.card}>
           <h2>🎉 AI Twin Ready!</h2>
           <p>Your AI twin is trained and ready for character chat and voice calls.</p>
-          <a href="/chat" style={styles.link}>Start Chatting →</a>
+          <a href="/chat" style={styles.link}>
+            Start Chatting →
+          </a>
         </div>
       )}
     </div>
@@ -292,16 +296,17 @@ function PhotosStep({
         {photos.length < 20 && (
           <label style={styles.uploadBox}>
             <span>+ Add Photo</span>
-            <input type="file" accept="image/*" onChange={onPhotoSelect} style={{ display: 'none' }} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onPhotoSelect}
+              style={{ display: 'none' }}
+            />
           </label>
         )}
       </div>
       <p>{photos.length} / 5 minimum uploaded</p>
-      <button
-        style={styles.button}
-        onClick={onNext}
-        disabled={loading || photos.length < 5}
-      >
+      <button style={styles.button} onClick={onNext} disabled={loading || photos.length < 5}>
         {loading ? 'Uploading…' : 'Next: Review →'}
       </button>
     </div>
@@ -325,16 +330,26 @@ function ReviewStep({
     <div style={styles.card}>
       <h2>Review &amp; Start Training</h2>
       <ul style={{ lineHeight: 1.8 }}>
-        <li><strong>Name:</strong> {details.displayName}</li>
-        <li><strong>Trigger Word:</strong> {details.triggerWord}</li>
-        <li><strong>Visibility:</strong> {details.visibility}</li>
-        <li><strong>Photos uploaded:</strong> {photoCount}</li>
+        <li>
+          <strong>Name:</strong> {details.displayName}
+        </li>
+        <li>
+          <strong>Trigger Word:</strong> {details.triggerWord}
+        </li>
+        <li>
+          <strong>Visibility:</strong> {details.visibility}
+        </li>
+        <li>
+          <strong>Photos uploaded:</strong> {photoCount}
+        </li>
       </ul>
       <p style={styles.hint}>
         Training a Flux LoRA typically takes 15–30 minutes. You will be notified when ready.
       </p>
       <div style={styles.row}>
-        <button style={styles.buttonSecondary} onClick={onBack}>← Back</button>
+        <button style={styles.buttonSecondary} onClick={onBack}>
+          ← Back
+        </button>
         <button style={styles.button} onClick={onStartTraining} disabled={loading}>
           {loading ? 'Starting…' : '🚀 Start Training'}
         </button>
@@ -350,17 +365,58 @@ const styles = {
   title: { fontSize: 28, marginBottom: 16 },
   card: { background: '#f9f9f9', borderRadius: 8, padding: 24, marginTop: 24 },
   label: { display: 'flex', flexDirection: 'column' as const, gap: 4, marginBottom: 16 },
-  input: { padding: '8px 12px', border: '1px solid #ccc', borderRadius: 4, fontSize: 15, width: '100%', boxSizing: 'border-box' as const },
-  button: { background: '#1a1a2e', color: '#fff', border: 'none', borderRadius: 6, padding: '10px 24px', fontSize: 15, cursor: 'pointer' },
-  buttonSecondary: { background: '#e0e0e0', color: '#333', border: 'none', borderRadius: 6, padding: '10px 24px', fontSize: 15, cursor: 'pointer' },
+  input: {
+    padding: '8px 12px',
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    fontSize: 15,
+    width: '100%',
+    boxSizing: 'border-box' as const,
+  },
+  button: {
+    background: '#1a1a2e',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 6,
+    padding: '10px 24px',
+    fontSize: 15,
+    cursor: 'pointer',
+  },
+  buttonSecondary: {
+    background: '#e0e0e0',
+    color: '#333',
+    border: 'none',
+    borderRadius: 6,
+    padding: '10px 24px',
+    fontSize: 15,
+    cursor: 'pointer',
+  },
   stepRow: { display: 'flex', gap: 8, marginBottom: 24 },
   stepChip: { padding: '4px 12px', borderRadius: 16, background: '#eee', fontSize: 13 },
   stepActive: { background: '#1a1a2e', color: '#fff' },
-  error: { background: '#fee', border: '1px solid #c00', padding: 12, borderRadius: 4, marginTop: 12, color: '#900' },
+  error: {
+    background: '#fee',
+    border: '1px solid #c00',
+    padding: 12,
+    borderRadius: 4,
+    marginTop: 12,
+    color: '#900',
+  },
   hint: { color: '#666', fontSize: 14 },
   photoGrid: { display: 'flex', flexWrap: 'wrap' as const, gap: 8, marginBottom: 16 },
   photoThumb: { width: 80, height: 80, objectFit: 'cover' as const, borderRadius: 4 },
-  uploadBox: { width: 80, height: 80, border: '2px dashed #aaa', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 13, color: '#666' },
+  uploadBox: {
+    width: 80,
+    height: 80,
+    border: '2px dashed #aaa',
+    borderRadius: 4,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    fontSize: 13,
+    color: '#666',
+  },
   row: { display: 'flex', gap: 12, marginTop: 16 },
   link: { color: '#1a1a2e', fontWeight: 600 },
 };

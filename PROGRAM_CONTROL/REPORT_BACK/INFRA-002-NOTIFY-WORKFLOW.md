@@ -33,13 +33,13 @@ GitHub Actions workflow that notifies Program Control when report-back files lan
 
 ## Validation Checklist
 
-| Check | Result |
-|-------|--------|
-| Workflow YAML is valid syntax | PASS |
-| `paths` filter targets `PROGRAM_CONTROL/REPORT_BACK/**` | PASS |
-| Webhook step skips gracefully when secret not set | PASS — `if [ -z "$NOTIFY_WEBHOOK" ]` guard with `exit 0` |
-| `permissions: contents: read` (least privilege) | PASS |
-| `fetch-depth: 2` enables HEAD~1 diff | PASS |
+| Check                                                   | Result                                                   |
+| ------------------------------------------------------- | -------------------------------------------------------- |
+| Workflow YAML is valid syntax                           | PASS                                                     |
+| `paths` filter targets `PROGRAM_CONTROL/REPORT_BACK/**` | PASS                                                     |
+| Webhook step skips gracefully when secret not set       | PASS — `if [ -z "$NOTIFY_WEBHOOK" ]` guard with `exit 0` |
+| `permissions: contents: read` (least privilege)         | PASS                                                     |
+| `fetch-depth: 2` enables HEAD~1 diff                    | PASS                                                     |
 
 ---
 

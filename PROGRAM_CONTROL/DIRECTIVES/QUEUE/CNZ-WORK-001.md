@@ -20,7 +20,7 @@
 - CEO directives 2026-04-21
 - Tech-debt findings from Thread 19 repo scan (2026-04-21)
 
------
+---
 
 ## 0. PERSISTENCE & LIFECYCLE — READ FIRST
 
@@ -40,7 +40,7 @@ The charter file (this document) is persistent. It lives at `PROGRAM_CONTROL/DIR
 
 This file contains NO governance, NO RoE, NO invariants. Those live in `OQMI_GOVERNANCE.md`. This file lists work.
 
------
+---
 
 ## 1. SCOPE
 
@@ -50,7 +50,7 @@ Scope is bounded to:
 
 - ChatNowZone–BUILD repository
 - Code, schema, infra, docs, governance-adjacent cleanup within the repo
-- Plan-amendment tasks (R-P0-* documentation amendments to v2.8 business plan) that originate from the repo-vs-plan deficit assessment
+- Plan-amendment tasks (R-P0-\* documentation amendments to v2.8 business plan) that originate from the repo-vs-plan deficit assessment
 
 **Out of scope:**
 
@@ -58,7 +58,7 @@ Scope is bounded to:
 - Business plan content beyond the eight R-P0 amendments listed
 - Marketing, creator onboarding, Telegram strategy (those have separate workstreams)
 
------
+---
 
 ## 2. AGENT ROUTING
 
@@ -72,7 +72,7 @@ The hint is a **routing suggestion, not an exclusivity lock.** An agent that can
 
 All agents operate under OQMI_GOVERNANCE.md §1 (assignment-equals-approval) and §4.2 (Droid Mode default). HARD_STOP on any ambiguity, missing dependency, missing operator decision, or invariant conflict.
 
------
+---
 
 ## 3. WAVE STRUCTURE & CADENCE
 
@@ -80,7 +80,7 @@ Tasks are grouped into Waves. Waves execute roughly sequentially but tasks withi
 
 - **Wave A — Repo Hygiene & Pre-Read** (must complete before Wave B opens)
 - **Wave B — CEO Decision Surfacing** (parallel to Wave A; surfaces clarifies)
-- **Wave C — Plan Amendments** (R-P0-* documentation; parallel to anything)
+- **Wave C — Plan Amendments** (R-P0-\* documentation; parallel to anything)
 - **Wave D — Verification & Extension of L0 Spine** (the eight existing services)
 - **Wave E — Net-New L0 Build** (P0 stack assets not yet in repo)
 - **Wave F — Plan IP Layer** (P1 stack assets, clarify-blocked)
@@ -89,7 +89,7 @@ Tasks are grouped into Waves. Waves execute roughly sequentially but tasks withi
 
 Each Wave terminates in a `CNZ-WORK-001-CHORE-<wave>` cleanup task. The next Wave does not open until the cleanup task is DONE.
 
------
+---
 
 ## 4. PRIORITY MODEL
 
@@ -100,7 +100,7 @@ Each Wave terminates in a `CNZ-WORK-001-CHORE-<wave>` cleanup task. The next Wav
 
 Within Waves, P0 > P1 > P2 > P3.
 
------
+---
 
 ## 5. STATUS ENUMS
 
@@ -111,7 +111,7 @@ Within Waves, P0 > P1 > P2 > P3.
 - `DONE` — merged to `main`; completion record filed
 - `RETIRED` — task abandoned (rare; requires CEO sign-off)
 
------
+---
 
 ## 6. TASK LIST
 
@@ -131,7 +131,7 @@ Status: QUEUED
 Directive: <single concrete instruction>
 ```
 
------
+---
 
 ### WAVE A — REPO HYGIENE & PRE-READ
 
@@ -145,7 +145,7 @@ Depends-on: none
 CEO_GATE: NO
 FIZ: NO
 Source: Deficit doc §1.3
-Status: DONE — 2026-04-22 — 
+Status: DONE — 2026-04-22 —
 Directive: Enumerate full subdirectory contents (recursive, depth >=3) for: services/, governance/, safety/, finance/, docs/, PROGRAM_CONTROL/, issues/, scripts/, infra/, tests/, ui/. Read and report contents of: prisma/schema.prisma, .github/copilot-instructions.md, docs/DOMAIN_GLOSSARY.md (if present). List all branches and flag stale candidates (no commits in 60+ days). File output as REPORT_BACK. This is the foundational audit that unblocks every VERIFY row in the deficit doc.
 ```
 
@@ -345,7 +345,7 @@ Status: DONE — 2026-04-23 — PR pending — CNZ-WORK-001-A099-DONE.md (Wave A
 Directive: Lint pass repo-wide. Dead-code sweep. Consistency check on the three SoT files in PROGRAM_CONTROL/DIRECTIVES/QUEUE/. Confirm OQMI_SYSTEM_STATE.md §3, §5, §6, §7 reflect all Wave A outcomes. Roll up Wave A REPORT_BACKs into a single Wave A summary. Wave B does not open until this completes.
 ```
 
------
+---
 
 ### WAVE B — CEO DECISION SURFACING
 
@@ -393,7 +393,7 @@ Status: QUEUED
 Directive: Once CEO has answered R-CLARIFY-012 (frontend repo location), decompose Black-Glass Interface scope into per-feature M/L tasks. Each feature becomes its own CNZ-WORK-001-G0NN row. Compliance gates UI, RBAC enforcement, kill switch UI, consent workflow UI, age gate UI, wallet integrity UI per Corpus Ch.6 are minimum decomposition units.
 ```
 
------
+---
 
 ### WAVE C — PLAN AMENDMENTS (R-P0)
 
@@ -525,7 +525,7 @@ Status: QUEUED
 Directive: Confirm v2.8 plan reflects all eight amendments. Update v2.8 changelog with amendment list. File summary REPORT_BACK.
 ```
 
------
+---
 
 ### WAVE D — VERIFICATION & EXTENSION OF L0 SPINE
 
@@ -657,7 +657,7 @@ Status: QUEUED
 Directive: Lint pass on services/ work. Test triage. Confirm OQMI_SYSTEM_STATE.md §2 service inventory updated to reflect verified statuses. Roll up Wave D REPORT_BACKs.
 ```
 
------
+---
 
 ### WAVE E — NET-NEW L0 BUILD (P0 STACK ASSETS)
 
@@ -717,7 +717,7 @@ Status: QUEUED
 Directive: Confirm net-new L0 services have integration tests, audit logging per OQMI_GOVERNANCE §6.5, and OQMI_SYSTEM_STATE.md §2/§3 updated. Roll up Wave E REPORT_BACKs.
 ```
 
------
+---
 
 ### WAVE F — PLAN IP LAYER (P1 STACK ASSETS, MOSTLY CLARIFY-BLOCKED)
 
@@ -861,7 +861,7 @@ Status: QUEUED
 Directive: Confirm Plan IP services have tests, integration with the L0 spine, OQMI_SYSTEM_STATE.md updates. Roll up Wave F REPORT_BACKs.
 ```
 
------
+---
 
 ### WAVE G — XL DECOMPOSITION OUTPUTS
 
@@ -897,7 +897,7 @@ Status: QUEUED
 Directive: Confirm decomposed tasks all completed and integrated. UI/UX QA pass against Corpus Ch.6 visual identity. Roll up Wave G REPORT_BACKs.
 ```
 
------
+---
 
 ### WAVE H — HARDENING & PRE-LAUNCH CLEANUP
 
@@ -1013,60 +1013,60 @@ Status: QUEUED
 Directive: Final lint, dead-code, doc consistency pass. Confirm OQMI_SYSTEM_STATE.md reflects launch-ready state. Confirm all 36 deficit doc rows are accounted for (DONE, RETIRED, or explicitly deferred post-launch with CEO sign-off). Tag release. CEO signs launch-ready.
 ```
 
------
+---
 
 ## 7. CROSS-REFERENCE — DEFICIT DOC ROW → CHARTER TASK ID
 
 Quick lookup. Every deficit doc row (Thread 18, 36 rows) maps to one or more tasks in this charter, OR is explicitly retired.
 
-|Deficit row                         |Charter task(s)     |Notes                                     |
-|------------------------------------|--------------------|------------------------------------------|
-|R-P0-001                            |C002                |Plan amendment                            |
-|R-P0-002                            |C003                |Plan amendment                            |
-|R-P0-003                            |C001                |Plan amendment, P0                        |
-|R-P0-004                            |C004                |Plan amendment, CFO sign                  |
-|R-P0-005                            |C005                |Plan amendment, CEO decides               |
-|R-P0-006                            |C006                |Plan amendment                            |
-|R-P0-007                            |C007                |Plan amendment                            |
-|R-P0-008                            |C008                |Plan amendment                            |
-|R-001 RedBook                       |E001                |P0 launch-blocking                        |
-|R-002 Risk Toolkit                  |D002                |merged with R-102                         |
-|R-003 CreatorControl.Zone           |F001                |clarify-blocked                           |
-|R-004 MyCrew.Zone                   |F002                |clarify-blocked                           |
-|R-005 Flicker n'Flame Scoring (FFS)              |F003                |clarify-blocked                           |
-|R-006 FairPay/FairPlay              |D006                |clarify-blocked, FIZ                      |
-|R-007 Compliance Stack              |D008                |merged with R-107                         |
-|R-008 DFSP                          |F004                |clarify-blocked                           |
-|R-009 Human Contact Zone            |F005                |clarify-blocked                           |
-|R-010 GateGuard Sentinel            |E003                |P0 launch-blocking                        |
-|R-011 Cyrano                        |B002 → G001..GNNN   |XL decomposition                          |
-|R-012 Diamond Concierge             |F006                |depends on C003                           |
-|R-013 Welfare Guardian Score        |F007                |clarify-blocked                           |
-|R-014 NOWPayouts                    |E002                |P0 launch-blocking, FIZ                   |
-|R-015 RedRoomRewards                |F008                |clarify-blocked                           |
-|R-016 RedRoomPleasures              |RETIRED             |Out of scope (separate WordPress property)|
-|R-017 JuryPulse                     |F009                |depends on C005                           |
-|R-101 Three-Bucket Wallet           |D001                |FIZ                                       |
-|R-102 Risk Engine                   |D002                |merged with R-002                         |
-|R-103 NATS Fabric                   |D003                |                                          |
-|R-104 OBS Broadcast Kernel          |D004                |depends on D006                           |
-|R-105 HeartZone IoT Loop            |D005                |clarify-blocked                           |
-|R-106 Bijou.Zone Theatre            |D007                |clarify-blocked                           |
-|R-107 Sovereign CaC                 |D008                |merged with R-007                         |
-|R-108 UI / Black-Glass              |B003 → G101..G199   |XL decomposition                          |
-|R-CLARIFY-001..012                  |B001                |consolidated decision pass                |
-|Cleanup 4.1 (DIRECTIVES status)     |A001, A011          |                                          |
-|Cleanup 4.2 (services inventory)    |A001                |                                          |
-|Cleanup 4.3 (Sovereign Kernel)      |A005                |                                          |
-|Cleanup 4.4 (apps/ absence)         |B001 (R-CLARIFY-012)|                                          |
-|Cleanup 4.5 (Ghost Alpha definition)|A004                |                                          |
-|Cleanup 4.6 (chore-update branch)   |A008                |                                          |
-|Cleanup 4.7 (KIMI references)       |A001 (verify), A099 |                                          |
-|Cleanup 4.8 (repo visibility)       |A014                |                                          |
-|Cleanup 4.9 (RRR_CEO_DECISIONS)     |A010                |                                          |
-|Cleanup 4.10 (stale branches)       |A009                |                                          |
+| Deficit row                          | Charter task(s)      | Notes                                      |
+| ------------------------------------ | -------------------- | ------------------------------------------ |
+| R-P0-001                             | C002                 | Plan amendment                             |
+| R-P0-002                             | C003                 | Plan amendment                             |
+| R-P0-003                             | C001                 | Plan amendment, P0                         |
+| R-P0-004                             | C004                 | Plan amendment, CFO sign                   |
+| R-P0-005                             | C005                 | Plan amendment, CEO decides                |
+| R-P0-006                             | C006                 | Plan amendment                             |
+| R-P0-007                             | C007                 | Plan amendment                             |
+| R-P0-008                             | C008                 | Plan amendment                             |
+| R-001 RedBook                        | E001                 | P0 launch-blocking                         |
+| R-002 Risk Toolkit                   | D002                 | merged with R-102                          |
+| R-003 CreatorControl.Zone            | F001                 | clarify-blocked                            |
+| R-004 MyCrew.Zone                    | F002                 | clarify-blocked                            |
+| R-005 Flicker n'Flame Scoring (FFS)  | F003                 | clarify-blocked                            |
+| R-006 FairPay/FairPlay               | D006                 | clarify-blocked, FIZ                       |
+| R-007 Compliance Stack               | D008                 | merged with R-107                          |
+| R-008 DFSP                           | F004                 | clarify-blocked                            |
+| R-009 Human Contact Zone             | F005                 | clarify-blocked                            |
+| R-010 GateGuard Sentinel             | E003                 | P0 launch-blocking                         |
+| R-011 Cyrano                         | B002 → G001..GNNN    | XL decomposition                           |
+| R-012 Diamond Concierge              | F006                 | depends on C003                            |
+| R-013 Welfare Guardian Score         | F007                 | clarify-blocked                            |
+| R-014 NOWPayouts                     | E002                 | P0 launch-blocking, FIZ                    |
+| R-015 RedRoomRewards                 | F008                 | clarify-blocked                            |
+| R-016 RedRoomPleasures               | RETIRED              | Out of scope (separate WordPress property) |
+| R-017 JuryPulse                      | F009                 | depends on C005                            |
+| R-101 Three-Bucket Wallet            | D001                 | FIZ                                        |
+| R-102 Risk Engine                    | D002                 | merged with R-002                          |
+| R-103 NATS Fabric                    | D003                 |                                            |
+| R-104 OBS Broadcast Kernel           | D004                 | depends on D006                            |
+| R-105 HeartZone IoT Loop             | D005                 | clarify-blocked                            |
+| R-106 Bijou.Zone Theatre             | D007                 | clarify-blocked                            |
+| R-107 Sovereign CaC                  | D008                 | merged with R-007                          |
+| R-108 UI / Black-Glass               | B003 → G101..G199    | XL decomposition                           |
+| R-CLARIFY-001..012                   | B001                 | consolidated decision pass                 |
+| Cleanup 4.1 (DIRECTIVES status)      | A001, A011           |                                            |
+| Cleanup 4.2 (services inventory)     | A001                 |                                            |
+| Cleanup 4.3 (Sovereign Kernel)       | A005                 |                                            |
+| Cleanup 4.4 (apps/ absence)          | B001 (R-CLARIFY-012) |                                            |
+| Cleanup 4.5 (Ghost Alpha definition) | A004                 |                                            |
+| Cleanup 4.6 (chore-update branch)    | A008                 |                                            |
+| Cleanup 4.7 (KIMI references)        | A001 (verify), A099  |                                            |
+| Cleanup 4.8 (repo visibility)        | A014                 |                                            |
+| Cleanup 4.9 (RRR_CEO_DECISIONS)      | A010                 |                                            |
+| Cleanup 4.10 (stale branches)        | A009                 |                                            |
 
------
+---
 
 ## 8. AMENDMENT PROCEDURE
 
@@ -1082,7 +1082,7 @@ Auto-merge per OQMI_GOVERNANCE.md §2.1 unless the amendment touches a §2.2 Hum
 
 To retire this charter: CEO authors a successor (e.g. CNZ-WORK-002), explicitly marks this one RETIRED, and moves it to `archive/charters/CNZ-WORK-001.md`.
 
------
+---
 
 ## 9. INVARIANT INHERITANCE
 
@@ -1103,7 +1103,7 @@ Every task in this charter inherits the invariants of OQMI_GOVERNANCE.md without
 
 A task that would violate an invariant is invalid. An agent that detects a conflict HARD_STOPs and reports per OQMI_GOVERNANCE.md §3.
 
------
+---
 
 ## 10. REPORT_BACK PROTOCOL
 
@@ -1139,7 +1139,7 @@ Every task generates a REPORT_BACK at `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-
 - §6 BLOCKERS: <yes/no, what>
 ```
 
------
+---
 
 ## 11. DONE-RECORD TEMPLATE
 
@@ -1168,7 +1168,7 @@ When a task completes and merges, write `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-WOR
 
 Then amend the task’s `Status:` line in §6 of this charter from `QUEUED` (or `CLAIMED` / `IN-REVIEW`) to `DONE — <PR> — <DONE-record-filename>`.
 
------
+---
 
 ## 12. END OF CHARTER
 

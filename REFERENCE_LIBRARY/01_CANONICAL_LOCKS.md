@@ -1,4 +1,5 @@
 # OQMInc Canonical Locks
+
 Authority: Kevin B. Hartley, CEO — OmniQuest Media Inc.
 Last updated: 2026-04-26
 Status: IMMUTABLE — changes require explicit CEO authorization
@@ -34,12 +35,12 @@ NEVER be used as enum values in any code, schema, or directive:
 
 These are add-on products, not membership tiers:
 
-| Product | Type | Purpose |
-|---------|------|---------|
-| OmniPass | Day-pass product | 24-hour all-access pass |
-| OmniPass+ | Annual product | 365-day all-access pass |
-| ShowZonePass | Event product | Single-show access |
-| SilverBullet | Rescue product | Token-expiry rescue, tier nudge |
+| Product      | Type             | Purpose                         |
+| ------------ | ---------------- | ------------------------------- |
+| OmniPass     | Day-pass product | 24-hour all-access pass         |
+| OmniPass+    | Annual product   | 365-day all-access pass         |
+| ShowZonePass | Event product    | Single-show access              |
+| SilverBullet | Rescue product   | Token-expiry rescue, tier nudge |
 
 ---
 
@@ -62,6 +63,7 @@ These are add-on products, not membership tiers:
 
 **Canonical:** Flicker n'Flame Scoring (FFS)
 **Rate states (4 levels):**
+
 - RATE_COLD
 - RATE_WARM
 - RATE_HOT
@@ -72,8 +74,8 @@ These are add-on products, not membership tiers:
 The following rate state was REMOVED and must NEVER be used as a rate
 state value in any code, schema, or directive:
 
-- RATE_BLAZING (retired 2026-04-26 — collapsed into RATE_INFERNO per
-  PAYLOAD-10 alignment to GovernanceConfig.HEAT_BAND_* canonical bands;
+- RATE*BLAZING (retired 2026-04-26 — collapsed into RATE_INFERNO per
+  PAYLOAD-10 alignment to GovernanceConfig.HEAT_BAND*\* canonical bands;
   see `PROGRAM_CONTROL/REPORT_BACK/PAYLOAD-10-ALIGNMENT-SWEEP.md`)
 
 ---
@@ -91,11 +93,11 @@ state value in any code, schema, or directive:
 All GOV-prefixed work requires clearance artifacts in:
 `PROGRAM_CONTROL/CLEARANCES/{GATE-ID}-CLEARANCE.md`
 
-| Gate | Status | Scope |
-|------|--------|-------|
+| Gate        | Status                           | Scope        |
+| ----------- | -------------------------------- | ------------ |
 | GOV-FINTRAC | CEO-AUTHORIZED-STAGED 2026-04-11 | DFSP-002–008 |
-| GOV-AGCO | CEO-AUTHORIZED-STAGED 2026-04-11 | DFSP-002–008 |
-| GOV-AV | BRANCH-AND-HOLD | AV-001 only |
+| GOV-AGCO    | CEO-AUTHORIZED-STAGED 2026-04-11 | DFSP-002–008 |
+| GOV-AV      | BRANCH-AND-HOLD                  | AV-001 only  |
 
 ---
 
@@ -142,6 +144,7 @@ All changes to the following require REASON/IMPACT/CORRELATION_ID in commits:
 ## MULTI-TENANT MANDATE
 
 Every Prisma write operation MUST include:
+
 - organization_id
 - tenant_id
 
@@ -152,6 +155,7 @@ Every Prisma write operation MUST include:
 ## SCHEMA INTEGRITY
 
 Every financial or audit table MUST include:
+
 - correlation_id (UUID or structured ID)
 - reason_code (GovernanceConfig constant or enum value)
 
@@ -166,4 +170,4 @@ All install/update commands use `yarn` exclusively.
 
 ---
 
-*END CANONICAL LOCKS*
+_END CANONICAL LOCKS_

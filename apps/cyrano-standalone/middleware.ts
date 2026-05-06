@@ -9,7 +9,12 @@
 //      — keeping it side-effect-free is intentional for edge runtime.
 
 import { NextRequest, NextResponse } from 'next/server';
-import { CYRANO_LAYER2_COOKIE, isSessionExpired, parseSessionCookie, PUBLIC_ROUTES } from './lib/cyrano-session';
+import {
+  CYRANO_LAYER2_COOKIE,
+  isSessionExpired,
+  parseSessionCookie,
+  PUBLIC_ROUTES,
+} from './lib/cyrano-session';
 
 export const config = {
   // Apply to all paths except Next.js internals and static assets. Route

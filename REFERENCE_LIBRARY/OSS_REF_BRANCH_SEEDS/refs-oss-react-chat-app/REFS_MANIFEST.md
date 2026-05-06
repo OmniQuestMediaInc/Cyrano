@@ -21,11 +21,13 @@ React-based chat front-end. UI patterns for CCZ-001/002 chat components and OBS-
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/react-chat-app:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/react-chat-app:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/react-chat-app:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/React-Chat-App.git /tmp/React-Chat-App
 > cd /tmp/React-Chat-App
@@ -45,6 +48,7 @@ git show refs/oss/react-chat-app:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/React-Chat-App.git HEAD
 > git push origin FETCH_HEAD:refs/oss/react-chat-app --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/react-chat-app:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

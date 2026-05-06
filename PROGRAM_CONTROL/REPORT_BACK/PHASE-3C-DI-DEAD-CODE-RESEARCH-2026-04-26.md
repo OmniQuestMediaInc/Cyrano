@@ -14,6 +14,7 @@ This report re-verifies the 37-file dead-code list from Phase 3a §7 against cur
 **Most of the 37 files appear to be NestJS scaffolding that no runtime currently loads.** There is **no `main.ts` bootstrap** in `services/core-api/`, so `AppModule` and all its declared `providers`/`controllers`/`imports` are unreached at runtime. The 31 test suites construct services directly via `new ServiceClass(...)` rather than `Test.createTestingModule(AppModule)`, so passing tests don't prove the modules are wired.
 
 **Three plausible architectural states this could represent:**
+
 1. **Scaffolding-in-progress** — the team is building toward a full NestJS app and `main.ts` will land later. Modules stay.
 2. **Direct-construction migration** — the team has deliberately moved away from NestJS DI (tests bypass it). Modules are aspirational dead weight.
 3. **Mixed pragma** — modules will be selectively kept for the parts that need NestJS HTTP routing (controllers + middleware) and direct construction stays for everything else.
@@ -32,12 +33,13 @@ ls: cannot access ... No such file or directory
 ```
 
 **What this means:**
+
 - `AppModule` (`services/core-api/src/app.module.ts`) is the canonical NestJS root, but nothing instantiates it.
 - All transitive `providers` / `controllers` / `imports` declared by AppModule and downstream modules are at-rest scaffolding.
 - The 31 passing test suites use direct construction (e.g. `new LedgerService(repo, config)`) — they would still pass with all `*.module.ts` files deleted.
 - Production deployment would fail at startup since there's no entry point — but the repo is pre-launch, so no production exists yet.
 
-This is consistent with the README's posture: *"BUILD COMPLETE — Alpha Launch Ready"* with launch targeted September/October 2026. Bootstrap may simply be a deliberate pre-launch task that hasn't landed.
+This is consistent with the README's posture: _"BUILD COMPLETE — Alpha Launch Ready"_ with launch targeted September/October 2026. Bootstrap may simply be a deliberate pre-launch task that hasn't landed.
 
 ---
 
@@ -47,28 +49,28 @@ Methodology: for each file, count references to ANY of its exported symbols acro
 
 ### Already resolved (1 file)
 
-| File | Status | Notes |
-|---|---|---|
+| File                                       | Status         | Notes                                                                 |
+| ------------------------------------------ | -------------- | --------------------------------------------------------------------- |
 | `services/showzone/src/showzone.module.ts` | **DELETED** ✅ | Removed in PR #346 (Phase 2a Group C). RETIRED.md tombstone retained. |
 
 ### NestJS module scaffolding (12 files) — zero refs but architecturally ambiguous
 
 These export only an `*Module` class wrapping `@Module({...})`. They have no consumers because no `main.ts` loads `AppModule` (and many aren't even imported by `AppModule`).
 
-| File | Class | Refs |
-|---|---|---|
-| `services/integration-hub/src/hub.module.ts` | `IntegrationHubModule` | 0 |
-| `services/risk-engine/src/risk.module.ts` | `RiskModule` | 0 |
-| `services/core-api/src/app.module.ts` | `AppModule` | 0 |
-| `services/core-api/src/core-api.module.ts` | `CoreApiModule` | 0 |
-| `services/core-api/src/ingestion/ingestion.module.ts` | `IngestionModule` | 0 |
-| `services/zonebot-scheduler/src/zonebot-scheduler.module.ts` | `ZonebotSchedulerModule` | 0 |
-| `services/velocityzone/src/velocityzone.module.ts` | `VelocityZoneModule` | 0 |
-| `services/obs-bridge/src/obs-bridge.module.ts` | `OBSBridgeModule` | 0 |
-| `services/fraud-prevention/src/fraud-prevention.module.ts` | `FraudPreventionModule` | 0 |
-| `services/recovery/src/recovery.module.ts` | `RecoveryModule` | 0 |
-| `services/notification/src/notification.module.ts` | `NotificationModule` | 0 |
-| (note: many `*.module.ts` files exist but only the originally-flagged ones are listed here) | | |
+| File                                                                                        | Class                    | Refs |
+| ------------------------------------------------------------------------------------------- | ------------------------ | ---- |
+| `services/integration-hub/src/hub.module.ts`                                                | `IntegrationHubModule`   | 0    |
+| `services/risk-engine/src/risk.module.ts`                                                   | `RiskModule`             | 0    |
+| `services/core-api/src/app.module.ts`                                                       | `AppModule`              | 0    |
+| `services/core-api/src/core-api.module.ts`                                                  | `CoreApiModule`          | 0    |
+| `services/core-api/src/ingestion/ingestion.module.ts`                                       | `IngestionModule`        | 0    |
+| `services/zonebot-scheduler/src/zonebot-scheduler.module.ts`                                | `ZonebotSchedulerModule` | 0    |
+| `services/velocityzone/src/velocityzone.module.ts`                                          | `VelocityZoneModule`     | 0    |
+| `services/obs-bridge/src/obs-bridge.module.ts`                                              | `OBSBridgeModule`        | 0    |
+| `services/fraud-prevention/src/fraud-prevention.module.ts`                                  | `FraudPreventionModule`  | 0    |
+| `services/recovery/src/recovery.module.ts`                                                  | `RecoveryModule`         | 0    |
+| `services/notification/src/notification.module.ts`                                          | `NotificationModule`     | 0    |
+| (note: many `*.module.ts` files exist but only the originally-flagged ones are listed here) |                          |      |
 
 **Recommendation:** governance call. If the team is going to land `main.ts` and wire up DI, keep them. If direct-construction is the canonical pattern, delete them.
 
@@ -76,18 +78,19 @@ These export only an `*Module` class wrapping `@Module({...})`. They have no con
 
 These are `*.service.ts` files whose exported classes/types are not imported anywhere outside their own file.
 
-| File | Exports | Refs | Tier |
-|---|---|---|---|
-| `services/core-api/src/finance/tip.service.ts` | `TipService` | 0 | core-api |
-| `services/core-api/src/marketing/gratitude.service.ts` | `GratitudeService` | 0 | core-api |
-| `services/core-api/src/risk/risk-score.service.ts` | `RiskScoreService`, `RiskLevel`, `RiskScore` | 0 (⚠️ **listed in `.github/required-files.txt`**) | core-api |
-| `services/core-api/src/safety/upload-interceptor.middleware.ts` | `UploadInterceptorMiddleware` | 0 | core-api |
-| `services/core-api/src/studio/studio-report.controller.ts` | `StudioReportController` | 0 | core-api |
-| `services/velocityzone/src/creator-rate-tier.service.ts` | `CreatorRateTierService`, `CreatorEffectiveRate`, `CREATOR_RATE_RULE_ID` | 0 (⚠️ **just fixed in PR #366; presumably intended to be wired up**) | velocityzone |
-| `services/vision-monitor/src/human-counter.worker.ts` | `HumanCounterWorker` | 0 | vision-monitor |
-| `services/rewards-api/src/engine/points-calculator.logic.ts` | `calculatePoints` | 0 | rewards-api |
+| File                                                            | Exports                                                                  | Refs                                                                 | Tier           |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- | -------------- |
+| `services/core-api/src/finance/tip.service.ts`                  | `TipService`                                                             | 0                                                                    | core-api       |
+| `services/core-api/src/marketing/gratitude.service.ts`          | `GratitudeService`                                                       | 0                                                                    | core-api       |
+| `services/core-api/src/risk/risk-score.service.ts`              | `RiskScoreService`, `RiskLevel`, `RiskScore`                             | 0 (⚠️ **listed in `.github/required-files.txt`**)                    | core-api       |
+| `services/core-api/src/safety/upload-interceptor.middleware.ts` | `UploadInterceptorMiddleware`                                            | 0                                                                    | core-api       |
+| `services/core-api/src/studio/studio-report.controller.ts`      | `StudioReportController`                                                 | 0                                                                    | core-api       |
+| `services/velocityzone/src/creator-rate-tier.service.ts`        | `CreatorRateTierService`, `CreatorEffectiveRate`, `CREATOR_RATE_RULE_ID` | 0 (⚠️ **just fixed in PR #366; presumably intended to be wired up**) | velocityzone   |
+| `services/vision-monitor/src/human-counter.worker.ts`           | `HumanCounterWorker`                                                     | 0                                                                    | vision-monitor |
+| `services/rewards-api/src/engine/points-calculator.logic.ts`    | `calculatePoints`                                                        | 0                                                                    | rewards-api    |
 
 **⚠️ Two of these have governance protection or recent work invested:**
+
 - `risk-score.service.ts` is in `.github/required-files.txt` — the CI required-files check would block deletion.
 - `creator-rate-tier.service.ts` was just repaired in PR #366. Deleting after fixing it makes no sense; the intent is clearly "wire it up."
 
@@ -95,22 +98,22 @@ These are `*.service.ts` files whose exported classes/types are not imported any
 
 The `finance/` directory has its own append-only invariant per Phase 1 directive. **None of these should be deleted regardless of import count.**
 
-| File | Refs |
-|---|---|
-| `finance/batch-payout.service.ts` | 3 |
-| `finance/commission-splitting.service.ts` | 0 |
-| `finance/containment-hold.service.ts` | 0 |
-| `finance/evidence-packet.service.ts` | 3 |
-| `finance/token-extension.service.ts` | 0 |
-| `finance/audit-dashboard.service.ts` | 3 (note: `services/core-api/src/audit/audit-dashboard.service.ts` is a separate file) |
+| File                                      | Refs                                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| `finance/batch-payout.service.ts`         | 3                                                                                     |
+| `finance/commission-splitting.service.ts` | 0                                                                                     |
+| `finance/containment-hold.service.ts`     | 0                                                                                     |
+| `finance/evidence-packet.service.ts`      | 3                                                                                     |
+| `finance/token-extension.service.ts`      | 0                                                                                     |
+| `finance/audit-dashboard.service.ts`      | 3 (note: `services/core-api/src/audit/audit-dashboard.service.ts` is a separate file) |
 
 **Recommendation:** leave alone. Finance is append-only per OQMI invariant — even if some files have no current importers, they may be legally retained (audit trail, evidence packets, etc.).
 
 ### `safety/` top-level (1 file)
 
-| File | Refs |
-|---|---|
-| `safety/security-guardrails.service.ts` | 0 |
+| File                                    | Refs |
+| --------------------------------------- | ---- |
+| `safety/security-guardrails.service.ts` | 0    |
 
 **Recommendation:** governance call (similar to finance, less explicit invariant).
 
@@ -156,17 +159,17 @@ NO_EXPORTS. Schema definition file. Likely consumed by code parsing it (not via 
 
 ## Summary classification
 
-| Confidence | Class | Count | Action |
-|---|---|---|---|
-| HIGH | Already deleted | 1 | None — done |
-| **GOVERNANCE** | NestJS scaffolding awaiting bootstrap decision | 12 | Wait for architectural call before touching |
-| **GOVERNANCE** | Newly-fixed code (3b-8b) clearly meant to be wired up | 1 | Wire up; do not delete |
-| **GOVERNANCE** | CI-required file | 1 | Cannot delete (`required-files.txt` block) |
-| **GOVERNANCE** | Append-only `finance/` files | 5 | Do not delete per OQMI invariant |
-| LOW | Probably-live (3+ refs, false positive) | 4 | Drop from dead-code list |
-| MEDIUM | Service files with 0 refs in `services/` (excl. governance-protected) | 5 | Spot-check + governance call |
-| LOW-MED | UI/script utility files | 4 | Spot-check |
-| HIGH (per Phase 2b research) | `roster.gateway.ts surfaces/` empty-shell duplicate | 1 | Safe to delete (Phase 2b already recommended) |
+| Confidence                   | Class                                                                 | Count | Action                                        |
+| ---------------------------- | --------------------------------------------------------------------- | ----- | --------------------------------------------- |
+| HIGH                         | Already deleted                                                       | 1     | None — done                                   |
+| **GOVERNANCE**               | NestJS scaffolding awaiting bootstrap decision                        | 12    | Wait for architectural call before touching   |
+| **GOVERNANCE**               | Newly-fixed code (3b-8b) clearly meant to be wired up                 | 1     | Wire up; do not delete                        |
+| **GOVERNANCE**               | CI-required file                                                      | 1     | Cannot delete (`required-files.txt` block)    |
+| **GOVERNANCE**               | Append-only `finance/` files                                          | 5     | Do not delete per OQMI invariant              |
+| LOW                          | Probably-live (3+ refs, false positive)                               | 4     | Drop from dead-code list                      |
+| MEDIUM                       | Service files with 0 refs in `services/` (excl. governance-protected) | 5     | Spot-check + governance call                  |
+| LOW-MED                      | UI/script utility files                                               | 4     | Spot-check                                    |
+| HIGH (per Phase 2b research) | `roster.gateway.ts surfaces/` empty-shell duplicate                   | 1     | Safe to delete (Phase 2b already recommended) |
 
 ---
 

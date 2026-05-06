@@ -4,11 +4,7 @@
 // REASON: Launch promotion — 70% off first subscription period.
 // IMPACT: Writes to membership_subscriptions and increments promo_codes.used_count.
 // CORRELATION_ID: CNZ-WORK-001-PROMO-001
-import {
-  Injectable,
-  Logger,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, Logger, ConflictException } from '@nestjs/common';
 import { BillingInterval, MembershipTier, SubscriptionStatus } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { NatsService } from '../nats/nats.service';
@@ -38,9 +34,7 @@ export class PromotionService {
    * Returns null if the promo code is missing, expired, or exhausted.
    * Throws ConflictException if the user already has an ACTIVE subscription.
    */
-  async applyLaunchPromo(
-    input: ApplyLaunchPromoInput,
-  ): Promise<{ id: string } | null> {
+  async applyLaunchPromo(input: ApplyLaunchPromoInput): Promise<{ id: string } | null> {
     const { userId, tier, billingInterval, organizationId, tenantId } = input;
     const ruleAppliedId = 'PROMO-001_APPLY_LAUNCH70_v1';
 
@@ -56,23 +50,19 @@ export class PromotionService {
     });
 
     if (!promo) {
-      this.logger.warn(
-        'PromotionService.applyLaunchPromo: LAUNCH70 promo code not found',
-        { rule_applied_id: ruleAppliedId },
-      );
+      this.logger.warn('PromotionService.applyLaunchPromo: LAUNCH70 promo code not found', {
+        rule_applied_id: ruleAppliedId,
+      });
       return null;
     }
 
     const now = new Date();
 
     if (now > promo.expires_at) {
-      this.logger.warn(
-        'PromotionService.applyLaunchPromo: LAUNCH70 promo code is expired',
-        {
-          expires_at: promo.expires_at.toISOString(),
-          rule_applied_id: ruleAppliedId,
-        },
-      );
+      this.logger.warn('PromotionService.applyLaunchPromo: LAUNCH70 promo code is expired', {
+        expires_at: promo.expires_at.toISOString(),
+        rule_applied_id: ruleAppliedId,
+      });
       this.natsService.publish(NATS_TOPICS.PROMO_EXPIRED, {
         code: PROMOTION.LAUNCH70_CODE,
         user_id: userId,
@@ -83,14 +73,11 @@ export class PromotionService {
     }
 
     if (promo.used_count >= promo.max_uses) {
-      this.logger.warn(
-        'PromotionService.applyLaunchPromo: LAUNCH70 promo code max uses reached',
-        {
-          used_count: promo.used_count,
-          max_uses: promo.max_uses,
-          rule_applied_id: ruleAppliedId,
-        },
-      );
+      this.logger.warn('PromotionService.applyLaunchPromo: LAUNCH70 promo code max uses reached', {
+        used_count: promo.used_count,
+        max_uses: promo.max_uses,
+        rule_applied_id: ruleAppliedId,
+      });
       return null;
     }
 
@@ -99,14 +86,11 @@ export class PromotionService {
       where: { user_id: userId, status: SubscriptionStatus.ACTIVE },
     });
     if (existing) {
-      this.logger.warn(
-        'PromotionService.applyLaunchPromo: user already has ACTIVE subscription',
-        {
-          user_id: userId,
-          existing_subscription_id: existing.id,
-          rule_applied_id: ruleAppliedId,
-        },
-      );
+      this.logger.warn('PromotionService.applyLaunchPromo: user already has ACTIVE subscription', {
+        user_id: userId,
+        existing_subscription_id: existing.id,
+        rule_applied_id: ruleAppliedId,
+      });
       throw new ConflictException({
         message: 'User already has an active membership subscription.',
         rule_applied_id: ruleAppliedId,

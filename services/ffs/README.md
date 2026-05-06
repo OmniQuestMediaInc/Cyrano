@@ -46,33 +46,33 @@ NATS (SENSYNC_BPM_UPDATE, CHAT_MESSAGE_INGESTED)
 
 ## Score Composition (sum of ceilings = 100)
 
-| Signal | Max pts | Input field |
-|--------|--------:|-------------|
-| Tip pressure | 15 | `tips_per_min` |
-| Chat velocity | 8 | `chat_velocity_per_min` |
-| Dwell | 5 | `dwell_minutes` |
-| Heart reactions | 8 | `heart_reactions_per_min` |
-| Private/spy viewers | 5 | `private_spy_count` |
-| Heart rate delta (SenSync™ or raw) | 12 | `sensync_bpm ?? heart_rate_bpm − baseline` |
-| Eye tracking | 6 | `eye_tracking_score` (0–1) |
-| Facial excitement | 7 | `facial_excitement_score` (0–1) |
-| Skin exposure | 5 | `skin_exposure_score` (0–1) |
-| Motion | 5 | `motion_score` (0–1) |
-| Audio vocal ratio | 5 | `audio_vocal_ratio` (0–1) |
-| 5-min momentum | 10 | `heat_trend_5min` |
-| Hot streak | 9 | `hot_streak_ticks` |
-| **Total** | **100** | |
+| Signal                             | Max pts | Input field                                |
+| ---------------------------------- | ------: | ------------------------------------------ |
+| Tip pressure                       |      15 | `tips_per_min`                             |
+| Chat velocity                      |       8 | `chat_velocity_per_min`                    |
+| Dwell                              |       5 | `dwell_minutes`                            |
+| Heart reactions                    |       8 | `heart_reactions_per_min`                  |
+| Private/spy viewers                |       5 | `private_spy_count`                        |
+| Heart rate delta (SenSync™ or raw) |      12 | `sensync_bpm ?? heart_rate_bpm − baseline` |
+| Eye tracking                       |       6 | `eye_tracking_score` (0–1)                 |
+| Facial excitement                  |       7 | `facial_excitement_score` (0–1)            |
+| Skin exposure                      |       5 | `skin_exposure_score` (0–1)                |
+| Motion                             |       5 | `motion_score` (0–1)                       |
+| Audio vocal ratio                  |       5 | `audio_vocal_ratio` (0–1)                  |
+| 5-min momentum                     |      10 | `heat_trend_5min`                          |
+| Hot streak                         |       9 | `hot_streak_ticks`                         |
+| **Total**                          | **100** |                                            |
 
 ---
 
 ## Tier Bands (canonical — DOMAIN_GLOSSARY.md)
 
-| Tier | Score range | VelocityZone payout floor |
-|------|-------------|--------------------------|
-| COLD | 0–33 | $0.075 / CZT |
-| WARM | 34–60 | $0.080 / CZT |
-| HOT | 61–85 | $0.085 / CZT |
-| INFERNO | 86–100 | $0.090 / CZT |
+| Tier    | Score range | VelocityZone payout floor |
+| ------- | ----------- | ------------------------- |
+| COLD    | 0–33        | $0.075 / CZT              |
+| WARM    | 34–60       | $0.080 / CZT              |
+| HOT     | 61–85       | $0.085 / CZT              |
+| INFERNO | 86–100      | $0.090 / CZT              |
 
 ---
 
@@ -96,39 +96,39 @@ falls back to behavioral signals only (graceful degradation).
 
 ## NATS Topics
 
-| Topic constant | Subject | When emitted |
-|----------------|---------|--------------|
-| `FFS_SCORE_UPDATE` | `ffs.score.update` | Every ingest (and 1 Hz re-emit) |
-| `FFS_TIER_CHANGED` | `ffs.score.tier.changed` | Tier crosses a band boundary |
-| `FFS_PEAK` | `ffs.score.peak` | Score enters INFERNO |
-| `FFS_HOT_AND_READY` | `ffs.score.hot_and_ready` | Score ≥ 70 + dwell ≥ 10 min |
-| `FFS_DUAL_FLAME_PEAK` | `ffs.score.dual_flame.peak` | Dual Flame hits INFERNO |
-| `FFS_LEADERBOARD_UPDATED` | `ffs.score.leaderboard.updated` | ~every 10 s |
-| `FFS_SESSION_STARTED` | `ffs.score.session.started` | `startSession()` called |
-| `FFS_SESSION_ENDED` | `ffs.score.session.ended` | `endSession()` called |
-| `FFS_ADAPTIVE_UPDATED` | `ffs.score.adaptive.updated` | Adaptive weights shift after tip |
+| Topic constant            | Subject                         | When emitted                     |
+| ------------------------- | ------------------------------- | -------------------------------- |
+| `FFS_SCORE_UPDATE`        | `ffs.score.update`              | Every ingest (and 1 Hz re-emit)  |
+| `FFS_TIER_CHANGED`        | `ffs.score.tier.changed`        | Tier crosses a band boundary     |
+| `FFS_PEAK`                | `ffs.score.peak`                | Score enters INFERNO             |
+| `FFS_HOT_AND_READY`       | `ffs.score.hot_and_ready`       | Score ≥ 70 + dwell ≥ 10 min      |
+| `FFS_DUAL_FLAME_PEAK`     | `ffs.score.dual_flame.peak`     | Dual Flame hits INFERNO          |
+| `FFS_LEADERBOARD_UPDATED` | `ffs.score.leaderboard.updated` | ~every 10 s                      |
+| `FFS_SESSION_STARTED`     | `ffs.score.session.started`     | `startSession()` called          |
+| `FFS_SESSION_ENDED`       | `ffs.score.session.ended`       | `endSession()` called            |
+| `FFS_ADAPTIVE_UPDATED`    | `ffs.score.adaptive.updated`    | Adaptive weights shift after tip |
 
 ---
 
 ## REST Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/ffs/leaderboard?category=all` | 10×10 leaderboard |
-| `GET` | `/ffs/session/:id` | Current FFS score for a session |
-| `POST` | `/ffs/ingest` | Ingest a telemetry frame |
-| `POST` | `/ffs/session/:id/start` | Pre-register a session |
-| `DELETE` | `/ffs/session/:id` | End a session |
-| `POST` | `/ffs/tip-event` | Trigger adaptive learning from a tip |
-| `GET` | `/ffs/adaptive-weights/:creatorId` | Read creator adaptive multipliers |
+| Method   | Path                               | Description                          |
+| -------- | ---------------------------------- | ------------------------------------ |
+| `GET`    | `/ffs/leaderboard?category=all`    | 10×10 leaderboard                    |
+| `GET`    | `/ffs/session/:id`                 | Current FFS score for a session      |
+| `POST`   | `/ffs/ingest`                      | Ingest a telemetry frame             |
+| `POST`   | `/ffs/session/:id/start`           | Pre-register a session               |
+| `DELETE` | `/ffs/session/:id`                 | End a session                        |
+| `POST`   | `/ffs/tip-event`                   | Trigger adaptive learning from a tip |
+| `GET`    | `/ffs/adaptive-weights/:creatorId` | Read creator adaptive multipliers    |
 
 ---
 
 ## Database Tables
 
-| Table | Purpose |
-|-------|---------|
-| `ffs_snapshots` | Append-only time-series of every FFS score computed |
+| Table                  | Purpose                                             |
+| ---------------------- | --------------------------------------------------- |
+| `ffs_snapshots`        | Append-only time-series of every FFS score computed |
 | `ffs_adaptive_weights` | One row per creator — learned component multipliers |
 
 ---

@@ -269,9 +269,8 @@ describe('ExtensionService.processExtension — NATS events', () => {
       interactionRef: 'int-011',
       reason: 'Trigger reason test',
     });
-    const trigger = nats.__published.find(
-      (p) => p.topic === NATS_TOPICS.SERVICE_TO_SALE_TRIGGERED,
-    )?.payload as Record<string, unknown>;
+    const trigger = nats.__published.find((p) => p.topic === NATS_TOPICS.SERVICE_TO_SALE_TRIGGERED)
+      ?.payload as Record<string, unknown>;
     expect(trigger?.triggerReason).toBe('EXPIRY_EXTENSION');
     expect(trigger?.guestId).toBe('guest-015');
   });
@@ -346,11 +345,9 @@ describe('ExtensionService.buildGuestRiskProfile', () => {
 
   it('returns YELLOW / LIMITED for score in [MONITOR, BLOCK_HIGH_VALUE)', () => {
     const { extension } = buildServices();
-    const profile = extension.buildGuestRiskProfile(
-      'guest-022',
-      FRAUD_THRESHOLDS.MONITOR,
-      ['RAPID_PURCHASE'],
-    );
+    const profile = extension.buildGuestRiskProfile('guest-022', FRAUD_THRESHOLDS.MONITOR, [
+      'RAPID_PURCHASE',
+    ]);
     expect(profile.tier).toBe('YELLOW');
     expect(profile.recommendedAction).toBe('LIMITED');
     expect(profile.activeSignals).toEqual(['RAPID_PURCHASE']);
@@ -358,7 +355,11 @@ describe('ExtensionService.buildGuestRiskProfile', () => {
 
   it('returns ORANGE / REVIEW for score in [BLOCK_HIGH_VALUE, FLAG_HCZ)', () => {
     const { extension } = buildServices();
-    const profile = extension.buildGuestRiskProfile('guest-023', FRAUD_THRESHOLDS.BLOCK_HIGH_VALUE, []);
+    const profile = extension.buildGuestRiskProfile(
+      'guest-023',
+      FRAUD_THRESHOLDS.BLOCK_HIGH_VALUE,
+      [],
+    );
     expect(profile.tier).toBe('ORANGE');
     expect(profile.recommendedAction).toBe('REVIEW');
   });

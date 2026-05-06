@@ -48,15 +48,12 @@ export interface SessionTopUpPageRender {
   rule_applied_id: string;
 }
 
-export function renderSessionTopUpPage(
-  inputs: SessionTopUpPageInputs,
-): SessionTopUpPageRender {
-  const selectedSku = inputs.recommended_skus.find(
-    (s) => s.sku_id === inputs.selected_sku_id,
-  ) ?? null;
+export function renderSessionTopUpPage(inputs: SessionTopUpPageInputs): SessionTopUpPageRender {
+  const selectedSku =
+    inputs.recommended_skus.find((s) => s.sku_id === inputs.selected_sku_id) ?? null;
 
   const selectedBucketRow = inputs.selected_bucket
-    ? inputs.wallet_buckets.find((b) => b.bucket === inputs.selected_bucket) ?? null
+    ? (inputs.wallet_buckets.find((b) => b.bucket === inputs.selected_bucket) ?? null)
     : null;
 
   const can_purchase =
@@ -223,11 +220,9 @@ function renderSkuCard(sku: TopUpSku, selectedSkuId: string | null): RenderEleme
     [
       el('header', { classes: ['cnz-sku-card__header'] }, [
         el('strong', { test_id: `session-topup-sku-label-${sku.sku_id}` }, [sku.label]),
-        el(
-          'span',
-          { classes: ['cnz-badge', `cnz-badge--sku-${sku.sku_type.toLowerCase()}`] },
-          [sku.sku_type],
-        ),
+        el('span', { classes: ['cnz-badge', `cnz-badge--sku-${sku.sku_type.toLowerCase()}`] }, [
+          sku.sku_type,
+        ]),
       ]),
       el('dl', { classes: ['cnz-stat-grid', 'cnz-stat-grid--inline'] }, [
         el('dt', {}, ['Minutes']),
@@ -243,10 +238,7 @@ function renderSkuCard(sku: TopUpSku, selectedSkuId: string | null): RenderEleme
         'button',
         {
           test_id: `session-topup-sku-select-${sku.sku_id}`,
-          classes: [
-            'cnz-button',
-            isSelected ? 'cnz-button--secondary' : 'cnz-button--primary',
-          ],
+          classes: ['cnz-button', isSelected ? 'cnz-button--secondary' : 'cnz-button--primary'],
           on: { click: 'selectSku' },
           props: { sku_id: sku.sku_id, disabled: isSelected },
           aria: { 'aria-pressed': String(isSelected) },
@@ -273,9 +265,7 @@ function renderWalletSelector(view: SessionTopUpView): RenderElement {
       el(
         'ul',
         { classes: ['cnz-bucket-list'] },
-        view.wallet_buckets.map((bucket) =>
-          renderWalletBucketRow(bucket, view.selected_bucket),
-        ),
+        view.wallet_buckets.map((bucket) => renderWalletBucketRow(bucket, view.selected_bucket)),
       ),
     ],
   );
@@ -325,10 +315,7 @@ function renderWalletBucketRow(
         'button',
         {
           test_id: `session-topup-bucket-select-${bucket.bucket}`,
-          classes: [
-            'cnz-button',
-            isSelected ? 'cnz-button--secondary' : 'cnz-button--ghost',
-          ],
+          classes: ['cnz-button', isSelected ? 'cnz-button--secondary' : 'cnz-button--ghost'],
           on: { click: 'selectBucket' },
           props: { bucket: bucket.bucket, disabled: !bucket.sufficient || isSelected },
           aria: { 'aria-pressed': String(isSelected) },

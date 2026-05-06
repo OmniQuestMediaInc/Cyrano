@@ -1,6 +1,7 @@
 # GOV-001 — GeoPricingService Report-Back
 
 ## Meta
+
 - **Directive:** GOV-001
 - **Repo:** OmniQuestMediaInc/ChatNowZone--BUILD
 - **Branch:** claude/execute-gov-001-directive-mcIJh
@@ -8,9 +9,9 @@
 
 ## Files Changed
 
-| File | Action |
-|------|--------|
-| `services/core-api/src/geo/geo-pricing.service.ts` | CREATED |
+| File                                                | Action                                  |
+| --------------------------------------------------- | --------------------------------------- |
+| `services/core-api/src/geo/geo-pricing.service.ts`  | CREATED                                 |
 | `services/core-api/src/config/governance.config.ts` | MODIFIED — added `GEO_PRICING` constant |
 
 ## What Was Built
@@ -21,14 +22,14 @@
 
 ## Validation Results
 
-| Check | Expected | Actual | Status |
-|-------|----------|--------|--------|
-| `resolveGeoTier('CO')` | `'LOW'` | `'LOW'` | PASS |
-| `resolveGeoTier('CA')` | `'HIGH'` | `'HIGH'` | PASS |
-| `resolveGeoTier('BR')` | `'MED'` | `'MED'` | PASS |
-| `applyTierMultiplier(75, 'LOW')` | `25` | `25` | PASS |
-| `applyTierMultiplier(75, 'MED')` | `45` | `45` | PASS |
-| `applyTierMultiplier(75, 'HIGH')` | `75` | `75` | PASS |
-| `npx tsc --noEmit` | zero code errors | Only `@nestjs/common` missing (env dep) | PASS |
+| Check                             | Expected         | Actual                                  | Status |
+| --------------------------------- | ---------------- | --------------------------------------- | ------ |
+| `resolveGeoTier('CO')`            | `'LOW'`          | `'LOW'`                                 | PASS   |
+| `resolveGeoTier('CA')`            | `'HIGH'`         | `'HIGH'`                                | PASS   |
+| `resolveGeoTier('BR')`            | `'MED'`          | `'MED'`                                 | PASS   |
+| `applyTierMultiplier(75, 'LOW')`  | `25`             | `25`                                    | PASS   |
+| `applyTierMultiplier(75, 'MED')`  | `45`             | `45`                                    | PASS   |
+| `applyTierMultiplier(75, 'HIGH')` | `75`             | `75`                                    | PASS   |
+| `npx tsc --noEmit`                | zero code errors | Only `@nestjs/common` missing (env dep) | PASS   |
 
 ## Result: SUCCESS

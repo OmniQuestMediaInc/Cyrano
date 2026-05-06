@@ -35,13 +35,13 @@ against agent output.
 
 ## What was built
 
-| Path | Kind | Purpose |
-|---|---|---|
-| `PROGRAM_CONTROL/CLEARANCES/README.md` | new | Signing contract. Authorized signers = CEO or retained legal counsel only. Explicit prohibition against AI agents authoring, modifying, or simulating clearance records. |
-| `PROGRAM_CONTROL/CLEARANCES/TEMPLATE.md` | new | YAML-front-matter template for a clearance record. Safe by default: `status: NOT_CLEARED`, `ceo_acknowledgment: NOT_SIGNED`. Carries `opinion_document_sha256`, `drive_intel_reference`, `correlation_id`, `reason_code`, `blocking_release`, `signed_by`, `signed_at` (America/Toronto), and `supersedes`. |
-| `PROGRAM_CONTROL/CLEARANCES/.gitkeep` | new | Directory marker. |
-| `scripts/verify-gov-gate.sh` | new, executable | Read-only verifier. `./scripts/verify-gov-gate.sh GOV-FINTRAC` exits `0` iff a clearance record exists with `gate_id` matching the query, `status: CLEARED`, and `ceo_acknowledgment: SIGNED`. Otherwise exits `1`. Exits `2` on usage error. |
-| `PROGRAM_CONTROL/GOV-GATE-TRACKER.md` | modified | Added an "Evidentiary records (machine-verifiable)" section linking to the verifier and the signing contract. **No gate checkboxes modified.** Both GOV-FINTRAC and GOV-AGCO remain awaiting counsel. |
+| Path                                     | Kind            | Purpose                                                                                                                                                                                                                                                                                                     |
+| ---------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PROGRAM_CONTROL/CLEARANCES/README.md`   | new             | Signing contract. Authorized signers = CEO or retained legal counsel only. Explicit prohibition against AI agents authoring, modifying, or simulating clearance records.                                                                                                                                    |
+| `PROGRAM_CONTROL/CLEARANCES/TEMPLATE.md` | new             | YAML-front-matter template for a clearance record. Safe by default: `status: NOT_CLEARED`, `ceo_acknowledgment: NOT_SIGNED`. Carries `opinion_document_sha256`, `drive_intel_reference`, `correlation_id`, `reason_code`, `blocking_release`, `signed_by`, `signed_at` (America/Toronto), and `supersedes`. |
+| `PROGRAM_CONTROL/CLEARANCES/.gitkeep`    | new             | Directory marker.                                                                                                                                                                                                                                                                                           |
+| `scripts/verify-gov-gate.sh`             | new, executable | Read-only verifier. `./scripts/verify-gov-gate.sh GOV-FINTRAC` exits `0` iff a clearance record exists with `gate_id` matching the query, `status: CLEARED`, and `ceo_acknowledgment: SIGNED`. Otherwise exits `1`. Exits `2` on usage error.                                                               |
+| `PROGRAM_CONTROL/GOV-GATE-TRACKER.md`    | modified        | Added an "Evidentiary records (machine-verifiable)" section linking to the verifier and the signing contract. **No gate checkboxes modified.** Both GOV-FINTRAC and GOV-AGCO remain awaiting counsel.                                                                                                       |
 
 ---
 
@@ -67,14 +67,14 @@ cases 3–5, and **deleted before staging**. `git status` and `ls
 PROGRAM_CONTROL/CLEARANCES/` were checked post-delete to confirm no
 fixture artifact remained.
 
-| # | Case | Command | Expected | Observed |
-|---|---|---|---|---|
-| 1 | Usage error | `./scripts/verify-gov-gate.sh` | exit 2, usage message | exit 2 ✅ |
-| 2 | No record for gate | `./scripts/verify-gov-gate.sh GOV-FINTRAC` | exit 1, "no clearance record" | exit 1 ✅ |
-| 3 | Happy path (fake `GOV-TESTGATE`, status=CLEARED, ack=SIGNED) | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 0, PASS with evidence path | exit 0 ✅ |
-| 4a | Status NOT_CLEARED | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 1, "status is 'NOT_CLEARED'" | exit 1 ✅ |
-| 4b | Status CLEARED but ack NOT_SIGNED | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 1, "ceo_acknowledgment is 'NOT_SIGNED'" | exit 1 ✅ |
-| 5 | Filename isolation: query `GOV-FINTRAC` while only `GOV-TESTGATE` file present | `./scripts/verify-gov-gate.sh GOV-FINTRAC` | exit 1, "no clearance record" | exit 1 ✅ |
+| #   | Case                                                                           | Command                                     | Expected                                     | Observed  |
+| --- | ------------------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------- | --------- |
+| 1   | Usage error                                                                    | `./scripts/verify-gov-gate.sh`              | exit 2, usage message                        | exit 2 ✅ |
+| 2   | No record for gate                                                             | `./scripts/verify-gov-gate.sh GOV-FINTRAC`  | exit 1, "no clearance record"                | exit 1 ✅ |
+| 3   | Happy path (fake `GOV-TESTGATE`, status=CLEARED, ack=SIGNED)                   | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 0, PASS with evidence path              | exit 0 ✅ |
+| 4a  | Status NOT_CLEARED                                                             | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 1, "status is 'NOT_CLEARED'"            | exit 1 ✅ |
+| 4b  | Status CLEARED but ack NOT_SIGNED                                              | `./scripts/verify-gov-gate.sh GOV-TESTGATE` | exit 1, "ceo_acknowledgment is 'NOT_SIGNED'" | exit 1 ✅ |
+| 5   | Filename isolation: query `GOV-FINTRAC` while only `GOV-TESTGATE` file present | `./scripts/verify-gov-gate.sh GOV-FINTRAC`  | exit 1, "no clearance record"                | exit 1 ✅ |
 
 Verbatim outputs captured during execution are available in the
 session transcript.
@@ -102,23 +102,23 @@ Invariants from `OQMI_SYSTEM_STATE.md` §5 and the 15-item doctrine
 list. Only invariants that can apply to this change are listed; the
 rest are `NOT_APPLICABLE` with reason.
 
-| # | Invariant | Status | Note |
-|---|---|---|---|
-| 1 | No UPDATE/DELETE on ledger/audit/game/call/voucher tables | NOT_APPLICABLE | No DB access in this change. |
-| 2 | FIZ four-line commit format | NOT_APPLICABLE | Not FIZ-scoped — no files under `finance/`, `services/core-api/ledger*`, `governance/`, or balance-touching migrations. |
-| 3 | No hardcoded constants — read from `governance.config.ts` | NOT_APPLICABLE | Shell script; no runtime constants. Field names in verifier mirror the signing contract and are shared with the template by design. |
-| 4 | `crypto.randomInt()` only | NOT_APPLICABLE | No randomness used. |
-| 5 | No `@angular/core` imports | NOT_APPLICABLE | No TypeScript added. |
-| 6 | `npx tsc --noEmit` zero new errors | NOT_APPLICABLE | No TypeScript files added; bash script + markdown only. |
-| 7 | Logger instance on every service | NOT_APPLICABLE | No service code. |
-| 8 | Report-back filed before DONE | ✅ | This file. |
-| 9 | NATS topics from `topics.registry.ts` only | NOT_APPLICABLE | No NATS activity. |
-| 10 | AI services advisory only | ✅ | This change codifies and enforces exactly that boundary at the governance layer — it encodes the rule that AI agents cannot author compliance clearances. |
-| 11 | Step-up auth before sensitive action | NOT_APPLICABLE | No runtime action executed. |
-| 12 | RBAC check before step-up | NOT_APPLICABLE | Same as above. |
-| 13 | SHA-256 for hash operations | ✅ | Template specifies SHA-256 of the opinion PDF for `opinion_document_sha256` — matches Invariant #13. |
-| 14 | All timestamps in America/Toronto | ✅ | Template `signed_at` field specified as "ISO-8601 in America/Toronto". |
-| 15 | `rule_applied_id` on every service output | NOT_APPLICABLE | Not a service. |
+| #   | Invariant                                                 | Status         | Note                                                                                                                                                      |
+| --- | --------------------------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | No UPDATE/DELETE on ledger/audit/game/call/voucher tables | NOT_APPLICABLE | No DB access in this change.                                                                                                                              |
+| 2   | FIZ four-line commit format                               | NOT_APPLICABLE | Not FIZ-scoped — no files under `finance/`, `services/core-api/ledger*`, `governance/`, or balance-touching migrations.                                   |
+| 3   | No hardcoded constants — read from `governance.config.ts` | NOT_APPLICABLE | Shell script; no runtime constants. Field names in verifier mirror the signing contract and are shared with the template by design.                       |
+| 4   | `crypto.randomInt()` only                                 | NOT_APPLICABLE | No randomness used.                                                                                                                                       |
+| 5   | No `@angular/core` imports                                | NOT_APPLICABLE | No TypeScript added.                                                                                                                                      |
+| 6   | `npx tsc --noEmit` zero new errors                        | NOT_APPLICABLE | No TypeScript files added; bash script + markdown only.                                                                                                   |
+| 7   | Logger instance on every service                          | NOT_APPLICABLE | No service code.                                                                                                                                          |
+| 8   | Report-back filed before DONE                             | ✅             | This file.                                                                                                                                                |
+| 9   | NATS topics from `topics.registry.ts` only                | NOT_APPLICABLE | No NATS activity.                                                                                                                                         |
+| 10  | AI services advisory only                                 | ✅             | This change codifies and enforces exactly that boundary at the governance layer — it encodes the rule that AI agents cannot author compliance clearances. |
+| 11  | Step-up auth before sensitive action                      | NOT_APPLICABLE | No runtime action executed.                                                                                                                               |
+| 12  | RBAC check before step-up                                 | NOT_APPLICABLE | Same as above.                                                                                                                                            |
+| 13  | SHA-256 for hash operations                               | ✅             | Template specifies SHA-256 of the opinion PDF for `opinion_document_sha256` — matches Invariant #13.                                                      |
+| 14  | All timestamps in America/Toronto                         | ✅             | Template `signed_at` field specified as "ISO-8601 in America/Toronto".                                                                                    |
+| 15  | `rule_applied_id` on every service output                 | NOT_APPLICABLE | Not a service.                                                                                                                                            |
 
 **Append-only:** ✅ Clearance records are declared append-only in the
 README; corrections use a later-dated file with a `supersedes`
@@ -164,11 +164,13 @@ contract + agent prohibition), template (safe defaults), verifier
 script (tested), tracker cross-reference, this report-back.
 
 **Left incomplete:**
+
 - No real clearance records exist in `PROGRAM_CONTROL/CLEARANCES/` —
   those must be authored by the CEO or retained counsel.
 - `.github/CODEOWNERS` not created.
 
 **Next agent's first task:**
+
 - If executing DFSP-001 or any directive naming GOV-FINTRAC or
   GOV-AGCO in its `GATE:` line, run
   `./scripts/verify-gov-gate.sh GOV-FINTRAC` and

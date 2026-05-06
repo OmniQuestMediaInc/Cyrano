@@ -5,10 +5,10 @@
 export type SessionTier = 'SPARK' | 'FLAME' | 'INFERNO';
 
 export type SessionStatus =
-  | 'IDLE'       // No active session
-  | 'ACTIVE'     // Session in progress
-  | 'EXPIRING'   // <5 minutes remaining — top-up prompt surfaced
-  | 'EXPIRED';   // Session ended; top-up required to continue
+  | 'IDLE' // No active session
+  | 'ACTIVE' // Session in progress
+  | 'EXPIRING' // <5 minutes remaining — top-up prompt surfaced
+  | 'EXPIRED'; // Session ended; top-up required to continue
 
 export type ChatMessageRole = 'twin' | 'user' | 'system';
 
@@ -16,8 +16,8 @@ export type BranchResolutionStatus = 'PENDING' | 'RESOLVED';
 
 export interface TierBadge {
   tier: SessionTier;
-  label: string;          // Display label e.g. "Spark", "Flame", "Inferno"
-  css_class: string;      // e.g. "cnz-tier-badge--inferno"
+  label: string; // Display label e.g. "Spark", "Flame", "Inferno"
+  css_class: string; // e.g. "cnz-tier-badge--inferno"
 }
 
 export interface ChatMessage {
@@ -25,11 +25,11 @@ export interface ChatMessage {
   role: ChatMessageRole;
   content: string;
   timestamp_utc: string;
-  is_haptic?: boolean;    // True if this message triggered FFS heat / haptic event
+  is_haptic?: boolean; // True if this message triggered FFS heat / haptic event
 }
 
 export interface BranchOption {
-  option_key: string;     // 'A' | 'B' | 'C'
+  option_key: string; // 'A' | 'B' | 'C'
   label: string;
   consequence_hint: string;
 }
@@ -45,7 +45,7 @@ export interface ActiveBranchCard {
 export interface MemorySidebarEntry {
   memory_id: string;
   memory_type: 'FACT' | 'PREFERENCE' | 'EMOTION' | 'STORY_BEAT' | 'RELATIONSHIP' | 'SECRET';
-  content_preview: string;  // truncated for sidebar display
+  content_preview: string; // truncated for sidebar display
   importance_score: number;
 }
 

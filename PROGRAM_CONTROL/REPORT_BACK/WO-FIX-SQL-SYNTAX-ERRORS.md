@@ -63,11 +63,11 @@ $$ LANGUAGE plpgsql;
 Additionally, `ledger_entries_block_mutation()` was updated to include `RETURN NULL;`
 before `END;` so the trigger function returns a valid value.
 
-| Function | Fix |
-|---|---|
+| Function                          | Fix                                       |
+| --------------------------------- | ----------------------------------------- |
 | `ledger_entries_block_mutation()` | `AS $${` → `AS $$` + added `RETURN NULL;` |
-| `transactions_block_mutation()` | `AS $${` → `AS $$` |
-| `set_transactions_updated_at()` | `AS $${` → `AS $$` |
+| `transactions_block_mutation()`   | `AS $${` → `AS $$`                        |
+| `set_transactions_updated_at()`   | `AS $${` → `AS $$`                        |
 
 ---
 

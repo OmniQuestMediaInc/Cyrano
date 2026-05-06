@@ -14,10 +14,7 @@ import { CyranoLayer4EnterpriseService } from './cyrano-layer4-enterprise.servic
 import { CyranoLayer4RateLimiterService } from './cyrano-layer4-rate-limiter.service';
 import { CyranoLayer4TenantStore } from './cyrano-layer4-tenant.store';
 import { CyranoLayer4VoiceBridge } from './cyrano-layer4-voice.bridge';
-import {
-  _resetLayer4DomainOverlays,
-  registerLayer4DomainOverlay,
-} from './cyrano-prompt-templates';
+import { _resetLayer4DomainOverlays, registerLayer4DomainOverlay } from './cyrano-prompt-templates';
 import { CyranoTranslationService } from './cyrano-translation.service';
 
 function buildHarness() {
@@ -192,13 +189,22 @@ describe('CyranoLayer4EnterpriseService', () => {
         rate_limit_per_minute: 2,
       });
       const r1 = service.resolvePrompt({
-        tenant_id: 'co-1', session_id: 'a', category: 'CAT_SESSION_OPEN', tier: 'COLD',
+        tenant_id: 'co-1',
+        session_id: 'a',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
       });
       const r2 = service.resolvePrompt({
-        tenant_id: 'co-1', session_id: 'a', category: 'CAT_SESSION_OPEN', tier: 'COLD',
+        tenant_id: 'co-1',
+        session_id: 'a',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
       });
       const r3 = service.resolvePrompt({
-        tenant_id: 'co-1', session_id: 'a', category: 'CAT_SESSION_OPEN', tier: 'COLD',
+        tenant_id: 'co-1',
+        session_id: 'a',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
       });
       expect(r1.blocked).toBe(false);
       expect(r2.blocked).toBe(false);
@@ -211,7 +217,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('mints a key, verifies it, then rejects after revoke', async () => {
       const { tenants, apiKeys } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'co-2', display_name: 'Coach', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'co-2',
+        display_name: 'Coach',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       const minted = apiKeys.mint({ tenant_id: 'co-2' });
       const ok = await apiKeys.verify({ tenant_id: 'co-2', raw_key: minted.raw_key });
@@ -226,10 +235,16 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('blocks cross-tenant key reuse with TENANT_MISMATCH', async () => {
       const { tenants, apiKeys } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 't-a', display_name: 'A', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 't-a',
+        display_name: 'A',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       tenants.upsertTenant({
-        tenant_id: 't-b', display_name: 'B', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 't-b',
+        display_name: 'B',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       const a = apiKeys.mint({ tenant_id: 't-a' });
       const cross = await apiKeys.verify({ tenant_id: 't-b', raw_key: a.raw_key });
@@ -242,13 +257,22 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('chains records and survives verifyChain()', () => {
       const { service, tenants, audit } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'a-1', display_name: 'A', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'a-1',
+        display_name: 'A',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       service.resolvePrompt({
-        tenant_id: 'a-1', session_id: 's', category: 'CAT_SESSION_OPEN', tier: 'COLD',
+        tenant_id: 'a-1',
+        session_id: 's',
+        category: 'CAT_SESSION_OPEN',
+        tier: 'COLD',
       });
       service.resolvePrompt({
-        tenant_id: 'a-1', session_id: 's', category: 'CAT_ENGAGEMENT', tier: 'WARM',
+        tenant_id: 'a-1',
+        session_id: 's',
+        category: 'CAT_ENGAGEMENT',
+        tier: 'WARM',
       });
       const records = audit.listForTenant('a-1');
       expect(records.length).toBe(2);
@@ -260,7 +284,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('is idempotent on correlation_id', () => {
       const { service, tenants, audit } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'a-2', display_name: 'A', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'a-2',
+        display_name: 'A',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       service.resolvePrompt({
         tenant_id: 'a-2',
@@ -328,7 +355,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('uses a registered overlay over the canonical template', () => {
       const { service, tenants } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'ext-1', display_name: 'Ext', domain: 'TEACHING', country_code: 'CA',
+        tenant_id: 'ext-1',
+        display_name: 'Ext',
+        domain: 'TEACHING',
+        country_code: 'CA',
       });
       registerLayer4DomainOverlay({
         domain: 'TEACHING',
@@ -350,7 +380,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('attaches a translation envelope when target_locale is provided', () => {
       const { service, tenants } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'tr-1', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'tr-1',
+        display_name: 'Trans',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       const res = service.resolvePrompt({
         tenant_id: 'tr-1',
@@ -369,7 +402,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('omits the translation envelope when no target_locale is given', () => {
       const { service, tenants } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'tr-2', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'tr-2',
+        display_name: 'Trans',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       const res = service.resolvePrompt({
         tenant_id: 'tr-2',
@@ -383,7 +419,10 @@ describe('CyranoLayer4EnterpriseService', () => {
     it('returns a skip envelope when target_locale equals source locale', () => {
       const { service, tenants } = buildHarness();
       tenants.upsertTenant({
-        tenant_id: 'tr-3', display_name: 'Trans', domain: 'COACHING', country_code: 'CA',
+        tenant_id: 'tr-3',
+        display_name: 'Trans',
+        domain: 'COACHING',
+        country_code: 'CA',
       });
       const res = service.resolvePrompt({
         tenant_id: 'tr-3',

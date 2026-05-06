@@ -16,17 +16,20 @@
 ## Evidence of Absence
 
 ### `ls PROGRAM_CONTROL/DIRECTIVES/QUEUE/`
+
 ```
 DFSP-001.md
 NATS-DFSP001-TOPICS.md
 ```
 
 ### `ls PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/`
+
 ```
 (empty — only .gitkeep)
 ```
 
 ### `ls PROGRAM_CONTROL/DIRECTIVES/DONE/`
+
 ```
 AUDIT-001.md
 AUDIT-002.md
@@ -42,16 +45,19 @@ PV-001.md
 ```
 
 ### `git log --all --full-history -- "PROGRAM_CONTROL/DIRECTIVES/QUEUE/M5-VOICE-SAMPLE-COLLECTION.md"`
+
 ```
 (no output — file has never existed in git history on any branch)
 ```
 
 ### `find . -iname "*M5*" -not -path "./.git/*"`
+
 ```
 (no matches)
 ```
 
 ### `find . -iname "*voice*" -not -path "./.git/*"`
+
 ```
 (no matches)
 ```
@@ -61,10 +67,12 @@ PV-001.md
 ## Why HARD_STOP
 
 Per `.github/copilot-instructions.md` Non-Negotiable Rule 1 (NO SYNTHESIS):
+
 > Never fabricate command output. Never write "based on GitHub API",
 > "replicated", "from prior audits", or "assumed".
 
 Per Rule 5 (PASS/FAIL Policy):
+
 > If the task requires evidence and it's not present: FAIL.
 > If a command cannot run: HARD_STOP.
 

@@ -11,15 +11,15 @@ import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 
 // Import seed logic directly (no NestJS bootstrap required)
-import {
-  getRollingThreeYearHolidays,
-} from '../services/core-api/src/scheduling/stat-holidays.seed';
+import { getRollingThreeYearHolidays } from '../services/core-api/src/scheduling/stat-holidays.seed';
 import { GZ_SCHEDULING } from '../services/core-api/src/config/governance.config';
 import { GZ_MASTER_ROSTER } from '../services/core-api/src/scheduling/scheduling.constants';
 
 const prisma = new PrismaClient();
 
-async function seedShiftTemplates(correlation_id: string): Promise<{ created: number; skipped: number }> {
+async function seedShiftTemplates(
+  correlation_id: string,
+): Promise<{ created: number; skipped: number }> {
   let created = 0;
   let skipped = 0;
 
@@ -55,7 +55,9 @@ async function seedShiftTemplates(correlation_id: string): Promise<{ created: nu
   return { created, skipped };
 }
 
-async function seedStatHolidays(correlation_id: string): Promise<{ created: number; skipped: number }> {
+async function seedStatHolidays(
+  correlation_id: string,
+): Promise<{ created: number; skipped: number }> {
   const holidays = getRollingThreeYearHolidays();
   let created = 0;
   let skipped = 0;
@@ -89,7 +91,9 @@ async function seedStatHolidays(correlation_id: string): Promise<{ created: numb
   return { created, skipped };
 }
 
-async function seedMasterRoster(correlation_id: string): Promise<{ created: number; skipped: number }> {
+async function seedMasterRoster(
+  correlation_id: string,
+): Promise<{ created: number; skipped: number }> {
   let created = 0;
   let skipped = 0;
 
@@ -124,12 +128,15 @@ async function seedMasterRoster(correlation_id: string): Promise<{ created: numb
           staff_category: position.category,
           department: 'GUESTZONE',
           languages: ['EN'],
-          hourly_rate_cad: isSalaried ? null : 22.00,
+          hourly_rate_cad: isSalaried ? null : 22.0,
           annual_salary_cad: isSalaried
-            ? position.role === 'GZM' ? 82500.00
-            : position.role === 'GZAM' ? 75000.00
-            : position.role === 'GZS' ? 63500.00
-            : null
+            ? position.role === 'GZM'
+              ? 82500.0
+              : position.role === 'GZAM'
+                ? 75000.0
+                : position.role === 'GZS'
+                  ? 63500.0
+                  : null
             : null,
           is_active: true,
           hire_date: new Date(),

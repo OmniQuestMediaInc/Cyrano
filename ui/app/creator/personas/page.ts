@@ -109,10 +109,7 @@ function renderTabBar(activeTab: PersonaManagementTab): RenderElement {
         'button',
         {
           test_id: `persona-management-tab-${tab.toLowerCase()}`,
-          classes: [
-            'cnz-tab',
-            tab === activeTab ? 'cnz-tab--active' : '',
-          ],
+          classes: ['cnz-tab', tab === activeTab ? 'cnz-tab--active' : ''],
           aria: {
             role: 'tab',
             'aria-selected': String(tab === activeTab),
@@ -217,9 +214,7 @@ function renderCardBody(persona: PersonaCard): RenderElement {
       classes: ['cnz-persona-card__body'],
     },
     [
-      el('strong', { test_id: `persona-card-name-${persona.persona_id}` }, [
-        persona.display_name,
-      ]),
+      el('strong', { test_id: `persona-card-name-${persona.persona_id}` }, [persona.display_name]),
       el('span', { classes: ['cnz-persona-card__tone'] }, [persona.tone]),
       el('p', { classes: ['cnz-persona-card__style-notes'] }, [persona.style_notes]),
       persona.published
@@ -254,10 +249,7 @@ function renderTierLockBadge(tierLock: PersonaTierLock): RenderElement {
     'span',
     {
       test_id: `persona-card-tier-lock-${tierLock.toLowerCase()}`,
-      classes: [
-        'cnz-badge',
-        tierLock === 'OPEN' ? 'cnz-badge--neutral' : 'cnz-badge--tier-lock',
-      ],
+      classes: ['cnz-badge', tierLock === 'OPEN' ? 'cnz-badge--neutral' : 'cnz-badge--tier-lock'],
       props: { tier_lock: tierLock },
     },
     [TIER_LOCK_LABELS[tierLock]],

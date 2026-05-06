@@ -123,13 +123,22 @@ export class ZoneAccessService {
 
   /**
    * Check if the user has an active ShowZonePass for the given zone.
+   *
+   * Only zones in SHOW_ZONE_PASS_OVERRIDE_ZONES (SHOW_THEATRE, BIJOU) can
+   * be unlocked via a ShowZonePass. For any other zone (e.g. CYRANO_LAYER2)
+   * we short-circuit to false — both because passes don't apply, and to
+   * avoid feeding a non-Prisma-enum value into the where clause.
    */
   private async hasActiveShowZonePass(userId: string, zone: ZoneAccessZone): Promise<boolean> {
+    const overrideZones: readonly string[] = SHOW_ZONE_PASS_OVERRIDE_ZONES;
+    if (!overrideZones.includes(zone)) {
+      return false;
+    }
     const now = new Date();
     const pass = await this.prisma.showZonePass.findFirst({
       where: {
         user_id: userId,
-        zone,
+        zone: zone as 'SHOW_THEATRE' | 'BIJOU',
         valid_from: { lte: now },
         valid_until: { gte: now },
       },

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class RegionSignalService {
   /**
-   * Generates a Trusted Region Signal by comparing 
+   * Generates a Trusted Region Signal by comparing
    * Payment BIN, Billing Country, and IP Geolocation.
    */
   async getConfidenceScore(data: {
@@ -37,7 +37,7 @@ export class RegionSignalService {
       confidence: Math.max(0, score),
       region: data.binCountry, // BIN is the 'Anchor of Trust'
       vpnRisk: data.isVpnDetected,
-      flags: flags
+      flags: flags,
     };
   }
 }

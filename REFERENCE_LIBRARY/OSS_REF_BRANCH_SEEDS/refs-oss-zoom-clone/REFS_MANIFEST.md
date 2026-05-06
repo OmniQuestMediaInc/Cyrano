@@ -21,11 +21,13 @@ Full-featured Zoom-clone video conferencing app. WebRTC peer-to-peer UI, room ma
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/zoom-clone:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/zoom-clone:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/zoom-clone:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/zoom-clone.git /tmp/zoom-clone
 > cd /tmp/zoom-clone
@@ -45,6 +48,7 @@ git show refs/oss/zoom-clone:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/zoom-clone.git HEAD
 > git push origin FETCH_HEAD:refs/oss/zoom-clone --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/zoom-clone:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

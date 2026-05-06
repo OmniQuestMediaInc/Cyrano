@@ -154,9 +154,7 @@ export class InMemoryLedgerRepository implements LedgerRepository {
   }
 
   async listActiveExpirations(walletId: string): Promise<TokenExpirationRecord[]> {
-    return this.expirations.filter(
-      (e) => e.walletId === walletId && e.status === 'active',
-    );
+    return this.expirations.filter((e) => e.walletId === walletId && e.status === 'active');
   }
 
   async createExpiration(input: {

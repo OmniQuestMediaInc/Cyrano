@@ -49,8 +49,18 @@ function makeInputs(overrides: Partial<SessionTopUpPageInputs> = {}): SessionTop
     recommended_skus: [makeSku()],
     wallet_buckets: [
       makeBucket({ bucket: 'purchased', spend_priority: 1, will_drain_next: true }),
-      makeBucket({ bucket: 'membership', balance_tokens: '200', spend_priority: 2, will_drain_next: false }),
-      makeBucket({ bucket: 'bonus', balance_tokens: '50', spend_priority: 3, will_drain_next: false }),
+      makeBucket({
+        bucket: 'membership',
+        balance_tokens: '200',
+        spend_priority: 2,
+        will_drain_next: false,
+      }),
+      makeBucket({
+        bucket: 'bonus',
+        balance_tokens: '50',
+        spend_priority: 3,
+        will_drain_next: false,
+      }),
     ],
     selected_sku_id: null,
     selected_bucket: null,
@@ -70,7 +80,9 @@ describe('renderSessionTopUpPage — structure', () => {
   });
 
   it('root props include session_state and vip_id', () => {
-    const { tree } = renderSessionTopUpPage(makeInputs({ session_state: 'expired', vip_id: 'vip-42' }));
+    const { tree } = renderSessionTopUpPage(
+      makeInputs({ session_state: 'expired', vip_id: 'vip-42' }),
+    );
     expect(tree.props?.session_state).toBe('expired');
     expect(tree.props?.vip_id).toBe('vip-42');
   });
@@ -145,7 +157,9 @@ describe('renderSessionTopUpPage — SKU list', () => {
 
   it('unselected SKU shows "Select" with ghost button style', () => {
     const skus = [makeSku({ sku_id: 'sku-unsel' })];
-    const { tree } = renderSessionTopUpPage(makeInputs({ recommended_skus: skus, selected_sku_id: null }));
+    const { tree } = renderSessionTopUpPage(
+      makeInputs({ recommended_skus: skus, selected_sku_id: null }),
+    );
     const selectBtn = findByTestId(tree, 'session-topup-sku-select-sku-unsel');
     expect(selectBtn?.children).toContain('Select');
     expect(selectBtn?.classes).toContain('cnz-button--ghost');
@@ -173,7 +187,9 @@ describe('renderSessionTopUpPage — SKU list', () => {
     expect(skuList).toBeDefined();
     // no sku cards
     const ids = collectTestIds(tree);
-    expect(ids.some((id) => id.startsWith('session-topup-sku-') && id !== 'session-topup-sku-list')).toBe(false);
+    expect(
+      ids.some((id) => id.startsWith('session-topup-sku-') && id !== 'session-topup-sku-list'),
+    ).toBe(false);
   });
 });
 
@@ -198,8 +214,18 @@ describe('renderSessionTopUpPage — wallet selector', () => {
       makeInputs({
         wallet_buckets: [
           makeBucket({ bucket: 'purchased', will_drain_next: true }),
-          makeBucket({ bucket: 'membership', balance_tokens: '200', spend_priority: 2, will_drain_next: false }),
-          makeBucket({ bucket: 'bonus', balance_tokens: '50', spend_priority: 3, will_drain_next: false }),
+          makeBucket({
+            bucket: 'membership',
+            balance_tokens: '200',
+            spend_priority: 2,
+            will_drain_next: false,
+          }),
+          makeBucket({
+            bucket: 'bonus',
+            balance_tokens: '50',
+            spend_priority: 3,
+            will_drain_next: false,
+          }),
         ],
       }),
     );
@@ -246,9 +272,7 @@ describe('renderSessionTopUpPage — purchase action', () => {
   });
 
   it('shows context restore notice when context_snapshot is present', () => {
-    const { tree, view } = renderSessionTopUpPage(
-      makeInputs({ context_snapshot: 'snap-xyz' }),
-    );
+    const { tree, view } = renderSessionTopUpPage(makeInputs({ context_snapshot: 'snap-xyz' }));
     expect(view.context_restorable).toBe(true);
     const panel = findByTestId(tree, 'session-topup-purchase-action');
     const ids = collectTestIds(panel!);
@@ -279,13 +303,10 @@ describe('renderSessionTopUpPage — view model state machine', () => {
     ['expired', 0, true],
     ['top-up-purchased', 0, true],
     ['resumed', 20, false],
-  ] as const)(
-    'state=%s remaining=%d → is_expired=%s',
-    (state, remaining, expectedExpired) => {
-      const { view } = renderSessionTopUpPage(
-        makeInputs({ session_state: state, remaining_minutes: remaining }),
-      );
-      expect(view.is_expired).toBe(expectedExpired);
-    },
-  );
+  ] as const)('state=%s remaining=%d → is_expired=%s', (state, remaining, expectedExpired) => {
+    const { view } = renderSessionTopUpPage(
+      makeInputs({ session_state: state, remaining_minutes: remaining }),
+    );
+    expect(view.is_expired).toBe(expectedExpired);
+  });
 });

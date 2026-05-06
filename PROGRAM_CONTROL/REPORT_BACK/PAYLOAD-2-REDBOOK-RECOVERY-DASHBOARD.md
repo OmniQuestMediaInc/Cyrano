@@ -7,25 +7,25 @@
 
 ## Modules delivered
 
-| Module | Path | Status |
-| --- | --- | --- |
-| Recovery Engine | `services/recovery/src/recovery.service.ts` | NEW — Wave 1 done |
-| Recovery Types | `services/recovery/src/recovery.types.ts` | NEW |
-| Admin Recovery Controller | `services/recovery/src/admin-recovery.controller.ts` | NEW — surface `/admin/recovery` |
-| Recovery Module | `services/recovery/src/recovery.module.ts` | NEW |
-| Diamond Concierge Service | `services/diamond-concierge/src/diamond.service.ts` | NEW — Wave 1 done |
-| Diamond Concierge Module | `services/diamond-concierge/src/diamond-concierge.module.ts` | NEW |
-| Notification Engine | `services/notification/src/notification.service.ts` | NEW — Wave 1 done |
-| Notification Module | `services/notification/src/notification.module.ts` | NEW |
-| Recovery integration tests | `tests/integration/recovery-service.spec.ts` | NEW — 22 cases |
-| Diamond integration tests | `tests/integration/diamond-concierge-service.spec.ts` | NEW — 22 cases |
-| Notification integration tests | `tests/integration/notification-engine.spec.ts` | NEW — 17 cases |
+| Module                         | Path                                                         | Status                          |
+| ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
+| Recovery Engine                | `services/recovery/src/recovery.service.ts`                  | NEW — Wave 1 done               |
+| Recovery Types                 | `services/recovery/src/recovery.types.ts`                    | NEW                             |
+| Admin Recovery Controller      | `services/recovery/src/admin-recovery.controller.ts`         | NEW — surface `/admin/recovery` |
+| Recovery Module                | `services/recovery/src/recovery.module.ts`                   | NEW                             |
+| Diamond Concierge Service      | `services/diamond-concierge/src/diamond.service.ts`          | NEW — Wave 1 done               |
+| Diamond Concierge Module       | `services/diamond-concierge/src/diamond-concierge.module.ts` | NEW                             |
+| Notification Engine            | `services/notification/src/notification.service.ts`          | NEW — Wave 1 done               |
+| Notification Module            | `services/notification/src/notification.module.ts`           | NEW                             |
+| Recovery integration tests     | `tests/integration/recovery-service.spec.ts`                 | NEW — 22 cases                  |
+| Diamond integration tests      | `tests/integration/diamond-concierge-service.spec.ts`        | NEW — 22 cases                  |
+| Notification integration tests | `tests/integration/notification-engine.spec.ts`              | NEW — 17 cases                  |
 
 ## REDBOOK §5 coverage
 
 - **Pillar 1 — Token Bridge**: 20% bonus token offer + signed-waiver acceptance
-  + temporary 24h restriction window flag. Soft offer — no ledger credit at
-  this layer (delegated to LedgerService Token Extension pathway in Wave 2).
+  - temporary 24h restriction window flag. Soft offer — no ledger credit at
+    this layer (delegated to LedgerService Token Extension pathway in Wave 2).
 - **Pillar 2 — Three-Fifths Exit**: scaffolding + audit trail + permanent flag
   on case. Cash-refund execution returns `POLICY_GATED` until a CEO override
   context is supplied. Governance reference: **FIZ-002-REVISION-2026-04-11**.

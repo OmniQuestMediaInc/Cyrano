@@ -9,17 +9,17 @@
 
 ## API / Presenter Binding
 
-| Operation | Endpoint / NATS topic | Type file |
-|---|---|---|
-| Start session | `POST /cyrano/narrative/session` | `services/narrative-engine/src/narrative.types.ts` |
-| Send message | `POST /cyrano/narrative/message` | `NarrativeContext` |
-| Recall memory | `GET /cyrano/narrative/memory` | `MemoryBank` |
-| Create branch | `POST /cyrano/narrative/branch` | `BranchDecision` |
-| Resolve branch | `PATCH /cyrano/narrative/branch/:id` | `BranchDecision` |
-| Session tick | NATS: `cyrano.session.tick` | — |
-| Session expired | NATS: `cyrano.session.expired` | — |
-| Session resumed | NATS: `cyrano.session.resumed` | — |
-| FFS update | NATS: `ffs.scored` | `FanFervorScore` |
+| Operation       | Endpoint / NATS topic                | Type file                                          |
+| --------------- | ------------------------------------ | -------------------------------------------------- |
+| Start session   | `POST /cyrano/narrative/session`     | `services/narrative-engine/src/narrative.types.ts` |
+| Send message    | `POST /cyrano/narrative/message`     | `NarrativeContext`                                 |
+| Recall memory   | `GET /cyrano/narrative/memory`       | `MemoryBank`                                       |
+| Create branch   | `POST /cyrano/narrative/branch`      | `BranchDecision`                                   |
+| Resolve branch  | `PATCH /cyrano/narrative/branch/:id` | `BranchDecision`                                   |
+| Session tick    | NATS: `cyrano.session.tick`          | —                                                  |
+| Session expired | NATS: `cyrano.session.expired`       | —                                                  |
+| Session resumed | NATS: `cyrano.session.resumed`       | —                                                  |
+| FFS update      | NATS: `ffs.scored`                   | `FanFervorScore`                                   |
 
 ---
 
@@ -148,25 +148,25 @@ When FFS reaches `INFERNO_PEAK` (95–100):
 
 ## Real-Time Events (NATS)
 
-| Event | Direction | UI reaction |
-|---|---|---|
-| `cyrano.session.tick` | Server → UI | Update countdown timer |
-| `cyrano.session.expired` | Server → UI | Disable input; show top-up modal |
-| `cyrano.session.resumed` | Server → UI | Dismiss modal; re-enable input |
-| `ffs.scored` | Server → UI | Update FFS heat meter in character header |
-| `cyrano.gateguard.av.required` | Server → UI | Show `ComplianceOverlay` |
+| Event                          | Direction   | UI reaction                               |
+| ------------------------------ | ----------- | ----------------------------------------- |
+| `cyrano.session.tick`          | Server → UI | Update countdown timer                    |
+| `cyrano.session.expired`       | Server → UI | Disable input; show top-up modal          |
+| `cyrano.session.resumed`       | Server → UI | Dismiss modal; re-enable input            |
+| `ffs.scored`                   | Server → UI | Update FFS heat meter in character header |
+| `cyrano.gateguard.av.required` | Server → UI | Show `ComplianceOverlay`                  |
 
 ---
 
 ## Compliance
 
-| Layer | Trigger | Action |
-|---|---|---|
-| Welfare Guardian `SOFT_NUDGE` | FFS HOT band (61–85) | Non-blocking nudge banner |
-| Welfare Guardian `COOL_DOWN` | FFS INFERNO band (86–94) | 5-minute mandatory pause overlay |
-| Welfare Guardian `HARD_DECLINE_HCZ` | FFS INFERNO_PEAK (95–100) | Blocks session; HCZ escalation |
-| Bill 149 | Session start (first per account) | `ComplianceOverlay` — age consent |
-| GateGuard AV | First session per device / 30 days | `ComplianceOverlay` — AV check |
+| Layer                               | Trigger                            | Action                            |
+| ----------------------------------- | ---------------------------------- | --------------------------------- |
+| Welfare Guardian `SOFT_NUDGE`       | FFS HOT band (61–85)               | Non-blocking nudge banner         |
+| Welfare Guardian `COOL_DOWN`        | FFS INFERNO band (86–94)           | 5-minute mandatory pause overlay  |
+| Welfare Guardian `HARD_DECLINE_HCZ` | FFS INFERNO_PEAK (95–100)          | Blocks session; HCZ escalation    |
+| Bill 149                            | Session start (first per account)  | `ComplianceOverlay` — age consent |
+| GateGuard AV                        | First session per device / 30 days | `ComplianceOverlay` — AV check    |
 
 ---
 
@@ -184,6 +184,6 @@ Cool-down:         Pausing for 5 minutes. We'll be right here.
 
 ---
 
-*Binding: `services/narrative-engine/src/narrative.types.ts` ·
+_Binding: `services/narrative-engine/src/narrative.types.ts` ·
 `apps/cyrano-standalone/app/chat/page.tsx` ·
-`apps/cyrano-standalone/components/CharacterChat/CharacterChat.tsx`*
+`apps/cyrano-standalone/components/CharacterChat/CharacterChat.tsx`_

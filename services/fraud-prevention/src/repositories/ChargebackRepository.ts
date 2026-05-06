@@ -7,7 +7,9 @@ import { ExtensionActionRecord } from '../interfaces/shared';
 export class ChargebackRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createExtensionAction(record: Omit<ExtensionActionRecord, 'actionId'>): Promise<ExtensionActionRecord & { createdAt: Date }> {
+  async createExtensionAction(
+    record: Omit<ExtensionActionRecord, 'actionId'>,
+  ): Promise<ExtensionActionRecord & { createdAt: Date }> {
     const saved = await this.prisma.extensionActionRecord.create({
       data: {
         guestId: record.guestId,

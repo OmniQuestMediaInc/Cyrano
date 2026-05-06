@@ -21,11 +21,13 @@ React real-time polling library. Live vote/reaction broadcast patterns for the O
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/live-polling:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/live-polling:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/live-polling:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/react-polling.git /tmp/react-polling
 > cd /tmp/react-polling
@@ -45,6 +48,7 @@ git show refs/oss/live-polling:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/react-polling.git HEAD
 > git push origin FETCH_HEAD:refs/oss/live-polling --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/live-polling:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

@@ -27,6 +27,7 @@ services/core-api/src/config/governance.config.ts | 9 +++++++--
 ### CHANGE 1 — SHOWTOKEN_EXCHANGE penalty values replaced ✅
 
 **Before:**
+
 ```typescript
 SILVER_COST_PCT:   0.20,
 GOLD_COST_PCT:     0.15,
@@ -35,6 +36,7 @@ DIAMOND_COST_PCT:  0.00,
 ```
 
 **After:**
+
 ```typescript
 VIP_COST_PCT:      0.05,   // 5%   — VIP: highest friction
 SILVER_COST_PCT:   0.04,   // 4%   — SILVER

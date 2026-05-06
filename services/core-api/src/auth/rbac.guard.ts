@@ -39,11 +39,11 @@ const PERMISSION_MATRIX: Record<string, RbacRole> = {
   // Platform-side floor; studio-scoped role checks are layered on top via
   // services/studio-affiliation/src/studio-rbac.guard.ts. PLATFORM_ADMIN
   // (mapped to ADMIN here) inherits all five via role rank.
-  'studio:manage':            'CREATOR',
-  'studio:invite-creator':    'CREATOR',
+  'studio:manage': 'CREATOR',
+  'studio:invite-creator': 'CREATOR',
   'studio:view-affiliations': 'CREATOR',
-  'studio:upload-contract':   'CREATOR',
-  'studio:view-commission':   'CREATOR',
+  'studio:upload-contract': 'CREATOR',
+  'studio:view-commission': 'CREATOR',
 };
 
 export interface RbacCheckResult {

@@ -15,21 +15,21 @@ import { randomUUID } from 'crypto';
 // ─── Earning rules ────────────────────────────────────────────────────────────
 
 export const EARNING_RULES = {
-  DAILY_LOGIN:       50,
-  MESSAGE_SENT:      10,
-  IMAGE_GENERATED:   25,
-  VOICE_CALL:        40,
-  REFERRAL:         500,
-  HOUSE_MODEL_CHAT:  15,
-  PORTAL_SWITCH:     20,
+  DAILY_LOGIN: 50,
+  MESSAGE_SENT: 10,
+  IMAGE_GENERATED: 25,
+  VOICE_CALL: 40,
+  REFERRAL: 500,
+  HOUSE_MODEL_CHAT: 15,
+  PORTAL_SWITCH: 20,
 } as const;
 
 export type EarningAction = keyof typeof EARNING_RULES;
 
 export const BURN_COSTS = {
-  EXTRA_IMAGES:  200,
-  TEMP_INFERNO:  500,
-  CUSTOM_TWIN:  1_000,
+  EXTRA_IMAGES: 200,
+  TEMP_INFERNO: 500,
+  CUSTOM_TWIN: 1_000,
 } as const;
 
 export type BurnReward = keyof typeof BURN_COSTS;
@@ -124,9 +124,9 @@ function makeCorrelationId(prefix: string, userId: string): string {
  * EXTRA_IMAGES: 30 days; TEMP_INFERNO: 7 days; CUSTOM_TWIN: no expiry.
  */
 const BURN_REWARD_EXPIRY_DAYS: Record<BurnReward, number | null> = {
-  EXTRA_IMAGES:  30,
-  TEMP_INFERNO:  7,
-  CUSTOM_TWIN:   null,
+  EXTRA_IMAGES: 30,
+  TEMP_INFERNO: 7,
+  CUSTOM_TWIN: null,
 };
 
 @Injectable()
@@ -226,10 +226,7 @@ export class RedRoomRewardsService {
    * the BurnRewardGrant.
    * Throws InsufficientRrrPointsError if balance < cost.
    */
-  async burnPoints(
-    userId: string,
-    reward: BurnReward,
-  ): Promise<BurnResult> {
+  async burnPoints(userId: string, reward: BurnReward): Promise<BurnResult> {
     const cost = BURN_COSTS[reward];
     const balance = await this.ledger.getBalance(userId);
 
@@ -249,9 +246,7 @@ export class RedRoomRewardsService {
     });
 
     const expiryDays = BURN_REWARD_EXPIRY_DAYS[reward];
-    const expires_at = expiryDays
-      ? new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000)
-      : null;
+    const expires_at = expiryDays ? new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000) : null;
 
     const grant = await this.grants.insert({
       user_id: userId,
@@ -291,9 +286,7 @@ export class RedRoomRewardsService {
   async getActiveGrants(userId: string): Promise<BurnRewardGrantRecord[]> {
     const all = await this.grants.findByUserId(userId);
     const now = new Date();
-    return all.filter(
-      (g) => !g.fulfilled_at && (g.expires_at === null || g.expires_at > now),
-    );
+    return all.filter((g) => !g.fulfilled_at && (g.expires_at === null || g.expires_at > now));
   }
 }
 
@@ -316,9 +309,7 @@ export class InMemoryRrPointsLedgerRepository implements RrPointsLedgerRepositor
   }
 
   async getBalance(user_id: string): Promise<number> {
-    return this.entries
-      .filter((e) => e.user_id === user_id)
-      .reduce((sum, e) => sum + e.amount, 0);
+    return this.entries.filter((e) => e.user_id === user_id).reduce((sum, e) => sum + e.amount, 0);
   }
 
   async listEntries(user_id: string, limit = 50): Promise<UserRrPointsEntry[]> {

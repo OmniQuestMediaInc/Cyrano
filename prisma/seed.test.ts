@@ -86,9 +86,7 @@ function runGuardrail(): void {
     'canonical VIP_DIAMOND tier missing from MembershipTier enum',
   );
 
-  console.log(
-    `MEMB-001 negative-space guardrail PASSED — MembershipTier = [${values.join(', ')}]`,
-  );
+  console.log(`MEMB-001 negative-space guardrail PASSED — MembershipTier = [${values.join(', ')}]`);
 }
 
 runGuardrail();

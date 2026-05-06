@@ -27,12 +27,12 @@ Workflow details:
 
 ## Validation Checklist
 
-| Check | Result |
-|-------|--------|
-| File exists at `.github/workflows/notify.yml` | PASS |
-| `paths:` filter targets `PROGRAM_CONTROL/REPORT_BACK/**` | PASS |
-| Webhook step exits `0` gracefully when secret is absent | PASS |
-| Content matches HOUSE-002 specification verbatim | PASS |
+| Check                                                    | Result |
+| -------------------------------------------------------- | ------ |
+| File exists at `.github/workflows/notify.yml`            | PASS   |
+| `paths:` filter targets `PROGRAM_CONTROL/REPORT_BACK/**` | PASS   |
+| Webhook step exits `0` gracefully when secret is absent  | PASS   |
+| Content matches HOUSE-002 specification verbatim         | PASS   |
 
 ---
 

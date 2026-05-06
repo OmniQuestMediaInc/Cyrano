@@ -29,10 +29,7 @@ export class NarrativeController {
 
   /** Recall top memories for a user+twin pair. */
   @Get('memory/:twinId/:userId')
-  async recallMemories(
-    @Param('twinId') twinId: string,
-    @Param('userId') userId: string,
-  ) {
+  async recallMemories(@Param('twinId') twinId: string, @Param('userId') userId: string) {
     return this.narrativeService.recallMemories(twinId, userId);
   }
 

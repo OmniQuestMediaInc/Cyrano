@@ -18,14 +18,14 @@
 
 ## Files Modified
 
-| Action | File |
-|--------|------|
-| MODIFY | `prisma/schema.prisma` — added `LegalHold` model with `@@map("legal_holds")` |
-| CREATE | `prisma/migrations/20260409000000_legal_hold_db_migration/migration.sql` |
-| CREATE | `prisma/migrations/migration_lock.toml` |
-| MODIFY | `services/core-api/src/compliance/legal-hold.service.ts` — Prisma DB store |
+| Action | File                                                                                                      |
+| ------ | --------------------------------------------------------------------------------------------------------- |
+| MODIFY | `prisma/schema.prisma` — added `LegalHold` model with `@@map("legal_holds")`                              |
+| CREATE | `prisma/migrations/20260409000000_legal_hold_db_migration/migration.sql`                                  |
+| CREATE | `prisma/migrations/migration_lock.toml`                                                                   |
+| MODIFY | `services/core-api/src/compliance/legal-hold.service.ts` — Prisma DB store                                |
 | MODIFY | `services/core-api/src/compliance/compliance.module.ts` — fixed merge artifact, all 3 services registered |
-| MODIFY | `services/nats/topics.registry.ts` — fixed merge artifact, deduplicated entries |
+| MODIFY | `services/nats/topics.registry.ts` — fixed merge artifact, deduplicated entries                           |
 
 ---
 
@@ -45,13 +45,13 @@
 
 ## Validation
 
-| Check | Result |
-|-------|--------|
-| `applyHold()` persists to DB | PASS — `prisma.legalHold.create()` |
-| `isHeld()` queries DB, not memory | PASS — `prisma.legalHold.findFirst()` with `lifted_at_utc: null` |
-| `liftHold()` updates `lifted_by` + `lifted_at_utc` in DB only | PASS — single `prisma.legalHold.update()` |
-| `isHeld()` returns false after `liftHold()` | PASS — DB query checks `lifted_at_utc: null` |
-| `npx tsc --noEmit`: 0 errors | PASS — clean exit, 0 errors |
+| Check                                                         | Result                                                           |
+| ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `applyHold()` persists to DB                                  | PASS — `prisma.legalHold.create()`                               |
+| `isHeld()` queries DB, not memory                             | PASS — `prisma.legalHold.findFirst()` with `lifted_at_utc: null` |
+| `liftHold()` updates `lifted_by` + `lifted_at_utc` in DB only | PASS — single `prisma.legalHold.update()`                        |
+| `isHeld()` returns false after `liftHold()`                   | PASS — DB query checks `lifted_at_utc: null`                     |
+| `npx tsc --noEmit`: 0 errors                                  | PASS — clean exit, 0 errors                                      |
 
 ---
 

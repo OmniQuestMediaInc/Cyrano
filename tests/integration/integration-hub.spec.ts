@@ -86,7 +86,7 @@ describe('IntegrationHubService.processHighHeatSession — E2E flow', () => {
 
     expect(result.heat.tier).toBe('INFERNO');
     expect(result.suggestion?.category).toBe('CAT_MONETIZATION');
-    expect(result.payout_scaling_pct).toBe(0.10);
+    expect(result.payout_scaling_pct).toBe(0.1);
     expect(result.scaled_payout_per_token_usd).toBeCloseTo(0.0825, 4);
 
     const topics = published.map((p) => p.topic);

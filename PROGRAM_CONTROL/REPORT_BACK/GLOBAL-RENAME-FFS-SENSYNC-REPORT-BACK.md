@@ -14,10 +14,12 @@ git diff --stat HEAD~3 HEAD → 71 files changed, 593 insertions(+), 593 deletio
 ```
 
 ### Directories Renamed (git mv)
+
 - `services/room-heat/` → `services/ffs/`
 - `services/heartsync/` → `services/sensync/`
 
 ### Files Renamed (git mv)
+
 - `services/ffs/src/room-heat.service.ts` → `services/ffs/src/ffs.service.ts`
 - `services/ffs/src/room-heat.controller.ts` → `services/ffs/src/ffs.controller.ts`
 - `services/ffs/src/room-heat.module.ts` → `services/ffs/src/ffs.module.ts`
@@ -33,6 +35,7 @@ git diff --stat HEAD~3 HEAD → 71 files changed, 593 insertions(+), 593 deletio
 ### Key Identifier Substitutions
 
 **Room-Heat → FFS (Flicker n'Flame Scoring):**
+
 - `RoomHeatService` → `FlickerNFlameScoringService`
 - `RoomHeatController` → `FlickerNFlameScoringController`
 - `RoomHeatModule` → `FlickerNFlameScoringModule`
@@ -51,6 +54,7 @@ git diff --stat HEAD~3 HEAD → 71 files changed, 593 insertions(+), 593 deletio
 - Rule ID in FLAGS.md/ASSUMPTIONS.md: `ROOM_HEAT_ENGINE_v2` → `FFS_ENGINE_v2`
 
 **HeartSync → SenSync™:**
+
 - `HeartSyncService/Controller/Module` → `SenSyncService/Controller/Module`
 - `HeartSyncTierConfig/SessionState/Sample/Consent/RelayEvent/...` → `SenSync*`
 - `HEARTSYNC_BPM_MAX/MIN/RULE_ID` → `SENSYNC_BPM_MAX/MIN/RULE_ID`
@@ -60,6 +64,7 @@ git diff --stat HEAD~3 HEAD → 71 files changed, 593 insertions(+), 593 deletio
 - `.env.example` header: `HeartSync` → `SenSync™`
 
 **Prisma schema:**
+
 - `heat_score` → `ffs_score`
 - `heat_tier` → `ffs_tier`
 - `room_heat_snapshots` → `ffs_snapshots`
@@ -68,6 +73,7 @@ git diff --stat HEAD~3 HEAD → 71 files changed, 593 insertions(+), 593 deletio
 - `heartsync_tier_configs` → `sensync_tier_configs`
 
 **REST/Decorators:**
+
 - `@Controller('room-heat')` → `@Controller('ffs')`
 - `@Controller('heartsync')` → `@Controller('sensync')`
 
@@ -86,6 +92,7 @@ c480383 CHORE: Global rename Room-Heat→FFS, HeartSync→SenSync™
 ## Commands Run + Outputs
 
 ### TypeScript check (npx tsc --noEmit)
+
 Result: Only 9 pre-existing `@prisma/client` member errors remain (Bijou/Membership schema types not regenerated). Zero rename-related errors.
 
 ```
@@ -95,6 +102,7 @@ services/bijou/src/bijou-dwell.service.ts(11,10): error TS2305: Module '"@prisma
 ```
 
 ### Code Review
+
 - 0 security alerts (CodeQL)
 - 4 review comments addressed: FFS flag names, Rule ID in FLAGS.md/ASSUMPTIONS.md, SenSync .env header
 
@@ -115,4 +123,4 @@ services/bijou/src/bijou-dwell.service.ts(11,10): error TS2305: Module '"@prisma
 
 **SUCCESS** — All 71 files renamed and updated. TypeScript check passes (pre-existing errors only). Commits are GPG-signed on branch `copilot/global-rename-room-heat-to-ffs`.
 
-**Note:** Git push blocked by token auth (ghu_ token lacks repo write scope). Commits exist locally and will be pushed by the Copilot agent runtime at session conclusion.
+**Note:** Git push blocked by token auth (ghu\_ token lacks repo write scope). Commits exist locally and will be pushed by the Copilot agent runtime at session conclusion.

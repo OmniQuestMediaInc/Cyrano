@@ -18,6 +18,7 @@ This report answers two questions raised by Phase 3a §8.1 and §8.2 with concre
 ### 1.2 Current `TokenType` enum
 
 `services/core-api/src/finance/ledger.service.ts:19–27`:
+
 ```ts
 /**
  * TokenType — CZT is the only platform currency.
@@ -34,7 +35,7 @@ The enum's own JSDoc explicitly declares `BIJOU` retired.
 
 ### 1.3 Git history — when did `REGULAR` / `BIJOU` disappear from the enum?
 
-**Commit `1d513f0`** — PR #241 *"FIZ: TOK-RETIRE-001 — Retire ShowToken types, update payout to Room-Heat rates"* (merged 2026-04-16):
+**Commit `1d513f0`** — PR #241 _"FIZ: TOK-RETIRE-001 — Retire ShowToken types, update payout to Room-Heat rates"_ (merged 2026-04-16):
 
 ```diff
  export enum TokenType {
@@ -53,9 +54,9 @@ The retirement was deliberate, governance-authorized, and tied to the **Single-c
 
 ### 1.5 Doctrine cross-references
 
-- **`PROGRAM_CONTROL/DIRECTIVES/DONE/TOK-RETIRE-001.md`** explicitly states the objective: *"Retire `TokenType.SHOW_THEATER` and `TokenType.BIJOU`; collapse `TokenType` to CZT-only."* Status: DONE.
+- **`PROGRAM_CONTROL/DIRECTIVES/DONE/TOK-RETIRE-001.md`** explicitly states the objective: _"Retire `TokenType.SHOW_THEATER` and `TokenType.BIJOU`; collapse `TokenType` to CZT-only."_ Status: DONE.
 - **`services/showzone/RETIRED.md`** ties showzone retirement to single-CZT enforcement.
-- **`README.md`** describes ChatNow.Zone as governed by *"single CZT token economy specification"*.
+- **`README.md`** describes ChatNow.Zone as governed by _"single CZT token economy specification"_.
 - No remaining doctrine document advocates a multi-token-type model.
 
 ### 1.6 Recommendation — `REPLACE_WITH_CZT`
@@ -74,11 +75,11 @@ The retitle should be a mechanical sed-style replace, since neither retired valu
 
 Three production code sites reference NATS topic constants that don't exist in `services/nats/topics.registry.ts`:
 
-| TSC # | File:line | Constant | Surrounding semantic |
-|---|---|---|---|
-| #11 | `services/creator-control/src/ffs.engine.ts:92` | `FFS_SCORE_SAMPLE` | Published every time `ingest()` produces a score from a sample (continuous emission) |
-| #13 | `services/creator-control/src/ffs.engine.ts:115` | `FFS_SCORE_PEAK` | Published only when `score.tier === 'INFERNO'` (peak detection) |
-| #14 | `services/guest-heat/src/fan-fervor-score.service.ts:191` | `FFS_SCORED` | Published after computing per-guest fervor score with HeartSync biometric boost (per-guest event, distinct from room-level) |
+| TSC # | File:line                                                 | Constant           | Surrounding semantic                                                                                                        |
+| ----- | --------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| #11   | `services/creator-control/src/ffs.engine.ts:92`           | `FFS_SCORE_SAMPLE` | Published every time `ingest()` produces a score from a sample (continuous emission)                                        |
+| #13   | `services/creator-control/src/ffs.engine.ts:115`          | `FFS_SCORE_PEAK`   | Published only when `score.tier === 'INFERNO'` (peak detection)                                                             |
+| #14   | `services/guest-heat/src/fan-fervor-score.service.ts:191` | `FFS_SCORED`       | Published after computing per-guest fervor score with HeartSync biometric boost (per-guest event, distinct from room-level) |
 
 ### 2.2 Existing canonical FFS keys in registry
 
@@ -112,16 +113,16 @@ ROOM_HEAT_SESSION_ENDED       → 'room.heat.session.ended'
 ROOM_HEAT_ADAPTIVE_UPDATED    → 'room.heat.adaptive.updated'
 ```
 
-The global rename in **PR #335** *"CHORE: Global rename Room-Heat Engine → Flicker n'Flame Scoring (FFS), HeartSync → SenSync™"* mapped suffixes 1:1 *except* for `SAMPLE`:
+The global rename in **PR #335** _"CHORE: Global rename Room-Heat Engine → Flicker n'Flame Scoring (FFS), HeartSync → SenSync™"_ mapped suffixes 1:1 _except_ for `SAMPLE`:
 
-| Pre-rename | Post-rename in registry | Producer code (current) |
-|---|---|---|
-| `ROOM_HEAT_SAMPLE` | **`FFS_SCORE_UPDATE`** ⚠️ semantic shift | **`FFS_SCORE_SAMPLE`** ⚠️ matches old suffix |
-| `ROOM_HEAT_TIER_CHANGED` | `FFS_TIER_CHANGED` ✅ | `FFS_TIER_CHANGED` ✅ (fixed in 3b-3) |
-| `ROOM_HEAT_PEAK` | `FFS_PEAK` ✅ | **`FFS_SCORE_PEAK`** ⚠️ extra `_SCORE_` infix |
-| `ROOM_HEAT_LEADERBOARD_UPDATED` | `FFS_LEADERBOARD_UPDATED` ✅ | n/a |
-| `ROOM_HEAT_HOT_AND_READY` | `FFS_HOT_AND_READY` ✅ | n/a |
-| `ROOM_HEAT_DUAL_FLAME_PEAK` | `FFS_DUAL_FLAME_PEAK` ✅ | n/a |
+| Pre-rename                      | Post-rename in registry                  | Producer code (current)                       |
+| ------------------------------- | ---------------------------------------- | --------------------------------------------- |
+| `ROOM_HEAT_SAMPLE`              | **`FFS_SCORE_UPDATE`** ⚠️ semantic shift | **`FFS_SCORE_SAMPLE`** ⚠️ matches old suffix  |
+| `ROOM_HEAT_TIER_CHANGED`        | `FFS_TIER_CHANGED` ✅                    | `FFS_TIER_CHANGED` ✅ (fixed in 3b-3)         |
+| `ROOM_HEAT_PEAK`                | `FFS_PEAK` ✅                            | **`FFS_SCORE_PEAK`** ⚠️ extra `_SCORE_` infix |
+| `ROOM_HEAT_LEADERBOARD_UPDATED` | `FFS_LEADERBOARD_UPDATED` ✅             | n/a                                           |
+| `ROOM_HEAT_HOT_AND_READY`       | `FFS_HOT_AND_READY` ✅                   | n/a                                           |
+| `ROOM_HEAT_DUAL_FLAME_PEAK`     | `FFS_DUAL_FLAME_PEAK` ✅                 | n/a                                           |
 
 The registry's name shift `SAMPLE → UPDATE` is anomalous against the otherwise-mechanical rename pattern, and the producer side `ffs.engine.ts:92` still uses `SAMPLE` semantics. Two possibilities:
 
@@ -136,7 +137,7 @@ Either way, there is a clear inconsistency to resolve.
 
 **Recommendation: `RENAME_SOURCE_TO_FFS_SCORE_UPDATE`** — change `ffs.engine.ts:92` to publish `NATS_TOPICS.FFS_SCORE_UPDATE`.
 
-**Confidence: HIGH** *for the rename direction* (registry is canonical source-of-truth); **MEDIUM** for the choice between `UPDATE` vs reverting registry to `SAMPLE`. If subscriber code already binds to `FFS_SCORE_UPDATE` / `'ffs.score.update'`, renaming the producer is the lower-blast-radius fix. Recommend grepping for `ffs.score.update` and `FFS_SCORE_UPDATE` consumer-side before committing — if zero subscribers exist, either direction works.
+**Confidence: HIGH** _for the rename direction_ (registry is canonical source-of-truth); **MEDIUM** for the choice between `UPDATE` vs reverting registry to `SAMPLE`. If subscriber code already binds to `FFS_SCORE_UPDATE` / `'ffs.score.update'`, renaming the producer is the lower-blast-radius fix. Recommend grepping for `ffs.score.update` and `FFS_SCORE_UPDATE` consumer-side before committing — if zero subscribers exist, either direction works.
 
 #### `FFS_SCORE_PEAK` (TSC #13)
 
@@ -151,6 +152,7 @@ Either way, there is a clear inconsistency to resolve.
 **Confidence: MEDIUM.**
 
 Rationale:
+
 - `fan-fervor-score.service.ts` is **per-guest** scoring with HeartSync biometric boost (`heartsync_boost`, `heartsync_opted_in` in payload). Semantically distinct from `ffs.engine.ts` which is **room-level** scoring.
 - The closest existing topic, `FFS_SCORE_UPDATE`, is room-level. Folding per-guest events into the same topic would require subscribers to discriminate by payload shape — a brittle pattern.
 - Precedent: `GUEST_HEAT_WHALE_SCORED` follows a `<DOMAIN>_<SUBJECT>_<EVENT>` per-guest naming convention. `FFS_GUEST_SCORED` would match that convention.
@@ -176,10 +178,10 @@ The following were spotted during this research. Per directive, no fixes applied
 import {
   LedgerService,
   TokenType,
-  TokenOrigin,                                                           // ← (1)
+  TokenOrigin, // ← (1)
   WalletBucket,
 } from '../../services/core-api/src/finance/ledger.service';
-import { TokenOrigin } from '../../services/core-api/src/finance/types/ledger.types';  // ← (2)
+import { TokenOrigin } from '../../services/core-api/src/finance/types/ledger.types'; // ← (2)
 ```
 
 `ledger.service.ts:11` re-exports `TokenOrigin` (`export { TokenOrigin };`). Both imports refer to the same enum, so this is a pure duplicate-identifier error (TS2300). Fix: delete line 16 (the type-path import); the bundled import on lines 11–16 already provides `TokenOrigin`.
@@ -204,16 +206,17 @@ The directive scope did not require this analysis, but I noticed during semantic
 
 ## Phase 3b-5/6 readiness summary
 
-| Item | Recommendation | Confidence | Action target |
-|---|---|---|---|
-| Q1 — `TokenType.REGULAR` × 29 | Replace with `TokenType.CZT` | HIGH | Phase 3b-6 (spec-only PR) |
-| Q1 — `TokenType.BIJOU` × 1 | Replace with `TokenType.CZT` | HIGH | Phase 3b-6 (spec-only PR) |
-| Q2 — `FFS_SCORE_SAMPLE` (TSC #11) | Rename producer → `FFS_SCORE_UPDATE` | HIGH (with subscriber-grep pre-flight) | Phase 3b-5 |
-| Q2 — `FFS_SCORE_PEAK` (TSC #13) | Rename producer → `FFS_PEAK` | HIGH | Phase 3b-5 |
-| Q2 — `FFS_SCORED` (TSC #14) | Add `FFS_GUEST_SCORED` to registry, rename producer | MEDIUM | Phase 3b-5 |
-| T1 — duplicate TokenOrigin import | Remove line 16 of spec | HIGH | Phase 3b-6 |
+| Item                              | Recommendation                                      | Confidence                             | Action target             |
+| --------------------------------- | --------------------------------------------------- | -------------------------------------- | ------------------------- |
+| Q1 — `TokenType.REGULAR` × 29     | Replace with `TokenType.CZT`                        | HIGH                                   | Phase 3b-6 (spec-only PR) |
+| Q1 — `TokenType.BIJOU` × 1        | Replace with `TokenType.CZT`                        | HIGH                                   | Phase 3b-6 (spec-only PR) |
+| Q2 — `FFS_SCORE_SAMPLE` (TSC #11) | Rename producer → `FFS_SCORE_UPDATE`                | HIGH (with subscriber-grep pre-flight) | Phase 3b-5                |
+| Q2 — `FFS_SCORE_PEAK` (TSC #13)   | Rename producer → `FFS_PEAK`                        | HIGH                                   | Phase 3b-5                |
+| Q2 — `FFS_SCORED` (TSC #14)       | Add `FFS_GUEST_SCORED` to registry, rename producer | MEDIUM                                 | Phase 3b-5                |
+| T1 — duplicate TokenOrigin import | Remove line 16 of spec                              | HIGH                                   | Phase 3b-6                |
 
 **Expected delta after 3b-5 + 3b-6:**
+
 - TSC: 12 → 9 (clears #11/#13/#14)
 - Jest suites: 4 → 0 (J1 fixed by 3b-6, J2/J3/J4 fixed by 3b-5)
 - Lint: 0 → 0

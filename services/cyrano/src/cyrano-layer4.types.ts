@@ -17,12 +17,7 @@ import type { CyranoTier } from './cyrano-prompt-templates';
 export const CYRANO_LAYER4_RULE_ID = 'CYRANO_LAYER_4_ENTERPRISE_v1';
 
 /** SOC 2 / HIPAA-bearing compliance regimes a tenant may enrol in. */
-export type CyranoLayer4ComplianceRegime =
-  | 'SOC2'
-  | 'HIPAA'
-  | 'PIPEDA'
-  | 'GDPR'
-  | 'NONE';
+export type CyranoLayer4ComplianceRegime = 'SOC2' | 'HIPAA' | 'PIPEDA' | 'GDPR' | 'NONE';
 
 /**
  * Content_mode flag isolates adult vs non-adult templates at the Layer 4

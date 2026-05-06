@@ -13,11 +13,7 @@ import {
   WalletBucket,
 } from '../../services/core-api/src/finance/ledger.service';
 import { GovernanceConfigService } from '../../services/core-api/src/config/governance.config';
-import {
-  loadWallets,
-  loadTransactions,
-  loadDemoScenarios,
-} from './seed-loader';
+import { loadWallets, loadTransactions, loadDemoScenarios } from './seed-loader';
 
 // ── In-memory ledger store ────────────────────────────────────────────────────
 type LedgerRow = Record<string, unknown>;
@@ -26,7 +22,7 @@ function buildMockLedgerRepo(store: LedgerRow[]) {
   return {
     findOne: jest.fn(async ({ where }: { where: Record<string, unknown> }) => {
       const key = Object.keys(where)[0];
-      return store.find(r => r[key] === where[key]) ?? null;
+      return store.find((r) => r[key] === where[key]) ?? null;
     }),
     create: jest.fn((data: LedgerRow) => ({ ...data })),
     save: jest.fn(async (entry: LedgerRow) => {
@@ -54,7 +50,7 @@ function buildQueryBuilder(store: LedgerRow[]) {
       return qb;
     }),
     getRawOne: jest.fn(async () => {
-      const filtered = store.filter(r => {
+      const filtered = store.filter((r) => {
         if (r.user_id !== _userId) return false;
         if (r.token_type !== _tokenType) return false;
         if (_bucket !== null) {
@@ -63,10 +59,7 @@ function buildQueryBuilder(store: LedgerRow[]) {
         }
         return true;
       });
-      const total = filtered.reduce(
-        (sum, r) => sum + BigInt(r.amount as string),
-        0n,
-      );
+      const total = filtered.reduce((sum, r) => sum + BigInt(r.amount as string), 0n);
       return { total: total.toString() };
     }),
   };
@@ -120,7 +113,7 @@ describe('Seed data validation — CSV integrity', () => {
       const fee = parseInt(tx.platform_fee_tokens, 10);
       const net = parseInt(tx.net_tokens_to_creator, 10);
       // fee = floor(gross * 0.20), net = gross - fee
-      expect(fee).toBe(Math.floor(gross * 0.20));
+      expect(fee).toBe(Math.floor(gross * 0.2));
       expect(net).toBe(gross - fee);
     }
   });
@@ -232,13 +225,33 @@ describe('LedgerService — getBalance', () => {
   it('returns sum of all entries for a user + token type', async () => {
     const store: LedgerRow[] = [];
     const svc = makeService(store);
-    await svc.recordEntry({ userId: 'cu_010', amount: 200n, tokenType: TokenType.CZT, tokenOrigin: TokenOrigin.PURCHASED, referenceId: 'r1', reasonCode: 'TOPUP' });
-    await svc.recordEntry({ userId: 'cu_010', amount: 50n, tokenType: TokenType.CZT, tokenOrigin: TokenOrigin.PURCHASED, referenceId: 'r2', reasonCode: 'TOPUP' });
-    await svc.recordEntry({ userId: 'cu_010', amount: -30n, tokenType: TokenType.CZT, tokenOrigin: TokenOrigin.PURCHASED, referenceId: 'r3', reasonCode: 'SPEND' });
+    await svc.recordEntry({
+      userId: 'cu_010',
+      amount: 200n,
+      tokenType: TokenType.CZT,
+      tokenOrigin: TokenOrigin.PURCHASED,
+      referenceId: 'r1',
+      reasonCode: 'TOPUP',
+    });
+    await svc.recordEntry({
+      userId: 'cu_010',
+      amount: 50n,
+      tokenType: TokenType.CZT,
+      tokenOrigin: TokenOrigin.PURCHASED,
+      referenceId: 'r2',
+      reasonCode: 'TOPUP',
+    });
+    await svc.recordEntry({
+      userId: 'cu_010',
+      amount: -30n,
+      tokenType: TokenType.CZT,
+      tokenOrigin: TokenOrigin.PURCHASED,
+      referenceId: 'r3',
+      reasonCode: 'SPEND',
+    });
     const bal = await svc.getBalance('cu_010', TokenType.CZT);
     expect(bal).toBe(220n);
   });
-
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -292,7 +305,9 @@ describe('LedgerService — WalletBucket spend order', () => {
 
     expect(total_debited).toBe(30n);
     expect(entries).toHaveLength(1);
-    const debit = store.find(r => r.reference_id === `debit:spend_order_1:${WalletBucket.PROMOTIONAL_BONUS}`);
+    const debit = store.find(
+      (r) => r.reference_id === `debit:spend_order_1:${WalletBucket.PROMOTIONAL_BONUS}`,
+    );
     expect(debit).toBeDefined();
     expect(debit!.amount).toBe('-30');
   });
@@ -319,8 +334,12 @@ describe('LedgerService — WalletBucket spend order', () => {
     expect(total_debited).toBe(50n);
     expect(entries).toHaveLength(2);
 
-    const promoDebit = store.find(r => r.reference_id === `debit:spill_1:${WalletBucket.PROMOTIONAL_BONUS}`);
-    const memberDebit = store.find(r => r.reference_id === `debit:spill_1:${WalletBucket.MEMBERSHIP_ALLOCATION}`);
+    const promoDebit = store.find(
+      (r) => r.reference_id === `debit:spill_1:${WalletBucket.PROMOTIONAL_BONUS}`,
+    );
+    const memberDebit = store.find(
+      (r) => r.reference_id === `debit:spill_1:${WalletBucket.MEMBERSHIP_ALLOCATION}`,
+    );
     expect(promoDebit!.amount).toBe('-20');
     expect(memberDebit!.amount).toBe('-30');
   });
@@ -347,9 +366,15 @@ describe('LedgerService — WalletBucket spend order', () => {
     expect(total_debited).toBe(40n);
     expect(entries).toHaveLength(3);
 
-    const promoDebit = store.find(r => r.reference_id === `debit:spill_all:${WalletBucket.PROMOTIONAL_BONUS}`);
-    const memberDebit = store.find(r => r.reference_id === `debit:spill_all:${WalletBucket.MEMBERSHIP_ALLOCATION}`);
-    const purchDebit = store.find(r => r.reference_id === `debit:spill_all:${WalletBucket.PURCHASED}`);
+    const promoDebit = store.find(
+      (r) => r.reference_id === `debit:spill_all:${WalletBucket.PROMOTIONAL_BONUS}`,
+    );
+    const memberDebit = store.find(
+      (r) => r.reference_id === `debit:spill_all:${WalletBucket.MEMBERSHIP_ALLOCATION}`,
+    );
+    const purchDebit = store.find(
+      (r) => r.reference_id === `debit:spill_all:${WalletBucket.PURCHASED}`,
+    );
 
     expect(promoDebit!.amount).toBe('-10');
     expect(memberDebit!.amount).toBe('-15');
@@ -397,8 +422,8 @@ describe('LedgerService — WalletBucket spend order', () => {
       reasonCode: 'SESSION_CHARGE',
     });
 
-    const purchDebit = store.find(r =>
-      r.reference_id === `debit:no_purchased:${WalletBucket.PURCHASED}`,
+    const purchDebit = store.find(
+      (r) => r.reference_id === `debit:no_purchased:${WalletBucket.PURCHASED}`,
     );
     expect(purchDebit).toBeUndefined();
   });
@@ -407,7 +432,7 @@ describe('LedgerService — WalletBucket spend order', () => {
     const store: LedgerRow[] = [];
     const svc = makeService(store);
 
-    const wallets = loadWallets().filter(w => w.owner_type === 'customer');
+    const wallets = loadWallets().filter((w) => w.owner_type === 'customer');
     const scenarios = loadDemoScenarios().slice(0, 5);
     const txns = loadTransactions();
 
@@ -428,7 +453,7 @@ describe('LedgerService — WalletBucket spend order', () => {
 
     // Replay first 5 scenario transactions
     for (const scenario of scenarios) {
-      const tx = txns.find(t => t.customer_id === scenario.primary_customer_id);
+      const tx = txns.find((t) => t.customer_id === scenario.primary_customer_id);
       if (!tx) continue;
 
       const customerId = scenario.primary_customer_id;
@@ -477,9 +502,15 @@ describe('LedgerService — WalletBucket spend order', () => {
       reasonCode: 'CHARGE',
     });
 
-    const promoDr = store.find(r => r.reference_id === `debit:priority_meta:${WalletBucket.PROMOTIONAL_BONUS}`);
-    const memberDr = store.find(r => r.reference_id === `debit:priority_meta:${WalletBucket.MEMBERSHIP_ALLOCATION}`);
-    const purchDr = store.find(r => r.reference_id === `debit:priority_meta:${WalletBucket.PURCHASED}`);
+    const promoDr = store.find(
+      (r) => r.reference_id === `debit:priority_meta:${WalletBucket.PROMOTIONAL_BONUS}`,
+    );
+    const memberDr = store.find(
+      (r) => r.reference_id === `debit:priority_meta:${WalletBucket.MEMBERSHIP_ALLOCATION}`,
+    );
+    const purchDr = store.find(
+      (r) => r.reference_id === `debit:priority_meta:${WalletBucket.PURCHASED}`,
+    );
 
     expect((promoDr!.metadata as any).spend_priority).toBe(1);
     expect((memberDr!.metadata as any).spend_priority).toBe(2);

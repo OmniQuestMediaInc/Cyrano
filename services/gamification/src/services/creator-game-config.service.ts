@@ -5,10 +5,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { GAMIFICATION } from '../../../core-api/src/config/governance.config';
-import type {
-  CreatorGameConfig,
-  GameType,
-} from '../types/gamification.types';
+import type { CreatorGameConfig, GameType } from '../types/gamification.types';
 import type { UpsertCreatorGameConfigDto } from '../dto/gamification.dto';
 
 /** Persistence contract for creator-game configs. */
@@ -32,10 +29,7 @@ export class CreatorGameConfigService {
 
   constructor(private readonly repo: CreatorGameConfigRepository) {}
 
-  async upsert(
-    creator_id: string,
-    dto: UpsertCreatorGameConfigDto,
-  ): Promise<CreatorGameConfig> {
+  async upsert(creator_id: string, dto: UpsertCreatorGameConfigDto): Promise<CreatorGameConfig> {
     this.validate(dto);
     const sortedTiers = [...dto.token_tiers].sort((a, b) => a - b);
     const config: CreatorGameConfig = {
@@ -74,7 +68,7 @@ export class CreatorGameConfigService {
       creator_id,
       game_type,
       token_tiers: [...GAMIFICATION.TOKEN_TIERS],
-      prize_pool_id: '',                         // resolves to creator's shared pool
+      prize_pool_id: '', // resolves to creator's shared pool
       cooldown_seconds_override: null,
       enabled: true,
       accepts_rrr_burn: false,
@@ -110,7 +104,11 @@ export class CreatorGameConfigService {
     if (!GAMIFICATION.GAME_TYPES.includes(dto.game_type)) {
       throw new CreatorGameConfigValidationError(`invalid game_type ${dto.game_type}`);
     }
-    if (!Array.isArray(dto.token_tiers) || dto.token_tiers.length < 1 || dto.token_tiers.length > 3) {
+    if (
+      !Array.isArray(dto.token_tiers) ||
+      dto.token_tiers.length < 1 ||
+      dto.token_tiers.length > 3
+    ) {
       throw new CreatorGameConfigValidationError(
         `token_tiers must contain 1–3 entries (got ${dto.token_tiers?.length ?? 0})`,
       );
@@ -118,7 +116,9 @@ export class CreatorGameConfigService {
     const seen = new Set<number>();
     for (const t of dto.token_tiers) {
       if (!Number.isInteger(t) || t <= 0) {
-        throw new CreatorGameConfigValidationError(`token_tier must be a positive integer (got ${t})`);
+        throw new CreatorGameConfigValidationError(
+          `token_tier must be a positive integer (got ${t})`,
+        );
       }
       if (seen.has(t)) {
         throw new CreatorGameConfigValidationError(`duplicate token_tier ${t}`);

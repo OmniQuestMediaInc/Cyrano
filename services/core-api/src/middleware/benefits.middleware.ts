@@ -117,10 +117,7 @@ export class BenefitsMiddleware implements NestMiddleware {
    * Creates the BenefitUsage row if it does not exist.
    * Call this from route handlers after a successful action (image/chat/video).
    */
-  async incrementUsage(
-    userId: string,
-    type: 'images' | 'messages' | 'videos',
-  ): Promise<void> {
+  async incrementUsage(userId: string, type: 'images' | 'messages' | 'videos'): Promise<void> {
     const month = getCurrentMonth();
     const field =
       type === 'images' ? 'images_used' : type === 'messages' ? 'messages_used' : 'videos_used';

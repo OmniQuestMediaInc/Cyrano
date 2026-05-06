@@ -49,10 +49,7 @@ export type ReasonCode =
  * NOTE: `tease_showzone` was retired with the Single CZT Economy spec
  * (services/showzone/RETIRED.md). Do not re-add.
  */
-export type RateCardTier =
-  | 'tease_regular'
-  | 'diamond_floor'
-  | 'vip_baseline';
+export type RateCardTier = 'tease_regular' | 'diamond_floor' | 'vip_baseline';
 
 /**
  * Heat levels — Flicker n'Flame Scoring (FFS) output (PAY-001…005). Drives creator payout per
@@ -70,20 +67,20 @@ export type TokenExpirationStatus = 'active' | 'expired' | 'recovered' | 'extend
  * Engine (REDBOOK §5).
  */
 export type RecoveryAction =
-  | 'WARN_48H'                  // pre-expiry warning notification
-  | 'EXTEND'                    // $49 extension, +14 days
-  | 'RECOVER'                   // $79 recovery of expired balance
-  | 'TOKEN_BRIDGE'              // 20% bonus credit + waiver
-  | 'THREE_FIFTHS_EXIT'         // 60% refund + 24h lock
-  | 'REDISTRIBUTE';             // 70/30 creator-pool / platform split on pure expiry
+  | 'WARN_48H' // pre-expiry warning notification
+  | 'EXTEND' // $49 extension, +14 days
+  | 'RECOVER' // $79 recovery of expired balance
+  | 'TOKEN_BRIDGE' // 20% bonus credit + waiver
+  | 'THREE_FIFTHS_EXIT' // 60% refund + 24h lock
+  | 'REDISTRIBUTE'; // 70/30 creator-pool / platform split on pure expiry
 
 // ── Value types carried across service boundaries ───────────────────────────
 
 export interface LedgerEntryInput {
   walletId: string;
-  correlationId: string;            // idempotency key
+  correlationId: string; // idempotency key
   reasonCode: ReasonCode;
-  amount: number;                   // signed: +credit, -debit
+  amount: number; // signed: +credit, -debit
   bucket: LedgerBucket;
   metadata?: Record<string, unknown>;
   /**
@@ -109,12 +106,12 @@ export interface WalletSnapshot {
   purchasedTokens: number;
   membershipTokens: number;
   bonusTokens: number;
-  totalTokens: number;              // virtual: sum of three buckets
+  totalTokens: number; // virtual: sum of three buckets
   lastUpdated: Date;
 }
 
 export interface SpendResult {
-  entries: LedgerEntry[];           // one entry per bucket touched
+  entries: LedgerEntry[]; // one entry per bucket touched
   totalDebited: number;
   breakdown: Record<LedgerBucket, number>;
 }
@@ -131,7 +128,10 @@ export interface TokenExpirationRecord {
 
 // Error classes — stable names for service consumers to assert against.
 export class LedgerError extends Error {
-  constructor(public readonly code: string, message: string) {
+  constructor(
+    public readonly code: string,
+    message: string,
+  ) {
     super(`${code}: ${message}`);
     this.name = 'LedgerError';
   }
@@ -154,9 +154,6 @@ export class IdempotencyReplayError extends LedgerError {
 
 export class HashChainBrokenError extends LedgerError {
   constructor(walletId: string, atEntryId: string) {
-    super(
-      'HASH_CHAIN_BROKEN',
-      `Wallet ${walletId} ledger integrity failed at entry ${atEntryId}.`,
-    );
+    super('HASH_CHAIN_BROKEN', `Wallet ${walletId} ledger integrity failed at entry ${atEntryId}.`);
   }
 }

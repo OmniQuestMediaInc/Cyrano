@@ -19,10 +19,10 @@ export type FfsTier = 'COLD' | 'WARM' | 'HOT' | 'INFERNO';
 export interface FfsSample {
   session_id: string;
   creator_id: string;
-  tippers_online: number;         // how many viewers are currently tip-capable
-  tips_per_minute: number;        // rolling 60s tip rate
-  avg_tip_tokens: number;         // rolling 60s mean
-  dwell_minutes: number;          // session runtime so far
+  tippers_online: number; // how many viewers are currently tip-capable
+  tips_per_minute: number; // rolling 60s tip rate
+  avg_tip_tokens: number; // rolling 60s mean
+  dwell_minutes: number; // session runtime so far
   diamond_guests_present: number; // Diamond-tier guests currently in room
   captured_at_utc: string;
 }
@@ -31,11 +31,11 @@ export interface FfsScore {
   session_id: string;
   creator_id: string;
   tier: FfsTier;
-  score: number;                  // 0..100 composite
+  score: number; // 0..100 composite
   components: {
-    tipper_pressure: number;      // 0..40
-    velocity: number;             // 0..40
-    vip_presence: number;         // 0..20
+    tipper_pressure: number; // 0..40
+    velocity: number; // 0..40
+    vip_presence: number; // 0..20
   };
   captured_at_utc: string;
   rule_applied_id: string;
@@ -48,7 +48,7 @@ const TIER_THRESHOLDS: Array<{ min: number; tier: FfsTier }> = [
   { min: 86, tier: 'INFERNO' },
   { min: 61, tier: 'HOT' },
   { min: 34, tier: 'WARM' },
-  { min: 0,  tier: 'COLD' },
+  { min: 0, tier: 'COLD' },
 ];
 
 @Injectable()

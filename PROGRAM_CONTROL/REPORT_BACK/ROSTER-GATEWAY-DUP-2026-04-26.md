@@ -10,10 +10,10 @@
 
 ## Files Under Analysis
 
-| # | Path | WO tag |
-|---|---|---|
-| A | `services/core-api/src/creator/roster.gateway.ts` | `WO: WO-INIT-001` |
-| B | `services/core-api/src/creator/surfaces/roster.gateway.ts` | `WO: WO-INIT-001` |
+| #   | Path                                                       | WO tag            |
+| --- | ---------------------------------------------------------- | ----------------- |
+| A   | `services/core-api/src/creator/roster.gateway.ts`          | `WO: WO-INIT-001` |
+| B   | `services/core-api/src/creator/surfaces/roster.gateway.ts` | `WO: WO-INIT-001` |
 
 Both files share the same WO tag (`WO-INIT-001`), confirming they originate from the same scaffolding pass. Both appeared in the same commit (`21a5c9d` — the earliest reachable commit in this shallow clone, `HZ: SenSync™ Biometric Layer + Cyrano Layer 1 FFS/SenSync hardening`).
 
@@ -51,6 +51,7 @@ Both files share the same WO tag (`WO-INIT-001`), confirming they originate from
 ```
 
 **Summary of difference:**
+
 - File **A** (`creator/roster.gateway.ts`) — 22 lines. Contains a `RosterEntry` interface, `@Injectable()` decorator, and two stub methods with `TODO` comments.
 - File **B** (`creator/surfaces/roster.gateway.ts`) — 2 lines. Empty shell class with no decorator, no members, no exports beyond the class declaration itself.
 
@@ -61,6 +62,7 @@ Both files share the same WO tag (`WO-INIT-001`), confirming they originate from
 **Searched:** All `*.ts` and `*.tsx` files in `services/`, `ui/`, `finance/`, `safety/`, `scripts/`, `tests/`, `prisma/` (excluding `node_modules/`).
 
 **Grep patterns applied:**
+
 - `from.*creator/roster`
 - `from.*surfaces/roster`
 - `RosterGateway` (any occurrence outside the two source files)
@@ -102,17 +104,17 @@ export class CreatorModule {}
 
 ## 5 — Assessment
 
-| Dimension | File A (`creator/roster.gateway.ts`) | File B (`creator/surfaces/roster.gateway.ts`) |
-|---|---|---|
-| Lines | 22 | 2 |
-| `@Injectable()` | ✅ | ❌ |
-| `RosterEntry` interface | ✅ | ❌ |
-| Stub methods | ✅ (`getRoster`, `getPerformerContract`) | ❌ |
-| Registered in any module | ❌ | ❌ |
-| Importers | 0 | 0 |
-| `@WebSocketGateway` | ❌ | ❌ |
-| Maturity | Further along (stub impl) | Placeholder only |
-| Location | `creator/` (matches `CreatorModule` root) | `creator/surfaces/` (sub-package) |
+| Dimension                | File A (`creator/roster.gateway.ts`)      | File B (`creator/surfaces/roster.gateway.ts`) |
+| ------------------------ | ----------------------------------------- | --------------------------------------------- |
+| Lines                    | 22                                        | 2                                             |
+| `@Injectable()`          | ✅                                        | ❌                                            |
+| `RosterEntry` interface  | ✅                                        | ❌                                            |
+| Stub methods             | ✅ (`getRoster`, `getPerformerContract`)  | ❌                                            |
+| Registered in any module | ❌                                        | ❌                                            |
+| Importers                | 0                                         | 0                                             |
+| `@WebSocketGateway`      | ❌                                        | ❌                                            |
+| Maturity                 | Further along (stub impl)                 | Placeholder only                              |
+| Location                 | `creator/` (matches `CreatorModule` root) | `creator/surfaces/` (sub-package)             |
 
 Both files are unregistered dead code. File B (`surfaces/`) is strictly a subset of File A — it has no content that File A does not also have. File A has more content and is in the more semantically correct location (the creator module's root, where `StatementsService`, `StatementsController`, and `CreatorModule` live).
 
@@ -123,6 +125,7 @@ Both files are unregistered dead code. File B (`surfaces/`) is strictly a subset
 **Delete `services/core-api/src/creator/surfaces/roster.gateway.ts` (File B) in a future Phase 3 NestJS DI dead-code pass.**
 
 Rationale:
+
 1. File B is an empty shell with zero unique content — it is entirely superseded by File A.
 2. File A is in the module-root-aligned location (`creator/`) rather than the sub-package (`creator/surfaces/`), consistent with `StatementsService` and `CreatorModule` living at `creator/`.
 3. Neither file is currently wired into any module. Deletion of File B carries zero functional risk.

@@ -12,11 +12,9 @@ import { findByTestId, collectTestIds } from '../../ui/components/render-plan';
 import type {
   CyranoPersonaCard,
   PersonaManagementPageInputs,
-} from '../../ui/types/cyrano-persona-contracts';
+} from '../../ui/types/cyrano-persona-management-contracts';
 
-function makePersona(
-  overrides: Partial<CyranoPersonaCard> = {},
-): CyranoPersonaCard {
+function makePersona(overrides: Partial<CyranoPersonaCard> = {}): CyranoPersonaCard {
   return {
     persona_id: 'p1',
     creator_id: 'c1',

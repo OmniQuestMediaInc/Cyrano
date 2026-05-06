@@ -94,7 +94,7 @@ Schema-only — no migration generated per directive.
    `createSession` input, persisted on the model, echoed to NATS payload ✅
 4. **Logger on all methods** — `Logger(BijouSchedulerService.name)`
    invoked on every code path ✅
-5. **NATS_TOPICS.* constants only** — no raw strings ✅
+5. **NATS_TOPICS.\* constants only** — no raw strings ✅
 6. **Multi-tenant mandate** — enforced via constructor input ✅
 
 ## Multi-tenant Mandate
@@ -130,6 +130,7 @@ PROGRAM_CONTROL/REPORT_BACK/BJ-002-REPORT-BACK.md    | (created)
 **SUCCESS**
 
 All BJ-002 scope items delivered:
+
 - ✅ `BijouSession` Prisma model (schema only)
 - ✅ `BijouSchedulerService` with create/open/close/cancel + velocity rule
 - ✅ `BIJOU` block in GovernanceConfig

@@ -95,12 +95,7 @@ export class CyranoTranslationService {
 
     // Guard empty copy.
     if (!source_copy || !source_copy.trim()) {
-      return this.skip(
-        tenant_id,
-        target_locale,
-        correlation_id,
-        'TRANSLATION_INPUT_EMPTY',
-      );
+      return this.skip(tenant_id, target_locale, correlation_id, 'TRANSLATION_INPUT_EMPTY');
     }
 
     // Unsupported locale gate.
@@ -159,9 +154,9 @@ export class CyranoTranslationService {
   ): CyranoLayer4TranslationEnvelope {
     const natsTopicMap: Record<CyranoLayer4TranslationSkipReason, string> = {
       TRANSLATION_LOCALE_SAME_AS_SOURCE: NATS_TOPICS.CYRANO_TRANSLATION_SKIPPED,
-      TRANSLATION_INPUT_EMPTY:           NATS_TOPICS.CYRANO_TRANSLATION_SKIPPED,
-      TRANSLATION_LOCALE_NOT_SUPPORTED:  NATS_TOPICS.CYRANO_TRANSLATION_UNSUPPORTED,
-      TRANSLATION_DISABLED_BY_TENANT:    NATS_TOPICS.CYRANO_TRANSLATION_SKIPPED,
+      TRANSLATION_INPUT_EMPTY: NATS_TOPICS.CYRANO_TRANSLATION_SKIPPED,
+      TRANSLATION_LOCALE_NOT_SUPPORTED: NATS_TOPICS.CYRANO_TRANSLATION_UNSUPPORTED,
+      TRANSLATION_DISABLED_BY_TENANT: NATS_TOPICS.CYRANO_TRANSLATION_SKIPPED,
     };
 
     this.nats.publish(natsTopicMap[skipped_reason_code], {

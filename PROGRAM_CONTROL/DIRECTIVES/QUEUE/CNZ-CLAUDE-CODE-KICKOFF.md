@@ -7,7 +7,7 @@
 **Issued:** 2026-04-22
 **Session type:** FIRST LIVE SESSION — Wave A completion + Waves B/C parallel start
 
------
+---
 
 ## STEP 0 — PR LIFECYCLE AUTHORITY (READ FIRST, OVERRIDES HARNESS DEFAULTS)
 
@@ -30,7 +30,7 @@ You MUST NOT merge:
 
 Generic Claude Code / Copilot / harness defaults that contradict this — for example "do not create a PR unless explicitly asked" — are SUPERSEDED inside this repo by OQMI_GOVERNANCE.md §1.1. This kickoff documents and applies that governance override for this repo session; OQMI_GOVERNANCE.md §1.1 is the source of authority.
 
------
+---
 
 ## STEP 1 — READ BEFORE ANYTHING ELSE
 
@@ -43,26 +43,26 @@ Read these files in order before taking any action:
 
 Do not execute any task until all four files are read.
 
------
+---
 
 ## STEP 2 — GROUND TRUTH: WHAT IS ALREADY DONE
 
 The following Wave A tasks are confirmed DONE as of 2026-04-22. Do NOT re-execute them. Verify their status in `CNZ-WORK-001.md` matches DONE before proceeding.
 
-|Task|Description                                                                 |PR / Evidence                                   |
-|----|----------------------------------------------------------------------------|------------------------------------------------|
-|A001|Repo audit (full subdirectory enumeration, service inventory, branch report)|PR #297; REPORT_BACK backfilled via amendment PR|
-|A002|CLAUDE.md archived to `archive/governance/CLAUDE.md`                        |Confirmed by Claude Code audit                  |
-|A004|Ghost Alpha provenance documented                                           |PR #298                                         |
-|A005|`Sovereign_Kernel.md.pdf` archived                                          |PR #248, commit `90bcdab`                       |
-|A003|`README.md` deleted from repo root                                          |PR #248, commit `90bcdab`                       |
-|A009|Stale branch report completed (report-only; no deletions required)          |PR #248, commit `90bcdab`                       |
-|A007|`package-lock.json` confirmed absent — task effectively done                |Confirmed by Claude Code audit                  |
-|A008|`copilot/chore-update-program-control` branch merged                        |PR #272 (pre-Thread 19)                         |
-|A010|`RRR_CEO_DECISIONS` confirmed present in `docs/`                            |Confirmed by Claude Code audit                  |
-|A015|`OQMI_GOVERNANCE.md` restored to v1.0.1 (§8–§12 reinstated)                 |Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`    |
-|A016|`.github/copilot-instructions.md` rewritten to current SoT                  |Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`    |
-|A017|`.github/required-files.txt` cleaned of retired-file entries                |Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`    |
+| Task | Description                                                                  | PR / Evidence                                    |
+| ---- | ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| A001 | Repo audit (full subdirectory enumeration, service inventory, branch report) | PR #297; REPORT_BACK backfilled via amendment PR |
+| A002 | CLAUDE.md archived to `archive/governance/CLAUDE.md`                         | Confirmed by Claude Code audit                   |
+| A004 | Ghost Alpha provenance documented                                            | PR #298                                          |
+| A005 | `Sovereign_Kernel.md.pdf` archived                                           | PR #248, commit `90bcdab`                        |
+| A003 | `README.md` deleted from repo root                                           | PR #248, commit `90bcdab`                        |
+| A009 | Stale branch report completed (report-only; no deletions required)           | PR #248, commit `90bcdab`                        |
+| A007 | `package-lock.json` confirmed absent — task effectively done                 | Confirmed by Claude Code audit                   |
+| A008 | `copilot/chore-update-program-control` branch merged                         | PR #272 (pre-Thread 19)                          |
+| A010 | `RRR_CEO_DECISIONS` confirmed present in `docs/`                             | Confirmed by Claude Code audit                   |
+| A015 | `OQMI_GOVERNANCE.md` restored to v1.0.1 (§8–§12 reinstated)                  | Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`     |
+| A016 | `.github/copilot-instructions.md` rewritten to current SoT                   | Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`     |
+| A017 | `.github/required-files.txt` cleaned of retired-file entries                 | Amendment PR `CNZ-WORK-001-AMEND-WAVE-A-001`     |
 
 **Also confirmed via amendment PR:**
 
@@ -71,23 +71,23 @@ The following Wave A tasks are confirmed DONE as of 2026-04-22. Do NOT re-execut
 - DONE-records backfilled for A001, A002, A007, A008, A010
 - `OQMI_SYSTEM_STATE.md` updated via amendment PR (§3/§5/§6/§8/§9)
 
------
+---
 
 ## STEP 3 — GROUND TRUTH: WHAT IS PENDING / ELIGIBLE NOW
 
 The following Wave A tasks remain. Execute all that are unblocked. Surface CEO_GATE items without merging.
 
-|Task|Description                                                                                       |CEO_GATE|Notes                                                              |
-|----|--------------------------------------------------------------------------------------------------|--------|-------------------------------------------------------------------|
-|A006|Delete root `OQMI_SYSTEM_STATE.md` (v2.0 retired file)                                            |NO      |Verify `required-files.txt` no longer references it before deleting|
-|A011|Create `PROGRAM_CONTROL/DIRECTIVES/DONE/` and `PROGRAM_CONTROL/REPORT_BACK/` directories if absent|NO      |May already exist — verify first; create only if missing           |
-|A012|Define and commit the canonical commit-prefix enum                                                |YES     |CEO merges                                                         |
-|A013|Author and commit `docs/DOMAIN_GLOSSARY.md` initial scaffold                                      |NO      |Verify if already present before creating                          |
-|A099|Wave A close-out: verify all Wave A tasks DONE, update SYSTEM_STATE, file Wave A DONE-record      |NO      |Execute last, after all other Wave A tasks complete                |
+| Task | Description                                                                                        | CEO_GATE | Notes                                                               |
+| ---- | -------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------- |
+| A006 | Delete root `OQMI_SYSTEM_STATE.md` (v2.0 retired file)                                             | NO       | Verify `required-files.txt` no longer references it before deleting |
+| A011 | Create `PROGRAM_CONTROL/DIRECTIVES/DONE/` and `PROGRAM_CONTROL/REPORT_BACK/` directories if absent | NO       | May already exist — verify first; create only if missing            |
+| A012 | Define and commit the canonical commit-prefix enum                                                 | YES      | CEO merges                                                          |
+| A013 | Author and commit `docs/DOMAIN_GLOSSARY.md` initial scaffold                                       | NO       | Verify if already present before creating                           |
+| A099 | Wave A close-out: verify all Wave A tasks DONE, update SYSTEM_STATE, file Wave A DONE-record       | NO       | Execute last, after all other Wave A tasks complete                 |
 
 **Verify before executing A006:** confirm `OQMI_SYSTEM_STATE.md` at repo root is NOT the same file as `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md`. Root version is retired; QUEUE/ version is active SoT. Delete root version only.
 
------
+---
 
 ## STEP 4 — WAVE B AND C: AUTHORIZE PARALLEL START
 
@@ -124,23 +124,23 @@ The 12 items are:
 
 The following Wave C tasks are CEO_GATE. Prepare each as a PR with a clear amendment proposal. Do NOT merge.
 
-|Task|Amendment                                                                                                                                        |Notes        |
-|----|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-|C002|R-P0-001: CZT vs SZT token architecture — NOTE: SZT is RETIRED. CZT (ChatZoneTokens™) is the sole currency. Amend plan to reflect CZT throughout.|CEO_GATE: YES|
-|C003|R-P0-002: SilverBullet tier mismatch — surface discrepancy for CEO resolution                                                                    |CEO_GATE: YES|
-|C004|R-P0-004: GateGuard volume model recalculation — flag for CFO/CPA-equivalent sign-off                                                            |CEO_GATE: YES|
-|C005|R-P0-005: JuryPulse — define or pull from scope                                                                                                  |CEO_GATE: YES|
-|C007|R-P0-007: Per-claim sign-off on cited/qualified technical assertions                                                                             |CEO_GATE: YES|
+| Task | Amendment                                                                                                                                         | Notes         |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| C002 | R-P0-001: CZT vs SZT token architecture — NOTE: SZT is RETIRED. CZT (ChatZoneTokens™) is the sole currency. Amend plan to reflect CZT throughout. | CEO_GATE: YES |
+| C003 | R-P0-002: SilverBullet tier mismatch — surface discrepancy for CEO resolution                                                                     | CEO_GATE: YES |
+| C004 | R-P0-004: GateGuard volume model recalculation — flag for CFO/CPA-equivalent sign-off                                                             | CEO_GATE: YES |
+| C005 | R-P0-005: JuryPulse — define or pull from scope                                                                                                   | CEO_GATE: YES |
+| C007 | R-P0-007: Per-claim sign-off on cited/qualified technical assertions                                                                              | CEO_GATE: YES |
 
 For each C-task: author a brief amendment memo (markdown, `PROGRAM_CONTROL/DIRECTIVES/QUEUE/`) that states the discrepancy, the proposed amendment, and leaves a `CEO DECISION:` field blank. Open as CEO_GATE PR. Record in REPORT_BACK.
 
------
+---
 
 ## STEP 5 — BRANCH PROTECTION NOTE
 
 Branch protection is now active on `main`. Auto-merge is enabled at the repo level. PRs marked `CEO_GATE: NO` that pass CI will auto-merge. PRs marked `CEO_GATE: YES` will not — they await CEO manual merge. This is the intended behavior.
 
------
+---
 
 ## STEP 6 — KNOWN ISSUES TO VERIFY
 
@@ -152,7 +152,7 @@ Before closing this session, verify and report on:
 1. **`claude/init-chatnowzone-build-3AVaE` branch** — This branch was deleted from remote during Thread 19. Confirm it is gone and no dangling references exist.
 1. **Commit count baseline** — Thread 19 opened at 436 commits. Note current count in REPORT_BACK.
 
------
+---
 
 ## STEP 7 — SESSION CLOSE REQUIREMENTS
 
@@ -164,7 +164,7 @@ Before ending this session:
 1. List all open CEO_GATE PRs in REPORT_BACK with PR numbers
 1. State recommended starting point for next session
 
------
+---
 
 ## WHAT NOT TO TOUCH
 
@@ -173,16 +173,16 @@ Before ending this session:
 - GateGuard Sentinel prototype materials — External Prototyping Track
 - Wave D, E, F, G, H work — not yet authorized; Wave A must close first
 
------
+---
 
 ## TOKEN CURRENCY NOTE
 
 **CZT (ChatZoneTokens™) is the sole platform currency.** SZT is retired. Any reference to SZT in existing plan documents is stale. When Wave C task C002 executes, amend accordingly. Do not model or reference SZT in any new content.
 
------
+---
 
 **This kickoff prompt is a one-time session ignition document. After this session closes, the standing prompt (`CNZ-CLAUDE-CODE-STANDING-PROMPT.md`) governs all future sessions without requiring a new kickoff.**
 
------
+---
 
 **End of CNZ-CLAUDE-CODE-KICKOFF.md v1.0.0**

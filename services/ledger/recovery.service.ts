@@ -86,20 +86,19 @@ export class RecoveryService {
    * the EXTENSION_FEE ledger marker) and push expires_at by +14 days.
    * Idempotent on `expirationId`.
    */
-  async extendExpiration(args: {
-    walletId: string;
-    expirationId: string;
-  }): Promise<ExtendResult> {
+  async extendExpiration(args: { walletId: string; expirationId: string }): Promise<ExtendResult> {
     const expirations = await this.repo.listActiveExpirations(args.walletId);
     const target = expirations.find((e) => e.id === args.expirationId);
     if (!target) throw new LedgerError('EXPIRATION_NOT_FOUND', `${args.expirationId} not active`);
     if (target.expiresAt.getTime() <= this.clock().getTime()) {
-      throw new LedgerError('ALREADY_EXPIRED', 'use recoverExpiration() — token lot has already expired');
+      throw new LedgerError(
+        'ALREADY_EXPIRED',
+        'use recoverExpiration() — token lot has already expired',
+      );
     }
 
     const newExpiresAt = new Date(
-      target.expiresAt.getTime() +
-        RECOVERY_ENGINE.EXTENSION_GRANT_DAYS * 24 * 3_600_000,
+      target.expiresAt.getTime() + RECOVERY_ENGINE.EXTENSION_GRANT_DAYS * 24 * 3_600_000,
     );
     // Marker entry — amount 0 is rejected by ledger, so we log the fee against
     // the purchased bucket as a placeholder with a negative 0-impact sentinel.
@@ -108,7 +107,7 @@ export class RecoveryService {
       walletId: args.walletId,
       correlationId: `EXTEND:${args.expirationId}`,
       reasonCode: 'EXTENSION_FEE',
-      amount: 1,                              // 1-token marker; reversed by audit job
+      amount: 1, // 1-token marker; reversed by audit job
       bucket: 'bonus',
       metadata: {
         expiration_id: args.expirationId,
@@ -155,7 +154,7 @@ export class RecoveryService {
       walletId: args.walletId,
       correlationId: `RECOVER:${args.expirationId}`,
       reasonCode: 'EXPIRY_RECOVERY',
-      amount: 1,                              // marker entry — see extendExpiration
+      amount: 1, // marker entry — see extendExpiration
       bucket: 'purchased',
       metadata: {
         expiration_id: args.expirationId,
@@ -166,7 +165,7 @@ export class RecoveryService {
     return {
       expirationId: args.expirationId,
       feeUsd: RECOVERY_ENGINE.RECOVERY_FEE_USD,
-      tokensRestored: 0,                      // caller restores real balance via ledger.credit
+      tokensRestored: 0, // caller restores real balance via ledger.credit
     };
   }
 
@@ -210,7 +209,7 @@ export class RecoveryService {
   async threeFifthsExit(args: {
     walletId: string;
     purchasedCzt: number;
-    unitPriceUsd: number;                    // per-CZT price basis for the refund
+    unitPriceUsd: number; // per-CZT price basis for the refund
     exitId: string;
   }): Promise<ThreeFifthsExitResult> {
     if (!Number.isInteger(args.purchasedCzt) || args.purchasedCzt <= 0) {
@@ -258,7 +257,7 @@ export class RecoveryService {
       throw new LedgerError('INVALID_AMOUNT', 'tokens must be a positive integer');
     }
     const creatorCzt = Math.floor(args.tokens * RECOVERY_ENGINE.EXPIRED_CREATOR_POOL_PCT);
-    const platformCzt = args.tokens - creatorCzt;      // remainder is platform share
+    const platformCzt = args.tokens - creatorCzt; // remainder is platform share
     const base = `REDISTRIBUTE:${args.expirationId}`;
 
     await this.ledger.credit({

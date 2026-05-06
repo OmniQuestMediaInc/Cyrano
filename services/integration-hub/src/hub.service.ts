@@ -39,11 +39,7 @@ export const HUB_RULE_ID = 'INTEGRATION_HUB_v2';
  * `services/core-api/src/gateguard/gateguard.types.ts` without a runtime
  * import so the Hub stays module-boundary-clean.
  */
-export type GateGuardDecision =
-  | 'APPROVED'
-  | 'COOLDOWN'
-  | 'HARD_DECLINE'
-  | 'HUMAN_ESCALATE';
+export type GateGuardDecision = 'APPROVED' | 'COOLDOWN' | 'HARD_DECLINE' | 'HUMAN_ESCALATE';
 
 export interface GateGuardEvaluation {
   decision: GateGuardDecision;
@@ -87,10 +83,10 @@ export interface GuardedLedgerDecision {
  * service can enrich the next statement cycle.
  */
 const PAYOUT_SCALING_PCT_BY_TIER: Record<FfsTier, number> = {
-  COLD:    0.00,
-  WARM:    0.00,
-  HOT:     0.05,
-  INFERNO: 0.10,
+  COLD: 0.0,
+  WARM: 0.0,
+  HOT: 0.05,
+  INFERNO: 0.1,
 };
 
 /** Minimum heat tier that triggers a monetization handoff to Cyrano. */
@@ -144,9 +140,7 @@ export class IntegrationHubService {
     const capturedAt = new Date().toISOString();
     const tier: FfsTier = heat.tier;
     const scalingPct = PAYOUT_SCALING_PCT_BY_TIER[tier];
-    const scaledRate = +(
-      input.creator_payout_rate_per_token_usd * (1 + scalingPct)
-    ).toFixed(4);
+    const scaledRate = +(input.creator_payout_rate_per_token_usd * (1 + scalingPct)).toFixed(4);
 
     if (MONETIZATION_TRIGGER_TIERS.has(tier)) {
       this.nats.publish(NATS_TOPICS.HUB_HIGH_HEAT_MONETIZATION, {
@@ -234,9 +228,7 @@ export class IntegrationHubService {
    */
   forwardGuardedLedgerRequest(req: GuardedLedgerRequest): GuardedLedgerDecision {
     const capturedAt = req.captured_at_utc ?? new Date().toISOString();
-    const approved =
-      req.gateguard.decision === 'APPROVED' ||
-      req.gateguard.decision === 'COOLDOWN';
+    const approved = req.gateguard.decision === 'APPROVED' || req.gateguard.decision === 'COOLDOWN';
 
     this.nats.publish(NATS_TOPICS.AUDIT_IMMUTABLE_GATEGUARD, {
       correlation_id: req.correlation_id,
@@ -257,10 +249,10 @@ export class IntegrationHubService {
       req.gateguard.decision === 'APPROVED'
         ? NATS_TOPICS.GATEGUARD_DECISION_APPROVED
         : req.gateguard.decision === 'COOLDOWN'
-        ? NATS_TOPICS.GATEGUARD_DECISION_COOLDOWN
-        : req.gateguard.decision === 'HARD_DECLINE'
-        ? NATS_TOPICS.GATEGUARD_DECISION_HARD_DECLINE
-        : NATS_TOPICS.GATEGUARD_DECISION_HUMAN_ESCALATE;
+          ? NATS_TOPICS.GATEGUARD_DECISION_COOLDOWN
+          : req.gateguard.decision === 'HARD_DECLINE'
+            ? NATS_TOPICS.GATEGUARD_DECISION_HARD_DECLINE
+            : NATS_TOPICS.GATEGUARD_DECISION_HUMAN_ESCALATE;
 
     this.nats.publish(decisionTopic, {
       correlation_id: req.correlation_id,

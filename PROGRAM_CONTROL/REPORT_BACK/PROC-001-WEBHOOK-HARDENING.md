@@ -83,8 +83,8 @@ and fails fast on the first failing check. Every rejection emits a NATS
    - `stripe`: HMAC-SHA256 over `${timestamp}.${raw_body}`
    - `ccbill`: HMAC-SHA256 over `${event_id}.${timestamp}.${raw_body}`
    - `epoch`: SHA-256 digest over `raw_body + signing_secret`
-   All equality checks go through `crypto.timingSafeEqual()` via a
-   `constantTimeEquals` wrapper.
+     All equality checks go through `crypto.timingSafeEqual()` via a
+     `constantTimeEquals` wrapper.
 6. **event_id idempotency** → `EVENT_ID_DUPLICATE`
    Dedup explicitly happens **before** any downstream consumer can write
    to the ledger. The service only tracks seen IDs; it does not itself
@@ -108,25 +108,26 @@ required" — no automatic re-processing.
 
 ## Standing-Invariant Compliance
 
-| # | Invariant | Status |
-|---|---|---|
-| 1 | No UPDATE/DELETE on ledger/audit/game/call/voucher tables | ✅ no DB access at all |
-| 2 | FIZ commits require REASON/IMPACT/CORRELATION_ID | ✅ see commit message |
-| 3 | No hardcoded constants — read from `governance.config.ts` | ✅ `WEBHOOK_REPLAY_WINDOW_SECONDS`, `WEBHOOK_NONCE_STORE_TTL_SECONDS` read from `GovernanceConfig` |
-| 4 | `crypto.randomInt()` only; `Math.random()` prohibited | ✅ no randomness used |
-| 5 | No `@angular/core` imports | ✅ verified |
-| 6 | `npx tsc --noEmit` zero code-level errors | ✅ see validation section |
-| 7 | Every service has a `Logger` instance | ✅ `private readonly logger = new Logger(...)` |
-| 8 | Report-back mandatory before DONE | ✅ this file |
-| 9 | NATS topics only from `topics.registry.ts` | ✅ `NATS_TOPICS.WEBHOOK_VALIDATION_FAILURE` + `WEBHOOK_DLQ` (registry already contained both) |
-| 10 | AI services advisory only, no financial execution | ✅ N/A — no AI; service is infrastructure-only |
-| 11 | Step-up auth before sensitive actions | ✅ N/A — webhook validator does not perform sensitive actions |
-| 12 | RBAC before step-up, fail-closed on unknown perm | ✅ N/A |
-| 13 | SHA-256 for all hashes | ✅ HMAC-SHA256 (Stripe, CCBill) + SHA-256 (Epoch) |
-| 14 | All timestamps America/Toronto | ✅ N/A — timestamps compared in epoch seconds (timezone-invariant) |
-| 15 | `rule_applied_id` on every service output object | ✅ `'WEBHOOK_HARDENING_v1'` on every `ValidationResult` and every NATS payload |
+| #   | Invariant                                                 | Status                                                                                             |
+| --- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 1   | No UPDATE/DELETE on ledger/audit/game/call/voucher tables | ✅ no DB access at all                                                                             |
+| 2   | FIZ commits require REASON/IMPACT/CORRELATION_ID          | ✅ see commit message                                                                              |
+| 3   | No hardcoded constants — read from `governance.config.ts` | ✅ `WEBHOOK_REPLAY_WINDOW_SECONDS`, `WEBHOOK_NONCE_STORE_TTL_SECONDS` read from `GovernanceConfig` |
+| 4   | `crypto.randomInt()` only; `Math.random()` prohibited     | ✅ no randomness used                                                                              |
+| 5   | No `@angular/core` imports                                | ✅ verified                                                                                        |
+| 6   | `npx tsc --noEmit` zero code-level errors                 | ✅ see validation section                                                                          |
+| 7   | Every service has a `Logger` instance                     | ✅ `private readonly logger = new Logger(...)`                                                     |
+| 8   | Report-back mandatory before DONE                         | ✅ this file                                                                                       |
+| 9   | NATS topics only from `topics.registry.ts`                | ✅ `NATS_TOPICS.WEBHOOK_VALIDATION_FAILURE` + `WEBHOOK_DLQ` (registry already contained both)      |
+| 10  | AI services advisory only, no financial execution         | ✅ N/A — no AI; service is infrastructure-only                                                     |
+| 11  | Step-up auth before sensitive actions                     | ✅ N/A — webhook validator does not perform sensitive actions                                      |
+| 12  | RBAC before step-up, fail-closed on unknown perm          | ✅ N/A                                                                                             |
+| 13  | SHA-256 for all hashes                                    | ✅ HMAC-SHA256 (Stripe, CCBill) + SHA-256 (Epoch)                                                  |
+| 14  | All timestamps America/Toronto                            | ✅ N/A — timestamps compared in epoch seconds (timezone-invariant)                                 |
+| 15  | `rule_applied_id` on every service output object          | ✅ `'WEBHOOK_HARDENING_v1'` on every `ValidationResult` and every NATS payload                     |
 
 **No refactoring:** No existing file had logic changed. Additions only:
+
 - 8 lines added to `GovernanceConfig` const (2 constants + section header)
 - 2 lines added to `app.module.ts` (import + registration)
 - 2 new files under `src/payments/`
@@ -157,13 +158,13 @@ the same single `TS5101` line is produced, exit 0. No new errors introduced.
 
 ### Directive validation checklist
 
-| # | Requirement | Evidence |
-|---|---|---|
-| ✅ | Stripe HMAC-SHA256 validates correctly | `verifyHmacSha256()` over `${timestamp_seconds}.${raw_body}` using `crypto.createHmac('sha256', secret)`, verified via `timingSafeEqual` |
-| ✅ | Replay rejected when timestamp drift > 5 minutes | `isWithinReplayWindow()` compares `|now − ts|` against `GovernanceConfig.WEBHOOK_REPLAY_WINDOW_SECONDS` (= 300); over-window returns `REPLAY_WINDOW_EXCEEDED` |
-| ✅ | Duplicate `event_id` rejected before ledger write | `hasSeenEventId()` check in step 6 of the hardening chain returns `EVENT_ID_DUPLICATE` before the service's only success path (which still writes no ledger entry — infrastructure-only) |
-| ✅ | NATS published on every validation failure | `reject()` is the single exit point for every failure reason and calls `nats.publish(NATS_TOPICS.WEBHOOK_VALIDATION_FAILURE, {...})` with `processor_id`, `event_id`, `failure_reason`, `rule_applied_id` |
-| ✅ | `npx tsc --noEmit` zero new errors | confirmed above |
+| #   | Requirement                                       | Evidence                                                                                                                                                                                                  |
+| --- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| ✅  | Stripe HMAC-SHA256 validates correctly            | `verifyHmacSha256()` over `${timestamp_seconds}.${raw_body}` using `crypto.createHmac('sha256', secret)`, verified via `timingSafeEqual`                                                                  |
+| ✅  | Replay rejected when timestamp drift > 5 minutes  | `isWithinReplayWindow()` compares `                                                                                                                                                                       | now − ts | `against`GovernanceConfig.WEBHOOK_REPLAY_WINDOW_SECONDS`(= 300); over-window returns`REPLAY_WINDOW_EXCEEDED` |
+| ✅  | Duplicate `event_id` rejected before ledger write | `hasSeenEventId()` check in step 6 of the hardening chain returns `EVENT_ID_DUPLICATE` before the service's only success path (which still writes no ledger entry — infrastructure-only)                  |
+| ✅  | NATS published on every validation failure        | `reject()` is the single exit point for every failure reason and calls `nats.publish(NATS_TOPICS.WEBHOOK_VALIDATION_FAILURE, {...})` with `processor_id`, `event_id`, `failure_reason`, `rule_applied_id` |
+| ✅  | `npx tsc --noEmit` zero new errors                | confirmed above                                                                                                                                                                                           |
 
 ---
 
@@ -190,7 +191,7 @@ the same single `TS5101` line is produced, exit 0. No new errors introduced.
 1. **Persistent dedup store.** The in-process `Map` stores satisfy this
    directive's scope. Swap for Redis (preferred) or a Postgres
    `webhook_dedup_log` table in a later PROC directive — once GOV-FINTRAC
-   + GOV-AGCO clear and ledger-integrated webhook handling is authorized.
+   - GOV-AGCO clear and ledger-integrated webhook handling is authorized.
 2. **Processor-specific envelope decoders.** The baseline HMAC contracts
    enforced here are the floor. Full CCBill DataLink envelope parsing
    and Epoch callback field mapping belong in PROC-002 / DFSP-001.
@@ -215,4 +216,4 @@ the same single `TS5101` line is produced, exit 0. No new errors introduced.
 
 ---
 
-*End of PROC-001 report-back.*
+_End of PROC-001 report-back._

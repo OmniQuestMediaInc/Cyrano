@@ -41,11 +41,11 @@ const DEFAULT_LOCALE = 'en-US';
  */
 const DOMAIN_DEFAULT_VOICE: Record<string, { voice_id: string; locale: string }> = {
   ADULT_ENTERTAINMENT: { voice_id: 'cyrano_intimate_en', locale: 'en-US' },
-  TEACHING:            { voice_id: 'cyrano_clear_en',    locale: 'en-US' },
-  COACHING:            { voice_id: 'cyrano_warm_en',     locale: 'en-US' },
-  FIRST_RESPONDER:     { voice_id: 'cyrano_command_en',  locale: 'en-US' },
-  FACTORY_SAFETY:      { voice_id: 'cyrano_command_en',  locale: 'en-US' },
-  MEDICAL:             { voice_id: 'cyrano_calm_en',     locale: 'en-US' },
+  TEACHING: { voice_id: 'cyrano_clear_en', locale: 'en-US' },
+  COACHING: { voice_id: 'cyrano_warm_en', locale: 'en-US' },
+  FIRST_RESPONDER: { voice_id: 'cyrano_command_en', locale: 'en-US' },
+  FACTORY_SAFETY: { voice_id: 'cyrano_command_en', locale: 'en-US' },
+  MEDICAL: { voice_id: 'cyrano_calm_en', locale: 'en-US' },
 };
 
 @Injectable()
@@ -73,11 +73,10 @@ export class CyranoLayer4VoiceBridge {
       return this.skip(input, 'CONSENT_RECEIPT_MISSING');
     }
 
-    const domainDefaults =
-      DOMAIN_DEFAULT_VOICE[input.tenant.domain] ?? {
-        voice_id: DEFAULT_VOICE_ID,
-        locale: DEFAULT_LOCALE,
-      };
+    const domainDefaults = DOMAIN_DEFAULT_VOICE[input.tenant.domain] ?? {
+      voice_id: DEFAULT_VOICE_ID,
+      locale: DEFAULT_LOCALE,
+    };
     const voice_id = input.voice_id ?? domainDefaults.voice_id;
     const locale = input.locale ?? domainDefaults.locale;
     const voice_request_id = randomUUID();

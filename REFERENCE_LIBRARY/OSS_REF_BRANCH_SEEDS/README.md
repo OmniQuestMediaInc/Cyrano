@@ -19,23 +19,24 @@ the root of its corresponding orphan branch.
 
 ## Branches
 
-| Subdirectory | Target Ref |
-|---|---|
-| `refs-oss-booking-api/` | `refs/oss/booking-api` |
-| `refs-oss-socketio-chat/` | `refs/oss/socketio-chat` |
-| `refs-oss-react-chat-app/` | `refs/oss/react-chat-app` |
+| Subdirectory                    | Target Ref                     |
+| ------------------------------- | ------------------------------ |
+| `refs-oss-booking-api/`         | `refs/oss/booking-api`         |
+| `refs-oss-socketio-chat/`       | `refs/oss/socketio-chat`       |
+| `refs-oss-react-chat-app/`      | `refs/oss/react-chat-app`      |
 | `refs-oss-discussion-platform/` | `refs/oss/discussion-platform` |
-| `refs-oss-live-polling/` | `refs/oss/live-polling` |
-| `refs-oss-zoom-clone/` | `refs/oss/zoom-clone` |
-| `refs-oss-loadbalancer-nginx/` | `refs/oss/loadbalancer-nginx` |
-| `refs-oss-social-media-app/` | `refs/oss/social-media-app` |
-| `refs-oqminc-ai-resources/` | `refs/oqminc/ai-resources` |
+| `refs-oss-live-polling/`        | `refs/oss/live-polling`        |
+| `refs-oss-zoom-clone/`          | `refs/oss/zoom-clone`          |
+| `refs-oss-loadbalancer-nginx/`  | `refs/oss/loadbalancer-nginx`  |
+| `refs-oss-social-media-app/`    | `refs/oss/social-media-app`    |
+| `refs-oqminc-ai-resources/`     | `refs/oqminc/ai-resources`     |
 
 ---
 
 ## To Create the Branches
 
 Run:
+
 ```bash
 chmod +x PUSH_ALL_REFS.sh
 ./PUSH_ALL_REFS.sh
@@ -58,4 +59,4 @@ repo. They could not be pushed to `refs/oss/*` in this session.
 
 ---
 
-*END README*
+_END README_

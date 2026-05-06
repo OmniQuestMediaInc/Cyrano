@@ -275,8 +275,9 @@ describe('federated intelligence', () => {
 describe('decide() decisioner', () => {
   it('APPROVE under cooldown threshold', () => {
     expect(decide(10, 10)).toBe('APPROVE');
-    expect(decide(DECISION_THRESHOLDS.cooldownAt - 1, DECISION_THRESHOLDS.cooldownAt - 1))
-      .toBe('APPROVE');
+    expect(decide(DECISION_THRESHOLDS.cooldownAt - 1, DECISION_THRESHOLDS.cooldownAt - 1)).toBe(
+      'APPROVE',
+    );
   });
 
   it('COOLDOWN in [cooldown, hardDecline)', () => {

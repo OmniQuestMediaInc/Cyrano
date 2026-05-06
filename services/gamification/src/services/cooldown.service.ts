@@ -22,7 +22,11 @@ export interface CooldownLogRow {
 export interface CooldownRepository {
   insert(row: CooldownLogRow): Promise<void>;
   /** Returns the latest row for (user, creator, game) or null. */
-  latestFor(user_id: string, creator_id: string, game_type: GameType): Promise<CooldownLogRow | null>;
+  latestFor(
+    user_id: string,
+    creator_id: string,
+    game_type: GameType,
+  ): Promise<CooldownLogRow | null>;
 }
 
 export class CooldownViolationError extends Error {

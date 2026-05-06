@@ -1,12 +1,14 @@
 # MEMB-001 GAP-FILL REPORT-BACK
 
 ## Metadata
+
 **Directive:** MEMB-001 — Membership schema foundation
 **Branch:** claude/membership-schema-foundation-X64KM
 **Agent:** CLAUDE_CODE (DROID MODE)
 **Date:** 2026-04-17
 
 ## Context
+
 MEMB-001 deliverables §1–§5 shipped previously via PR #265 (commit
 `6aea8f9`, merged at `fc1dc38`). Post-merge audit against the
 directive text surfaced two unmet items inside deliverable §6:
@@ -17,10 +19,10 @@ directive text surfaced two unmet items inside deliverable §6:
    `Membership.user_id` is `@unique`, every iteration after the
    first was an UPDATE, yielding **one** Membership row, not six.
 2. **§6.c** required per-tier `trigger_type`:
-     - `GUEST` → `GATE_1_GUEST_GRANTED`
-     - `VIP` → `GATE_2_VIP_GRANTED`
-     - paid tiers → `GATE_3_PAID_TIER_PURCHASED`
-   Prior seed hardcoded `GATE_1_GUEST_GRANTED` for every tier.
+   - `GUEST` → `GATE_1_GUEST_GRANTED`
+   - `VIP` → `GATE_2_VIP_GRANTED`
+   - paid tiers → `GATE_3_PAID_TIER_PURCHASED`
+     Prior seed hardcoded `GATE_1_GUEST_GRANTED` for every tier.
 3. **§6.d** required a negative-space guardrail test at
    `prisma/seed.test.ts` asserting the retired values
    (`DAY_PASS`, `ANNUAL`-as-tier, `OMNIPASS_PLUS`, standalone
@@ -32,18 +34,20 @@ This PR closes those gaps. Schema (§1–§5) is unchanged; schema
 work is **not** redone.
 
 ## Files Created
+
 - `prisma/seed.test.ts` — 89 lines. Negative-space guardrail:
   parses `prisma/schema.prisma` as text, extracts the
   `enum MembershipTier { ... }` block only (so `BillingInterval.ANNUAL`
   and the canonical `VIP_DIAMOND` are not false-positives), asserts:
-    - exactly the 6 canonical values present
-    - each retired token (`DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`,
-      standalone `DIAMOND`) absent
-    - canonical `VIP_DIAMOND` present (regression guard for
-      scoping regex itself)
-  Runnable standalone: `npx ts-node prisma/seed.test.ts`.
+  - exactly the 6 canonical values present
+  - each retired token (`DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`,
+    standalone `DIAMOND`) absent
+  - canonical `VIP_DIAMOND` present (regression guard for
+    scoping regex itself)
+    Runnable standalone: `npx ts-node prisma/seed.test.ts`.
 
 ## Files Modified
+
 - `prisma/seed.ts` — rewritten. Now seeds 6 deterministic users
   (one per tier) under the test org/tenant triple, each with one
   `Membership` row and one matching `MembershipTierTransition`
@@ -51,6 +55,7 @@ work is **not** redone.
   via upsert on deterministic `userId`. Diff: +76 / −49.
 
 ## Files Confirmed Unchanged
+
 - `prisma/schema.prisma` — §1–§5 schema untouched. Schema on
   `main` already matches directive §1–§5 verbatim (MembershipTier
   enum w/ 6 canonical values, Membership, MembershipTierTransition,
@@ -64,23 +69,29 @@ work is **not** redone.
 - `docs/REQUIREMENTS_MASTER.md` — untouched (same reason).
 
 ## GovernanceConfig Constants Used
+
 None. Schema + seed + test only; no service code, no financial constants.
 
 ## NATS Topic Constants Used
+
 None. Schema + seed + test only.
 
 ## Prisma Schema Changes
+
 None in this PR. §1–§5 schema models are identical to `origin/main`
 HEAD. Confirmed via `git diff origin/main -- prisma/schema.prisma`
 (empty).
 
 ## Append-only Contracts (re-confirmed unchanged on main)
+
 - `MembershipTierTransition`: no `@updatedAt`, no UPDATE path.
 - `AgeVerification`: no `@updatedAt`, no UPDATE path.
 - Seed uses `prisma.membershipTierTransition.create(...)` only.
 
 ## Guardrail Validation
+
 Positive path (current `main` schema):
+
 ```
 $ npx ts-node prisma/seed.test.ts
 MEMB-001 negative-space guardrail PASSED — MembershipTier =
@@ -93,6 +104,7 @@ in actual vs. absent in expected. Schema restored; positive path
 passes again. Guardrail proven to fail on retirement violations.
 
 ## prisma validate
+
 ```
 $ DATABASE_URL="postgresql://user:pass@localhost:5432/db" npx prisma validate
 Prisma schema loaded from prisma/schema.prisma
@@ -100,11 +112,13 @@ The schema at prisma/schema.prisma is valid 🚀
 ```
 
 ## npx tsc --noEmit (project)
+
 ```
 $ yarn typecheck
 $ tsc --noEmit --project tsconfig.json
 Done in 2.98s.
 ```
+
 Zero errors. Baseline: zero errors pre-change. Zero NEW errors
 introduced. (Note: `prisma/` is excluded from `tsconfig.json`
 `include`; seed.ts and seed.test.ts were typechecked separately
@@ -112,6 +126,7 @@ with `--target ES2021 --module commonjs --esModuleInterop --types node`,
 zero errors.)
 
 ## All 15 Invariants
+
 1. Append-only finance — n/a (no ledger balance touched).
 2. Schema integrity — unchanged on `main`; `organization_id` +
    `tenant_id` + `rule_applied_id` present on every write in seed.
@@ -135,10 +150,12 @@ zero errors.)
     present.
 
 ## Multi-Tenant Mandate
+
 Confirmed. Every `prisma.*.create` / `upsert` call in `prisma/seed.ts`
 passes `organization_id: TEST_ORG_ID` and `tenant_id: TEST_TENANT_ID`.
 
 ## Deviations from Directive
+
 - Directive §6.b says "six Membership rows … against the test user"
   (singular). With `Membership.user_id @unique`, six rows require
   six users. Resolution: one test org+tenant triple, six deterministic
@@ -158,6 +175,7 @@ passes `organization_id: TEST_ORG_ID` and `tenant_id: TEST_TENANT_ID`.
   Auto-discovery wiring is out of scope for this directive.
 
 ## git diff --stat (vs origin/main)
+
 ```
  PROGRAM_CONTROL/REPORT_BACK/MEMB-001-GAP-FILL-REPORT-BACK.md | (this file)
  prisma/seed.ts                                               | 125 +++++++++++-------
@@ -165,6 +183,7 @@ passes `organization_id: TEST_ORG_ID` and `tenant_id: TEST_TENANT_ID`.
 ```
 
 ## Result
+
 SUCCESS — gap-fill complete. §6.b, §6.c, §6.d deliverables
 shipped on `claude/membership-schema-foundation-X64KM`. Schema
 and ledger models (§1–§5) remain as merged via PR #265; no schema

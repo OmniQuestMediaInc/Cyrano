@@ -25,14 +25,17 @@ listed below in §2(E) are SUPERSEDED — use the canonical enum in
 ## 0) Non-Negotiable Rules
 
 ### 1) NO SYNTHESIS
+
 - Never fabricate command output.
 - Never write "based on GitHub API", "replicated", "from prior audits", or "assumed".
 
 ### 2) ONE RESPONSE, ONE CODE BLOCK (when reporting back)
+
 - When a task asks for report-back: reply in ONE single fenced code block, nothing outside it.
 - Include only what is asked for.
 
 ### 3) ASK ZERO CONFIRMATION QUESTIONS
+
 - Do not ask "Should I use main?" or "Should I mark PASS/FAIL?".
 - Default behaviors:
   - Use latest main unless the task specifies otherwise.
@@ -40,12 +43,14 @@ listed below in §2(E) are SUPERSEDED — use the canonical enum in
   - If a check is NOT_APPLICABLE: state NOT_APPLICABLE and show why (command output).
 
 ### 4) CHANGE BOUNDARIES
+
 - Do not redesign architecture.
 - Do not rename domain concepts or invent new terminology.
 - Follow `docs/DOMAIN_GLOSSARY.md` as naming authority.
 - If a new term is required, HARD_STOP with exactly one question.
 
 ### 5) SECURITY
+
 - Never log or paste secrets, tokens, credentials, or PII.
 - Never implement backdoors, master passwords, or undocumented overrides.
 - Money/settlement behavior must not be modified unless explicitly authorized.
@@ -62,18 +67,22 @@ If you are not in a workspace checkout, HARD_STOP.
 ## 2) Execution Protocol
 
 ### A) Prep
+
 - Verify workspace checkout and branch state before starting work.
 
 ### B) Evidence First
+
 - Run required commands.
 - Capture outputs verbatim.
 
 ### C) Minimal Changes
+
 - Only change what the task asks for or instructs.
 - Keep diffs small and reviewable.
 - Follow commit discipline per OQMI CODING DOCTRINE v2.0 (Section 4).
 
 ### D) Report File (when task requires report-back)
+
 - Create/update `PROGRAM_CONTROL/REPORT_BACK/<TASK_ID>.md`
 - Report must include:
   - Branch + HEAD
@@ -82,6 +91,7 @@ If you are not in a workspace checkout, HARD_STOP.
   - Result: SUCCESS or HARD_STOP with exact error logs
 
 ### E) Commit
+
 - Commit messages must follow OQMI CODING DOCTRINE v2.0 prefix convention:
   - `FIZ:` Financial Integrity Zone
   - `NATS:` Messaging fabric
@@ -106,6 +116,7 @@ If you are not in a workspace checkout, HARD_STOP.
 ## 3) Verbatim Snapshot Rule (SPECIAL)
 
 For any "snapshot" work order or task:
+
 - Fill templates by replacing placeholders with EXACT command outputs.
 - Do not omit outputs for brevity.
 - Do not summarize.
@@ -132,6 +143,7 @@ For any "snapshot" work order or task:
 ## 6) Mandatory Report-Back Formatting (Copy Block Always)
 
 When returning results to Program Control:
+
 - Return ONE fenced code block.
 - Include:
   - Task / WorkOrder ID (if applicable)
@@ -196,47 +208,56 @@ When operating in autonomous / background / Workspace mode, Copilot
 follows this protocol without waiting for human prompting per task.
 
 ### Step 1 — Sync
+
 Run: `git fetch origin && git reset --hard origin/main`
 Never act on cached or stale repo state.
 
 ### Step 2 — Find next task
+
 Check `PROGRAM_CONTROL/DIRECTIVES/QUEUE/` for directive files where:
-  - `**Agent:** COPILOT` is in the header
-  - No corresponding file exists in `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/`
-  - No open PR exists referencing this directive ID
-Pick the oldest file by filename sort (alphabetical).
-If no eligible directive exists: stop. Do not invent work.
+
+- `**Agent:** COPILOT` is in the header
+- No corresponding file exists in `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/`
+- No open PR exists referencing this directive ID
+  Pick the oldest file by filename sort (alphabetical).
+  If no eligible directive exists: stop. Do not invent work.
 
 ### Step 3 — Conflict check
+
 Read the `**Touches:**` field of the selected directive.
 Check all other directives in QUEUE and IN_PROGRESS for overlapping
 file paths.
 If overlap found:
-  - Do NOT proceed with the conflicting directive.
-  - Open a GitHub Issue titled: `CONFLICT: [ID-A] × [ID-B] — [filepath]`
-  - Label: `needs-conflict-review`
-  - Body: list the conflicting directives and the overlapping paths.
-  - Stop. Await human resolution.
+
+- Do NOT proceed with the conflicting directive.
+- Open a GitHub Issue titled: `CONFLICT: [ID-A] × [ID-B] — [filepath]`
+- Label: `needs-conflict-review`
+- Body: list the conflicting directives and the overlapping paths.
+- Stop. Await human resolution.
 
 ### Step 4 — Move to IN_PROGRESS
+
 Move the directive file:
-  FROM: `PROGRAM_CONTROL/DIRECTIVES/QUEUE/[ID].md`
-  TO:   `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/[ID].md`
+FROM: `PROGRAM_CONTROL/DIRECTIVES/QUEUE/[ID].md`
+TO: `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/[ID].md`
 Commit: `CHORE: Move [ID] QUEUE → IN_PROGRESS`
 Push to a new branch: `copilot/[id-lowercase]`
 
 ### Step 5 — Execute
+
 Read the directive file completely before writing any code.
 Execute exactly as written. No synthesis. No creative deviation.
 DROID MODE applies.
 
 ### Step 6 — File report-back
+
 Create: `PROGRAM_CONTROL/REPORT_BACK/[ID]-REPORT-BACK.md`
 Include: branch, HEAD commit hash, files changed (git diff --stat),
 commands run with outputs, all invariants confirmed or flagged,
 npx tsc --noEmit result, result: SUCCESS or HARD_STOP.
 
 ### Step 7 — Update REQUIREMENTS_MASTER
+
 Open `docs/REQUIREMENTS_MASTER.md`.
 Find the row matching this directive's ID.
 Update the `Status` field from `QUEUED` → `DONE`.
@@ -244,14 +265,16 @@ If the directive was a RETIRED item removal: update the relevant
 requirement row Status to `RETIRED — removed`.
 
 ### Step 8 — Move to DONE
+
 Move the directive file:
-  FROM: `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/[ID].md`
-  TO:   `PROGRAM_CONTROL/DIRECTIVES/DONE/[ID].md`
+FROM: `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/[ID].md`
+TO: `PROGRAM_CONTROL/DIRECTIVES/DONE/[ID].md`
 Commit all changes (report-back + REQUIREMENTS_MASTER update +
 directive move) in one commit:
-  `CHORE: [ID] complete — report-back filed, directive moved to DONE`
+`CHORE: [ID] complete — report-back filed, directive moved to DONE`
 
 ### Step 9 — Open PR
+
 Open PR targeting `main`.
 Title: `[PREFIX]: [ID] — [short description]`
 Body: paste the report-back content.
@@ -259,22 +282,25 @@ Labels: `copilot-task`, `ready-for-review`
 FIZ-scoped directives: add label `fiz-review-required`
 
 ### HARD_STOP conditions
+
 Stop immediately and open a blocking issue if:
-  - Directive file is missing required fields (Agent/Parallel-safe/Touches)
-  - A GovernanceConfig constant referenced in the directive does not exist
-    and the directive does not explicitly say to add it
-  - A Prisma model referenced does not exist in schema.prisma
-  - npx tsc --noEmit produces NEW errors (pre-existing baseline errors
-    are acceptable — verify with git stash baseline)
-  - Any FIZ-scoped change lacks REASON/IMPACT/CORRELATION_ID in commit
+
+- Directive file is missing required fields (Agent/Parallel-safe/Touches)
+- A GovernanceConfig constant referenced in the directive does not exist
+  and the directive does not explicitly say to add it
+- A Prisma model referenced does not exist in schema.prisma
+- npx tsc --noEmit produces NEW errors (pre-existing baseline errors
+  are acceptable — verify with git stash baseline)
+- Any FIZ-scoped change lacks REASON/IMPACT/CORRELATION_ID in commit
 
 ### What Copilot must NEVER do autonomously
-  - Modify another agent's completed work without explicit human instruction
-  - Clear a GOV gate (clearance artifacts are CEO-signed only)
-  - Merge its own PR (auto-merge handles this via CI)
-  - Create directives (directive authoring is Claude Chat's role)
-  - Make CEO-level decisions when a CLARIFY tag is present in a directive
+
+- Modify another agent's completed work without explicit human instruction
+- Clear a GOV gate (clearance artifacts are CEO-signed only)
+- Merge its own PR (auto-merge handles this via CI)
+- Create directives (directive authoring is Claude Chat's role)
+- Make CEO-level decisions when a CLARIFY tag is present in a directive
 
 ---
 
-*END PROGRAM CONTROL AGENT INSTRUCTIONS*
+_END PROGRAM CONTROL AGENT INSTRUCTIONS_

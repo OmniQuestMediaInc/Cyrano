@@ -1,4 +1,5 @@
 # PROGRAM CONTROL — REPORT BACK
+
 ## WO: WO-036-KYC-VAULT-PUBLISH-GATE
 
 **Branch:** copilot/wo-036-implement-identity-verification  
@@ -8,19 +9,20 @@
 
 ## Files Changed
 
-| File | Change |
-|---|---|
-| `infra/postgres/init-ledger.sql` | Added `identity_verification` table, `audit_events` table, append-only triggers, indexes |
+| File                                             | Change                                                                                        |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `infra/postgres/init-ledger.sql`                 | Added `identity_verification` table, `audit_events` table, append-only triggers, indexes      |
 | `services/core-api/src/safety/safety.service.ts` | Created: SafetyService (validatePublishEligibility, logVaultAccess, extendVerificationExpiry) |
-| `services/core-api/src/safety/safety.module.ts` | Created: NestJS SafetyModule |
-| `services/core-api/src/app.module.ts` | Imported SafetyModule |
-| `.github/required-files.txt` | Added safety service paths |
+| `services/core-api/src/safety/safety.module.ts`  | Created: NestJS SafetyModule                                                                  |
+| `services/core-api/src/app.module.ts`            | Imported SafetyModule                                                                         |
+| `.github/required-files.txt`                     | Added safety service paths                                                                    |
 
 ---
 
 ## Task Completion
 
 ### TASK 1: Identity Verification Schema ✅
+
 - Created `identity_verification` table in `infra/postgres/init-ledger.sql`
   - `verification_id` UUID PK
   - `performer_id` UUID
@@ -34,6 +36,7 @@
 - `updated_at` trigger on all updates
 
 ### TASK 2: Deterministic Publish Gate ✅
+
 - `SafetyService.validatePublishEligibility(performerId, recordedAtTimestamp)`
   - Calculates `AgeAtRecording = recordedAtTimestamp - performer.dob`
   - Returns `ELIGIBILITY_DENIED` if `AgeAtRecording < 18 years`
@@ -43,11 +46,13 @@
   - Idempotent: every call appends to `audit_events` chain via `finally` block
 
 ### TASK 3: Vault Access Logging ✅
+
 - `SafetyService.logVaultAccess({ actorId, performerId, purposeCode, deviceFingerprint })`
   - Emits `VAULT_ACCESS` audit event with `purpose_code`, `actor_id`, `device_fingerprint`
   - No document bytes logged
 
 ### TASK 4: Step-Up Authentication for Expiry Overrides ✅
+
 - `SafetyService.extendVerificationExpiry({ verificationId, newExpiryDate, actorId, reasonCode, stepUpToken })`
   - Validates `stepUpToken` is present before any mutation (throws `STEP_UP_REQUIRED`)
   - Validates `reasonCode` is non-empty (throws `REASON_CODE_REQUIRED`)
@@ -55,6 +60,7 @@
   - Appends `EXPIRY_OVERRIDE` audit event
 
 ### Audit Chain ✅
+
 - Created `audit_events` table in `infra/postgres/init-ledger.sql`
   - `event_id` UUID PK
   - `event_type` CHECK ('PUBLISH_ELIGIBILITY_CHECK','VAULT_ACCESS','EXPIRY_OVERRIDE')

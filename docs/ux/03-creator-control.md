@@ -66,48 +66,48 @@ surfaces.
 
 ## Field bindings
 
-| Panel | Field | Notes |
-|---|---|---|
-| display name | `CreatorCommandCenterView.display_name` | header |
-| OBS readiness chip | `CreatorCommandCenterView.obs_ready` | green/red |
-| chat aggregator chip | `CreatorCommandCenterView.chat_aggregator_ready` | green/red |
-| FFS meter score | `FfsMeter.score` | 0-100 |
-| FFS meter tier | `FfsMeter.tier` | `COLD|WARM|HOT|INFERNO` — drives gauge color |
-| FFS components | `FfsMeter.components` | three sub-bars |
-| FFS tier bounds | `FfsMeter.tier_min`, `tier_max` | gauge band edges |
-| Payout rate value | `PayoutRateIndicator.current_rate_per_token_usd` | live |
-| Payout floor / ceiling | `PayoutRateIndicator.redbook_floor_per_token_usd` (0.075), `redbook_ceiling_per_token_usd` (0.090) | static reference |
-| Payout scaling pct | `PayoutRateIndicator.scaling_pct_applied` | 0 / 5 / 10 |
-| INFERNO badge | conditional on `scaling_pct_applied === 10` | visual cue |
-| Active session id | `SessionMonitoringPanel.active_session_id` | header micro |
-| Latest heat frame | `SessionMonitoringPanel.latest_heat` | small re-render of FFS meter |
-| Latest nudge | `SessionMonitoringPanel.latest_nudge` | direction arrow + magnitude + copy |
-| Cyrano persona switcher | `CyranoWhisperPanel.personas_available[]` | three-section dropdown (SM-06) |
-| Cyrano active persona | `CyranoWhisperPanel.active_persona_id` | bold/highlighted in switcher |
-| Cyrano suggestions | `CyranoWhisperPanel.suggestions[]` | live; sorted by weight desc |
-| Suggestion category chip | `CyranoPanelSuggestion.category` | one of 8 categories |
-| Suggestion reason_codes | `CyranoPanelSuggestion.reason_codes[]` | small chips |
-| Cyrano latency SLO | `CyranoWhisperPanel.latency_sla_ms` | reference |
-| Cyrano latency observed | `CyranoWhisperPanel.latency_last_observed_ms` | red if > sla |
-| Broadcast windows | `BroadcastTimingDashboard.windows[]` | sorted by suggested_slot_utc |
-| `rule_applied_id` footer | `CreatorCommandCenterView.rule_applied_id` | audit trace |
-| reconnect pill | NATS health | reconnect-with-backoff visual |
+| Panel                    | Field                                                                                              | Notes                              |
+| ------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------- | ---- | --- | ----------------------------- |
+| display name             | `CreatorCommandCenterView.display_name`                                                            | header                             |
+| OBS readiness chip       | `CreatorCommandCenterView.obs_ready`                                                               | green/red                          |
+| chat aggregator chip     | `CreatorCommandCenterView.chat_aggregator_ready`                                                   | green/red                          |
+| FFS meter score          | `FfsMeter.score`                                                                                   | 0-100                              |
+| FFS meter tier           | `FfsMeter.tier`                                                                                    | `COLD                              | WARM | HOT | INFERNO` — drives gauge color |
+| FFS components           | `FfsMeter.components`                                                                              | three sub-bars                     |
+| FFS tier bounds          | `FfsMeter.tier_min`, `tier_max`                                                                    | gauge band edges                   |
+| Payout rate value        | `PayoutRateIndicator.current_rate_per_token_usd`                                                   | live                               |
+| Payout floor / ceiling   | `PayoutRateIndicator.redbook_floor_per_token_usd` (0.075), `redbook_ceiling_per_token_usd` (0.090) | static reference                   |
+| Payout scaling pct       | `PayoutRateIndicator.scaling_pct_applied`                                                          | 0 / 5 / 10                         |
+| INFERNO badge            | conditional on `scaling_pct_applied === 10`                                                        | visual cue                         |
+| Active session id        | `SessionMonitoringPanel.active_session_id`                                                         | header micro                       |
+| Latest heat frame        | `SessionMonitoringPanel.latest_heat`                                                               | small re-render of FFS meter       |
+| Latest nudge             | `SessionMonitoringPanel.latest_nudge`                                                              | direction arrow + magnitude + copy |
+| Cyrano persona switcher  | `CyranoWhisperPanel.personas_available[]`                                                          | three-section dropdown (SM-06)     |
+| Cyrano active persona    | `CyranoWhisperPanel.active_persona_id`                                                             | bold/highlighted in switcher       |
+| Cyrano suggestions       | `CyranoWhisperPanel.suggestions[]`                                                                 | live; sorted by weight desc        |
+| Suggestion category chip | `CyranoPanelSuggestion.category`                                                                   | one of 8 categories                |
+| Suggestion reason_codes  | `CyranoPanelSuggestion.reason_codes[]`                                                             | small chips                        |
+| Cyrano latency SLO       | `CyranoWhisperPanel.latency_sla_ms`                                                                | reference                          |
+| Cyrano latency observed  | `CyranoWhisperPanel.latency_last_observed_ms`                                                      | red if > sla                       |
+| Broadcast windows        | `BroadcastTimingDashboard.windows[]`                                                               | sorted by suggested_slot_utc       |
+| `rule_applied_id` footer | `CreatorCommandCenterView.rule_applied_id`                                                         | audit trace                        |
+| reconnect pill           | NATS health                                                                                        | reconnect-with-backoff visual      |
 
 ---
 
 ## States
 
-| State | Trigger | Visual |
-|---|---|---|
-| no active session | `active_session_id === null` | "Start a session" empty state on session monitoring + Cyrano panels; FFS meter dim |
-| live | normal | layout above |
-| OBS not ready | `obs_ready === false` | yellow chip + creator-readiness-banner with `OBS_NOT_READY` |
-| chat aggregator not ready | `chat_aggregator_ready === false` | yellow chip + banner with `CHAT_AGGREGATOR_NOT_READY` |
-| FFS gauge idle | `FfsMeter === null` | placeholder gauge |
-| Cyrano latency exceeded | `latency_last_observed_ms > latency_sla_ms` | red latency badge |
-| NATS reconnecting | subscription drop | reconnect pill + live panels dimmed |
-| Welfare distress detected | NATS `GATEGUARD_WELFARE_DISTRESS_DETECTED` for own session | overlay (welfare-intervention-overlay) |
-| Bill 149 prefix required | every CREATOR_AUTO output | compliance-prefix-banner above outgoing message |
+| State                     | Trigger                                                    | Visual                                                                             |
+| ------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| no active session         | `active_session_id === null`                               | "Start a session" empty state on session monitoring + Cyrano panels; FFS meter dim |
+| live                      | normal                                                     | layout above                                                                       |
+| OBS not ready             | `obs_ready === false`                                      | yellow chip + creator-readiness-banner with `OBS_NOT_READY`                        |
+| chat aggregator not ready | `chat_aggregator_ready === false`                          | yellow chip + banner with `CHAT_AGGREGATOR_NOT_READY`                              |
+| FFS gauge idle            | `FfsMeter === null`                                        | placeholder gauge                                                                  |
+| Cyrano latency exceeded   | `latency_last_observed_ms > latency_sla_ms`                | red latency badge                                                                  |
+| NATS reconnecting         | subscription drop                                          | reconnect pill + live panels dimmed                                                |
+| Welfare distress detected | NATS `GATEGUARD_WELFARE_DISTRESS_DETECTED` for own session | overlay (welfare-intervention-overlay)                                             |
+| Bill 149 prefix required  | every CREATOR_AUTO output                                  | compliance-prefix-banner above outgoing message                                    |
 
 ---
 
@@ -115,16 +115,16 @@ surfaces.
 
 This is the **most NATS-bound** surface. Every live panel subscribes:
 
-| Sub-surface | NATS topics |
-|---|---|
-| FFS meter | `FFS_SCORE_UPDATE`, `FFS_TIER_CHANGED`, `FFS_PEAK` |
-| Payout rate indicator | `HUB_PAYOUT_SCALING_APPLIED` |
-| Session monitoring (latest_heat) | `FFS_SCORE_UPDATE` filtered by session_id |
-| Session monitoring (latest_nudge) | `CREATOR_CONTROL_PRICE_NUDGE` filtered by creator_id |
-| Cyrano whisper panel | `CYRANO_SUGGESTION_EMITTED`, `CYRANO_SUGGESTION_DROPPED`, `CYRANO_FFS_FRAME_CONSUMED` |
-| Cyrano persona switcher | `CYRANO_MEMORY_UPDATED` (when persona swap is acknowledged) |
-| Broadcast timing | `CREATOR_CONTROL_BROADCAST_SUGGESTION` |
-| Welfare distress overlay | `GATEGUARD_WELFARE_DISTRESS_DETECTED` |
+| Sub-surface                       | NATS topics                                                                           |
+| --------------------------------- | ------------------------------------------------------------------------------------- |
+| FFS meter                         | `FFS_SCORE_UPDATE`, `FFS_TIER_CHANGED`, `FFS_PEAK`                                    |
+| Payout rate indicator             | `HUB_PAYOUT_SCALING_APPLIED`                                                          |
+| Session monitoring (latest_heat)  | `FFS_SCORE_UPDATE` filtered by session_id                                             |
+| Session monitoring (latest_nudge) | `CREATOR_CONTROL_PRICE_NUDGE` filtered by creator_id                                  |
+| Cyrano whisper panel              | `CYRANO_SUGGESTION_EMITTED`, `CYRANO_SUGGESTION_DROPPED`, `CYRANO_FFS_FRAME_CONSUMED` |
+| Cyrano persona switcher           | `CYRANO_MEMORY_UPDATED` (when persona swap is acknowledged)                           |
+| Broadcast timing                  | `CREATOR_CONTROL_BROADCAST_SUGGESTION`                                                |
+| Welfare distress overlay          | `GATEGUARD_WELFARE_DISTRESS_DETECTED`                                                 |
 
 REST polling is **forbidden** for chat/haptic/FFS — surface must be
 push-driven. Subscription drop → reconnect pill + last-known frame
@@ -134,12 +134,12 @@ retained.
 
 ## CTAs and step-up
 
-| CTA | Triggers step-up? | Notes |
-|---|---|---|
-| Persona switch | no | emits `CYRANO_MEMORY_UPDATED` on confirm |
-| Apply broadcast suggestion | no | informational; creator schedules manually |
-| Configure rate card | yes — `rate_card:configure` → `PAYOUT_CHANGE` | navigates to `/creator/gamification` (or rate card config) |
-| Open audit overlay (operators only) | no — read-only |  |
+| CTA                                 | Triggers step-up?                             | Notes                                                      |
+| ----------------------------------- | --------------------------------------------- | ---------------------------------------------------------- |
+| Persona switch                      | no                                            | emits `CYRANO_MEMORY_UPDATED` on confirm                   |
+| Apply broadcast suggestion          | no                                            | informational; creator schedules manually                  |
+| Configure rate card                 | yes — `rate_card:configure` → `PAYOUT_CHANGE` | navigates to `/creator/gamification` (or rate card config) |
+| Open audit overlay (operators only) | no — read-only                                |                                                            |
 
 ---
 

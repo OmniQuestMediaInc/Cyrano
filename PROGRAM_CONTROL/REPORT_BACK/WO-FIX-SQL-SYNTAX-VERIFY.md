@@ -29,11 +29,11 @@ $ grep -c '\$\${' infra/postgres/init-ledger.sql
 
 All three functions use correct `AS $$ ... $$ LANGUAGE plpgsql` syntax:
 
-| Function | Status |
-|---|---|
+| Function                          | Status             |
+| --------------------------------- | ------------------ |
 | `ledger_entries_block_mutation()` | ✅ Correct `AS $$` |
-| `transactions_block_mutation()` | ✅ Correct `AS $$` |
-| `set_transactions_updated_at()` | ✅ Correct `AS $$` |
+| `transactions_block_mutation()`   | ✅ Correct `AS $$` |
+| `set_transactions_updated_at()`   | ✅ Correct `AS $$` |
 
 ---
 

@@ -2,11 +2,7 @@
 // Covers 48h warning surfacing, extension / recovery markers, Token Bridge
 // 20% bonus, 3/5ths Exit 60% refund + lock, and 70/30 expiry redistribution.
 
-import {
-  InMemoryLedgerRepository,
-  LedgerService,
-  RecoveryService,
-} from '../../services/ledger';
+import { InMemoryLedgerRepository, LedgerService, RecoveryService } from '../../services/ledger';
 import { RECOVERY_ENGINE } from '../../services/core-api/src/config/governance.config';
 
 async function setup(now: Date) {
@@ -67,7 +63,7 @@ describe('RecoveryService — extension ($49) and recovery ($79)', () => {
     );
 
     const active = await repo.listActiveExpirations(wallet.id);
-    expect(active).toHaveLength(0);            // extended status is not in "active"
+    expect(active).toHaveLength(0); // extended status is not in "active"
   });
 
   it('rejects an extension attempt on an already-lapsed expiration', async () => {
@@ -76,7 +72,7 @@ describe('RecoveryService — extension ($49) and recovery ($79)', () => {
     const exp = await repo.createExpiration({
       walletId: wallet.id,
       tokens: 100,
-      expiresAt: new Date(now.getTime() - 3_600_000),      // already expired
+      expiresAt: new Date(now.getTime() - 3_600_000), // already expired
     });
     await expect(
       recovery.extendExpiration({ walletId: wallet.id, expirationId: exp.id }),
@@ -108,7 +104,7 @@ describe('RecoveryService — Token Bridge', () => {
     await recovery.tokenBridge({ walletId: wallet.id, lapsedTokens: 500, bridgeId: 'b-2' });
     await recovery.tokenBridge({ walletId: wallet.id, lapsedTokens: 500, bridgeId: 'b-2' });
     const updated = await repo.findWalletById(wallet.id);
-    expect(updated?.bonusTokens).toBe(100);    // 20% of 500, credited exactly once
+    expect(updated?.bonusTokens).toBe(100); // 20% of 500, credited exactly once
   });
 });
 
@@ -137,7 +133,7 @@ describe('RecoveryService — 3/5ths Exit', () => {
     );
 
     const after = await repo.findWalletById(wallet.id);
-    expect(after?.purchasedTokens).toBe(400);   // 1000 - 600 refunded
+    expect(after?.purchasedTokens).toBe(400); // 1000 - 600 refunded
   });
 });
 

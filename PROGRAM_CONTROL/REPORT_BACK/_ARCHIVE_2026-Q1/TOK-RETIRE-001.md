@@ -8,6 +8,7 @@
 ---
 
 ## Branch and HEAD
+
 - Branch: `claude/tok-retire-001-mx42q`
 - HEAD: recorded by commit step
 
@@ -16,6 +17,7 @@
 ## Files Modified
 
 ### 1. `services/core-api/src/finance/ledger.service.ts`
+
 - `TokenType` enum collapsed from `{ REGULAR, SHOW_THEATER, BIJOU }` to `{ CZT = 'CZT' }` with doc block referencing Tech Debt Delta TOK-001..TOK-004.
 - Added imports: `import Decimal from 'decimal.js';` and `import { GovernanceConfig } from '../governance/governance.config';`.
 - `recordEntry` data interface extended with optional fields: `heatScore?: number;` and `diamondFloorActive?: boolean;`. Existing callers remain compatible.
@@ -23,6 +25,7 @@
 - Added private `resolvePayoutRate(heatScore, diamondFloorActive): Decimal` that reads `RATE_COLD`/`RATE_WARM`/`RATE_HOT`/`RATE_INFERNO`/`RATE_DIAMOND_FLOOR` from `GovernanceConfig`, compares against `HEAT_BAND_*_MAX` boundaries, and applies the diamond floor guarantee (floors at `RATE_DIAMOND_FLOOR` only when rate is lower; higher rates preserved).
 
 ### 2. `services/core-api/src/config/governance.config.ts`
+
 - Removed `public readonly PAYOUT_RATE_SHOWTHEATER = 0.08;`
 - Removed `public readonly PAYOUT_RATE_REGULAR = 0.065;`
 - Removed the entire `SHOWTOKEN_EXCHANGE` const block (exchange percentages, settlement days, floor multiplier).
@@ -30,37 +33,45 @@
 - `BIJOU_PRICING`: `ADMISSION_ST_TOKENS_BASE` → `ADMISSION_CZT_TOKENS_BASE`; `PAYOUT_RATE_PER_ST` → `PAYOUT_RATE_PER_CZT`; `ST_PRICE_USD` → `CZT_PRICE_USD`. All other `BIJOU_PRICING` fields unchanged.
 
 ### 3. `services/bijou/src/pass-pricing.service.ts`
+
 - Updated two lines using renamed fields: `base` computation and `czt_price_usd` lookup. Local variable renamed from `st_price_usd` to `czt_price_usd` to match. Computation logic unchanged.
 
 ### 4. `services/showzone/src/room-session.service.ts`
+
 - Single reference: `SHOWZONE_PRICING.PAYOUT_RATE_PER_ST` → `SHOWZONE_PRICING.PAYOUT_RATE_PER_CZT`.
 - **DEVIATION:** This file is not listed in the directive's "Files to Modify" but also not in "Files to Confirm Unchanged". Including it was necessary to satisfy invariant #6 (`npx tsc --noEmit` zero new errors) after the `governance.config.ts` rename. The change is a single-line identifier swap with no logic change.
 
 ### 5. `docs/REQUIREMENTS_MASTER.md`
+
 - TOK-001, TOK-002, TOK-003, TOK-004 status `NEEDS_DIRECTIVE` → `DONE`; directive column set to `TOK-RETIRE-001`.
 - PAY-013 status `NEEDS_DIRECTIVE` → `DONE`; directive column set to `TOK-RETIRE-001`.
 
 ## Files Created
+
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/TOK-RETIRE-001.md`
 - `PROGRAM_CONTROL/REPORT_BACK/TOK-RETIRE-001.md`
 
 ## Files Confirmed Unchanged
+
 - `prisma/schema.prisma` — unchanged (TOK-AUDIT-001 already added `token_origin`).
 - `services/nats/topics.registry.ts` — not present; no NATS changes.
 - `services/core-api/src/governance/governance.config.ts` (DFSP/PAY constants) — unchanged.
 
 ## Files Out-of-scope (identified, not modified)
+
 - `tests/integration/ledger-service.spec.ts` — references `TokenType.REGULAR` and `TokenType.BIJOU` (no longer exist). Tests are excluded from `tsconfig.json` (`"exclude": ["**/*.spec.ts"]`), so they do NOT cause new tsc errors. Tests will require a follow-up directive to re-point to `TokenType.CZT`. Out of directive scope.
 - `services/bijou/src/pass-pricing.service.js` and `services/showzone/src/room-session.service.js` — compiled artifacts in `services/**/*.js`. Not part of `tsconfig.json` `include` (`services/**/*.ts` only). Not modified; they will be regenerated on next build.
 
 ---
 
 ## NATS Topics
+
 No new NATS topics added. No string literals introduced for topics.
 
 ## GovernanceConfig Constants Used (confirmed from source)
 
 From `services/core-api/src/governance/governance.config.ts` (DFSP constants — unchanged in this directive, added by PAY-RATES-001):
+
 - `GovernanceConfig.RATE_COLD` = `new Decimal('0.075')`
 - `GovernanceConfig.RATE_WARM` = `new Decimal('0.080')`
 - `GovernanceConfig.RATE_HOT` = `new Decimal('0.085')`
@@ -97,11 +108,13 @@ From `services/core-api/src/governance/governance.config.ts` (DFSP constants —
 ## npx tsc --noEmit
 
 Baseline (main @ e53bef3):
+
 ```
 tsconfig.json(12,5): error TS5101: Option 'baseUrl' is deprecated ...
 ```
 
 Post-change:
+
 ```
 tsconfig.json(12,5): error TS5101: Option 'baseUrl' is deprecated ...
 ```

@@ -11,7 +11,7 @@
 //           This service only owns training state — no balance mutations here.
 
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../core-api/src/prisma.module';
+import { PrismaService } from '../../core-api/src/prisma.service';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import {
   CreateTwinRequest,

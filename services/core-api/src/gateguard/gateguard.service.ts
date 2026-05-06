@@ -113,11 +113,14 @@ export class GateGuardService {
       where: { transaction_id: input.transactionId },
     });
     if (existing) {
-      this.logger.warn('GateGuardService: transaction already evaluated — returning stored decision', {
-        transaction_id: input.transactionId,
-        correlation_id: input.correlationId,
-        rule_applied_id: RULE_ID,
-      });
+      this.logger.warn(
+        'GateGuardService: transaction already evaluated — returning stored decision',
+        {
+          transaction_id: input.transactionId,
+          correlation_id: input.correlationId,
+          rule_applied_id: RULE_ID,
+        },
+      );
       return this.hydrateStored(existing, input);
     }
 
@@ -404,10 +407,7 @@ export class GateGuardService {
     }
   }
 
-  private hydrateStored(
-    row: Record<string, unknown>,
-    input: GateGuardInput,
-  ): GateGuardResult {
+  private hydrateStored(row: Record<string, unknown>, input: GateGuardInput): GateGuardResult {
     const riskFactors = row.risk_factors as unknown as RiskFactorEnvelope;
     return {
       transactionId: row.transaction_id as string,

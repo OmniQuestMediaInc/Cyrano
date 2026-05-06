@@ -81,8 +81,7 @@ export class AdminRecoveryController {
     return {
       ...record,
       remaining_balance_tokens: record.remaining_balance_tokens.toString(),
-      original_purchase_price_usd_cents:
-        record.original_purchase_price_usd_cents.toString(),
+      original_purchase_price_usd_cents: record.original_purchase_price_usd_cents.toString(),
     };
   }
 
@@ -104,10 +103,7 @@ export class AdminRecoveryController {
     const offer = this.engine.tokenBridgeOffer(caseId, body.agent_id);
     if (body.auto_accept) {
       if (!body.waiver_signature_hash) {
-        throw new HttpException(
-          'WAIVER_SIGNATURE_REQUIRED',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new HttpException('WAIVER_SIGNATURE_REQUIRED', HttpStatus.BAD_REQUEST);
       }
       const accepted = this.engine.acceptTokenBridge(
         caseId,

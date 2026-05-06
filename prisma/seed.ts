@@ -122,49 +122,56 @@ const HOUSE_MODEL_FIXTURES: ReadonlyArray<{
   {
     correlationId: 'HOUSE-MODEL-001-RAVEN-STEELE',
     displayName: 'Raven Steele',
-    personaPrompt: 'Tattooed punk domme — bold, commanding, and deeply charismatic. Portal: INK_AND_STEEL.',
+    personaPrompt:
+      'Tattooed punk domme — bold, commanding, and deeply charismatic. Portal: INK_AND_STEEL.',
     triggerWord: 'raven_steele',
     portal: 'INK_AND_STEEL',
   },
   {
     correlationId: 'HOUSE-MODEL-002-LUNA-MEI',
     displayName: 'Luna Mei',
-    personaPrompt: 'Elegant kawaii companion who shifts from playful to seductive. Portal: LOTUS_BLOOM.',
+    personaPrompt:
+      'Elegant kawaii companion who shifts from playful to seductive. Portal: LOTUS_BLOOM.',
     triggerWord: 'luna_mei',
     portal: 'LOTUS_BLOOM',
   },
   {
     correlationId: 'HOUSE-MODEL-003-JADE-CROSS',
     displayName: 'Jade Cross',
-    personaPrompt: 'Steel-edged alt model with a razor wit and a soft heart underneath. Portal: INK_AND_STEEL.',
+    personaPrompt:
+      'Steel-edged alt model with a razor wit and a soft heart underneath. Portal: INK_AND_STEEL.',
     triggerWord: 'jade_cross',
     portal: 'INK_AND_STEEL',
   },
   {
     correlationId: 'HOUSE-MODEL-004-SAKURA-ROSE',
     displayName: 'Sakura Rose',
-    personaPrompt: 'Delicate yet fierce — blends traditional elegance with modern passion. Portal: LOTUS_BLOOM.',
+    personaPrompt:
+      'Delicate yet fierce — blends traditional elegance with modern passion. Portal: LOTUS_BLOOM.',
     triggerWord: 'sakura_rose',
     portal: 'LOTUS_BLOOM',
   },
   {
     correlationId: 'HOUSE-MODEL-005-VERONICA-CHASE',
     displayName: 'Veronica Chase',
-    personaPrompt: 'Polished suburban seductress with a taste for chaos. Portal: DESPERATE_HOUSEWIVES.',
+    personaPrompt:
+      'Polished suburban seductress with a taste for chaos. Portal: DESPERATE_HOUSEWIVES.',
     triggerWord: 'veronica_chase',
     portal: 'DESPERATE_HOUSEWIVES',
   },
   {
     correlationId: 'HOUSE-MODEL-006-DIANA-VANCE',
     displayName: 'Diana Vance',
-    personaPrompt: 'Sophisticated neighbor with secrets and an irresistible smile. Portal: DESPERATE_HOUSEWIVES.',
+    personaPrompt:
+      'Sophisticated neighbor with secrets and an irresistible smile. Portal: DESPERATE_HOUSEWIVES.',
     triggerWord: 'diana_vance',
     portal: 'DESPERATE_HOUSEWIVES',
   },
   {
     correlationId: 'HOUSE-MODEL-007-NOVA-SKY',
     displayName: 'Nova Sky',
-    personaPrompt: 'Bright-eyed and fearless — perpetually playful with a bold edge. Portal: BARELY_LEGAL.',
+    personaPrompt:
+      'Bright-eyed and fearless — perpetually playful with a bold edge. Portal: BARELY_LEGAL.',
     triggerWord: 'nova_sky',
     portal: 'BARELY_LEGAL',
   },
@@ -178,14 +185,16 @@ const HOUSE_MODEL_FIXTURES: ReadonlyArray<{
   {
     correlationId: 'HOUSE-MODEL-009-SELENE-VOSS',
     displayName: 'Selene Voss',
-    personaPrompt: 'Dark and magnetic — draws you in with a gaze that promises everything. Portal: DARK_DESIRES.',
+    personaPrompt:
+      'Dark and magnetic — draws you in with a gaze that promises everything. Portal: DARK_DESIRES.',
     triggerWord: 'selene_voss',
     portal: 'DARK_DESIRES',
   },
   {
     correlationId: 'HOUSE-MODEL-010-MORGAN-BLAKE',
     displayName: 'Morgan Blake',
-    personaPrompt: 'Intense and mysterious — the kind of person you cannot stop thinking about. Portal: DARK_DESIRES.',
+    personaPrompt:
+      'Intense and mysterious — the kind of person you cannot stop thinking about. Portal: DARK_DESIRES.',
     triggerWord: 'morgan_blake',
     portal: 'DARK_DESIRES',
   },

@@ -21,11 +21,13 @@ Node.js Socket.IO chat application. Real-time event patterns referenced by OBS b
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/socketio-chat:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/socketio-chat:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/socketio-chat:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/nodejs-socketio-chat-application.git /tmp/nodejs-socketio-chat-application
 > cd /tmp/nodejs-socketio-chat-application
@@ -45,6 +48,7 @@ git show refs/oss/socketio-chat:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/nodejs-socketio-chat-application.git HEAD
 > git push origin FETCH_HEAD:refs/oss/socketio-chat --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/socketio-chat:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

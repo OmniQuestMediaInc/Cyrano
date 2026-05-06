@@ -48,30 +48,30 @@ const WELFARE_SYSTEM_MESSAGE =
  */
 const DISTRESS_PATTERNS: Array<[RegExp, number]> = [
   // Tier 1 — immediate risk
-  [/\bkill\s+myself\b/i, 0.30],
-  [/\bsuicid(?:e|al)\b/i, 0.30],
-  [/\bend\s+(?:it|my\s+life|my\s+pain)\b/i, 0.30],
-  [/\bdon[''']?t\s+want\s+to\s+(?:live|be\s+(?:here|alive))\b/i, 0.30],
-  [/\bwant\s+to\s+die\b/i, 0.30],
-  [/\bhurt\s+myself\b/i, 0.30],
+  [/\bkill\s+myself\b/i, 0.3],
+  [/\bsuicid(?:e|al)\b/i, 0.3],
+  [/\bend\s+(?:it|my\s+life|my\s+pain)\b/i, 0.3],
+  [/\bdon[''']?t\s+want\s+to\s+(?:live|be\s+(?:here|alive))\b/i, 0.3],
+  [/\bwant\s+to\s+die\b/i, 0.3],
+  [/\bhurt\s+myself\b/i, 0.3],
   [/\bself[-\s]?harm\b/i, 0.25],
 
   // Tier 2 — strong distress
-  [/\bhopeless\b/i, 0.20],
-  [/\bworthless\b/i, 0.20],
-  [/\bhate\s+myself\b/i, 0.20],
-  [/\bcan[''']?t\s+(?:take|bear|handle)\s+(?:it|this|anymore)\b/i, 0.20],
-  [/\bno\s+(?:point|reason)\s+(?:to|in)\s+(?:go(?:ing)?\s+on|living|anything)\b/i, 0.20],
+  [/\bhopeless\b/i, 0.2],
+  [/\bworthless\b/i, 0.2],
+  [/\bhate\s+myself\b/i, 0.2],
+  [/\bcan[''']?t\s+(?:take|bear|handle)\s+(?:it|this|anymore)\b/i, 0.2],
+  [/\bno\s+(?:point|reason)\s+(?:to|in)\s+(?:go(?:ing)?\s+on|living|anything)\b/i, 0.2],
   [/\bfeel(?:ing)?\s+(?:so\s+)?empty\b/i, 0.15],
-  [/\bnumb(?:ness)?\b/i, 0.10],
+  [/\bnumb(?:ness)?\b/i, 0.1],
 
   // Tier 3 — moderate distress
-  [/\bcan[''']?t\s+cope\b/i, 0.10],
-  [/\bbreaking\s+down\b/i, 0.10],
-  [/\bfalling\s+apart\b/i, 0.10],
-  [/\bno\s+one\s+cares\b/i, 0.10],
-  [/\bso\s+alone\b/i, 0.10],
-  [/\bgiving\s+up\b/i, 0.10],
+  [/\bcan[''']?t\s+cope\b/i, 0.1],
+  [/\bbreaking\s+down\b/i, 0.1],
+  [/\bfalling\s+apart\b/i, 0.1],
+  [/\bno\s+one\s+cares\b/i, 0.1],
+  [/\bso\s+alone\b/i, 0.1],
+  [/\bgiving\s+up\b/i, 0.1],
 ];
 
 // ---------------------------------------------------------------------------

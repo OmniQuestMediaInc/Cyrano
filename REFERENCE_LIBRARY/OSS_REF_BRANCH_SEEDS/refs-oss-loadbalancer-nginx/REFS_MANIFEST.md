@@ -21,11 +21,13 @@ nginx load-balancer with Docker Compose and Node.js backend. Infrastructure conf
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/loadbalancer-nginx:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/loadbalancer-nginx:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/loadbalancer-nginx:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/loadbalancer-nginx-docker-nodejs.git /tmp/loadbalancer-nginx-docker-nodejs
 > cd /tmp/loadbalancer-nginx-docker-nodejs
@@ -45,6 +48,7 @@ git show refs/oss/loadbalancer-nginx:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/loadbalancer-nginx-docker-nodejs.git HEAD
 > git push origin FETCH_HEAD:refs/oss/loadbalancer-nginx --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/loadbalancer-nginx:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

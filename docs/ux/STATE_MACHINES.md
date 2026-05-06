@@ -29,16 +29,16 @@ request/response.
                                                                   SETTLED
 ```
 
-| State | Wire surface | UI element | CTA |
-|---|---|---|---|
-| PENDING | optimistic local | spinner on Buy CTA | Cancel |
-| GATEGUARD_PRE_PROCESS | NATS `GATEGUARD_EVALUATION_COMPLETED` | "Reviewing for safety…" microcopy | none |
-| APPROVED | NATS `GATEGUARD_DECISION_APPROVED` | green check, advance to record | none |
-| COOLDOWN | NATS `GATEGUARD_DECISION_COOLDOWN` | overlay with countdown | "Try again in {n}" |
-| HARD_DECLINE | NATS `GATEGUARD_DECISION_HARD_DECLINE` | error banner with reason_code chip | "Contact support" |
-| HUMAN_ESCALATE | NATS `GATEGUARD_DECISION_HUMAN_ESCALATE` | escalation card with case_id | "Open case" |
-| LEDGER_RECORDED | request/response on Buy reply | bucket-update animation | none |
-| SETTLED | next render of `WalletThreeBucketView` | three-bucket display refreshed | "View wallet" |
+| State                 | Wire surface                             | UI element                         | CTA                |
+| --------------------- | ---------------------------------------- | ---------------------------------- | ------------------ |
+| PENDING               | optimistic local                         | spinner on Buy CTA                 | Cancel             |
+| GATEGUARD_PRE_PROCESS | NATS `GATEGUARD_EVALUATION_COMPLETED`    | "Reviewing for safety…" microcopy  | none               |
+| APPROVED              | NATS `GATEGUARD_DECISION_APPROVED`       | green check, advance to record     | none               |
+| COOLDOWN              | NATS `GATEGUARD_DECISION_COOLDOWN`       | overlay with countdown             | "Try again in {n}" |
+| HARD_DECLINE          | NATS `GATEGUARD_DECISION_HARD_DECLINE`   | error banner with reason_code chip | "Contact support"  |
+| HUMAN_ESCALATE        | NATS `GATEGUARD_DECISION_HUMAN_ESCALATE` | escalation card with case_id       | "Open case"        |
+| LEDGER_RECORDED       | request/response on Buy reply            | bucket-update animation            | none               |
+| SETTLED               | next render of `WalletThreeBucketView`   | three-bucket display refreshed     | "View wallet"      |
 
 ---
 
@@ -53,11 +53,11 @@ Deterministic — there is no UI debounce or user-elected bucket. The
 (`ui/types/public-wallet-contracts.ts:80`) marks the bucket the next
 spend draws from.
 
-| Bucket | Priority | Visual |
-|---|---|---|
-| `purchased` | 1 | dollar-sign motif; "Drains first" indicator when populated |
-| `membership` | 2 | tier-color motif; "Drains next" when purchased empty |
-| `bonus` | 3 | promo motif; "Last to drain" indicator |
+| Bucket       | Priority | Visual                                                     |
+| ------------ | -------- | ---------------------------------------------------------- |
+| `purchased`  | 1        | dollar-sign motif; "Drains first" indicator when populated |
+| `membership` | 2        | tier-color motif; "Drains next" when purchased empty       |
+| `bonus`      | 3        | promo motif; "Last to drain" indicator                     |
 
 Spend always exhausts higher-priority buckets before drawing from
 lower-priority ones. UI must never offer the user a bucket selector.
@@ -79,15 +79,15 @@ OPEN ─► TOKEN_BRIDGE_OFFERED ─► TOKEN_BRIDGE_ACCEPTED ─┐
    └─► EXPIRATION_PROCESSED ──────────────────────────────────────────┘
 ```
 
-| Stage | Operator CTA on `/admin/recovery` | Member-facing visibility |
-|---|---|---|
-| `OPEN` | Open case detail | "Recovery review in progress" banner |
-| `TOKEN_BRIDGE_OFFERED` | View Token Bridge offer | Token Bridge CTA card on member wallet |
-| `TOKEN_BRIDGE_ACCEPTED` | Process bridge | "Bridge processed" toast |
-| `THREE_FIFTHS_EXIT_POLICY_GATED` | Send to operator queue | "Sent to operator for review" |
-| `THREE_FIFTHS_EXIT_OFFERED` | Approve / deny refund | 3/5ths refund CTA card |
-| `EXPIRATION_PROCESSED` | Close case | "Tokens expired" banner |
-| `RESOLVED` | (none) | "Case resolved" history row |
+| Stage                            | Operator CTA on `/admin/recovery` | Member-facing visibility               |
+| -------------------------------- | --------------------------------- | -------------------------------------- |
+| `OPEN`                           | Open case detail                  | "Recovery review in progress" banner   |
+| `TOKEN_BRIDGE_OFFERED`           | View Token Bridge offer           | Token Bridge CTA card on member wallet |
+| `TOKEN_BRIDGE_ACCEPTED`          | Process bridge                    | "Bridge processed" toast               |
+| `THREE_FIFTHS_EXIT_POLICY_GATED` | Send to operator queue            | "Sent to operator for review"          |
+| `THREE_FIFTHS_EXIT_OFFERED`      | Approve / deny refund             | 3/5ths refund CTA card                 |
+| `EXPIRATION_PROCESSED`           | Close case                        | "Tokens expired" banner                |
+| `RESOLVED`                       | (none)                            | "Case resolved" history row            |
 
 Reason codes carried through every transition: `TOKEN_BRIDGE_BONUS_PCT`,
 `THREE_FIFTHS_REFUND_PCT`, `FIZ-002-REVISION-2026-04-11`, etc.
@@ -104,13 +104,13 @@ ACTIVE ──► EXPIRING (48h warning sent) ──► EXPIRED ──► RECOVER
                   └─────────────► 3/5THS_EXIT ─┘
 ```
 
-| State | UI surface | CTA |
-|---|---|---|
-| ACTIVE | normal experience | none |
-| EXPIRING | header banner with hours-until-expiry | "Renew" / "Recover" |
-| EXPIRED | restricted experience overlay | "Recover" / "3/5ths Exit" / "Re-subscribe" |
-| RECOVERED | success toast | none |
-| 3/5THS_EXIT | terminal lockout with refund status | "View refund status" |
+| State       | UI surface                            | CTA                                        |
+| ----------- | ------------------------------------- | ------------------------------------------ |
+| ACTIVE      | normal experience                     | none                                       |
+| EXPIRING    | header banner with hours-until-expiry | "Renew" / "Recover"                        |
+| EXPIRED     | restricted experience overlay         | "Recover" / "3/5ths Exit" / "Re-subscribe" |
+| RECOVERED   | success toast                         | none                                       |
+| 3/5THS_EXIT | terminal lockout with refund status   | "View refund status"                       |
 
 Notification cadence: 48h warning is idempotent within the warning
 window (`RecoveryEngine.send48HourWarning`); UI must not spam.
@@ -130,14 +130,14 @@ MINUTES_DECREMENTING ─► EXPIRED ─► [user buys top-up] ─► TOP_UP_PURC
                               └─► [user closes session] ─► (terminal)
 ```
 
-| State | UI element |
-|---|---|
-| GRANTED | session minutes meter starts |
-| MINUTES_DECREMENTING | live minute counter; warning when <5 minutes |
-| EXPIRED | full overlay: "Time's up" with top-up modal |
-| TOP_UP_PURCHASED | brief "Adding minutes…" indicator |
-| RESUMED | meter refreshed with new total |
-| DENIED | reason_code chip on the request CTA (TIER_INSUFFICIENT, KYC_REQUIRED, etc.) |
+| State                | UI element                                                                  |
+| -------------------- | --------------------------------------------------------------------------- |
+| GRANTED              | session minutes meter starts                                                |
+| MINUTES_DECREMENTING | live minute counter; warning when <5 minutes                                |
+| EXPIRED              | full overlay: "Time's up" with top-up modal                                 |
+| TOP_UP_PURCHASED     | brief "Adding minutes…" indicator                                           |
+| RESUMED              | meter refreshed with new total                                              |
+| DENIED               | reason_code chip on the request CTA (TIER_INSUFFICIENT, KYC_REQUIRED, etc.) |
 
 ---
 
@@ -170,12 +170,12 @@ COLD ◄──► WARM ◄──► HOT ◄──► INFERNO
 Deterministic transitions — no UI debounce. Transitions emit
 `FFS_TIER_CHANGED` (NATS); meter component must redraw on receipt.
 
-| Tier | Score range | Payout scaling | UI cue |
-|---|---|---|---|
-| COLD | 0-33 | 0% | grey gauge fill |
-| WARM | 34-60 | 0% | yellow gauge fill |
-| HOT | 61-85 | 5% | orange gauge fill + "+5%" indicator |
-| INFERNO | 86-100 | 10% | red gauge fill + "+10%" indicator + Inferno badge |
+| Tier    | Score range | Payout scaling | UI cue                                            |
+| ------- | ----------- | -------------- | ------------------------------------------------- |
+| COLD    | 0-33        | 0%             | grey gauge fill                                   |
+| WARM    | 34-60       | 0%             | yellow gauge fill                                 |
+| HOT     | 61-85       | 5%             | orange gauge fill + "+5%" indicator               |
+| INFERNO | 86-100      | 10%            | red gauge fill + "+10%" indicator + Inferno badge |
 
 ---
 
@@ -190,12 +190,12 @@ Deterministic transitions — no UI debounce. Transitions emit
    (no UI)       (banner)       (block 5min)  (lockout + HCZ)
 ```
 
-| Band | Score | Intervention | UI |
-|---|---|---|---|
-| OK | 0-39 | none | none |
-| SOFT_NUDGE | 40-69 | non-blocking | toast banner with reason chip |
-| COOL_DOWN | 70-89 | blocking 5-min | overlay with countdown |
-| HARD_DECLINE_HCZ | 90-100 | lockout | overlay with "Contact HCZ" CTA + case_id |
+| Band             | Score  | Intervention   | UI                                       |
+| ---------------- | ------ | -------------- | ---------------------------------------- |
+| OK               | 0-39   | none           | none                                     |
+| SOFT_NUDGE       | 40-69  | non-blocking   | toast banner with reason chip            |
+| COOL_DOWN        | 70-89  | blocking 5-min | overlay with countdown                   |
+| HARD_DECLINE_HCZ | 90-100 | lockout        | overlay with "Contact HCZ" CTA + case_id |
 
 ---
 
@@ -216,6 +216,7 @@ Deterministic transitions — no UI debounce. Transitions emit
 
 Single shared `step-up-modal` component across all 7 step-up actions
 (see brief §2). Modal surfaces:
+
 - Action label (e.g. "Confirm refund override")
 - MFA input
 - `correlation_id` (visible in collapsed footer for support routing)

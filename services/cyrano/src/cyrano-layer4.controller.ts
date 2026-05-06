@@ -140,7 +140,10 @@ export class CyranoLayer4Controller {
   @HttpCode(HttpStatus.OK)
   resolvePrompt(
     @Body() body: CyranoLayer4PromptRequest | undefined,
-    @Req() req: { cyranoLayer4?: { tenant: CyranoLayer4Tenant; api_key_id: string; correlation_id?: string } },
+    @Req()
+    req: {
+      cyranoLayer4?: { tenant: CyranoLayer4Tenant; api_key_id: string; correlation_id?: string };
+    },
     @Headers(CYRANO_LAYER4_HEADERS.CONSENT_RECEIPT) consentReceiptId?: string,
   ): CyranoLayer4PromptResponse {
     const session = req.cyranoLayer4;
@@ -183,10 +186,7 @@ export class CyranoLayer4Controller {
   /** Revoke an API key. Admin-only — guard upstream. */
   @Delete('tenants/:tenantId/keys/:apiKeyId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  revokeApiKey(
-    @Param('tenantId') tenantId: string,
-    @Param('apiKeyId') apiKeyId: string,
-  ): void {
+  revokeApiKey(@Param('tenantId') tenantId: string, @Param('apiKeyId') apiKeyId: string): void {
     const tenant = this.tenants.getTenant(tenantId);
     if (!tenant) {
       throw new ForbiddenException({
@@ -214,9 +214,10 @@ export class CyranoLayer4Controller {
 
   /** Read tenant-scoped audit log. Admin / compliance-only. */
   @Get('tenants/:tenantId/audit')
-  listAudit(
-    @Param('tenantId') tenantId: string,
-  ): { records: CyranoLayer4ChainedAuditRecord[]; chain: CyranoLayer4ChainVerifyResult } {
+  listAudit(@Param('tenantId') tenantId: string): {
+    records: CyranoLayer4ChainedAuditRecord[];
+    chain: CyranoLayer4ChainVerifyResult;
+  } {
     const tenant = this.tenants.getTenant(tenantId);
     if (!tenant) {
       throw new ForbiddenException({

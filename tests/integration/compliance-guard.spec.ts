@@ -55,10 +55,10 @@ describe('ComplianceGuardService', () => {
       const isUnsafe = (hour: number): boolean =>
         hour >= TRANSIT_UNSAFE_START_HOUR && hour < TRANSIT_UNSAFE_END_HOUR;
 
-      expect(isUnsafe(3.0)).toBe(true);   // 3:00 AM
-      expect(isUnsafe(6.0)).toBe(true);   // 6:00 AM
-      expect(isUnsafe(6.25)).toBe(false);  // 6:15 AM — boundary
-      expect(isUnsafe(7.0)).toBe(false);   // 7:00 AM
+      expect(isUnsafe(3.0)).toBe(true); // 3:00 AM
+      expect(isUnsafe(6.0)).toBe(true); // 6:00 AM
+      expect(isUnsafe(6.25)).toBe(false); // 6:15 AM — boundary
+      expect(isUnsafe(7.0)).toBe(false); // 7:00 AM
     });
   });
 

@@ -52,7 +52,8 @@ export class GamificationController {
   @Post('play')
   @HttpCode(HttpStatus.OK)
   async play(@Body() body: InitiatePlayDto, @Req() req: Request): Promise<PlayResponseDto> {
-    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || req.ip || 'unknown';
+    const ip =
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || req.ip || 'unknown';
     return this.orchestrator.play({ ...body, ip });
   }
 

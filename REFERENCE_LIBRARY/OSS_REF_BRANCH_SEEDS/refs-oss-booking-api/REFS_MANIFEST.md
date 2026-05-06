@@ -21,11 +21,13 @@ Full-stack booking management API with Prisma schema and NestJS controllers. Ref
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/booking-api:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/booking-api:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/booking-api:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/Full-Stack-Booking-Management-API.git /tmp/Full-Stack-Booking-Management-API
 > cd /tmp/Full-Stack-Booking-Management-API
@@ -45,6 +48,7 @@ git show refs/oss/booking-api:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/Full-Stack-Booking-Management-API.git HEAD
 > git push origin FETCH_HEAD:refs/oss/booking-api --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/booking-api:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

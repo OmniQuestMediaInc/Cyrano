@@ -25,11 +25,11 @@ export const RECOVERY_RULE_ID = 'REDBOOK_RECOVERY_v1';
 
 // REDBOOK §5 doctrinal constants (non-FIZ-locked; revisable via REDBOOK commit).
 export const RECOVERY_CONSTANTS = {
-  TOKEN_BRIDGE_BONUS_PCT: 0.20,
+  TOKEN_BRIDGE_BONUS_PCT: 0.2,
   TOKEN_BRIDGE_OFFER_TTL_HOURS: 24,
   TOKEN_BRIDGE_RESTRICTION_HOURS: 24,
 
-  THREE_FIFTHS_REFUND_PCT: 0.60,
+  THREE_FIFTHS_REFUND_PCT: 0.6,
   THREE_FIFTHS_LOCK_HOURS: 24,
   THREE_FIFTHS_PROCESSING_BUSINESS_DAYS: [7, 10] as [number, number],
   THREE_FIFTHS_PERMANENT_FLAG: 'AWARE_OF_POLICY_DECLINED_TWO_GOODWILL_OFFERS',
@@ -146,12 +146,10 @@ export class RecoveryEngine {
     const caseRecord = this.requireCase(case_id);
     this.requireStage(caseRecord, ['OPEN', 'THREE_FIFTHS_EXIT_POLICY_GATED']);
 
-    const bonus_tokens =
-      (caseRecord.remaining_balance_tokens * 20n) / 100n;
+    const bonus_tokens = (caseRecord.remaining_balance_tokens * 20n) / 100n;
 
     const offer_expires_at_utc = new Date(
-      Date.now() +
-        RECOVERY_CONSTANTS.TOKEN_BRIDGE_OFFER_TTL_HOURS * 60 * 60 * 1000,
+      Date.now() + RECOVERY_CONSTANTS.TOKEN_BRIDGE_OFFER_TTL_HOURS * 60 * 60 * 1000,
     ).toISOString();
 
     caseRecord.stage = 'TOKEN_BRIDGE_OFFERED';
@@ -225,11 +223,7 @@ export class RecoveryEngine {
     ceo_override?: CeoOverrideContext,
   ): ThreeFifthsExitOutcome {
     const caseRecord = this.requireCase(case_id);
-    this.requireStage(caseRecord, [
-      'OPEN',
-      'TOKEN_BRIDGE_OFFERED',
-      'TOKEN_BRIDGE_ACCEPTED',
-    ]);
+    this.requireStage(caseRecord, ['OPEN', 'TOKEN_BRIDGE_OFFERED', 'TOKEN_BRIDGE_ACCEPTED']);
 
     const gated = !ceo_override;
 
@@ -246,9 +240,7 @@ export class RecoveryEngine {
     this.appendAudit(caseRecord, {
       action: 'THREE_FIFTHS_EXIT_REQUEST',
       actor_id: agent_id,
-      reason_code: gated
-        ? 'POLICY_GATED_NO_CASH_REFUND_PATH'
-        : 'CEO_OVERRIDE_APPLIED',
+      reason_code: gated ? 'POLICY_GATED_NO_CASH_REFUND_PATH' : 'CEO_OVERRIDE_APPLIED',
       metadata: {
         refund_percentage: RECOVERY_CONSTANTS.THREE_FIFTHS_REFUND_PCT,
         lock_hours: RECOVERY_CONSTANTS.THREE_FIFTHS_LOCK_HOURS,
@@ -259,23 +251,17 @@ export class RecoveryEngine {
     });
 
     if (gated) {
-      this.logger.warn(
-        'RecoveryEngine: Three-Fifths Exit POLICY_GATED (FIZ-002-REVISION)',
-        {
-          case_id,
-          rule_applied_id: this.RULE_ID,
-          policy_gate_reference: RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE,
-        },
-      );
+      this.logger.warn('RecoveryEngine: Three-Fifths Exit POLICY_GATED (FIZ-002-REVISION)', {
+        case_id,
+        rule_applied_id: this.RULE_ID,
+        policy_gate_reference: RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE,
+      });
     } else {
-      this.logger.log(
-        'RecoveryEngine: Three-Fifths Exit authorized via CEO override',
-        {
-          case_id,
-          override_id: ceo_override.override_id,
-          rule_applied_id: this.RULE_ID,
-        },
-      );
+      this.logger.log('RecoveryEngine: Three-Fifths Exit authorized via CEO override', {
+        case_id,
+        override_id: ceo_override.override_id,
+        rule_applied_id: this.RULE_ID,
+      });
     }
 
     return {
@@ -283,12 +269,9 @@ export class RecoveryEngine {
       result_code,
       refund_percentage: RECOVERY_CONSTANTS.THREE_FIFTHS_REFUND_PCT,
       lock_hours: RECOVERY_CONSTANTS.THREE_FIFTHS_LOCK_HOURS,
-      processing_business_days:
-        RECOVERY_CONSTANTS.THREE_FIFTHS_PROCESSING_BUSINESS_DAYS,
+      processing_business_days: RECOVERY_CONSTANTS.THREE_FIFTHS_PROCESSING_BUSINESS_DAYS,
       permanent_flag: RECOVERY_CONSTANTS.THREE_FIFTHS_PERMANENT_FLAG,
-      policy_gate_reference: gated
-        ? RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE
-        : undefined,
+      policy_gate_reference: gated ? RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE : undefined,
       rule_applied_id: this.RULE_ID,
     };
   }
@@ -311,10 +294,7 @@ export class RecoveryEngine {
     ]);
 
     const expired = caseRecord.remaining_balance_tokens;
-    const creator_bonus_pool_tokens = this.applyBps(
-      expired,
-      DIAMOND_TIER.EXPIRED_CREATOR_POOL_PCT,
-    );
+    const creator_bonus_pool_tokens = this.applyBps(expired, DIAMOND_TIER.EXPIRED_CREATOR_POOL_PCT);
     // Residual goes to platform mgmt fee — avoids rounding drift.
     const platform_mgmt_fee_tokens = expired - creator_bonus_pool_tokens;
 
@@ -358,8 +338,7 @@ export class RecoveryEngine {
     diamondWallets: WalletSnapshot[],
     now_utc = new Date(),
   ): Promise<WalletSnapshot[]> {
-    const windowMs =
-      RECOVERY_CONSTANTS.EXPIRY_WARNING_WINDOW_HOURS * 60 * 60 * 1000;
+    const windowMs = RECOVERY_CONSTANTS.EXPIRY_WARNING_WINDOW_HOURS * 60 * 60 * 1000;
     const nowMs = now_utc.getTime();
     const cutoff = nowMs + windowMs;
 
@@ -415,15 +394,9 @@ export class RecoveryEngine {
    * Triggers a CS personal-touch follow-up for wallets whose USD-equivalent
    * remaining balance exceeds the HIGH_BALANCE_PERSONAL_TOUCH_USD threshold.
    */
-  async triggerPersonalTouch(
-    wallets: WalletSnapshot[],
-  ): Promise<WalletSnapshot[]> {
-    const thresholdCents = BigInt(
-      RECOVERY_CONSTANTS.HIGH_BALANCE_PERSONAL_TOUCH_USD * 100,
-    );
-    const flagged = wallets.filter(
-      (w) => w.remaining_balance_usd_cents > thresholdCents,
-    );
+  async triggerPersonalTouch(wallets: WalletSnapshot[]): Promise<WalletSnapshot[]> {
+    const thresholdCents = BigInt(RECOVERY_CONSTANTS.HIGH_BALANCE_PERSONAL_TOUCH_USD * 100);
+    const flagged = wallets.filter((w) => w.remaining_balance_usd_cents > thresholdCents);
 
     for (const snapshot of flagged) {
       if (this.dispatcher) {
@@ -442,14 +415,8 @@ export class RecoveryEngine {
 
   // ── Utilities ────────────────────────────────────────────────────────────
 
-  static computeAuditHash(
-    case_id: string,
-    action: RecoveryAction,
-    timestamp_utc: string,
-  ): string {
-    return createHash('sha256')
-      .update(`${case_id}:${action}:${timestamp_utc}`)
-      .digest('hex');
+  static computeAuditHash(case_id: string, action: RecoveryAction, timestamp_utc: string): string {
+    return createHash('sha256').update(`${case_id}:${action}:${timestamp_utc}`).digest('hex');
   }
 
   private applyBps(amount: bigint, pct: number): bigint {
@@ -480,10 +447,7 @@ export class RecoveryEngine {
     return c;
   }
 
-  private requireStage(
-    caseRecord: RecoveryCase,
-    allowed: RecoveryStage[],
-  ): void {
+  private requireStage(caseRecord: RecoveryCase, allowed: RecoveryStage[]): void {
     if (!allowed.includes(caseRecord.stage)) {
       throw new Error(
         `RECOVERY_INVALID_STAGE: case=${caseRecord.case_id} stage=${caseRecord.stage} allowed=${allowed.join(',')}`,

@@ -37,12 +37,12 @@
 
 ## GovernanceConfig Constants
 
-| Constant                           | Status               | Value |
-| ---------------------------------- | -------------------- | ----- |
-| `DFSP_OTP_TTL_SECONDS`             | pre-existing ✅     | 900   |
-| `DFSP_OTP_MAX_ATTEMPTS`            | pre-existing ✅     | 5     |
-| `DFSP_ACCOUNT_RECOVERY_HOLD_HOURS` | pre-existing ✅     | 48    |
-| `DFSP_OTP_BCRYPT_COST`             | **added**           | 12    |
+| Constant                           | Status          | Value |
+| ---------------------------------- | --------------- | ----- |
+| `DFSP_OTP_TTL_SECONDS`             | pre-existing ✅ | 900   |
+| `DFSP_OTP_MAX_ATTEMPTS`            | pre-existing ✅ | 5     |
+| `DFSP_ACCOUNT_RECOVERY_HOLD_HOURS` | pre-existing ✅ | 48    |
+| `DFSP_OTP_BCRYPT_COST`             | **added**       | 12    |
 
 All values referenced from `GovernanceConfig.*` — no hardcoded constants in
 service logic (Invariant #3).
@@ -128,29 +128,31 @@ Implementation located in
 
 ## Invariant Checklist (all 15)
 
-| # | Invariant | Status |
-| - | --------- | ------ |
-| 1 | Append-only on ledger/audit/game/call/voucher — OtpEvent status-update is the documented exception; AccountHold release-update is the documented exception for this service | ✅ documented |
-| 2 | FIZ four-line commit — REASON/IMPACT/CORRELATION_ID/GATE | ✅ |
-| 3 | No hardcoded constants — all values from `GovernanceConfig` | ✅ |
-| 4 | `crypto.randomInt()` used for OTP generation — no `Math.random()`, no `crypto.randomBytes()` | ✅ |
-| 5 | No `@angular/core` imports | ✅ |
-| 6 | `npx tsc --noEmit` — zero new errors (only pre-existing `tsconfig.json` TS5101 baseUrl deprecation notice) | ✅ |
-| 7 | Logger instance on every service | ✅ both services |
-| 8 | Report-back filed before DONE | ✅ this file |
-| 9 | NATS topics from registry only — no string literals | ✅ |
-| 10 | AI services advisory only (N/A — infrastructure services) | ✅ |
-| 11 | Step-up auth boundary — OTP service generates/verifies only; no financial execution | ✅ |
-| 12 | RBAC check confirmed upstream before OTP issuance (caller contract) | ✅ documented |
-| 13 | SHA-256 for all hash ops EXCEPT `OtpEvent.code_hash` (bcrypt carve-out) | ✅ documented |
-| 14 | All timestamps via `new Date()` — consistent with existing DFSP services | ✅ |
-| 15 | `rule_applied_id` on every output object — `'PLATFORM_OTP_v1'` and `'ACCOUNT_RECOVERY_HOLD_v1'` | ✅ |
+| #   | Invariant                                                                                                                                                                   | Status           |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 1   | Append-only on ledger/audit/game/call/voucher — OtpEvent status-update is the documented exception; AccountHold release-update is the documented exception for this service | ✅ documented    |
+| 2   | FIZ four-line commit — REASON/IMPACT/CORRELATION_ID/GATE                                                                                                                    | ✅               |
+| 3   | No hardcoded constants — all values from `GovernanceConfig`                                                                                                                 | ✅               |
+| 4   | `crypto.randomInt()` used for OTP generation — no `Math.random()`, no `crypto.randomBytes()`                                                                                | ✅               |
+| 5   | No `@angular/core` imports                                                                                                                                                  | ✅               |
+| 6   | `npx tsc --noEmit` — zero new errors (only pre-existing `tsconfig.json` TS5101 baseUrl deprecation notice)                                                                  | ✅               |
+| 7   | Logger instance on every service                                                                                                                                            | ✅ both services |
+| 8   | Report-back filed before DONE                                                                                                                                               | ✅ this file     |
+| 9   | NATS topics from registry only — no string literals                                                                                                                         | ✅               |
+| 10  | AI services advisory only (N/A — infrastructure services)                                                                                                                   | ✅               |
+| 11  | Step-up auth boundary — OTP service generates/verifies only; no financial execution                                                                                         | ✅               |
+| 12  | RBAC check confirmed upstream before OTP issuance (caller contract)                                                                                                         | ✅ documented    |
+| 13  | SHA-256 for all hash ops EXCEPT `OtpEvent.code_hash` (bcrypt carve-out)                                                                                                     | ✅ documented    |
+| 14  | All timestamps via `new Date()` — consistent with existing DFSP services                                                                                                    | ✅               |
+| 15  | `rule_applied_id` on every output object — `'PLATFORM_OTP_v1'` and `'ACCOUNT_RECOVERY_HOLD_v1'`                                                                             | ✅               |
 
 **Multi-tenant mandate (LOCKED v1.1a):**
+
 - `organization_id` + `tenant_id` written on every Prisma create
   (`OtpEvent.create`, `AccountHold.create`) ✅
 
 **Schema integrity:**
+
 - No new Prisma models created ✅
 - No migrations generated or run ✅
 - `OtpEvent` + `AccountHold` read and used as-is from PV-001 ✅
@@ -160,6 +162,7 @@ Implementation located in
 Command: `npx tsc --noEmit`
 
 Result:
+
 ```
 tsconfig.json(12,5): error TS5101: Option 'baseUrl' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '"ignoreDeprecations": "6.0"' to silence this error.
 ```
@@ -191,6 +194,7 @@ None. Minor documented decisions:
 ## HANDOFF
 
 **What was built:**
+
 - `PlatformOtpService` — generates 7-char OTPs from a 32-char unambiguous
   alphabet using `crypto.randomInt()`, bcrypt-hashes them at cost 12, and
   verifies candidates with precedence ALREADY_CONSUMED → EXPIRED → LOCKED →
@@ -203,12 +207,14 @@ None. Minor documented decisions:
   `DFSP_ACCOUNT_HOLD_APPLIED/RELEASED`.
 
 **What was left incomplete:**
+
 - CEO-authorized path to shorten a hold below 48 hours is deferred per
   directive until a dedicated CEO clearance is issued.
 - Email/SMS delivery provider wiring is V6 infrastructure (not DFSP-001
   scope) — channel is recorded, dispatch is caller-side.
 
 **Next agent's first task:**
+
 - Wire upstream step-up flows (Diamond/VIP checkout) to call
   `PlatformOtpService.issueOtp` after the RBAC check and gate the
   proceeding financial call on `verifyOtp` returning `VERIFIED`.

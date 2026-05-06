@@ -6,7 +6,7 @@ import { FfsService } from './ffs.service';
 
 @Module({
   controllers: [FfsController],
-  providers:   [FfsService],
-  exports:     [FfsService],
+  providers: [FfsService],
+  exports: [FfsService],
 })
 export class FfsModule {}

@@ -31,9 +31,9 @@ export type SessionPhase = 'OPENING' | 'MID' | 'PEAK' | 'COOLDOWN' | 'CLOSING';
 /** One durable fact Cyrano has observed about the guest. */
 export interface MemoryFact {
   id: string;
-  key: string;                    // e.g. 'guest.preferred_pronoun'
-  value: string;                  // e.g. 'they/them'
-  confidence: number;             // 0..1
+  key: string; // e.g. 'guest.preferred_pronoun'
+  value: string; // e.g. 'they/them'
+  confidence: number; // 0..1
   learned_at_utc: string;
 }
 
@@ -42,7 +42,7 @@ export interface CreatorPersona {
   persona_id: string;
   creator_id: string;
   display_name: string;
-  tone: string;                   // e.g. 'playful_dominant'
+  tone: string; // e.g. 'playful_dominant'
   style_notes: string;
   active: boolean;
 }

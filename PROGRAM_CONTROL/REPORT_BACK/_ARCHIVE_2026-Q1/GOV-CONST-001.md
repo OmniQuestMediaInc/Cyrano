@@ -8,17 +8,19 @@
 ---
 
 ## Repo
+
 OmniQuestMediaInc/ChatNowZone--BUILD
 
 ## Branch
+
 `claude/execute-gov-const-001-and-cleanup`  
 (Merged via PR #211)
 
 ## Commits
 
-| # | Hash | Message |
-|---|------|---------|
-| 1 of 2 | `19f9ac4a` | FIZ: GOV-CONST-001 Commit 1 of 2 — Append CEO April 12 governance constants |
+| #      | Hash       | Message                                                                             |
+| ------ | ---------- | ----------------------------------------------------------------------------------- |
+| 1 of 2 | `19f9ac4a` | FIZ: GOV-CONST-001 Commit 1 of 2 — Append CEO April 12 governance constants         |
 | 2 of 2 | `099a617a` | CHORE: GOV-CONST-001 Commit 2 of 2 — Add directive-intake workflow + Issue template |
 
 ---
@@ -26,12 +28,14 @@ OmniQuestMediaInc/ChatNowZone--BUILD
 ## Files Changed
 
 ### Commit 1 of 2 (`19f9ac4a`)
+
 ```
  services/core-api/src/config/governance.config.ts | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 55 insertions(+)
 ```
 
 ### Commit 2 of 2 (`099a617a`)
+
 ```
  .github/ISSUE_TEMPLATE/directive.yml   | 23 +++++++++++++++++++++++
  .github/workflows/directive-intake.yml | 62 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -47,14 +51,14 @@ No services modified. No schema changes. No migrations. No existing constants al
 
 Six new `export const` blocks appended at the end of `services/core-api/src/config/governance.config.ts`, after `GZ_SCHEDULING`:
 
-| Block | Key Fields |
-|-------|-----------|
-| `PLATFORM_GLOBAL` | `CURRENCY: 'USD'`, `MARKETPLACE_FEE_PCT: 0.18` |
-| `MERCHANDISE_CONFIG` | `ACCEPTED_TOKEN_TYPE`, `CREATOR_PAYOUT_PER_TOKEN_USD: 0.075`, `DISPUTE_HOLD_TRIGGER`, `DISPUTE_CREATOR_WINDOW_HOURS: 72`, `DISPUTE_REMINDER_HOURS: [0, 24]`, `REFUND_ORIGINAL_CARD_ONLY: true` |
-| `PERFORMANCE_RECORDING` | `POST_SHOW_PURCHASE_WINDOW_HOURS: 24`, `EMBARGO_DAYS: 10`, `CATALOG_RELEASE_DAY: 11`, `DM_ON_SHOW_START: true`, `DM_ON_SHOW_END: true` |
-| `CONCIERGE_APPT` | `OPEN_HOUR: 11`, `CUTOFF_HOUR: 22`, `CUTOFF_MINUTE: 30` |
-| `FAN_CLUB` | `ACCEPTED_TOKEN_TYPE: 'CHATTOKEN'`, `BILLING_CYCLES: ['MONTHLY', 'ANNUAL']` |
-| `CREATOR_SAAS` | `TIERS_ACTIVE: false`, `FREE_TIER_ENABLED: true`, tier pricing (19.95 / 24.95 / 49.95), `BILLING_CYCLES: ['MONTHLY', 'ANNUAL']` |
+| Block                   | Key Fields                                                                                                                                                                                     |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PLATFORM_GLOBAL`       | `CURRENCY: 'USD'`, `MARKETPLACE_FEE_PCT: 0.18`                                                                                                                                                 |
+| `MERCHANDISE_CONFIG`    | `ACCEPTED_TOKEN_TYPE`, `CREATOR_PAYOUT_PER_TOKEN_USD: 0.075`, `DISPUTE_HOLD_TRIGGER`, `DISPUTE_CREATOR_WINDOW_HOURS: 72`, `DISPUTE_REMINDER_HOURS: [0, 24]`, `REFUND_ORIGINAL_CARD_ONLY: true` |
+| `PERFORMANCE_RECORDING` | `POST_SHOW_PURCHASE_WINDOW_HOURS: 24`, `EMBARGO_DAYS: 10`, `CATALOG_RELEASE_DAY: 11`, `DM_ON_SHOW_START: true`, `DM_ON_SHOW_END: true`                                                         |
+| `CONCIERGE_APPT`        | `OPEN_HOUR: 11`, `CUTOFF_HOUR: 22`, `CUTOFF_MINUTE: 30`                                                                                                                                        |
+| `FAN_CLUB`              | `ACCEPTED_TOKEN_TYPE: 'CHATTOKEN'`, `BILLING_CYCLES: ['MONTHLY', 'ANNUAL']`                                                                                                                    |
+| `CREATOR_SAAS`          | `TIERS_ACTIVE: false`, `FREE_TIER_ENABLED: true`, tier pricing (19.95 / 24.95 / 49.95), `BILLING_CYCLES: ['MONTHLY', 'ANNUAL']`                                                                |
 
 > **Note:** `FAN_CLUB.ANNUAL_DISCOUNT_PCT` and `CREATOR_SAAS.ANNUAL_DISCOUNT_PCT` omitted per CEO decision (dropped as drift — TBD values excluded per commit message).
 
@@ -63,10 +67,12 @@ Six new `export const` blocks appended at the end of `services/core-api/src/conf
 ## Workflow Files Added (Commit 2)
 
 ### `.github/workflows/directive-intake.yml`
+
 Watches `PROGRAM_CONTROL/DIRECTIVES/QUEUE/**.md` on push to `main`.
 On any newly added `.md` file: opens a GitHub Issue tagged `copilot-task` with the directive file content as the body (via `--body-file`).
 
 ### `.github/ISSUE_TEMPLATE/directive.yml`
+
 Basic Issue template with label `copilot-task` and a textarea for directive content.
 
 ---
@@ -102,4 +108,5 @@ Zero new errors introduced by this directive. The error originates in `tsconfig.
 ---
 
 ## Result
+
 **SUCCESS**

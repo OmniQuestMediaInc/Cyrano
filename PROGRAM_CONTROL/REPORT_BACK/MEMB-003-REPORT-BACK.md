@@ -76,7 +76,7 @@ already exists as a unique index.
    error, and job complete are logged ✅
 8. **Error isolation** — per-subscription errors are logged and the batch
    continues (directive: "do not halt batch") ✅
-9. **NATS_TOPICS.* only** — no raw strings ✅
+9. **NATS_TOPICS.\* only** — no raw strings ✅
 
 ## Multi-tenant Mandate
 
@@ -119,6 +119,7 @@ services/nats/topics.registry.ts                      |  3 +++
 **SUCCESS**
 
 All MEMB-003 scope items delivered:
+
 - ✅ `MEMBERSHIP.STIPEND_CZT` constants in GovernanceConfig
 - ✅ `StipendDistributionJob` with per-subscription error isolation
 - ✅ `TokenOrigin.GIFTED` on all stipend ledger entries

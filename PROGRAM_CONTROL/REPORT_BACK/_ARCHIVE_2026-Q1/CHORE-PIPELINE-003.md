@@ -2,7 +2,7 @@
 
 **Task:** CHORE-PIPELINE-003 — Add directive-dispatch.yml workflow + patch directive-intake.yml  
 **Agent:** COPILOT  
-**Branch:** copilot/choreimplement-directive-dispatch  
+**Branch:** copilot/choreimplement-directive-dispatch
 
 ---
 
@@ -31,12 +31,12 @@ PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-PIPELINE-003.md
 
 File: `.github/workflows/directive-dispatch.yml` — 308 lines
 
-| Job | Name | Trigger | Status |
-|-----|------|---------|--------|
-| 1 | assign-to-agent | issues: opened | ✅ Present |
-| 2 | conflict-detection | push to main (QUEUE .md) | ✅ Present |
-| 3 | lifecycle-pr-opened | pull_request: opened | ✅ Present |
-| 4 | lifecycle-pr-merged | pull_request: closed + merged | ✅ Present |
+| Job | Name                | Trigger                       | Status     |
+| --- | ------------------- | ----------------------------- | ---------- |
+| 1   | assign-to-agent     | issues: opened                | ✅ Present |
+| 2   | conflict-detection  | push to main (QUEUE .md)      | ✅ Present |
+| 3   | lifecycle-pr-opened | pull_request: opened          | ✅ Present |
+| 4   | lifecycle-pr-merged | pull_request: closed + merged | ✅ Present |
 
 ### ✅ directive-intake.yml patched with PR instruction block
 
@@ -47,6 +47,7 @@ via a shell variable to avoid YAML document-separator interpretation.
 ### ✅ YAML syntax valid
 
 Both files validated via `python3 -c "import yaml; yaml.safe_load(open(f))"`:
+
 - `.github/workflows/directive-dispatch.yml` → VALID YAML
 - `.github/workflows/directive-intake.yml` → VALID YAML
 
@@ -64,6 +65,7 @@ permissions:
 ## Job Details
 
 ### Job 1 — assign-to-agent
+
 - Parses `**Agent:**` field from issue body via `grep -oP`
 - `COPILOT` → assigns `app/copilot` via `gh issue edit --add-assignee`
 - `CLAUDE_CODE` → adds label `claude-code-task` + posts comment with DROID MODE instruction
@@ -71,6 +73,7 @@ permissions:
 - All `gh` failures handled with `|| echo "WARNING:..."` (non-fatal)
 
 ### Job 2 — conflict-detection
+
 - Inline Python script scans all `.md` files in QUEUE and IN_PROGRESS
 - Extracts `**Touches:**` fields, splits on commas
 - Builds filepath→[directive_ids] map
@@ -79,12 +82,14 @@ permissions:
 - Push is never blocked — only issues surfaced
 
 ### Job 3 — lifecycle-pr-opened
+
 - Extracts directive ID from PR title (second token after `": "`)
 - Looks for `PROGRAM_CONTROL/DIRECTIVES/QUEUE/[ID].md`
 - If found: moves to IN_PROGRESS, commits to PR branch
 - If not found: `echo "CHECK: ... skipping"` — no error
 
 ### Job 4 — lifecycle-pr-merged
+
 - Same extraction logic as Job 3
 - Looks for `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/[ID].md`
 - If found: moves to DONE, commits to main
@@ -96,6 +101,7 @@ permissions:
 ## Error Handling
 
 All jobs follow the rule: never fail on missing directive file.
+
 - Missing files: `echo "CHECK: ... skipping"` + `exit 0`
 - CLI failures: `|| echo "WARNING: ..."` pattern
 - Log prefixes: `CHECK /` `WARNING:` / `FAIL:` used throughout
@@ -105,6 +111,7 @@ All jobs follow the rule: never fail on missing directive file.
 ## Result
 
 **SUCCESS** — All definition-of-done criteria met:
+
 - [x] `.github/workflows/directive-dispatch.yml` created
 - [x] `.github/workflows/directive-intake.yml` patched with PR instruction
 - [x] Job 1 assign-to-agent present and correct

@@ -19,16 +19,10 @@ export function HeroSection({
       style={{ background: theme.background }}
       className="flex flex-col items-center justify-center min-h-screen px-6 text-center"
     >
-      <h1
-        style={{ color: theme.primary }}
-        className="text-5xl font-extrabold tracking-tight mb-4"
-      >
+      <h1 style={{ color: theme.primary }} className="text-5xl font-extrabold tracking-tight mb-4">
         {theme.name}
       </h1>
-      <p
-        style={{ color: theme.accent }}
-        className="text-xl mb-8 max-w-xl"
-      >
+      <p style={{ color: theme.accent }} className="text-xl mb-8 max-w-xl">
         {theme.tagline}
       </p>
       <button

@@ -1,15 +1,19 @@
 # TOK-006-FOLLOWUP — Report Back
 
 ## Branch
+
 `fiz/tok-006-followup`
 
 ## HEAD Commit Hash
+
 _(to be updated after commit)_
 
 ## Files Created
+
 - `PROGRAM_CONTROL/REPORT_BACK/TOK-006-FOLLOWUP-REPORT-BACK.md` (this file)
 
 ## Files Modified
+
 - `services/core-api/src/finance/ledger.service.ts`
   - Imported `TokenOrigin` from `./types/ledger.types` and re-exported it for consumers
   - Added `tokenOrigin: TokenOrigin` as a required parameter on `recordEntry`
@@ -30,6 +34,7 @@ _(to be updated after commit)_
     (all test calls are top-up / purchase credit operations → PURCHASED is correct)
 
 ## Files Confirmed Unchanged
+
 - `services/nats/topics.registry.ts` — no changes required
 - `services/core-api/src/governance/governance.config.ts` — no changes required
 - `services/core-api/src/finance/types/ledger.types.ts` — `TokenOrigin` enum pre-existing; no changes
@@ -40,37 +45,41 @@ _(to be updated after commit)_
 
 ## Call Sites Updated
 
-| File | Line | Context | TokenOrigin Assigned |
-|------|------|---------|---------------------|
-| `ledger.service.ts` | `debitWallet` internal | PROMOTIONAL_BONUS bucket debit | `GIFTED` (platform grant) |
-| `ledger.service.ts` | `debitWallet` internal | MEMBERSHIP_ALLOCATION bucket debit | `GIFTED` (platform/membership allocation) |
-| `ledger.service.ts` | `debitWallet` internal | PURCHASED bucket debit | `PURCHASED` (user-bought tokens) |
-| `ledger-service.spec.ts` | test: records valid entry | TOPUP credit | `PURCHASED` |
-| `ledger-service.spec.ts` | test: rejects non-BigInt | TOPUP credit | `PURCHASED` |
-| `ledger-service.spec.ts` | test: idempotency (×2 calls) | TOPUP credit | `PURCHASED` |
-| `ledger-service.spec.ts` | test: defaults rule_applied_id | TOPUP credit | `PURCHASED` |
-| `ledger-service.spec.ts` | test: seed CSV transactions | TIP credit (customer pays) | `PURCHASED` |
-| `ledger-service.spec.ts` | test: getBalance (200n, 50n, -30n) | TOPUP/SPEND | `PURCHASED` |
-| `ledger-service.spec.ts` | test: isolates by token type (×2) | TOPUP credits | `PURCHASED` |
-| `ledger-service.spec.ts` | test: Ghost Alpha scenario top-up | TOPUP credit | `PURCHASED` |
+| File                     | Line                               | Context                            | TokenOrigin Assigned                      |
+| ------------------------ | ---------------------------------- | ---------------------------------- | ----------------------------------------- |
+| `ledger.service.ts`      | `debitWallet` internal             | PROMOTIONAL_BONUS bucket debit     | `GIFTED` (platform grant)                 |
+| `ledger.service.ts`      | `debitWallet` internal             | MEMBERSHIP_ALLOCATION bucket debit | `GIFTED` (platform/membership allocation) |
+| `ledger.service.ts`      | `debitWallet` internal             | PURCHASED bucket debit             | `PURCHASED` (user-bought tokens)          |
+| `ledger-service.spec.ts` | test: records valid entry          | TOPUP credit                       | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: rejects non-BigInt           | TOPUP credit                       | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: idempotency (×2 calls)       | TOPUP credit                       | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: defaults rule_applied_id     | TOPUP credit                       | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: seed CSV transactions        | TIP credit (customer pays)         | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: getBalance (200n, 50n, -30n) | TOPUP/SPEND                        | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: isolates by token type (×2)  | TOPUP credits                      | `PURCHASED`                               |
+| `ledger-service.spec.ts` | test: Ghost Alpha scenario top-up  | TOPUP credit                       | `PURCHASED`                               |
 
 ## Ambiguous Call Sites Flagged
 
 **`debitWallet` internal call — MEMBERSHIP_ALLOCATION bucket**
 
 The `MEMBERSHIP_ALLOCATION` bucket could be interpreted as either:
+
 - `GIFTED` — tokens allocated by the platform as part of a membership benefit (not purchased directly)
 - Ambiguous if a user purchases a membership tier that includes token allocation
 
 **Reasoning for GIFTED assignment:** The OQMI doctrine and the TokenOrigin definition state PURCHASED means "guest bought tokens with real money" and GIFTED means "tokens granted by platform, promotion, or transfer." Membership allocations are granted by the platform as part of a membership benefit package, even if the membership itself was paid. The token grant within the membership is a platform allocation → GIFTED. This mirrors the spend-priority ordering (PROMOTIONAL_BONUS and MEMBERSHIP_ALLOCATION are consumed before PURCHASED tokens, reflecting their non-purchased nature).
 
 ## GovernanceConfig Constants Used
+
 - None directly in this directive's changes (no GovernanceConfig changes required)
 
 ## NATS Topic Constants Used
+
 - None (no new publish calls introduced)
 
 ## Prisma Schema
+
 - `token_origin` on `TokenBalance` changed from nullable (`String?`) to non-nullable (`String @default("PURCHASED")`)
 - `prisma generate` ran successfully — Prisma Client regenerated
 - No migration generated (schema only, per directive)
@@ -87,7 +96,7 @@ The `MEMBERSHIP_ALLOCATION` bucket could be interpreted as either:
 8. **Logger present** — ✅ `LedgerService` has `private readonly logger = new Logger(LedgerService.name)` (pre-existing)
 9. **rule_applied_id present** — ✅ Persisted in `metadata.rule_applied_id` on every entry (pre-existing)
 10. **organization_id + tenant_id** — ✅ Not removed from any Prisma writes
-11. **NATS_TOPICS.* constants** — ✅ Not applicable (no new NATS publishes added)
+11. **NATS_TOPICS.\* constants** — ✅ Not applicable (no new NATS publishes added)
 12. **Multi-tenant mandate** — ✅ `organization_id` + `tenant_id` untouched in all Prisma models
 13. **DROID MODE** — ✅ Executed as written, no creative deviation
 14. **No UPDATE on balance columns** — ✅ Append-only; no UPDATE calls introduced

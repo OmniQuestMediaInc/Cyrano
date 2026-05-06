@@ -10,10 +10,7 @@ type ReqShape = {
   path: string;
 };
 
-function buildReq(
-  spendOrder: string[] | null,
-  actorId = 'actor_1',
-): ReqShape {
+function buildReq(spendOrder: string[] | null, actorId = 'actor_1'): ReqShape {
   const headers: Record<string, string> = { 'x-actor-id': actorId };
   const body: Record<string, unknown> = {};
   if (spendOrder) {
@@ -64,11 +61,7 @@ describe('ThreeBucketSpendGuardMiddleware', () => {
   it('passes through a canonical spend plan', async () => {
     const audit = buildAudit();
     const mw = new ThreeBucketSpendGuardMiddleware(audit as never);
-    const req = buildReq([
-      'PROMOTIONAL_BONUS',
-      'MEMBERSHIP_ALLOCATION',
-      'PURCHASED',
-    ]);
+    const req = buildReq(['PROMOTIONAL_BONUS', 'MEMBERSHIP_ALLOCATION', 'PURCHASED']);
     const res = buildRes();
     const next = jest.fn();
 

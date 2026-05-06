@@ -22,7 +22,9 @@ export class TokenExtensionTool {
     private readonly repository: ChargebackRepository,
   ) {}
 
-  async executeExtension(request: ExtensionRequest): Promise<ExtensionActionRecord & { createdAt: Date }> {
+  async executeExtension(
+    request: ExtensionRequest,
+  ): Promise<ExtensionActionRecord & { createdAt: Date }> {
     await this.gateGuard.checkActionAllowed(
       request.guestId,
       'TOKEN_EXTENSION',
@@ -43,8 +45,10 @@ export class TokenExtensionTool {
       agentId: request.agentId,
       agentTier: request.agentTier,
       action: request.action,
-      expiryExtensionDays: request.action === 'EXPIRY_EXTENSION' ? (request.expiryExtensionDays ?? null) : null,
-      goodwillCreditCZT: request.action === 'GOODWILL_CREDIT' ? (request.goodwillCreditCZT ?? null) : null,
+      expiryExtensionDays:
+        request.action === 'EXPIRY_EXTENSION' ? (request.expiryExtensionDays ?? null) : null,
+      goodwillCreditCZT:
+        request.action === 'GOODWILL_CREDIT' ? (request.goodwillCreditCZT ?? null) : null,
       interactionRef: request.interactionRef,
       reason: request.reason,
       executedAt: new Date(),
@@ -61,8 +65,16 @@ export class TokenExtensionTool {
   }
 
   private isWithinAuthority(req: ExtensionRequest, auth: TierAuthority): boolean {
-    if (req.action === 'EXPIRY_EXTENSION' && (req.expiryExtensionDays ?? 0) > auth.maxExpiryExtensionDays) return false;
-    if (req.action === 'GOODWILL_CREDIT' && (req.goodwillCreditCZT ?? 0) > auth.maxGoodwillCreditCZT) return false;
+    if (
+      req.action === 'EXPIRY_EXTENSION' &&
+      (req.expiryExtensionDays ?? 0) > auth.maxExpiryExtensionDays
+    )
+      return false;
+    if (
+      req.action === 'GOODWILL_CREDIT' &&
+      (req.goodwillCreditCZT ?? 0) > auth.maxGoodwillCreditCZT
+    )
+      return false;
     return true;
   }
 }

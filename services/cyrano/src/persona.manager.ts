@@ -35,9 +35,7 @@ export class PersonaManager {
       );
     }
     if (!persona.active) {
-      throw new Error(
-        `PersonaManager: persona ${args.persona_id} is not marked active`,
-      );
+      throw new Error(`PersonaManager: persona ${args.persona_id} is not marked active`);
     }
     this.activeBySession.set(args.session_id, args.persona_id);
     this.logger.log('PersonaManager: persona activated for session', {

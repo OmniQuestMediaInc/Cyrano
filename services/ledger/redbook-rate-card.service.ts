@@ -2,10 +2,7 @@
 // Pure lookup layer over REDBOOK_RATE_CARDS + DIAMOND_TIER (governance.config).
 // No hardcoded prices — every value resolves through the governance constant.
 
-import {
-  DIAMOND_TIER,
-  REDBOOK_RATE_CARDS,
-} from '../core-api/src/config/governance.config';
+import { DIAMOND_TIER, REDBOOK_RATE_CARDS } from '../core-api/src/config/governance.config';
 import type { HeatLevel, UserType, RateCardTier } from './types';
 import { GovernanceConfig } from '../core-api/src/governance/governance.config';
 
@@ -20,7 +17,7 @@ export interface BundleQuote {
 
 export interface DiamondQuote {
   tokens: number;
-  baseRate: number;       // USD/token from volume bracket
+  baseRate: number; // USD/token from volume bracket
   velocityMultiplier: number;
   effectivePayoutPerToken: number;
   totalUsd: number;
@@ -98,10 +95,11 @@ export class RedbookRateCardService {
    * Resolve the live creator payout rate for a session close.
    * Room-Heat wins unless the Diamond floor ($0.080) is higher.
    */
-  resolveCreatorPayoutRate(args: {
-    heatScore: number;
-    diamondFloorActive: boolean;
-  }): { level: HeatLevel; ratePerToken: number; appliedFloor: boolean } {
+  resolveCreatorPayoutRate(args: { heatScore: number; diamondFloorActive: boolean }): {
+    level: HeatLevel;
+    ratePerToken: number;
+    appliedFloor: boolean;
+  } {
     const live = resolveHeatRate(args.heatScore);
     const floor = GovernanceConfig.RATE_DIAMOND_FLOOR.toNumber();
     if (args.diamondFloorActive && live.ratePerToken < floor) {
@@ -117,7 +115,11 @@ export class RedbookRateCardService {
    * pricing now resolves through services/bijou/PassPricingService against
    * the venue-pricing constant (still denominated in CZT).
    */
-  listTeaseRegularBundles(): ReadonlyArray<{ tokens: number; guest_usd: number; member_usd: number }> {
+  listTeaseRegularBundles(): ReadonlyArray<{
+    tokens: number;
+    guest_usd: number;
+    member_usd: number;
+  }> {
     return REDBOOK_RATE_CARDS.TEASE_REGULAR;
   }
 

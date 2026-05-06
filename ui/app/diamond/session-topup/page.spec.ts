@@ -35,9 +35,27 @@ const SKU_NARRATIVE: TopUpSku = {
 };
 
 const BUCKETS: TopUpWalletBucketRow[] = [
-  { bucket: 'purchased', balance_tokens: 500, spend_priority: 1, label: 'Purchased tokens', sufficient: true },
-  { bucket: 'membership', balance_tokens: 100, spend_priority: 2, label: 'Membership tokens', sufficient: true },
-  { bucket: 'bonus', balance_tokens: 20, spend_priority: 3, label: 'Bonus tokens', sufficient: false },
+  {
+    bucket: 'purchased',
+    balance_tokens: 500,
+    spend_priority: 1,
+    label: 'Purchased tokens',
+    sufficient: true,
+  },
+  {
+    bucket: 'membership',
+    balance_tokens: 100,
+    spend_priority: 2,
+    label: 'Membership tokens',
+    sufficient: true,
+  },
+  {
+    bucket: 'bonus',
+    balance_tokens: 20,
+    spend_priority: 3,
+    label: 'Bonus tokens',
+    sufficient: false,
+  },
 ];
 
 const BASE_INPUTS: SessionTopUpPageInputs = {
@@ -164,8 +182,8 @@ describe('renderSessionTopUpPage', () => {
   it('disables Purchase & Resume when bucket has insufficient balance', () => {
     const { view } = renderSessionTopUpPage({
       ...BASE_INPUTS,
-      selected_sku_id: 'sku_time_30',   // costs 150 tokens
-      selected_bucket: 'bonus',          // only 20 tokens
+      selected_sku_id: 'sku_time_30', // costs 150 tokens
+      selected_bucket: 'bonus', // only 20 tokens
     });
     expect(view.can_purchase).toBe(false);
   });

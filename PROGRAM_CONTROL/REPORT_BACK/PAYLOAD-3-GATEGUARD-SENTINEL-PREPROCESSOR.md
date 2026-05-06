@@ -154,23 +154,23 @@ hash_current = SHA256(hash_prior || canonical_json(payload))
 
 ## Validation Checks
 
-| # | Check | Result |
-|---|-------|--------|
-| 1 | New Prisma models present & append-only | PASS |
-| 2 | Scorer produces `APPROVE` on clean VERIFIED-AV purchase | PASS |
-| 3 | Chargeback auto-bar → `HUMAN_ESCALATE` + HCZ NATS emit | PASS |
-| 4 | `PENDING` AV → `COOLDOWN` | PASS |
-| 5 | Federated ban → `HARD_DECLINE` | PASS |
-| 6 | Idempotency — repeat evaluation no-ops | PASS |
-| 7 | Hash chain links genesis → first log row | PASS |
-| 8 | Hash chain links AV callback to same transaction | PASS |
-| 9 | Middleware: 402 on HARD_DECLINE, 409 on COOLDOWN | PASS |
-| 10 | Middleware: 400 on malformed input | PASS |
-| 11 | Middleware: header fallback for missing body fields | PASS |
-| 12 | `yarn typecheck` | PASS (0 errors) |
-| 13 | `yarn typecheck:api` | PASS |
-| 14 | `yarn lint` | PASS (0 warnings, --max-warnings 0) |
-| 15 | `yarn test` — GateGuard suites | 50/50 PASS |
+| #   | Check                                                   | Result                              |
+| --- | ------------------------------------------------------- | ----------------------------------- |
+| 1   | New Prisma models present & append-only                 | PASS                                |
+| 2   | Scorer produces `APPROVE` on clean VERIFIED-AV purchase | PASS                                |
+| 3   | Chargeback auto-bar → `HUMAN_ESCALATE` + HCZ NATS emit  | PASS                                |
+| 4   | `PENDING` AV → `COOLDOWN`                               | PASS                                |
+| 5   | Federated ban → `HARD_DECLINE`                          | PASS                                |
+| 6   | Idempotency — repeat evaluation no-ops                  | PASS                                |
+| 7   | Hash chain links genesis → first log row                | PASS                                |
+| 8   | Hash chain links AV callback to same transaction        | PASS                                |
+| 9   | Middleware: 402 on HARD_DECLINE, 409 on COOLDOWN        | PASS                                |
+| 10  | Middleware: 400 on malformed input                      | PASS                                |
+| 11  | Middleware: header fallback for missing body fields     | PASS                                |
+| 12  | `yarn typecheck`                                        | PASS (0 errors)                     |
+| 13  | `yarn typecheck:api`                                    | PASS                                |
+| 14  | `yarn lint`                                             | PASS (0 warnings, --max-warnings 0) |
+| 15  | `yarn test` — GateGuard suites                          | 50/50 PASS                          |
 
 Note: one pre-existing failure in `tests/integration/ledger-service.spec.ts`
 (`TokenType.REGULAR` was removed by an earlier token-retirement commit —

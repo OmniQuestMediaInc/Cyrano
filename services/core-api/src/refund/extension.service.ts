@@ -39,13 +39,13 @@ const RULE_ID = 'EXTENSION_SERVICE_v1';
  */
 export const EXTENSION_LIMITS = {
   TIER_2_MAX_EXTENSION_DAYS: Math.floor(RECOVERY_ENGINE.EXTENSION_GRANT_DAYS / 2),
-  TIER_2_MAX_GOODWILL_CZT:   50,
+  TIER_2_MAX_GOODWILL_CZT: 50,
   TIER_3_MAX_EXTENSION_DAYS: RECOVERY_ENGINE.EXTENSION_GRANT_DAYS,
-  TIER_3_MAX_GOODWILL_CZT:   500,
+  TIER_3_MAX_GOODWILL_CZT: 500,
 
   // Actions above these values are flagged for CEO review regardless of tier.
-  CEO_REVIEW_GOODWILL_CZT_THRESHOLD:       100,
-  CEO_REVIEW_EXTENSION_DAYS_THRESHOLD:     RECOVERY_ENGINE.EXTENSION_GRANT_DAYS,
+  CEO_REVIEW_GOODWILL_CZT_THRESHOLD: 100,
+  CEO_REVIEW_EXTENSION_DAYS_THRESHOLD: RECOVERY_ENGINE.EXTENSION_GRANT_DAYS,
 } as const;
 
 /**
@@ -53,10 +53,10 @@ export const EXTENSION_LIMITS = {
  * Revisions require a GOV: commit.
  */
 export const FRAUD_THRESHOLDS = {
-  MONITOR:            25,
-  BLOCK_HIGH_VALUE:   50,
-  FLAG_HCZ:           75,
-  CRITICAL:           90,
+  MONITOR: 25,
+  BLOCK_HIGH_VALUE: 50,
+  FLAG_HCZ: 75,
+  CRITICAL: 90,
 } as const;
 
 @Injectable()
@@ -138,14 +138,12 @@ export class ExtensionService {
    * Callers should pass all known signal strings; the scorer weights presence,
    * not severity of individual triggers.
    */
-  evaluateFriendlyFraudSignal(
-    guestId: string,
-    triggers: string[],
-  ): FriendlyFraudSignal {
+  evaluateFriendlyFraudSignal(guestId: string, triggers: string[]): FriendlyFraudSignal {
     const uniqueTriggers = [...new Set(triggers)];
-    const score = uniqueTriggers.length === 0
-      ? 0
-      : Math.min(100, Math.round((uniqueTriggers.length / 10) * 100));
+    const score =
+      uniqueTriggers.length === 0
+        ? 0
+        : Math.min(100, Math.round((uniqueTriggers.length / 10) * 100));
 
     const recommendation = this.resolveRecommendation(score);
 
@@ -261,18 +259,17 @@ export class ExtensionService {
     return false;
   }
 
-  private resolveRecommendation(
-    score: number,
-  ): FriendlyFraudSignal['recommendation'] {
+  private resolveRecommendation(score: number): FriendlyFraudSignal['recommendation'] {
     if (score >= FRAUD_THRESHOLDS.CRITICAL) return 'CRITICAL';
     if (score >= FRAUD_THRESHOLDS.FLAG_HCZ) return 'FLAG_HCZ';
     if (score >= FRAUD_THRESHOLDS.BLOCK_HIGH_VALUE) return 'BLOCK_HIGH_VALUE_PURCHASES';
     return 'MONITOR';
   }
 
-  private resolveRiskTier(
-    score: number,
-  ): { tier: GuestRiskProfile['tier']; recommendedAction: GuestRiskProfile['recommendedAction'] } {
+  private resolveRiskTier(score: number): {
+    tier: GuestRiskProfile['tier'];
+    recommendedAction: GuestRiskProfile['recommendedAction'];
+  } {
     if (score >= FRAUD_THRESHOLDS.FLAG_HCZ) {
       return { tier: 'RED', recommendedAction: 'BLOCK' };
     }

@@ -81,8 +81,7 @@ export class CyranoLayer4TenantStore {
       baa_signed: input.baa_signed ?? false,
       compliance_regime: input.compliance_regime ?? 'NONE',
       content_mode,
-      rate_limit_per_minute:
-        input.rate_limit_per_minute ?? DEFAULT_TENANT_RATE_LIMIT_PER_MINUTE,
+      rate_limit_per_minute: input.rate_limit_per_minute ?? DEFAULT_TENANT_RATE_LIMIT_PER_MINUTE,
       voice_enabled: input.voice_enabled ?? false,
       created_at_utc,
       updated_at_utc: now,

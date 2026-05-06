@@ -25,10 +25,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { CyranoAuthService } from './cyrano-auth.service';
-import {
-  CyranoLayer2ContentMode,
-  CyranoLayer2SessionGranted,
-} from './cyrano-auth.types';
+import { CyranoLayer2ContentMode, CyranoLayer2SessionGranted } from './cyrano-auth.types';
 
 interface EstablishSessionBody {
   content_mode?: CyranoLayer2ContentMode;

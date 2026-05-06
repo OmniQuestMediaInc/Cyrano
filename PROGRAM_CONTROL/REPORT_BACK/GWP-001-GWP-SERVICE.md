@@ -18,15 +18,15 @@
 
 ## Validation Results
 
-| Test | Result |
-|------|--------|
-| `classifyTipperTier(499)` returns `'LOW'` | PASS (code logic verified) |
-| `classifyTipperTier(500)` returns `'MED'` | PASS (code logic verified) |
-| `classifyTipperTier(2000)` returns `'HIGH'` | PASS (code logic verified) |
-| `evaluateOnLogin()` returns `eligible: false` for LOW tier | PASS (code logic verified) |
-| `evaluateOnLogin()` returns `eligible: false` when no offers | PASS (code logic verified) |
-| NATS publish called on eligible offer and on acceptance | PASS (code logic verified) |
-| `npx tsc --noEmit` zero new errors | PASS — only pre-existing module resolution errors (node_modules not installed) |
+| Test                                                         | Result                                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `classifyTipperTier(499)` returns `'LOW'`                    | PASS (code logic verified)                                                     |
+| `classifyTipperTier(500)` returns `'MED'`                    | PASS (code logic verified)                                                     |
+| `classifyTipperTier(2000)` returns `'HIGH'`                  | PASS (code logic verified)                                                     |
+| `evaluateOnLogin()` returns `eligible: false` for LOW tier   | PASS (code logic verified)                                                     |
+| `evaluateOnLogin()` returns `eligible: false` when no offers | PASS (code logic verified)                                                     |
+| NATS publish called on eligible offer and on acceptance      | PASS (code logic verified)                                                     |
+| `npx tsc --noEmit` zero new errors                           | PASS — only pre-existing module resolution errors (node_modules not installed) |
 
 ## NATS Topics Confirmed
 

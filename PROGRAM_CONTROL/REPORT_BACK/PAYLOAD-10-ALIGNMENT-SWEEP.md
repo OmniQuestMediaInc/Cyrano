@@ -36,7 +36,7 @@ PROGRAM_CONTROL/REPORT_BACK/PAYLOAD-10-ALIGNMENT-SWEEP.md  NEW
   `RATE_COLD/RATE_WARM/RATE_HOT/RATE_INFERNO`):
 
   | Tier    | Old threshold (min) | New threshold (min) |
-  |---------|---------------------|---------------------|
+  | ------- | ------------------- | ------------------- |
   | INFERNO | 75 (was BLAZING)    | 86                  |
   | HOT     | 50                  | 61                  |
   | WARM    | 25                  | 34                  |
@@ -87,6 +87,7 @@ PROGRAM_CONTROL/REPORT_BACK/PAYLOAD-10-ALIGNMENT-SWEEP.md  NEW
 ### 6 — Tests Updated
 
 All BLAZING references updated to INFERNO in:
+
 - `tests/integration/creator-control-service.spec.ts` — 3 occurrences + threshold-consistent
   input for "does NOT publish PRICE_NUDGE when HOLD" (tippers_online 25 → 40, ensuring score
   40 ≥ 34 to produce WARM under the new threshold; score 25 < 34 was COLD under new thresholds,
@@ -98,22 +99,22 @@ All BLAZING references updated to INFERNO in:
 
 ## Validation Checks
 
-| # | Check | Result |
-|---|-------|--------|
-| 1 | `yarn lint services/**/*.ts --max-warnings 0` | PASS |
-| 2 | `yarn test` — all suites except pre-existing legacy | 293 passed / 0 failed |
-| 3 | REDBOOK rate cards in governance.config.ts verified | PASS — unchanged; TEASE_REGULAR, TEASE_SHOWZONE, DIAMOND_TIER, VELOCITY_MULTIPLIERS all match REDBOOK |
-| 4 | 70/30 expiry split verified | PASS — EXPIRED_CREATOR_POOL_PCT=0.70, EXPIRED_PLATFORM_PCT=0.30 |
-| 5 | Token Bridge 20% verified | PASS — TOKEN_BRIDGE_BONUS_PCT=0.20 |
-| 6 | 3/5ths Exit 60% refund + 24h lock verified | PASS — THREE_FIFTHS_REFUND_PCT=0.60, THREE_FIFTHS_LOCK_HOURS=24 |
-| 7 | Diamond $49 extension, $79 recovery fees verified | PASS — EXTENSION_FEE_USD=49, RECOVERY_FEE_USD=79 |
-| 8 | Creator payout floors: COLD $0.075, WARM $0.080, HOT $0.085, INFERNO $0.090 | PASS — GovernanceConfig constants unchanged and correct |
-| 9 | Diamond 10K+ bulk floor = $0.080 (RATE_DIAMOND_FLOOR) | PASS — confirmed GovernanceConfig.RATE_DIAMOND_FLOOR = Decimal('0.080') |
-| 10 | 8 Cyrano categories per Business Plan B.3.5 | PASS — CYRANO_CATEGORIES unchanged; all 8 present |
-| 11 | GateGuard Welfare Guardian thresholds: APPROVE <40, COOLDOWN 40-69, HARD_DECLINE 70-89, HUMAN_ESCALATE 90+ | PASS — DECISION_THRESHOLDS unchanged and correct |
-| 12 | HeatTier canonical naming: COLD/WARM/HOT/INFERNO matches DOMAIN_GLOSSARY | PASS — corrected in this payload |
-| 13 | Pre-existing typecheck error (`admin-recovery.controller.ts`) | PRE-EXISTING — confirmed present before any changes; out of scope |
-| 14 | Pre-existing test failure (`ledger-service.spec.ts` TokenType.REGULAR) | PRE-EXISTING — confirmed present before any changes; noted in PAYLOAD 1–3 |
+| #   | Check                                                                                                      | Result                                                                                                |
+| --- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| 1   | `yarn lint services/**/*.ts --max-warnings 0`                                                              | PASS                                                                                                  |
+| 2   | `yarn test` — all suites except pre-existing legacy                                                        | 293 passed / 0 failed                                                                                 |
+| 3   | REDBOOK rate cards in governance.config.ts verified                                                        | PASS — unchanged; TEASE_REGULAR, TEASE_SHOWZONE, DIAMOND_TIER, VELOCITY_MULTIPLIERS all match REDBOOK |
+| 4   | 70/30 expiry split verified                                                                                | PASS — EXPIRED_CREATOR_POOL_PCT=0.70, EXPIRED_PLATFORM_PCT=0.30                                       |
+| 5   | Token Bridge 20% verified                                                                                  | PASS — TOKEN_BRIDGE_BONUS_PCT=0.20                                                                    |
+| 6   | 3/5ths Exit 60% refund + 24h lock verified                                                                 | PASS — THREE_FIFTHS_REFUND_PCT=0.60, THREE_FIFTHS_LOCK_HOURS=24                                       |
+| 7   | Diamond $49 extension, $79 recovery fees verified                                                          | PASS — EXTENSION_FEE_USD=49, RECOVERY_FEE_USD=79                                                      |
+| 8   | Creator payout floors: COLD $0.075, WARM $0.080, HOT $0.085, INFERNO $0.090                                | PASS — GovernanceConfig constants unchanged and correct                                               |
+| 9   | Diamond 10K+ bulk floor = $0.080 (RATE_DIAMOND_FLOOR)                                                      | PASS — confirmed GovernanceConfig.RATE_DIAMOND_FLOOR = Decimal('0.080')                               |
+| 10  | 8 Cyrano categories per Business Plan B.3.5                                                                | PASS — CYRANO_CATEGORIES unchanged; all 8 present                                                     |
+| 11  | GateGuard Welfare Guardian thresholds: APPROVE <40, COOLDOWN 40-69, HARD_DECLINE 70-89, HUMAN_ESCALATE 90+ | PASS — DECISION_THRESHOLDS unchanged and correct                                                      |
+| 12  | HeatTier canonical naming: COLD/WARM/HOT/INFERNO matches DOMAIN_GLOSSARY                                   | PASS — corrected in this payload                                                                      |
+| 13  | Pre-existing typecheck error (`admin-recovery.controller.ts`)                                              | PRE-EXISTING — confirmed present before any changes; out of scope                                     |
+| 14  | Pre-existing test failure (`ledger-service.spec.ts` TokenType.REGULAR)                                     | PRE-EXISTING — confirmed present before any changes; noted in PAYLOAD 1–3                             |
 
 ---
 
@@ -125,18 +126,19 @@ MEMBERSHIP.STIPEND_CZT all use the same RETIRED vocabulary), so changing any one
 others breaks zone access enforcement at runtime. A coordinated mapping update requires a
 CEO-approved transition table.
 
-| Location | Retired names present |
-|----------|-----------------------|
-| `ZONE_MAP` (governance.config.ts) | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND` |
-| `ZONE_ACCESS_TIERS` (governance.config.ts) | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND` |
-| `MEMBERSHIP.TIERS` (governance.config.ts) | `SILVER`, `GOLD`, `PLATINUM`, `DIAMOND` (short-form, non-canonical) |
-| `MEMBERSHIP.STIPEND_CZT` (governance.config.ts) | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND` |
-| `membership.service.ts` fallback | returns `'DAY_PASS'` on no-active-subscription |
-| `zone-access.service.ts` comment | references `DAY_PASS` |
-| `recovery.types.ts WalletSnapshot.tier` | `'DAY_PASS' | 'ANNUAL' | 'OMNIPASS_PLUS' | 'DIAMOND' | string` |
-| `diamond-concierge-service.spec.ts` | `tier: 'OMNIPASS_PLUS'` test fixture |
+| Location                                        | Retired names present                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------- | -------- | --------------- | --------- | ------- |
+| `ZONE_MAP` (governance.config.ts)               | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND`                    |
+| `ZONE_ACCESS_TIERS` (governance.config.ts)      | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND`                    |
+| `MEMBERSHIP.TIERS` (governance.config.ts)       | `SILVER`, `GOLD`, `PLATINUM`, `DIAMOND` (short-form, non-canonical) |
+| `MEMBERSHIP.STIPEND_CZT` (governance.config.ts) | `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND`                    |
+| `membership.service.ts` fallback                | returns `'DAY_PASS'` on no-active-subscription                      |
+| `zone-access.service.ts` comment                | references `DAY_PASS`                                               |
+| `recovery.types.ts WalletSnapshot.tier`         | `'DAY_PASS'                                                         | 'ANNUAL' | 'OMNIPASS_PLUS' | 'DIAMOND' | string` |
+| `diamond-concierge-service.spec.ts`             | `tier: 'OMNIPASS_PLUS'` test fixture                                |
 
 Canonical canonical mapping per DOMAIN_GLOSSARY:
+
 - `DAY_PASS` → `GUEST`
 - `ANNUAL` → `VIP`
 - `OMNIPASS_PLUS` → uncertain (product, not tier; closest is `VIP_SILVER`?)

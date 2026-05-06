@@ -13,13 +13,14 @@ This report answers the four blocking questions from earlier context: which vers
 
 **Delete the FIRST declarations. Keep the SECOND declarations.** All three duplicates resolve the same way.
 
-| Model | Canonical (keep) | Delete | Confidence |
-|---|---|---|---|
-| `FfsSnapshot` | line 1847 | line 1397 | HIGH |
-| `FfsAdaptiveWeights` | line 1868 | line 1418 | HIGH |
-| `SenSyncTierConfig` | line 1895 | line 1438 | HIGH (trivial — only doc-comment style differs) |
+| Model                | Canonical (keep) | Delete    | Confidence                                      |
+| -------------------- | ---------------- | --------- | ----------------------------------------------- |
+| `FfsSnapshot`        | line 1847        | line 1397 | HIGH                                            |
+| `FfsAdaptiveWeights` | line 1868        | line 1418 | HIGH                                            |
+| `SenSyncTierConfig`  | line 1895        | line 1438 | HIGH (trivial — only doc-comment style differs) |
 
 Rationale (in 30 seconds):
+
 - The live migration `20260426000000_ffs_sensync_velocityzone/migration.sql` is the ground truth — it built the actual production tables.
 - The **second declarations** in `prisma/schema.prisma` exactly mirror the migration's `DEFAULT` clauses.
 - The **first declarations** have stale defaults (`FFS_ENGINE_v2`, `ADAPTIVE_INIT`, `FFS_ADAPTIVE_v1`) that **do not appear anywhere in live source code or migrations** — they are orphans.
@@ -80,25 +81,25 @@ Columns identical to both schema declarations; no `DEFAULT` differences.
 
 ### `FfsSnapshot`
 
-| Field | First declaration (line 1397) | Second declaration (line 1847) | **Migration** |
-|---|---|---|---|
-| `rule_applied_id` default | `"FFS_ENGINE_v2"` ❌ | `"FFS_ENGINE_v1"` ✅ | `'FFS_ENGINE_v1'` |
-| Components doc | "HeatScoreComponents" (pre-FFS rename) ❌ | "FfsScoreComponents" (matches FFS naming) ✅ | n/a (no comment) |
+| Field                     | First declaration (line 1397)             | Second declaration (line 1847)               | **Migration**     |
+| ------------------------- | ----------------------------------------- | -------------------------------------------- | ----------------- |
+| `rule_applied_id` default | `"FFS_ENGINE_v2"` ❌                      | `"FFS_ENGINE_v1"` ✅                         | `'FFS_ENGINE_v1'` |
+| Components doc            | "HeatScoreComponents" (pre-FFS rename) ❌ | "FfsScoreComponents" (matches FFS naming) ✅ | n/a (no comment)  |
 
 ### `FfsAdaptiveWeights`
 
-| Field | First declaration (line 1418) | Second declaration (line 1868) | **Migration** |
-|---|---|---|---|
-| `reason_code` default | `"ADAPTIVE_INIT"` ❌ | `"FFS_ADAPTIVE_INIT"` ✅ | `'FFS_ADAPTIVE_INIT'` |
-| `rule_applied_id` default | `"FFS_ADAPTIVE_v1"` ❌ | `"FFS_ENGINE_v1"` ✅ | `'FFS_ENGINE_v1'` |
-| Components doc | "scoring component" | "FFS component" | n/a |
+| Field                     | First declaration (line 1418) | Second declaration (line 1868) | **Migration**         |
+| ------------------------- | ----------------------------- | ------------------------------ | --------------------- |
+| `reason_code` default     | `"ADAPTIVE_INIT"` ❌          | `"FFS_ADAPTIVE_INIT"` ✅       | `'FFS_ADAPTIVE_INIT'` |
+| `rule_applied_id` default | `"FFS_ADAPTIVE_v1"` ❌        | `"FFS_ENGINE_v1"` ✅           | `'FFS_ENGINE_v1'`     |
+| Components doc            | "scoring component"           | "FFS component"                | n/a                   |
 
 ### `SenSyncTierConfig`
 
-| Field | First (line 1438) | Second (line 1895) | Migration |
-|---|---|---|---|
-| Columns | identical | identical | identical |
-| Doc-comment style | `//` | `///` (Prisma rich-doc) | n/a |
+| Field             | First (line 1438) | Second (line 1895)      | Migration |
+| ----------------- | ----------------- | ----------------------- | --------- |
+| Columns           | identical         | identical               | identical |
+| Doc-comment style | `//`              | `///` (Prisma rich-doc) | n/a       |
 
 Either declaration would produce the same DB schema. The second uses Prisma's `///` rich-doc convention (consistent with the rest of the FFS section), so it's the more idiomatic choice.
 
@@ -142,6 +143,7 @@ Exactly the second declaration's default. Zero references to `'ADAPTIVE_INIT'` (
 6. Add `"postinstall": "prisma generate"` to `package.json` so future `yarn install` calls regenerate the client automatically (the original Phase 3b-2 build-pipeline goal).
 
 **Expected end state:**
+
 - TSC: 9 → 0 (all `PRISMA_CLIENT_MISSING` cleared)
 - Lint: 0 → 0
 - Jest: 31/31 suites passing, 395/395 tests passing
@@ -153,11 +155,12 @@ Exactly the second declaration's default. Zero references to `'ADAPTIVE_INIT'` (
 ## 6 — Migration safety check
 
 The migration `20260426000000_ffs_sensync_velocityzone` already ran (the tables exist with `'FFS_ENGINE_v1'` and `'FFS_ADAPTIVE_INIT'` defaults). Deleting the first declarations from `schema.prisma` and keeping the second:
+
 - Does **not** trigger any migration drift (the `prisma generate` output reflects the schema; the actual DB defaults come from the migration that already ran).
 - Does **not** require a new migration (no column or default change is being requested).
 - Is purely a Prisma client regeneration — a build-pipeline concern, not a schema-evolution concern.
 
-If you ever wanted to switch the runtime default to something else, that *would* require a new migration with `ALTER TABLE ... ALTER COLUMN ... SET DEFAULT ...`. This PR does not do that.
+If you ever wanted to switch the runtime default to something else, that _would_ require a new migration with `ALTER TABLE ... ALTER COLUMN ... SET DEFAULT ...`. This PR does not do that.
 
 ---
 
@@ -175,12 +178,12 @@ Investigation only. Awaiting authorization to execute the actual fix.
 
 ## 8 — Risk assessment for the fix PR
 
-| Risk | Likelihood | Mitigation |
-|---|---|---|
-| Schema-vs-migration drift after dedup | NONE | The kept declarations *exactly* match the migration |
-| Unexpected TSC errors after Prisma client regen | LOW | If Prisma exports differ from current `any` typings, surface in the same PR's verification step; new errors surface masked drift, not introduce it |
-| Existing data inconsistency | NONE | Neither default change is being made; existing rows retain their stored values |
-| Production code broken by client regen | LOW | The 9 currently-failing TSC sites all import enum/model types by name; once Prisma exports them, the imports resolve |
-| Broken jest after regen | LOW | All currently-failing TSC sites are in production code paths exercised by tests already passing in TSC_CASCADE-cleared state — they were already importing these enums and the imports just need the regenerated client |
+| Risk                                            | Likelihood | Mitigation                                                                                                                                                                                                              |
+| ----------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Schema-vs-migration drift after dedup           | NONE       | The kept declarations _exactly_ match the migration                                                                                                                                                                     |
+| Unexpected TSC errors after Prisma client regen | LOW        | If Prisma exports differ from current `any` typings, surface in the same PR's verification step; new errors surface masked drift, not introduce it                                                                      |
+| Existing data inconsistency                     | NONE       | Neither default change is being made; existing rows retain their stored values                                                                                                                                          |
+| Production code broken by client regen          | LOW        | The 9 currently-failing TSC sites all import enum/model types by name; once Prisma exports them, the imports resolve                                                                                                    |
+| Broken jest after regen                         | LOW        | All currently-failing TSC sites are in production code paths exercised by tests already passing in TSC_CASCADE-cleared state — they were already importing these enums and the imports just need the regenerated client |
 
 Single-concern PR. ~50 lines of `schema.prisma` deletion + `package.json` postinstall + verification output. Lowest-risk way to clear the remaining 9 TSC errors.

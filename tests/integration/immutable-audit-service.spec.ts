@@ -22,9 +22,7 @@ function buildMemoryPrisma() {
   return {
     immutableAuditEvent: {
       findUnique: jest.fn(async ({ where }: { where: Row }) => {
-        return store.find(
-          (r) => r.correlation_id === where.correlation_id,
-        ) ?? null;
+        return store.find((r) => r.correlation_id === where.correlation_id) ?? null;
       }),
       findFirst: jest.fn(async (args?: { orderBy?: Row }) => {
         void args;
@@ -32,35 +30,31 @@ function buildMemoryPrisma() {
         return store
           .slice()
           .sort(
-            (a, b) =>
-              Number(b.sequence_number as bigint) -
-              Number(a.sequence_number as bigint),
+            (a, b) => Number(b.sequence_number as bigint) - Number(a.sequence_number as bigint),
           )[0];
       }),
-      findMany: jest.fn(async (args?: { orderBy?: Row; take?: number; where?: Row; select?: Row }) => {
-        let out = store.slice();
-        if (args?.where) {
-          const whereAny = args.where as Record<string, unknown>;
-          const createdAtFilter = whereAny.created_at as
-            | { gte?: Date; lte?: Date }
-            | undefined;
-          if (createdAtFilter) {
-            out = out.filter((r) => {
-              const createdAt = r.created_at as Date;
-              if (createdAtFilter.gte && createdAt < createdAtFilter.gte) return false;
-              if (createdAtFilter.lte && createdAt > createdAtFilter.lte) return false;
-              return true;
-            });
+      findMany: jest.fn(
+        async (args?: { orderBy?: Row; take?: number; where?: Row; select?: Row }) => {
+          let out = store.slice();
+          if (args?.where) {
+            const whereAny = args.where as Record<string, unknown>;
+            const createdAtFilter = whereAny.created_at as { gte?: Date; lte?: Date } | undefined;
+            if (createdAtFilter) {
+              out = out.filter((r) => {
+                const createdAt = r.created_at as Date;
+                if (createdAtFilter.gte && createdAt < createdAtFilter.gte) return false;
+                if (createdAtFilter.lte && createdAt > createdAtFilter.lte) return false;
+                return true;
+              });
+            }
           }
-        }
-        out.sort(
-          (a, b) =>
-            Number(a.sequence_number as bigint) -
-            Number(b.sequence_number as bigint),
-        );
-        if (args?.take) out = out.slice(0, args.take);
-        return out;
-      }),
+          out.sort(
+            (a, b) => Number(a.sequence_number as bigint) - Number(b.sequence_number as bigint),
+          );
+          if (args?.take) out = out.slice(0, args.take);
+          return out;
+        },
+      ),
       create: jest.fn(async ({ data }: { data: Row }) => {
         const row: Row = { ...data, created_at: new Date() };
         if (!row.event_id) row.event_id = `evt_${store.length + 1}`;
@@ -86,15 +80,16 @@ function buildMemoryPrisma() {
             return store
               .slice()
               .sort(
-                (a, b) =>
-                  Number(b.sequence_number as bigint) -
-                  Number(a.sequence_number as bigint),
+                (a, b) => Number(b.sequence_number as bigint) - Number(a.sequence_number as bigint),
               )[0];
           }),
           create: jest.fn(async ({ data }: { data: Row }) => {
             sequenceCounter += 1n;
             const withSequence = { ...data };
-            if (!('sequence_number' in withSequence) || withSequence.sequence_number === undefined) {
+            if (
+              !('sequence_number' in withSequence) ||
+              withSequence.sequence_number === undefined
+            ) {
               withSequence.sequence_number = sequenceCounter;
             } else {
               sequenceCounter =
@@ -147,9 +142,7 @@ describe('ImmutableAuditService', () => {
     expect(result.sequence_number).toBe('1');
 
     const expectedPayloadHash = createHash('sha256')
-      .update(
-        JSON.stringify({ amount_tokens: 100, currency: 'CZT' }),
-      )
+      .update(JSON.stringify({ amount_tokens: 100, currency: 'CZT' }))
       .digest('hex');
     expect(result.payload_hash).toBe(expectedPayloadHash);
 
@@ -272,8 +265,7 @@ describe('ImmutableAuditService', () => {
     });
 
     // Tamper: flip a byte on the first row's hash_current
-    prisma.__internal.store[0].hash_current =
-      'f'.repeat(64);
+    prisma.__internal.store[0].hash_current = 'f'.repeat(64);
 
     const verification = await svc.verifyChain();
     expect(verification.valid).toBe(false);

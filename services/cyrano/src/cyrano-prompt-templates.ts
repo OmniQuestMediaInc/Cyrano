@@ -89,10 +89,8 @@ const FACTORY_SAFETY_TEMPLATES: Partial<Record<CyranoCategory, CyranoPromptTempl
     `[${tone}] Reinforce the shift narrative — restate the production goal and the safety margin.`,
   CAT_CALLBACK: ({ tone }) =>
     `[${tone}] Reference last shift's near-miss and the corrective action taken.`,
-  CAT_RECOVERY: ({ tone }) =>
-    `[${tone}] Halt the line — re-check the lockout/tagout state.`,
-  CAT_SESSION_CLOSE: ({ tone }) =>
-    `[${tone}] Capture the end-of-shift safety report.`,
+  CAT_RECOVERY: ({ tone }) => `[${tone}] Halt the line — re-check the lockout/tagout state.`,
+  CAT_SESSION_CLOSE: ({ tone }) => `[${tone}] Capture the end-of-shift safety report.`,
 };
 
 /**
@@ -109,8 +107,7 @@ const ADULT_DOMAIN_NON_ADULT_OVERLAY: Partial<Record<CyranoCategory, CyranoPromp
     `[${tone}] Keep the flow — ask one open, stream-safe question tied to their last reply.`,
   CAT_NARRATIVE: ({ tone }) =>
     `[${tone}] Reinforce the throughline without intimacy cues — keep the arc story-led.`,
-  CAT_CALLBACK: ({ tone }) =>
-    `[${tone}] Call back a non-intimate detail from the prior session.`,
+  CAT_CALLBACK: ({ tone }) => `[${tone}] Call back a non-intimate detail from the prior session.`,
   CAT_RECOVERY: ({ tone }) =>
     `[${tone}] Soft check-in — invite them to share what they want from the next 5 minutes.`,
   CAT_SESSION_CLOSE: ({ tone }) =>
@@ -124,15 +121,16 @@ const MEDICAL_TEMPLATES: Partial<Record<CyranoCategory, CyranoPromptTemplate>> =
     `[${tone}] Ask one open question to invite the patient's perspective.`,
   CAT_NARRATIVE: ({ tone }) =>
     `[${tone}] Connect the current finding to the patient's stated goal.`,
-  CAT_CALLBACK: ({ tone }) =>
-    `[${tone}] Reference last visit's plan and check adherence.`,
-  CAT_RECOVERY: ({ tone }) =>
-    `[${tone}] Acknowledge difficulty before suggesting the next step.`,
+  CAT_CALLBACK: ({ tone }) => `[${tone}] Reference last visit's plan and check adherence.`,
+  CAT_RECOVERY: ({ tone }) => `[${tone}] Acknowledge difficulty before suggesting the next step.`,
   CAT_SESSION_CLOSE: ({ tone }) =>
     `[${tone}] Summarise the plan and confirm the next-step instructions are understood.`,
 };
 
-const TEMPLATES_BY_DOMAIN: Record<CyranoDomain, Partial<Record<CyranoCategory, CyranoPromptTemplate>>> = {
+const TEMPLATES_BY_DOMAIN: Record<
+  CyranoDomain,
+  Partial<Record<CyranoCategory, CyranoPromptTemplate>>
+> = {
   ADULT_ENTERTAINMENT: ADULT_TEMPLATES,
   TEACHING: TEACHING_TEMPLATES,
   COACHING: COACHING_TEMPLATES,
@@ -230,8 +228,7 @@ const NEUTRAL_FALLBACKS: Record<CyranoCategory, CyranoPromptTemplate> = {
     `[${tone}] Restate the goal of this session in one sentence to anchor the participant.`,
   CAT_CALLBACK: ({ tone }) =>
     `[${tone}] Reference an earlier moment in the session to reinforce continuity.`,
-  CAT_RECOVERY: ({ tone }) =>
-    `[${tone}] Slow the pace and offer the participant space to reset.`,
+  CAT_RECOVERY: ({ tone }) => `[${tone}] Slow the pace and offer the participant space to reset.`,
   CAT_MONETIZATION: ({ tone }) =>
     `[${tone}] Surface the next paid action with a clear, specific call.`,
   CAT_SESSION_CLOSE: ({ tone }) =>
@@ -263,11 +260,7 @@ export function resolveLayer4PromptTemplate(
 
   // ADULT_ENTERTAINMENT in non-adult mode → use the explicit overlay.
   if (key.domain === 'ADULT_ENTERTAINMENT' && key.content_mode === 'non_adult') {
-    return (
-      ADULT_DOMAIN_NON_ADULT_OVERLAY[key.category] ??
-      NEUTRAL_FALLBACKS[key.category] ??
-      null
-    );
+    return ADULT_DOMAIN_NON_ADULT_OVERLAY[key.category] ?? NEUTRAL_FALLBACKS[key.category] ?? null;
   }
 
   // Domain-specific template, then domain-neutral fallback. Adult-only

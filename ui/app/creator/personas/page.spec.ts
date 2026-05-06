@@ -28,7 +28,13 @@ const BASE_INPUTS: PersonaManagementPageInputs = {
   active_tab: 'MY_CUSTOM',
   personas: [
     makePersona({ persona_id: 'p1', display_name: 'Aria', sort_order: 2 }),
-    makePersona({ persona_id: 'p2', display_name: 'Zara', sort_order: 1, published: true, tier_lock: 'HOT' }),
+    makePersona({
+      persona_id: 'p2',
+      display_name: 'Zara',
+      sort_order: 1,
+      published: true,
+      tier_lock: 'HOT',
+    }),
   ],
   generated_at_utc: '2026-04-28T00:00:00Z',
 };

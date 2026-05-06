@@ -12,18 +12,18 @@ Enumerated via `git for-each-ref --sort=-committerdate refs/remotes/origin --for
 
 Note: local clone showed only 2 branches via `for-each-ref`, but `git ls-remote --heads origin` revealed 10 branches total. Below is the full origin list with classification. Stale-candidate threshold per charter: 60+ days without commits AND no open PR.
 
-| Branch | Last commit (approx) | Open PR? | Classification | Notes |
-|--------|---------------------|----------|----------------|-------|
-| `main` | 2026-04-17 | n/a | ACTIVE | Default branch; receives merges. |
-| `claude/continue-cnz-work-001-EJKhg` | 2026-04-23 | #310 (this charter run) | ACTIVE | Current working branch. |
-| `claude/audit-schema-integrity-EUzfq` | unknown | unknown | NEEDS-INSPECTION | Prior Claude session; depending on PR state may be stale. |
-| `OmniQuestMediaInc-patch-1` | unknown | unknown | NEEDS-INSPECTION | Patch branches are often quick-edits — may be merged or abandoned. |
-| `OmniQuestMediaInc-patch-5` | unknown | unknown | NEEDS-INSPECTION | Same. |
-| `OmniQuestMediaInc-patch-6` | unknown | unknown | NEEDS-INSPECTION | Same. |
-| `copilot/cnz-work-001-a004-land-ghost-alpha` | post-2026-04-21 (charter epoch) | unknown | LIKELY-MERGED | A004 is DONE per charter; if PR landed, branch can be deleted. |
-| `copilot/create-standing-prompt-file` | unknown | unknown | LIKELY-MERGED | `CNZ-CLAUDE-CODE-STANDING-PROMPT.md` exists in QUEUE — branch likely served its purpose. |
-| `copilot/rrr-gov-002-a005-your-assignment` | unknown | unknown | NEEDS-INSPECTION | A005 is now DONE in this charter run via direct execution; this branch may be obsolete. |
-| `copilot/sync-yarn-lockfile` | unknown | unknown | NEEDS-INSPECTION | Yarn lockfile is current per A007. |
+| Branch                                       | Last commit (approx)            | Open PR?                | Classification   | Notes                                                                                    |
+| -------------------------------------------- | ------------------------------- | ----------------------- | ---------------- | ---------------------------------------------------------------------------------------- |
+| `main`                                       | 2026-04-17                      | n/a                     | ACTIVE           | Default branch; receives merges.                                                         |
+| `claude/continue-cnz-work-001-EJKhg`         | 2026-04-23                      | #310 (this charter run) | ACTIVE           | Current working branch.                                                                  |
+| `claude/audit-schema-integrity-EUzfq`        | unknown                         | unknown                 | NEEDS-INSPECTION | Prior Claude session; depending on PR state may be stale.                                |
+| `OmniQuestMediaInc-patch-1`                  | unknown                         | unknown                 | NEEDS-INSPECTION | Patch branches are often quick-edits — may be merged or abandoned.                       |
+| `OmniQuestMediaInc-patch-5`                  | unknown                         | unknown                 | NEEDS-INSPECTION | Same.                                                                                    |
+| `OmniQuestMediaInc-patch-6`                  | unknown                         | unknown                 | NEEDS-INSPECTION | Same.                                                                                    |
+| `copilot/cnz-work-001-a004-land-ghost-alpha` | post-2026-04-21 (charter epoch) | unknown                 | LIKELY-MERGED    | A004 is DONE per charter; if PR landed, branch can be deleted.                           |
+| `copilot/create-standing-prompt-file`        | unknown                         | unknown                 | LIKELY-MERGED    | `CNZ-CLAUDE-CODE-STANDING-PROMPT.md` exists in QUEUE — branch likely served its purpose. |
+| `copilot/rrr-gov-002-a005-your-assignment`   | unknown                         | unknown                 | NEEDS-INSPECTION | A005 is now DONE in this charter run via direct execution; this branch may be obsolete.  |
+| `copilot/sync-yarn-lockfile`                 | unknown                         | unknown                 | NEEDS-INSPECTION | Yarn lockfile is current per A007.                                                       |
 
 Precise commit dates per branch were not fetched in this pass (would require `git fetch --all` of all remote refs into local clone — out of scope for a report-only task and increases context usage). Recommend the deletion-authorized follow-up include `git fetch origin <branch>:<branch>` per branch + `git log -1 --format='%cd'` for exact dates.
 

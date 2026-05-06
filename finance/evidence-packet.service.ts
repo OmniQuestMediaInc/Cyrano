@@ -61,15 +61,11 @@ export class EvidencePacketGenerator {
     agreementRecord: AgreementAcknowledgement,
   ): EvidencePacket {
     if (!disputeId || !userId) {
-      throw new Error(
-        'EvidencePacketGenerator: disputeId and userId are required.',
-      );
+      throw new Error('EvidencePacketGenerator: disputeId and userId are required.');
     }
 
     if (!ledgerTrail || ledgerTrail.length === 0) {
-      throw new Error(
-        'EvidencePacketGenerator: ledgerTrail must contain at least one entry.',
-      );
+      throw new Error('EvidencePacketGenerator: ledgerTrail must contain at least one entry.');
     }
 
     if (!agreementRecord || !agreementRecord.agreementVersion) {
@@ -93,9 +89,7 @@ export class EvidencePacketGenerator {
       })),
       salesFinalAgreement: agreementRecord,
     });
-    const integrityChecksum = createHash('sha512')
-      .update(checksumPayload)
-      .digest('hex');
+    const integrityChecksum = createHash('sha512').update(checksumPayload).digest('hex');
 
     return {
       packetId,

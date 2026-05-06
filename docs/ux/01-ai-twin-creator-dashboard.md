@@ -9,13 +9,13 @@
 
 ## API / Presenter Binding
 
-| Operation | Endpoint | Type file |
-|---|---|---|
-| Create twin record | `POST /cyrano/ai-twin` | `services/ai-twin/src/ai-twin.types.ts` → `CreateTwinRequest` |
-| Upload photo | `POST /cyrano/ai-twin/:id/photos` | `PhotoUploadResult` |
-| Start training | `POST /cyrano/ai-twin/:id/train` | `TrainingJobPayload` |
-| Poll / receive status | NATS: `cyrano.twin.training.complete`, `cyrano.twin.training.failed` | `TrainingJobResult` |
-| List twins | `GET /cyrano/ai-twin` | `TwinSummary[]` |
+| Operation             | Endpoint                                                             | Type file                                                     |
+| --------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Create twin record    | `POST /cyrano/ai-twin`                                               | `services/ai-twin/src/ai-twin.types.ts` → `CreateTwinRequest` |
+| Upload photo          | `POST /cyrano/ai-twin/:id/photos`                                    | `PhotoUploadResult`                                           |
+| Start training        | `POST /cyrano/ai-twin/:id/train`                                     | `TrainingJobPayload`                                          |
+| Poll / receive status | NATS: `cyrano.twin.training.complete`, `cyrano.twin.training.failed` | `TrainingJobResult`                                           |
+| List twins            | `GET /cyrano/ai-twin`                                                | `TwinSummary[]`                                               |
 
 GateGuard AV check is required on every photo upload (`reason_code: GATEGUARD_AV_REQUIRED`).
 
@@ -133,11 +133,11 @@ reason_code: TWIN_TRAINING_FAILED
 
 ## Compliance
 
-| Layer | Trigger | Action |
-|---|---|---|
-| GateGuard AV | Photo upload | `ComplianceOverlay` — AV flow; blocks upload until resolved |
-| Bill 149 | Publish step | Consent checkbox required; blocks publish action |
-| Welfare Guardian | FFS INFERNO band | `SOFT_NUDGE` banner; does not block training wizard |
+| Layer            | Trigger          | Action                                                      |
+| ---------------- | ---------------- | ----------------------------------------------------------- |
+| GateGuard AV     | Photo upload     | `ComplianceOverlay` — AV flow; blocks upload until resolved |
+| Bill 149         | Publish step     | Consent checkbox required; blocks publish action            |
+| Welfare Guardian | FFS INFERNO band | `SOFT_NUDGE` banner; does not block training wizard         |
 
 ---
 
@@ -154,5 +154,5 @@ Error:   Training failed — please retry or contact support (ref: {correlation_
 
 ---
 
-*Binding: `services/ai-twin/src/ai-twin.types.ts` · `apps/cyrano-standalone/app/ai-twin/page.tsx` ·
-`apps/cyrano-standalone/components/AITwinCreator/AITwinCreator.tsx`*
+_Binding: `services/ai-twin/src/ai-twin.types.ts` · `apps/cyrano-standalone/app/ai-twin/page.tsx` ·
+`apps/cyrano-standalone/components/AITwinCreator/AITwinCreator.tsx`_

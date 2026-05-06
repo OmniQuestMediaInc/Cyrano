@@ -1,4 +1,5 @@
 # DIRECTIVE: CHORE-PIPELINE-004
+
 # Create docs/REQUIREMENTS_MASTER.md — Live Requirements Registry
 
 **Directive ID:** CHORE-PIPELINE-004

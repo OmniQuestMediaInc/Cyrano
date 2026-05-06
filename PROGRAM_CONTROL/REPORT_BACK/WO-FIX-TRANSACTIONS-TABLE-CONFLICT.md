@@ -11,6 +11,7 @@
 incompatible with the `idx_transactions_user_id` index).
 
 The leftover lines were:
+
 ```
 -- PURPOSE: Tracks every single movement of value between users.
 -- MUTATION POLICY: INSERT ONLY. No UPDATE. No DELETE. Ever.

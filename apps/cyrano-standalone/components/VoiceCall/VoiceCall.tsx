@@ -96,11 +96,15 @@ export function VoiceCall({ voiceCloneId, characterName }: VoiceCallProps) {
         </div>
 
         {callState === 'IDLE' && (
-          <button style={styles.callBtn} onClick={startCall}>📞 Start Voice Call</button>
+          <button style={styles.callBtn} onClick={startCall}>
+            📞 Start Voice Call
+          </button>
         )}
 
         {(callState === 'CONNECTED' || callState === 'SPEAKING') && (
-          <button style={styles.endBtn} onClick={endCall}>🔴 End Call</button>
+          <button style={styles.endBtn} onClick={endCall}>
+            🔴 End Call
+          </button>
         )}
       </div>
 
@@ -142,16 +146,74 @@ export function VoiceCall({ voiceCloneId, characterName }: VoiceCallProps) {
 
 const styles = {
   container: { maxWidth: 480, margin: '0 auto', padding: 32, fontFamily: 'system-ui, sans-serif' },
-  callCard: { background: '#1a1a2e', color: '#fff', borderRadius: 16, padding: 32, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 12 },
-  avatar: { width: 72, height: 72, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 },
+  callCard: {
+    background: '#1a1a2e',
+    color: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    gap: 12,
+  },
+  avatar: {
+    width: 72,
+    height: 72,
+    borderRadius: '50%',
+    background: 'rgba(255,255,255,0.15)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 32,
+  },
   characterName: { fontSize: 22, fontWeight: 700 },
   callStatus: { fontSize: 14, opacity: 0.7 },
-  callBtn: { background: '#22c55e', color: '#fff', border: 'none', borderRadius: 50, padding: '12px 28px', fontSize: 16, cursor: 'pointer', marginTop: 8 },
-  endBtn: { background: '#ef4444', color: '#fff', border: 'none', borderRadius: 50, padding: '12px 28px', fontSize: 16, cursor: 'pointer', marginTop: 8 },
+  callBtn: {
+    background: '#22c55e',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 50,
+    padding: '12px 28px',
+    fontSize: 16,
+    cursor: 'pointer',
+    marginTop: 8,
+  },
+  endBtn: {
+    background: '#ef4444',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 50,
+    padding: '12px 28px',
+    fontSize: 16,
+    cursor: 'pointer',
+    marginTop: 8,
+  },
   inputArea: { display: 'flex', gap: 8, marginTop: 20 },
-  input: { flex: 1, padding: '10px 14px', border: '1px solid #ccc', borderRadius: 8, fontSize: 15, fontFamily: 'inherit' },
-  sendBtn: { background: '#1a1a2e', color: '#fff', border: 'none', borderRadius: 8, padding: '0 18px', fontSize: 15, cursor: 'pointer' },
-  error: { background: '#fee', color: '#900', padding: '8px 12px', borderRadius: 4, marginTop: 12, fontSize: 13 },
+  input: {
+    flex: 1,
+    padding: '10px 14px',
+    border: '1px solid #ccc',
+    borderRadius: 8,
+    fontSize: 15,
+    fontFamily: 'inherit',
+  },
+  sendBtn: {
+    background: '#1a1a2e',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 8,
+    padding: '0 18px',
+    fontSize: 15,
+    cursor: 'pointer',
+  },
+  error: {
+    background: '#fee',
+    color: '#900',
+    padding: '8px 12px',
+    borderRadius: 4,
+    marginTop: 12,
+    fontSize: 13,
+  },
   transcript: { marginTop: 24, padding: 16, background: '#f5f5f5', borderRadius: 8 },
   transcriptLine: { fontSize: 14, marginBottom: 6, lineHeight: 1.5 },
 };

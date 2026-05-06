@@ -18,22 +18,10 @@
 // same correlation_id and short-circuits at LedgerService.findExistingSpend.
 
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import {
-  GAMIFICATION,
-} from '../../../core-api/src/config/governance.config';
-import {
-  GameEngineService,
-  type GameType,
-} from '../../../core-api/src/games/game-engine.service';
-import {
-  cryptoIntRng,
-  selectWeighted,
-  type IntRng,
-} from '../internal/weighted-selector';
-import type {
-  GameSessionRecord,
-  GameSessionRepository,
-} from './game-session.repository';
+import { GAMIFICATION } from '../../../core-api/src/config/governance.config';
+import { GameEngineService, type GameType } from '../../../core-api/src/games/game-engine.service';
+import { cryptoIntRng, selectWeighted, type IntRng } from '../internal/weighted-selector';
+import type { GameSessionRecord, GameSessionRepository } from './game-session.repository';
 import type { InitiatePlayDto, PlayResponseDto } from '../dto/gamification.dto';
 import type { PlayRecord, PrizePool, PrizePoolEntry } from '../types/gamification.types';
 import { CooldownService } from './cooldown.service';

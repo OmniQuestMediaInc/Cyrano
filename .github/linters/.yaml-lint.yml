@@ -7,7 +7,7 @@ extends: default
 rules:
   # GitHub Actions' top-level `on:` collides with yamllint's truthy rule.
   truthy:
-    allowed-values: ["true", "false"]
+    allowed-values: ['true', 'false']
     check-keys: false
 
   # Workflow files routinely exceed 80 chars (expressions, URLs, run: scripts).

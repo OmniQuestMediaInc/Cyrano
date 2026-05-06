@@ -31,13 +31,13 @@ export const RBAC_SERVICE_RULE_ID = 'RBAC_SERVICE_v1';
  *   - Geo block / role management
  */
 const PERMISSION_TO_STEP_UP: Record<string, StepUpAction> = {
-  'refund:override':      'REFUND_OVERRIDE',
-  'suspension:override':  'ACCOUNT_FREEZE',
-  'ncii:suppress':        'CONTENT_DELETION',
-  'legal_hold:trigger':   'TAKEDOWN_SUBMISSION',
-  'geo_block:modify':     'GEO_BLOCK_MODIFICATION',
-  'rate_card:configure':  'PAYOUT_CHANGE',
-  'worm:export':          'WALLET_MODIFICATION',
+  'refund:override': 'REFUND_OVERRIDE',
+  'suspension:override': 'ACCOUNT_FREEZE',
+  'ncii:suppress': 'CONTENT_DELETION',
+  'legal_hold:trigger': 'TAKEDOWN_SUBMISSION',
+  'geo_block:modify': 'GEO_BLOCK_MODIFICATION',
+  'rate_card:configure': 'PAYOUT_CHANGE',
+  'worm:export': 'WALLET_MODIFICATION',
 };
 
 export interface AuthorizeParams {
@@ -117,7 +117,7 @@ export class RbacService {
       correlationId: correlation_id,
       actorId: params.actor_id,
       actorRole: this.mapRoleForAudit(params.actor_role),
-      reasonCode: permitted ? 'RBAC_ALLOW' : failure_reason ?? 'RBAC_DENY',
+      reasonCode: permitted ? 'RBAC_ALLOW' : (failure_reason ?? 'RBAC_DENY'),
       redactedPayload: {
         permission: params.permission,
         required_role: guardResult.required_role,
@@ -168,11 +168,16 @@ export class RbacService {
     role: RbacRole,
   ): 'guest' | 'creator' | 'moderator' | 'compliance' | 'admin' {
     switch (role) {
-      case 'VIEWER':     return 'guest';
-      case 'CREATOR':    return 'creator';
-      case 'MODERATOR':  return 'moderator';
-      case 'COMPLIANCE': return 'compliance';
-      case 'ADMIN':      return 'admin';
+      case 'VIEWER':
+        return 'guest';
+      case 'CREATOR':
+        return 'creator';
+      case 'MODERATOR':
+        return 'moderator';
+      case 'COMPLIANCE':
+        return 'compliance';
+      case 'ADMIN':
+        return 'admin';
     }
   }
 }

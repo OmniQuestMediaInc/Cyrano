@@ -18,9 +18,6 @@ import { PrismaService } from '../../core-api/src/prisma.service';
     ServiceToSaleEmitter,
     ChargebackRepository,
   ],
-  exports: [
-    TokenExtensionTool,
-    GateGuardRiskService,
-  ],
+  exports: [TokenExtensionTool, GateGuardRiskService],
 })
 export class FraudPreventionModule {}

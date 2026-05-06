@@ -41,16 +41,16 @@ Sovereign Compliance-as-Code (CaC) middleware implementing Corpus Appendix J jur
 
 ## Validation Checklist
 
-| Check | Result |
-|-------|--------|
-| `JURISDICTION_RULES_VERSION` constant present and versioned | PASS — `'v1.0.0'` |
-| `resolveRule('CA', 'ON')` returns `ai_disclosure_required: true` | PASS — matches ON rule |
-| `resolveRule('CA', undefined)` returns `age_assurance_method: 'RELIABLE_ESTIMATION'` | PASS — matches CA national rule |
-| `resolveRule('XX', undefined)` returns DEFAULT rule | PASS — falls through to DEFAULT |
-| `X-AI-Disclosure` header set when `ai_disclosure_required: true` | PASS — set in middleware |
-| `X-Age-Assurance-Required` header set with method | PASS — set in middleware |
-| `npx tsc --noEmit` clean (no new errors) | PASS — only pre-existing module resolution errors |
-| Logger instance included | PASS — `new Logger(SovereignCaCMiddleware.name)` |
+| Check                                                                                | Result                                            |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `JURISDICTION_RULES_VERSION` constant present and versioned                          | PASS — `'v1.0.0'`                                 |
+| `resolveRule('CA', 'ON')` returns `ai_disclosure_required: true`                     | PASS — matches ON rule                            |
+| `resolveRule('CA', undefined)` returns `age_assurance_method: 'RELIABLE_ESTIMATION'` | PASS — matches CA national rule                   |
+| `resolveRule('XX', undefined)` returns DEFAULT rule                                  | PASS — falls through to DEFAULT                   |
+| `X-AI-Disclosure` header set when `ai_disclosure_required: true`                     | PASS — set in middleware                          |
+| `X-Age-Assurance-Required` header set with method                                    | PASS — set in middleware                          |
+| `npx tsc --noEmit` clean (no new errors)                                             | PASS — only pre-existing module resolution errors |
+| Logger instance included                                                             | PASS — `new Logger(SovereignCaCMiddleware.name)`  |
 
 ---
 

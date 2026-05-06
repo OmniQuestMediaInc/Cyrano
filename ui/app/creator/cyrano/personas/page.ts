@@ -16,14 +16,14 @@ import { THEME } from '../../../../config/theme';
 import { el, RenderElement } from '../../../../components/render-plan';
 import type {
   CyranoPersonaCard,
+  CyranoPersonaManagementTab,
   PersonaManagementPageInputs,
   PersonaManagementPageView,
-  PersonaManagementTab,
-} from '../../../../types/cyrano-persona-contracts';
+} from '../../../../types/cyrano-persona-management-contracts';
 
 export const PERSONA_MANAGEMENT_PAGE_RULE_ID = 'PERSONA_MANAGEMENT_PAGE_v1';
 
-const TAB_LABELS: Record<PersonaManagementTab, string> = {
+const TAB_LABELS: Record<CyranoPersonaManagementTab, string> = {
   global: 'Global',
   template: 'Templates',
   custom: 'My Custom',
@@ -107,8 +107,11 @@ function renderHeader(): RenderElement {
   );
 }
 
-function renderTabs(activeTab: PersonaManagementTab, view: PersonaManagementPageView): RenderElement {
-  const tabs: PersonaManagementTab[] = ['global', 'template', 'custom'];
+function renderTabs(
+  activeTab: CyranoPersonaManagementTab,
+  view: PersonaManagementPageView,
+): RenderElement {
+  const tabs: CyranoPersonaManagementTab[] = ['global', 'template', 'custom'];
   return el(
     'nav',
     {
@@ -121,10 +124,7 @@ function renderTabs(activeTab: PersonaManagementTab, view: PersonaManagementPage
         'button',
         {
           test_id: `persona-management-tab-${tab}`,
-          classes: [
-            'cnz-tab',
-            tab === activeTab ? 'cnz-tab--active' : '',
-          ],
+          classes: ['cnz-tab', tab === activeTab ? 'cnz-tab--active' : ''],
           aria: {
             role: 'tab',
             'aria-selected': String(tab === activeTab),
@@ -141,7 +141,7 @@ function renderTabs(activeTab: PersonaManagementTab, view: PersonaManagementPage
   );
 }
 
-function tabCount(tab: PersonaManagementTab, view: PersonaManagementPageView): number {
+function tabCount(tab: CyranoPersonaManagementTab, view: PersonaManagementPageView): number {
   switch (tab) {
     case 'global':
       return view.total_global;
@@ -167,11 +167,7 @@ function renderPersonaGrid(personas: CyranoPersonaCard[]): RenderElement {
         ? el('p', { classes: ['cnz-panel--empty'] }, [
             'No personas in this scope. Use the + button to create one.',
           ])
-        : el(
-            'div',
-            { classes: ['cnz-persona-grid'] },
-            personas.map(renderPersonaCard),
-          ),
+        : el('div', { classes: ['cnz-persona-grid'] }, personas.map(renderPersonaCard)),
     ],
   );
 }
@@ -207,77 +203,69 @@ function renderPersonaCard(persona: CyranoPersonaCard): RenderElement {
         ['⠿'],
       ),
       renderPersonaAvatar(persona),
-      el(
-        'div',
-        { classes: ['cnz-persona-card__body'] },
-        [
-          el('strong', { test_id: `persona-card-name-${persona.persona_id}` }, [
-            persona.display_name,
-          ]),
-          el('span', { classes: ['cnz-persona-card__tone'] }, [persona.tone]),
-          persona.tier_lock
-            ? el(
-                'span',
-                {
-                  test_id: `persona-card-tier-lock-${persona.persona_id}`,
-                  classes: ['cnz-persona-card__tier-lock', 'cnz-tier-badge'],
-                  props: { tier_lock: persona.tier_lock },
-                },
-                [`Requires ${persona.tier_lock}`],
-              )
-            : el(
-                'span',
-                {
-                  test_id: `persona-card-tier-lock-${persona.persona_id}`,
-                  classes: ['cnz-persona-card__tier-lock', 'cnz-tier-badge--open'],
-                },
-                ['All VIPs'],
-              ),
-        ],
-      ),
-      el(
-        'footer',
-        { classes: ['cnz-persona-card__actions'] },
-        [
-          el(
-            'button',
-            {
-              test_id: `persona-card-edit-${persona.persona_id}`,
-              classes: ['cnz-button'],
-              on: { click: 'editPersona' },
-              props: { persona_id: persona.persona_id },
-            },
-            ['Edit'],
-          ),
-          el(
-            'button',
-            {
-              test_id: `persona-card-test-chat-${persona.persona_id}`,
-              classes: ['cnz-button'],
-              on: { click: 'testChatPersona' },
-              props: { persona_id: persona.persona_id },
-            },
-            ['Test Chat'],
-          ),
-          el(
-            'button',
-            {
-              test_id: `persona-card-publish-${persona.persona_id}`,
-              classes: [
-                'cnz-button',
-                persona.published ? 'cnz-button--ghost' : 'cnz-button--primary',
-              ],
-              on: { click: 'publishPersona' },
-              props: {
-                persona_id: persona.persona_id,
-                tier_lock: persona.tier_lock,
-                published: persona.published,
+      el('div', { classes: ['cnz-persona-card__body'] }, [
+        el('strong', { test_id: `persona-card-name-${persona.persona_id}` }, [
+          persona.display_name,
+        ]),
+        el('span', { classes: ['cnz-persona-card__tone'] }, [persona.tone]),
+        persona.tier_lock
+          ? el(
+              'span',
+              {
+                test_id: `persona-card-tier-lock-${persona.persona_id}`,
+                classes: ['cnz-persona-card__tier-lock', 'cnz-tier-badge'],
+                props: { tier_lock: persona.tier_lock },
               },
+              [`Requires ${persona.tier_lock}`],
+            )
+          : el(
+              'span',
+              {
+                test_id: `persona-card-tier-lock-${persona.persona_id}`,
+                classes: ['cnz-persona-card__tier-lock', 'cnz-tier-badge--open'],
+              },
+              ['All VIPs'],
+            ),
+      ]),
+      el('footer', { classes: ['cnz-persona-card__actions'] }, [
+        el(
+          'button',
+          {
+            test_id: `persona-card-edit-${persona.persona_id}`,
+            classes: ['cnz-button'],
+            on: { click: 'editPersona' },
+            props: { persona_id: persona.persona_id },
+          },
+          ['Edit'],
+        ),
+        el(
+          'button',
+          {
+            test_id: `persona-card-test-chat-${persona.persona_id}`,
+            classes: ['cnz-button'],
+            on: { click: 'testChatPersona' },
+            props: { persona_id: persona.persona_id },
+          },
+          ['Test Chat'],
+        ),
+        el(
+          'button',
+          {
+            test_id: `persona-card-publish-${persona.persona_id}`,
+            classes: [
+              'cnz-button',
+              persona.published ? 'cnz-button--ghost' : 'cnz-button--primary',
+            ],
+            on: { click: 'publishPersona' },
+            props: {
+              persona_id: persona.persona_id,
+              tier_lock: persona.tier_lock,
+              published: persona.published,
             },
-            [persona.published ? 'Published' : 'Publish to Zone'],
-          ),
-        ],
-      ),
+          },
+          [persona.published ? 'Published' : 'Publish to Zone'],
+        ),
+      ]),
     ],
   );
 }

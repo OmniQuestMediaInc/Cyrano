@@ -1,4 +1,5 @@
 # WO-002 — ZoneBot "Zoey" Scheduler — Report Back
+
 **Agent:** COPILOT
 **Date:** 2026-04-25
 **Branch:** `copilot/hcz-zonebot-installation-payload`
@@ -30,17 +31,19 @@ services/zonebot-scheduler/src/zonebot-scheduler.service.ts       — NEW
 **Migration ID:** `20260425100000_zonebot_scheduler`
 
 ### New columns added to `staff_members`:
-| Column | Type | Default |
-|--------|------|---------|
-| `target_weekly_hours` | INTEGER | 385 (= 38.5h) |
-| `min_weekly_hours` | INTEGER | 360 (= 36.0h) |
-| `jurisdiction` | TEXT | `'ON'` |
-| `birthday` | DATE | NULL |
-| `sick_hours_remaining` | INTEGER | 40 (= 5 days) |
-| `sick_carryover_hours` | INTEGER | 0 |
-| `sick_carryover_expires` | DATE | NULL |
+
+| Column                   | Type    | Default       |
+| ------------------------ | ------- | ------------- |
+| `target_weekly_hours`    | INTEGER | 385 (= 38.5h) |
+| `min_weekly_hours`       | INTEGER | 360 (= 36.0h) |
+| `jurisdiction`           | TEXT    | `'ON'`        |
+| `birthday`               | DATE    | NULL          |
+| `sick_hours_remaining`   | INTEGER | 40 (= 5 days) |
+| `sick_carryover_hours`   | INTEGER | 0             |
+| `sick_carryover_expires` | DATE    | NULL          |
 
 ### New tables created:
+
 - `hcz_shifts` — Zoey-managed shift records
 - `hcz_leave_requests` — Sick/vacation/personal leave
 - `hcz_shift_offers` — Voluntary open-shift offers
@@ -52,6 +55,7 @@ services/zonebot-scheduler/src/zonebot-scheduler.service.ts       — NEW
 - `hcz_budget_forecasts` — Rolling weekly budget projections
 
 ### Skipped from payload (with rationale):
+
 - `ALTER TABLE ZoneCrewMember RENAME TO StaffMember` — table already exists as `staff_members`
 - `ALTER TABLE Shift ADD COLUMN ...` — no `Shift` table; new `hcz_shifts` table created instead
 - `ADD COLUMN employmentType` — conflicts with existing `employment_type` column; see ASSUMPTIONS.md A-003
@@ -99,6 +103,7 @@ the Prisma client with the new models (`HczShift`, `HczLeaveRequest`, etc.).
 ## Open Flags
 
 See `services/zonebot-scheduler/FLAGS.md` for 6 open business decisions requiring CEO review:
+
 - FLAG-001: Sick day carryover policy
 - FLAG-002: Spin-wheel incentive triggers
 - FLAG-003: Budget forecast approval workflow

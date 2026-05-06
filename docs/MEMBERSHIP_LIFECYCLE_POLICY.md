@@ -16,14 +16,14 @@
 
 `MembershipTier` has exactly six values, in monotonic rank order:
 
-| Rank | Enum | Paid? | Card on file required? | Age re-verification cadence |
-|---|---|---|---|---|
-| 0 | `GUEST` | No | No (ephemeral per purchase) | On reactivation from expiry/lock |
-| 1 | `VIP` | No | Yes | Every 30 days |
-| 2 | `VIP_SILVER` | Yes | Yes | On each new paid-tier purchase (≈ every 3 months) |
-| 3 | `VIP_GOLD` | Yes | Yes | On each new paid-tier purchase (≈ every 3 months) |
-| 4 | `VIP_PLATINUM` | Yes | Yes | On each new paid-tier purchase (≈ every 3 months) |
-| 5 | `VIP_DIAMOND` | Yes | Yes | On each new paid-tier purchase (≈ every 3 months) |
+| Rank | Enum           | Paid? | Card on file required?      | Age re-verification cadence                       |
+| ---- | -------------- | ----- | --------------------------- | ------------------------------------------------- |
+| 0    | `GUEST`        | No    | No (ephemeral per purchase) | On reactivation from expiry/lock                  |
+| 1    | `VIP`          | No    | Yes                         | Every 30 days                                     |
+| 2    | `VIP_SILVER`   | Yes   | Yes                         | On each new paid-tier purchase (≈ every 3 months) |
+| 3    | `VIP_GOLD`     | Yes   | Yes                         | On each new paid-tier purchase (≈ every 3 months) |
+| 4    | `VIP_PLATINUM` | Yes   | Yes                         | On each new paid-tier purchase (≈ every 3 months) |
+| 5    | `VIP_DIAMOND`  | Yes   | Yes                         | On each new paid-tier purchase (≈ every 3 months) |
 
 ### 1.1 Retired values — must not appear as `MembershipTier` in schema, code, or config
 
@@ -42,10 +42,10 @@
 
 A user advances through three distinct unlock gates, each with its own prerequisite:
 
-| Gate | Prerequisite | Unlocks |
-|---|---|---|
-| Gate 1 | Account creation + initial age verification | `GUEST` |
-| Gate 2 | Complete card-on-file record (see §5) + **second** age verification | `VIP` |
+| Gate   | Prerequisite                                                                | Unlocks                                                    |
+| ------ | --------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Gate 1 | Account creation + initial age verification                                 | `GUEST`                                                    |
+| Gate 2 | Complete card-on-file record (see §5) + **second** age verification         | `VIP`                                                      |
 | Gate 3 | Payment for a 90-day paid-tier block + age verification on the new purchase | `VIP_SILVER` / `VIP_GOLD` / `VIP_PLATINUM` / `VIP_DIAMOND` |
 
 ---
@@ -77,14 +77,14 @@ A user advances through three distinct unlock gates, each with its own prerequis
 
 ### 3.4 Downgrade / State-Change Ladder
 
-| From state | Trigger | To state |
-|---|---|---|
-| `GUEST` active | 31 days elapsed, no upgrade | `GUEST` locked (account status flag; not a new tier value) |
-| `GUEST` locked | 366 days elapsed post-lock, no reactivation | Purged |
-| `VIP` | Age re-verification failure at 30-day checkpoint | Fully suspended (tier unchanged) |
-| Paid tier | 90+1 days elapsed, no renewal | `VIP` |
-| Paid tier | Age re-verification failure at purchase checkpoint | Fully suspended (tier unchanged) |
-| `VIP` or any paid tier | Card-on-file becomes incomplete | Frozen (see §5; tier unchanged) |
+| From state             | Trigger                                            | To state                                                   |
+| ---------------------- | -------------------------------------------------- | ---------------------------------------------------------- |
+| `GUEST` active         | 31 days elapsed, no upgrade                        | `GUEST` locked (account status flag; not a new tier value) |
+| `GUEST` locked         | 366 days elapsed post-lock, no reactivation        | Purged                                                     |
+| `VIP`                  | Age re-verification failure at 30-day checkpoint   | Fully suspended (tier unchanged)                           |
+| Paid tier              | 90+1 days elapsed, no renewal                      | `VIP`                                                      |
+| Paid tier              | Age re-verification failure at purchase checkpoint | Fully suspended (tier unchanged)                           |
+| `VIP` or any paid tier | Card-on-file becomes incomplete                    | Frozen (see §5; tier unchanged)                            |
 
 Tier changes, locks, suspensions, and freezes all write immutable rows to `MembershipTierTransition` (append-only, per ledger invariants) with: user ID, previous state, new state, trigger type, actor ID, timestamp (America/Toronto), `rule_applied_id`, `organization_id`, `tenant_id`.
 
@@ -198,18 +198,18 @@ Tokens are governed primarily by their own expiry clocks, **not** by membership 
 
 ### 8.1 Token Types & Lifespans
 
-| Token type | Lifespan from credit date | Burn priority when user spends |
-|---|---|---|
-| Dripped tokens (from paid-tier membership drip schedule) | 45 + 1 days | **Burn first** |
-| Purchased tokens (rack menu, Upgrade Escalator) | 365 + 1 days | Burn after dripped |
+| Token type                                               | Lifespan from credit date | Burn priority when user spends |
+| -------------------------------------------------------- | ------------------------- | ------------------------------ |
+| Dripped tokens (from paid-tier membership drip schedule) | 45 + 1 days               | **Burn first**                 |
+| Purchased tokens (rack menu, Upgrade Escalator)          | 365 + 1 days              | Burn after dripped             |
 
 ### 8.2 Tier × Token Matrix
 
-| Tier | Receives dripped tokens? | Can purchase tokens? | Can spend tokens? |
-|---|---|---|---|
-| `GUEST` | **No** (purchased only) | Yes (with per-purchase card entry + confirmation flow §6) | Yes, while account is active and not locked |
-| `VIP` | No | Yes | Yes |
-| `VIP_SILVER` / `GOLD` / `PLATINUM` / `DIAMOND` | Yes, per paid-tier drip schedule | Yes | Yes |
+| Tier                                           | Receives dripped tokens?         | Can purchase tokens?                                      | Can spend tokens?                           |
+| ---------------------------------------------- | -------------------------------- | --------------------------------------------------------- | ------------------------------------------- |
+| `GUEST`                                        | **No** (purchased only)          | Yes (with per-purchase card entry + confirmation flow §6) | Yes, while account is active and not locked |
+| `VIP`                                          | No                               | Yes                                                       | Yes                                         |
+| `VIP_SILVER` / `GOLD` / `PLATINUM` / `DIAMOND` | Yes, per paid-tier drip schedule | Yes                                                       | Yes                                         |
 
 ### 8.3 Tokens Survive Membership State Changes
 

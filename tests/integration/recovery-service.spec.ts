@@ -30,9 +30,15 @@ function buildDispatcher(): RecoveryDispatcher & {
     cases,
     warnings,
     personal,
-    publishCase: (c) => { cases.push(c); },
-    enqueue48hWarning: (s) => { warnings.push(s); },
-    enqueuePersonalTouch: (s) => { personal.push(s); },
+    publishCase: (c) => {
+      cases.push(c);
+    },
+    enqueue48hWarning: (s) => {
+      warnings.push(s);
+    },
+    enqueuePersonalTouch: (s) => {
+      personal.push(s);
+    },
   };
 }
 
@@ -101,8 +107,7 @@ describe('RecoveryEngine — Pillar 1: Token Bridge', () => {
     const c = openStandardCase(engine);
     const offer = engine.tokenBridgeOffer(c.case_id, 'agent_cs_001');
     const ttlMs = new Date(offer.offer_expires_at_utc).getTime() - Date.now();
-    const expectedMs =
-      RECOVERY_CONSTANTS.TOKEN_BRIDGE_OFFER_TTL_HOURS * 60 * 60 * 1000;
+    const expectedMs = RECOVERY_CONSTANTS.TOKEN_BRIDGE_OFFER_TTL_HOURS * 60 * 60 * 1000;
     // Allow 2s of drift for test execution
     expect(ttlMs).toBeGreaterThan(expectedMs - 2_000);
     expect(ttlMs).toBeLessThanOrEqual(expectedMs);
@@ -112,11 +117,7 @@ describe('RecoveryEngine — Pillar 1: Token Bridge', () => {
     const engine = new RecoveryEngine();
     const c = openStandardCase(engine);
     engine.tokenBridgeOffer(c.case_id, 'agent_cs_001');
-    const entry = engine.acceptTokenBridge(
-      c.case_id,
-      'agent_cs_001',
-      'waiver_hash_abc',
-    );
+    const entry = engine.acceptTokenBridge(c.case_id, 'agent_cs_001', 'waiver_hash_abc');
     expect(entry.action).toBe('TOKEN_BRIDGE_ACCEPT');
     expect(entry.metadata).toMatchObject({ waiver_signature_hash: 'waiver_hash_abc' });
     const after = engine.getCase(c.case_id)!;
@@ -126,9 +127,9 @@ describe('RecoveryEngine — Pillar 1: Token Bridge', () => {
   it('rejects acceptance from an invalid stage', () => {
     const engine = new RecoveryEngine();
     const c = openStandardCase(engine);
-    expect(() =>
-      engine.acceptTokenBridge(c.case_id, 'agent_cs_001', 'hash'),
-    ).toThrow(/RECOVERY_INVALID_STAGE/);
+    expect(() => engine.acceptTokenBridge(c.case_id, 'agent_cs_001', 'hash')).toThrow(
+      /RECOVERY_INVALID_STAGE/,
+    );
   });
 });
 
@@ -138,9 +139,7 @@ describe('RecoveryEngine — Pillar 2: Three-Fifths Exit (policy gated)', () => 
     const c = openStandardCase(engine);
     const out = engine.threeFifthsExit(c.case_id, 'agent_cs_001');
     expect(out.result_code).toBe('POLICY_GATED');
-    expect(out.policy_gate_reference).toBe(
-      RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE,
-    );
+    expect(out.policy_gate_reference).toBe(RECOVERY_CONSTANTS.POLICY_GATE_REFERENCE);
     expect(out.refund_percentage).toBe(0.6);
     expect(out.lock_hours).toBe(24);
     expect(out.processing_business_days).toEqual([7, 10]);
@@ -151,9 +150,7 @@ describe('RecoveryEngine — Pillar 2: Three-Fifths Exit (policy gated)', () => 
     const c = openStandardCase(engine);
     engine.threeFifthsExit(c.case_id, 'agent_cs_001');
     const after = engine.getCase(c.case_id)!;
-    expect(after.flags).toContain(
-      RECOVERY_CONSTANTS.THREE_FIFTHS_PERMANENT_FLAG,
-    );
+    expect(after.flags).toContain(RECOVERY_CONSTANTS.THREE_FIFTHS_PERMANENT_FLAG);
     expect(after.stage).toBe('THREE_FIFTHS_EXIT_POLICY_GATED');
   });
 
@@ -183,9 +180,7 @@ describe('RecoveryEngine — Pillar 2: Three-Fifths Exit (policy gated)', () => 
       reason_code: 'CEO_DIRECTIVE',
     });
     const after = engine.getCase(c.case_id)!;
-    const entry = after.audit_trail.find(
-      (e) => e.action === 'THREE_FIFTHS_EXIT_REQUEST',
-    );
+    const entry = after.audit_trail.find((e) => e.action === 'THREE_FIFTHS_EXIT_REQUEST');
     expect(entry).toBeDefined();
     expect(entry!.metadata).toMatchObject({ ceo_override_id: 'ovr_002' });
   });
@@ -199,9 +194,9 @@ describe('RecoveryEngine — Pillar 3: Expiration distribution', () => {
     // 70% of 10,000 = 7,000
     expect(dist.creator_bonus_pool_tokens).toBe(7_000n);
     expect(dist.platform_mgmt_fee_tokens).toBe(3_000n);
-    expect(
-      dist.creator_bonus_pool_tokens + dist.platform_mgmt_fee_tokens,
-    ).toBe(dist.expired_tokens);
+    expect(dist.creator_bonus_pool_tokens + dist.platform_mgmt_fee_tokens).toBe(
+      dist.expired_tokens,
+    );
   });
 
   it('surfaces canonical DIAMOND_TIER extension and recovery fees', () => {
@@ -218,9 +213,7 @@ describe('RecoveryEngine — Pillar 3: Expiration distribution', () => {
     engine.handleExpiration(c.case_id, 'agent_cs_001');
     const after = engine.getCase(c.case_id)!;
     expect(after.stage).toBe('EXPIRATION_PROCESSED');
-    expect(
-      after.audit_trail.find((e) => e.action === 'EXPIRATION_DISTRIBUTE'),
-    ).toBeDefined();
+    expect(after.audit_trail.find((e) => e.action === 'EXPIRATION_DISTRIBUTE')).toBeDefined();
   });
 
   it('tolerates BigInt rounding without dropping residual tokens', () => {
@@ -233,9 +226,7 @@ describe('RecoveryEngine — Pillar 3: Expiration distribution', () => {
       original_purchase_price_usd_cents: 1_000n,
     });
     const dist = engine.handleExpiration(c.case_id, 'agent_cs_001');
-    expect(
-      dist.creator_bonus_pool_tokens + dist.platform_mgmt_fee_tokens,
-    ).toBe(7n);
+    expect(dist.creator_bonus_pool_tokens + dist.platform_mgmt_fee_tokens).toBe(7n);
   });
 });
 
@@ -247,9 +238,7 @@ describe('RecoveryEngine — 48h expiry warning', () => {
       tier: 'VIP_DIAMOND',
       remaining_balance_tokens: 5_000n,
       remaining_balance_usd_cents: 65_000n,
-      expires_at_utc: new Date(
-        Date.now() + 36 * 60 * 60 * 1000,
-      ).toISOString(),
+      expires_at_utc: new Date(Date.now() + 36 * 60 * 60 * 1000).toISOString(),
       is_diamond: true,
       last_purchase_at_utc: new Date().toISOString(),
       ...overrides,
@@ -265,9 +254,7 @@ describe('RecoveryEngine — 48h expiry warning', () => {
   it('excludes wallets expiring beyond the 48h window', async () => {
     const engine = new RecoveryEngine();
     const later = snap({
-      expires_at_utc: new Date(
-        Date.now() + 72 * 60 * 60 * 1000,
-      ).toISOString(),
+      expires_at_utc: new Date(Date.now() + 72 * 60 * 60 * 1000).toISOString(),
     });
     const result = await engine.send48HourWarning([later]);
     expect(result).toHaveLength(0);
@@ -359,9 +346,7 @@ describe('RecoveryEngine — audit trail invariants', () => {
     engine.acceptTokenBridge(c.case_id, 'agent_cs_001', 'waiver_h');
     const after = engine.getCase(c.case_id)!;
     expect(after.audit_trail.every((e) => e.correlation_id === 'corr_test_001')).toBe(true);
-    expect(
-      after.audit_trail.every((e) => e.rule_applied_id === 'REDBOOK_RECOVERY_v1'),
-    ).toBe(true);
+    expect(after.audit_trail.every((e) => e.rule_applied_id === 'REDBOOK_RECOVERY_v1')).toBe(true);
   });
 
   it('audit trail is append-only — earlier entries preserved after later advance', () => {

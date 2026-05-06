@@ -11,7 +11,7 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { PrismaService } from '../prisma.module';
+import { PrismaService } from '../prisma.service';
 
 /** Free Spark Twin daily message cap. */
 const SPARK_DAILY_MESSAGE_CAP = 15;

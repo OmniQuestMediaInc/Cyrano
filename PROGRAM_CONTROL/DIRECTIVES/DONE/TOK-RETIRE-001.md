@@ -1,4 +1,5 @@
 # DIRECTIVE: TOK-RETIRE-001
+
 # Retire ShowToken Types and Update Payout Logic to Flicker n'Flame Scoring Rates
 
 **Directive ID:** TOK-RETIRE-001
@@ -23,6 +24,7 @@ Retire `TokenType.SHOW_THEATER` and `TokenType.BIJOU`; collapse `TokenType` to C
 ## Scope
 
 ### Files Modified
+
 - `services/core-api/src/finance/ledger.service.ts` — `TokenType` collapsed to `{ CZT = 'CZT' }`; `resolvePayoutRate` helper added; `recordEntry` interface extended with optional `heatScore?` and `diamondFloorActive?`; imports added (`Decimal`, `GovernanceConfig`).
 - `services/core-api/src/config/governance.config.ts` — `PAYOUT_RATE_SHOWTHEATER` and `PAYOUT_RATE_REGULAR` removed from `GovernanceConfigService`; `SHOWTOKEN_EXCHANGE` block removed; `SHOWZONE_PRICING` and `BIJOU_PRICING` `ST_` fields renamed to `CZT_`.
 - `services/bijou/src/pass-pricing.service.ts` — field references updated to `CZT_` names.

@@ -22,13 +22,13 @@ component, rendered as a full-screen modal overlay).
 
 ## 2. Role Coverage
 
-| Role | Trigger condition |
-|------|-------------------|
-| Guest (`GUEST`) | AV challenge on any CZT spend; mandatory before tier elevation |
-| VIP (`VIP`) | Step-up on elevated actions; 30-day age re-verify cadence |
+| Role                                   | Trigger condition                                                      |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| Guest (`GUEST`)                        | AV challenge on any CZT spend; mandatory before tier elevation         |
+| VIP (`VIP`)                            | Step-up on elevated actions; 30-day age re-verify cadence              |
 | VIP Silver / Gold / Platinum / Diamond | Step-up on every new paid block purchase; AV re-verify on each renewal |
-| Creator | AV at registration; step-up on payout-touching actions |
-| Operator / Admin | Step-up REQUIRED for every irreversible action (see §6) |
+| Creator                                | AV at registration; step-up on payout-touching actions                 |
+| Operator / Admin                       | Step-up REQUIRED for every irreversible action (see §6)                |
 
 ---
 
@@ -60,6 +60,7 @@ challenge_issued
 
 Every state transition emits an immutable audit event via `ImmutableAuditService`
 (see `services/core-api/src/audit/`) with the fields:
+
 - `correlation_id` — globally unique, idempotent
 - `reason_code` — machine-readable outcome tag
 - `rule_applied_id` — compliance fingerprint
@@ -110,11 +111,11 @@ The `StepUpAuthModal` renders as a **full-screen overlay** on all viewports.
 
 ### 4.2 Colour Tokens
 
-| State | Background | Accent / border |
-|-------|------------|-----------------|
-| Standard | Dark (`#0A0A0F`) | None |
-| Warning (SOFT_NUDGE) | Dark | Amber |
-| Critical (HARD_DECLINE_HCZ) | Dark | Red (`--color-critical`) |
+| State                       | Background       | Accent / border          |
+| --------------------------- | ---------------- | ------------------------ |
+| Standard                    | Dark (`#0A0A0F`) | None                     |
+| Warning (SOFT_NUDGE)        | Dark             | Amber                    |
+| Critical (HARD_DECLINE_HCZ) | Dark             | Red (`--color-critical`) |
 
 ---
 
@@ -125,12 +126,12 @@ The `StepUpAuthModal` renders as a **full-screen overlay** on all viewports.
 Displayed as a fixed badge strip directly below the modal header.
 State driven by `WelfareGuardianScore` result (`welfare_score`, `tier`):
 
-| WGS tier | Badge colour | Label |
-|----------|-------------|-------|
-| `low` (0–39) | Green | Welfare check: OK |
-| `medium` (40–64) | Amber | Welfare check: Caution |
-| `high` (65–84) | Orange | Welfare check: High — pause recommended |
-| `critical` (85–100) | Red | Welfare check: Critical — HCZ escalation |
+| WGS tier            | Badge colour | Label                                    |
+| ------------------- | ------------ | ---------------------------------------- |
+| `low` (0–39)        | Green        | Welfare check: OK                        |
+| `medium` (40–64)    | Amber        | Welfare check: Caution                   |
+| `high` (65–84)      | Orange       | Welfare check: High — pause recommended  |
+| `critical` (85–100) | Red          | Welfare check: Critical — HCZ escalation |
 
 The badge is **non-dismissible**. It must remain visible for the full duration
 of the modal session.
@@ -155,18 +156,18 @@ The GateGuard Sentinel pre-processor automatically raises a step-up challenge
 for the following high-value actions (from §2.7 of the Canonical Compliance
 Checklist):
 
-| Action category | Audit event tag |
-|-----------------|-----------------|
-| Large CZT purchase (threshold from `GovernanceConfig`) | `WALLET_MODIFICATION` |
-| Cyrano top-up spend above bulk tier | `WALLET_MODIFICATION` |
-| Admin / Operator ledger adjustment | `PAYOUT_CHANGE` |
-| Payout or rate-card change | `PAYOUT_CHANGE` |
-| Account freeze / suspension | `ACCOUNT_FREEZE` |
-| Content deletion | `CONTENT_DELETION` |
-| Takedown / legal-hold submission | `TAKEDOWN_SUBMISSION` |
-| Refund / Three-Fifths Exit override | `REFUND_OVERRIDE` |
-| Payment detail change | `PAYMENT_DETAIL_CHANGE` |
-| Geo block modification | `GEO_BLOCK_MODIFICATION` |
+| Action category                                        | Audit event tag          |
+| ------------------------------------------------------ | ------------------------ |
+| Large CZT purchase (threshold from `GovernanceConfig`) | `WALLET_MODIFICATION`    |
+| Cyrano top-up spend above bulk tier                    | `WALLET_MODIFICATION`    |
+| Admin / Operator ledger adjustment                     | `PAYOUT_CHANGE`          |
+| Payout or rate-card change                             | `PAYOUT_CHANGE`          |
+| Account freeze / suspension                            | `ACCOUNT_FREEZE`         |
+| Content deletion                                       | `CONTENT_DELETION`       |
+| Takedown / legal-hold submission                       | `TAKEDOWN_SUBMISSION`    |
+| Refund / Three-Fifths Exit override                    | `REFUND_OVERRIDE`        |
+| Payment detail change                                  | `PAYMENT_DETAIL_CHANGE`  |
+| Geo block modification                                 | `GEO_BLOCK_MODIFICATION` |
 
 Auto-trigger logic lives in `services/core-api/src/auth/rbac.service.ts`
 (`PERMISSION_TO_STEP_UP` gating) and `services/core-api/src/gateguard/`.
@@ -233,14 +234,14 @@ Auto-trigger logic lives in `services/core-api/src/auth/rbac.service.ts`
 
 ## 8. Presenter / Binding Contract
 
-| Binding | Detail |
-|---------|--------|
-| GGS AV contract | `GateGuardSentinelAV` — `services/core-api/src/gateguard/` |
-| Step-up service | `StepUpService` — `services/core-api/src/auth/step-up.service.ts` |
-| RBAC guard | `RbacGuard` / `RbacService` — `services/core-api/src/auth/` |
-| Audit emission | `ImmutableAuditService` — `services/core-api/src/audit/` |
-| NATS publish | `GATEGUARD_*` topic family — `services/nats/topics.registry.ts` |
-| Welfare score | `WelfareGuardianScore` (`welfare_score`, `tier`) |
+| Binding                | Detail                                                            |
+| ---------------------- | ----------------------------------------------------------------- |
+| GGS AV contract        | `GateGuardSentinelAV` — `services/core-api/src/gateguard/`        |
+| Step-up service        | `StepUpService` — `services/core-api/src/auth/step-up.service.ts` |
+| RBAC guard             | `RbacGuard` / `RbacService` — `services/core-api/src/auth/`       |
+| Audit emission         | `ImmutableAuditService` — `services/core-api/src/audit/`          |
+| NATS publish           | `GATEGUARD_*` topic family — `services/nats/topics.registry.ts`   |
+| Welfare score          | `WelfareGuardianScore` (`welfare_score`, `tier`)                  |
 | Shared modal component | `StepUpAuthModal` (Black-Glass surface; `BG:` prefix for commits) |
 
 ---
@@ -258,10 +259,10 @@ Auto-trigger logic lives in `services/core-api/src/auth/rbac.service.ts`
 
 ## 10. Open Items (draft)
 
-| # | Item | Owner |
-|---|------|-------|
-| 10.1 | Confirm `GovernanceConfig` key name for large-purchase threshold | Program Control |
-| 10.2 | Biometric (HeartSync / SenSync™) step-up path detail — deferred to HZ spec | HZ team |
-| 10.3 | Exact TOTP retry-limit count before COOL_DOWN escalates | Auth team |
-| 10.4 | Animation spec for modal entry / exit | Black-Glass designer |
-| 10.5 | Localisation strings for Bill 149 ON disclosure | Compliance |
+| #    | Item                                                                       | Owner                |
+| ---- | -------------------------------------------------------------------------- | -------------------- |
+| 10.1 | Confirm `GovernanceConfig` key name for large-purchase threshold           | Program Control      |
+| 10.2 | Biometric (HeartSync / SenSync™) step-up path detail — deferred to HZ spec | HZ team              |
+| 10.3 | Exact TOTP retry-limit count before COOL_DOWN escalates                    | Auth team            |
+| 10.4 | Animation spec for modal entry / exit                                      | Black-Glass designer |
+| 10.5 | Localisation strings for Bill 149 ON disclosure                            | Compliance           |

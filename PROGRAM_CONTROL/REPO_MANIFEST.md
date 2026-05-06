@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `main`
-**Commit:** `e765a49e88f299e418a26234e3a6c3428000d664`
-**Generated:** 2026-05-03T04:45:23Z
+**Branch:** `claude/phase-1-hygiene-refresh-EAURk`
+**Commit:** `f2b611717326aca522a793b158caf233bac7fe34`
+**Generated:** 2026-05-06T05:02:38Z
 
 ## All Files
 
@@ -81,10 +81,17 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-CLAUDE-CODE-STANDING-PROMPT.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001-AMEND-C007.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-AI-TWIN-003-PIPELINE.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-CORE-001-PROVIDER-RELIABILITY.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-NARR-002-LAYER2-MEMORY.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-PORTAL-005-CONSISTENCY.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-SAFETY-006-MODERATION.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-VOICE-004-CALL-SYSTEM.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OSS-Lift-From-Index.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OSS-Repo-Registry.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/STUDIO-AFF-001-IMPL.md`
 - `PROGRAM_CONTROL/LAUNCH_MANIFEST.md`
 - `PROGRAM_CONTROL/LAUNCH_READY.md`
 - `PROGRAM_CONTROL/REPORT_BACK/ADD-CLEARANCE-CONFIRMATION.md`
@@ -680,6 +687,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/rewards-api/src/white-label/partner-config.schema.ts`
 - `services/risk-engine/src/region-signal.service.ts`
 - `services/risk-engine/src/risk.module.ts`
+- `services/studio-affiliation/src/studio-affiliation.module.ts`
+- `services/studio-affiliation/src/studio.service.ts`
 - `services/voice-cloning/src/voice.controller.ts`
 - `services/voice-cloning/src/voice.module.ts`
 - `services/voice-cloning/src/voice.service.ts`
@@ -733,6 +742,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/stat-holidays.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
+- `tests/jest-uuid-shim.cjs`
 - `tests/seed_data/admin_rules_TEST DATA.csv`
 - `tests/seed_data/channels_TEST DATA.csv`
 - `tests/seed_data/content_TEST DATA.csv`
@@ -777,6 +787,7 @@ Auto-generated on every push. Do not edit manually.
 - `ui/types/creator-control-contracts.ts`
 - `ui/types/creator-panel-contracts.ts`
 - `ui/types/cyrano-persona-contracts.ts`
+- `ui/types/cyrano-persona-management-contracts.ts`
 - `ui/types/cyrano-session-contracts.ts`
 - `ui/types/gamification-contracts.ts`
 - `ui/types/public-wallet-contracts.ts`

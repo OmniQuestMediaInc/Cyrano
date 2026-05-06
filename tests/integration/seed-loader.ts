@@ -10,10 +10,10 @@ const SEED_DIR = path.resolve(__dirname, '../seed_data');
 
 function parseCsv<T>(filename: string): T[] {
   const raw = fs.readFileSync(path.join(SEED_DIR, filename), 'utf-8');
-  const lines = raw.split('\n').filter(l => l.trim().length > 0);
+  const lines = raw.split('\n').filter((l) => l.trim().length > 0);
   if (lines.length < 2) return [];
   const headers = lines[0].split(',');
-  return lines.slice(1).map(line => {
+  return lines.slice(1).map((line) => {
     const values = line.split(',');
     const record: Record<string, string> = {};
     headers.forEach((h, i) => {
@@ -27,8 +27,8 @@ function parseCsv<T>(filename: string): T[] {
 export interface WalletRecord {
   wallet_id: string;
   owner_id: string;
-  owner_type: string;       // 'customer' | 'creator' | 'platform'
-  balance_tokens: string;   // raw CSV string — cast to bigint in tests
+  owner_type: string; // 'customer' | 'creator' | 'platform'
+  balance_tokens: string; // raw CSV string — cast to bigint in tests
   last_updated_utc: string;
 }
 
@@ -97,20 +97,14 @@ export interface PriceListRecord {
 }
 
 // ── Loader functions ──────────────────────────────────────────────────────────
-export const loadWallets = () =>
-  parseCsv<WalletRecord>('wallets_TEST DATA.csv');
+export const loadWallets = () => parseCsv<WalletRecord>('wallets_TEST DATA.csv');
 
-export const loadTransactions = () =>
-  parseCsv<TransactionRecord>('transactions_TEST DATA.csv');
+export const loadTransactions = () => parseCsv<TransactionRecord>('transactions_TEST DATA.csv');
 
-export const loadCustomers = () =>
-  parseCsv<CustomerRecord>('customers_TEST DATA.csv');
+export const loadCustomers = () => parseCsv<CustomerRecord>('customers_TEST DATA.csv');
 
-export const loadCreators = () =>
-  parseCsv<CreatorRecord>('creators_TEST DATA.csv');
+export const loadCreators = () => parseCsv<CreatorRecord>('creators_TEST DATA.csv');
 
-export const loadDemoScenarios = () =>
-  parseCsv<DemoScenarioRecord>('demo_scenarios_TEST DATA.csv');
+export const loadDemoScenarios = () => parseCsv<DemoScenarioRecord>('demo_scenarios_TEST DATA.csv');
 
-export const loadPriceList = () =>
-  parseCsv<PriceListRecord>('price_list_TEST DATA.csv');
+export const loadPriceList = () => parseCsv<PriceListRecord>('price_list_TEST DATA.csv');

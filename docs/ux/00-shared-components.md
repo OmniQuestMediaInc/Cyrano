@@ -12,11 +12,11 @@
 
 ### TierBadge
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `tierName` | `string` | Guest tier label (e.g., `"Gold"`, `"Diamond"`) |
-| `capPercent` | `number` | Redemption cap percentage for this tier |
-| `isDiamondConcierge` | `boolean` | Renders Diamond Concierge accent when `true` |
+| Prop                 | Type      | Description                                    |
+| -------------------- | --------- | ---------------------------------------------- |
+| `tierName`           | `string`  | Guest tier label (e.g., `"Gold"`, `"Diamond"`) |
+| `capPercent`         | `number`  | Redemption cap percentage for this tier        |
+| `isDiamondConcierge` | `boolean` | Renders Diamond Concierge accent when `true`   |
 
 ---
 
@@ -24,11 +24,11 @@
 
 Three-bucket display (or RRR equivalent) surfacing the guest's token balance split by origin.
 
-| Bucket | DB column | Origin tag |
-|--------|-----------|------------|
-| Purchased | `czt_balance` | `PURCHASED` |
-| Gifted | `czt_balance` | `GIFTED` |
-| Escrow / Held | `escrow_hold` | — |
+| Bucket        | DB column     | Origin tag  |
+| ------------- | ------------- | ----------- |
+| Purchased     | `czt_balance` | `PURCHASED` |
+| Gifted        | `czt_balance` | `GIFTED`    |
+| Escrow / Held | `escrow_hold` | —           |
 
 > **Note:** RRR renders its equivalent balance panel in place of WalletBuckets wherever the ChatNow.Zone three-bucket layout is not applicable.
 
@@ -51,13 +51,13 @@ Overlay must block all underlying UI interaction until the guest completes or di
 
 Tabular row component for rendering a single audit log entry.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `correlationId` | `string` | UUID linking to the originating transaction or event |
-| `reasonCode` | `string` | Canonical `reason_code` value (see `DOMAIN_GLOSSARY.md`) |
-| `timestamp` | `string` | ISO-8601 UTC timestamp |
-| `actorId` | `string` | Guest, Creator, or Agent ID who triggered the event |
-| `summary` | `string` | Human-readable one-line description |
+| Prop            | Type     | Description                                              |
+| --------------- | -------- | -------------------------------------------------------- |
+| `correlationId` | `string` | UUID linking to the originating transaction or event     |
+| `reasonCode`    | `string` | Canonical `reason_code` value (see `DOMAIN_GLOSSARY.md`) |
+| `timestamp`     | `string` | ISO-8601 UTC timestamp                                   |
+| `actorId`       | `string` | Guest, Creator, or Agent ID who triggered the event      |
+| `summary`       | `string` | Human-readable one-line description                      |
 
 Every `AuditRow` **must** include a `reason_code`. Rows without a `reason_code` must not be rendered.
 
@@ -117,11 +117,11 @@ Standard copy template used across all three platforms wherever tier/compliance 
 {tier} • {cap}% redemption • Inferno ×{multiplier} • Welfare Guardian: {band}
 ```
 
-| Slot | Source | Example |
-|------|--------|---------|
-| `{tier}` | `TierBadge.tierName` | `Gold` |
-| `{cap}%` | `TierBadge.capPercent` | `80%` |
-| `{multiplier}` | Active Inferno multiplier value | `1.5` |
-| `{band}` | Welfare Guardian spend-band label | `Standard` |
+| Slot           | Source                            | Example    |
+| -------------- | --------------------------------- | ---------- |
+| `{tier}`       | `TierBadge.tierName`              | `Gold`     |
+| `{cap}%`       | `TierBadge.capPercent`            | `80%`      |
+| `{multiplier}` | Active Inferno multiplier value   | `1.5`      |
+| `{band}`       | Welfare Guardian spend-band label | `Standard` |
 
 Inferno and Welfare Guardian slots are omitted from the rendered string when their respective features are inactive for the guest.

@@ -121,7 +121,7 @@ describe('Wallet view-model — three-bucket presenter contract', () => {
       wallet_id: 'wlt_test_1',
       user_id: 'usr_test_1',
       tier: 'GUEST',
-      balances: { purchased:1000n, membership: 0n, bonus: 250n },
+      balances: { purchased: 1000n, membership: 0n, bonus: 250n },
     });
     expect(view.buckets).toHaveLength(3);
     expect(view.buckets.map((b) => b.bucket)).toEqual(LEDGER_SPEND_ORDER);
@@ -137,7 +137,7 @@ describe('Wallet view-model — three-bucket presenter contract', () => {
       wallet_id: 'wlt_test_2',
       user_id: 'usr_test_2',
       tier: 'MEMBER',
-      balances: { purchased:0n, membership: 500n, bonus: 100n },
+      balances: { purchased: 0n, membership: 500n, bonus: 100n },
     });
     expect(view.buckets[0].will_drain_next).toBe(false); // purchased empty
     expect(view.buckets[1].will_drain_next).toBe(true); // membership drains next
@@ -150,7 +150,7 @@ describe('Wallet view-model — three-bucket presenter contract', () => {
       wallet_id: 'wlt_test_3',
       user_id: 'usr_test_3',
       tier: 'DIAMOND',
-      balances: { purchased:9_999_999_999n, membership: 0n, bonus: 0n },
+      balances: { purchased: 9_999_999_999n, membership: 0n, bonus: 0n },
     });
     expect(typeof view.total_tokens).toBe('string');
     expect(view.buckets.every((b) => typeof b.balance_tokens === 'string')).toBe(true);

@@ -10,12 +10,12 @@
 
 ## Files Modified
 
-| File | Action |
-|------|--------|
-| `.github/ISSUE_TEMPLATE/directive.yml` | Modified — added Agent, Parallel-safe, Touches fields |
-| `docs/DIRECTIVE_TEMPLATE.md` | Created — canonical blank directive template |
-| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-001.md` | Created — this report |
-| `PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-PIPELINE-001.md` | Created — directive moved to DONE |
+| File                                                    | Action                                                |
+| ------------------------------------------------------- | ----------------------------------------------------- |
+| `.github/ISSUE_TEMPLATE/directive.yml`                  | Modified — added Agent, Parallel-safe, Touches fields |
+| `docs/DIRECTIVE_TEMPLATE.md`                            | Created — canonical blank directive template          |
+| `PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-001.md`     | Created — this report                                 |
+| `PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-PIPELINE-001.md` | Created — directive moved to DONE                     |
 
 ---
 

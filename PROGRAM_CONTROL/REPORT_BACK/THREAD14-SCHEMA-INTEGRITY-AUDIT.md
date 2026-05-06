@@ -1,4 +1,5 @@
 # Schema Integrity Audit — Post PR#254/#255
+
 Date: 2026-04-19
 Thread: 15
 Auditor: Claude Code (Droid)
@@ -6,7 +7,7 @@ Directive ID: THREAD14-SCHEMA-INTEGRITY-AUDIT
 Correlation ID: THREAD14-SCHEMA-INTEGRITY-AUDIT
 Repo HEAD at audit: `95c5584` (origin/main — `CHORE: update REPO_MANIFEST [skip ci]`)
 Note: supersedes the prior read-only audit in commit `c1a778b` (2026-04-18);
-      same directive path per Thread 15 re-run.
+same directive path per Thread 15 re-run.
 
 ---
 
@@ -33,17 +34,18 @@ Exactly the six canonical values mandated by `docs/MEMBERSHIP_LIFECYCLE_POLICY.m
 
 **Models with fields typed as `MembershipTier`:**
 
-| Line | Model | Field | Type Declaration |
-|-----:|-------|-------|------------------|
-| 922 | `Membership` | `tier` | `MembershipTier` |
-| 950 | `MembershipTierTransition` | `previous_tier` | `MembershipTier?` (nullable) |
-| 951 | `MembershipTierTransition` | `new_tier` | `MembershipTier` |
-| 1032 | `MembershipSubscription` | `tier` | `MembershipTier` |
+| Line | Model                      | Field           | Type Declaration             |
+| ---: | -------------------------- | --------------- | ---------------------------- |
+|  922 | `Membership`               | `tier`          | `MembershipTier`             |
+|  950 | `MembershipTierTransition` | `previous_tier` | `MembershipTier?` (nullable) |
+|  951 | `MembershipTierTransition` | `new_tier`      | `MembershipTier`             |
+| 1032 | `MembershipSubscription`   | `tier`          | `MembershipTier`             |
 
 **Models previously typed to `MembershipTier` that now reference a different enum or `String`:**
 **NONE.** Grep across `prisma/schema.prisma` for `MembershipTier` returns exactly the one enum declaration and four field usages above. No `String // TODO: assign correct domain enum` artefacts from PR #254/#255 remain.
 
 **`@@index` and `@@unique` constraints mentioning tier fields:**
+
 - `@@index([tier])` on `Membership` at line 938 — 1 occurrence.
 - No `@@unique` constraint mentions any tier field.
 - `@@index([user_id, status])` on `MembershipSubscription` at 1047 — no tier reference.
@@ -54,12 +56,12 @@ Total: **1 `@@index` on a `MembershipTier`-typed field; 0 `@@unique`.**
 
 ## 2. PR History — merge state
 
-| PR | Title | State | Merged At (UTC) | Merge Commit SHA | Head SHA | Files |
-|---:|-------|-------|------------------|------------------|----------|------:|
-| #254 | `[WIP] Remove MembershipTier enum and update field types` | closed / merged | 2026-04-17T09:34:15Z | `2d81e8cb349b9409c30a13720542d6f219f9d2ad` | `17864eb` | 1 commit |
-| #255 | `[WIP] Remove MembershipTier enum and all its usage from Prisma schema` | closed / merged | 2026-04-17T09:42:59Z | `996dba0e67c500b88d450d68af014850bc18cea7` | `9ba7907` | 1 commit |
-| #265 | `FIZ: MEMB-001 — Membership schema foundation` | closed / merged | 2026-04-17T15:50:15Z | `fc1dc38d10cd3e4359dcfb78046f8813be8b4d1f` | `c7c50cd` | 4 files (+375 / −7) |
-| RRR-P1-006 | platform name canonicalization — **NOT FOUND** | — | — | — | — |
+|         PR | Title                                                                   | State           | Merged At (UTC)      | Merge Commit SHA                           | Head SHA  |               Files |
+| ---------: | ----------------------------------------------------------------------- | --------------- | -------------------- | ------------------------------------------ | --------- | ------------------: |
+|       #254 | `[WIP] Remove MembershipTier enum and update field types`               | closed / merged | 2026-04-17T09:34:15Z | `2d81e8cb349b9409c30a13720542d6f219f9d2ad` | `17864eb` |            1 commit |
+|       #255 | `[WIP] Remove MembershipTier enum and all its usage from Prisma schema` | closed / merged | 2026-04-17T09:42:59Z | `996dba0e67c500b88d450d68af014850bc18cea7` | `9ba7907` |            1 commit |
+|       #265 | `FIZ: MEMB-001 — Membership schema foundation`                          | closed / merged | 2026-04-17T15:50:15Z | `fc1dc38d10cd3e4359dcfb78046f8813be8b4d1f` | `c7c50cd` | 4 files (+375 / −7) |
+| RRR-P1-006 | platform name canonicalization — **NOT FOUND**                          | —               | —                    | —                                          | —         |
 
 `mcp__github__search_pull_requests` query `RRR-P1-006 repo:OmniQuestMediaInc/ChatNowZone--BUILD` returned `total_count: 0`. No PR for RRR-P1-006 exists at audit time.
 
@@ -69,10 +71,10 @@ Total: **1 `@@index` on a `MembershipTier`-typed field; 0 `@@unique`.**
 
 ## 3. Seed Files
 
-| File | Present? | Refs `MembershipTier` enum values? | Breaks without enum? |
-|------|:--------:|:----------------------------------:|:--------------------:|
-| `prisma/seed.ts` | YES | YES (imports `MembershipTier` from `@prisma/client`, line 11; uses all 6 canonical tier literals in `TIER_FIXTURES` lines 19–54) | YES — would not compile if enum removed |
-| `prisma/seed.test.ts` | YES | YES (negative-space guardrail — asserts enum-block contents match `CANONICAL_TIERS` exactly and that retired `DAY_PASS`/`ANNUAL`/`OMNIPASS_PLUS`/`DIAMOND` never reappear) | YES — explicit assertion that enum `MembershipTier` exists and has the six canonical values |
+| File                  | Present? |                                                                     Refs `MembershipTier` enum values?                                                                     |                                    Breaks without enum?                                     |
+| --------------------- | :------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+| `prisma/seed.ts`      |   YES    |                      YES (imports `MembershipTier` from `@prisma/client`, line 11; uses all 6 canonical tier literals in `TIER_FIXTURES` lines 19–54)                      |                           YES — would not compile if enum removed                           |
+| `prisma/seed.test.ts` |   YES    | YES (negative-space guardrail — asserts enum-block contents match `CANONICAL_TIERS` exactly and that retired `DAY_PASS`/`ANNUAL`/`OMNIPASS_PLUS`/`DIAMOND` never reappear) | YES — explicit assertion that enum `MembershipTier` exists and has the six canonical values |
 
 `seed.test.ts` exists (3087 bytes). Thread 14 CI-wiring concern is satisfied: the guardrail file is committed to main.
 
@@ -121,12 +123,12 @@ Per directive the audit path is `services/core-api/src/governance/governance.con
 
 File present (5926 bytes).
 
-| Constant | Present? | Notes |
-|----------|:--------:|-------|
-| `MEMBERSHIP.TIERS` | **NO** | file contains no `MEMBERSHIP` key |
-| `SHOWTOKEN_EXCHANGE` block with VIP/SILVER/GOLD/PLATINUM/DIAMOND keys | **NO** | no `SHOWTOKEN_EXCHANGE` symbol |
-| `TOKEN_EXTENSION` block | **NO** | no `TOKEN_EXTENSION` symbol |
-| `DIAMOND_TIER.VOLUME_TIERS` | **NO** | no `DIAMOND_TIER` symbol |
+| Constant                                                              | Present? | Notes                             |
+| --------------------------------------------------------------------- | :------: | --------------------------------- |
+| `MEMBERSHIP.TIERS`                                                    |  **NO**  | file contains no `MEMBERSHIP` key |
+| `SHOWTOKEN_EXCHANGE` block with VIP/SILVER/GOLD/PLATINUM/DIAMOND keys |  **NO**  | no `SHOWTOKEN_EXCHANGE` symbol    |
+| `TOKEN_EXTENSION` block                                               |  **NO**  | no `TOKEN_EXTENSION` symbol       |
+| `DIAMOND_TIER.VOLUME_TIERS`                                           |  **NO**  | no `DIAMOND_TIER` symbol          |
 
 DFSP governance currently holds only: integrity-hold parameters, purchase-window hours, risk scoring, diamond-token threshold, OTP settings, account-recovery hold, contract-offer expiry, voice-sample limits, PROC-001 webhook constants, Flicker n'Flame Scoring payout rates (PAY-001..PAY-005), heat-band boundaries, DFSP_CONCIERGE block, BIJOU block. **Nothing tier-related.**
 
@@ -134,17 +136,18 @@ DFSP governance currently holds only: integrity-hold parameters, purchase-window
 
 File present (21,438 bytes).
 
-| Constant | Present? | Current Value / Location |
-|----------|:--------:|--------------------------|
-| `MEMBERSHIP` export (module-level `const`) | **YES** | line 182 |
-| `MEMBERSHIP.TIERS` | **YES** | line 187: `['VIP', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND'] as const` |
+| Constant                                                        |                      Present?                       | Current Value / Location                                                                         |
+| --------------------------------------------------------------- | :-------------------------------------------------: | ------------------------------------------------------------------------------------------------ |
+| `MEMBERSHIP` export (module-level `const`)                      |                       **YES**                       | line 182                                                                                         |
+| `MEMBERSHIP.TIERS`                                              |                       **YES**                       | line 187: `['VIP', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND'] as const`                            |
 | `SHOWTOKEN_EXCHANGE` with VIP/SILVER/GOLD/PLATINUM/DIAMOND keys | **NO** — no `SHOWTOKEN_EXCHANGE` symbol in the file |
-| `TOKEN_EXTENSION` block | **YES** | line 220 (Options A/B/C schema, not per-tier keys) |
-| `DIAMOND_TIER.VOLUME_TIERS` | **YES** | line 56 — 3-tier array `[10000–27499 @ 0.095, 30000–57499 @ 0.088, 60000–∞ @ 0.082]` |
-| `MEMBERSHIP.STIPEND_CZT` | **YES** | line 211: keys are `DAY_PASS / ANNUAL / OMNIPASS_PLUS / DIAMOND` — **retired-terminology drift** |
-| `MEMBERSHIP.DURATION_BONUS` | **YES** | line 204 — `QUARTERLY / SEMI_ANNUAL / ANNUAL` |
+| `TOKEN_EXTENSION` block                                         |                       **YES**                       | line 220 (Options A/B/C schema, not per-tier keys)                                               |
+| `DIAMOND_TIER.VOLUME_TIERS`                                     |                       **YES**                       | line 56 — 3-tier array `[10000–27499 @ 0.095, 30000–57499 @ 0.088, 60000–∞ @ 0.082]`             |
+| `MEMBERSHIP.STIPEND_CZT`                                        |                       **YES**                       | line 211: keys are `DAY_PASS / ANNUAL / OMNIPASS_PLUS / DIAMOND` — **retired-terminology drift** |
+| `MEMBERSHIP.DURATION_BONUS`                                     |                       **YES**                       | line 204 — `QUARTERLY / SEMI_ANNUAL / ANNUAL`                                                    |
 
 **Drift flags (do not block MEMB-series schema-layer work):**
+
 1. `MEMBERSHIP.TIERS` array uses legacy labels `['VIP','SILVER','GOLD','PLATINUM','DIAMOND']` — missing `GUEST` and not in `VIP_SILVER`/`VIP_GOLD`/`VIP_PLATINUM`/`VIP_DIAMOND` canonical form.
 2. `MEMBERSHIP.STIPEND_CZT` map keys are the retired tier names `DAY_PASS`, `ANNUAL`, `OMNIPASS_PLUS`, `DIAMOND` — this map no longer maps onto the `MembershipTier` Prisma enum and breaks the invariant documented in `seed.test.ts`.
 

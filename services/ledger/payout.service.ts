@@ -10,19 +10,19 @@ import type { HeatLevel, LedgerBucket } from './types';
 import type { RedbookRateCardService } from './redbook-rate-card.service';
 
 export interface SessionCloseInput {
-  sessionId: string;                   // correlation_id root
+  sessionId: string; // correlation_id root
   creatorWalletId: string;
-  grossCzt: number;                    // total CZT earned this session (integer)
-  heatScore: number;                   // 0–100 — from FFS scorer
-  diamondFloorActive: boolean;         // true when creator has Diamond floor guarantee
+  grossCzt: number; // total CZT earned this session (integer)
+  heatScore: number; // 0–100 — from FFS scorer
+  diamondFloorActive: boolean; // true when creator has Diamond floor guarantee
 }
 
 export interface SessionPayoutResult {
-  ledgerBucket: LedgerBucket;          // always 'bonus' for creator payouts
+  ledgerBucket: LedgerBucket; // always 'bonus' for creator payouts
   heatLevel: HeatLevel;
   ratePerToken: number;
-  payoutUsd: number;                   // for reporting
-  payoutCzt: number;                   // what was credited to the wallet
+  payoutUsd: number; // for reporting
+  payoutCzt: number; // what was credited to the wallet
   appliedFloor: boolean;
   correlationId: string;
 }

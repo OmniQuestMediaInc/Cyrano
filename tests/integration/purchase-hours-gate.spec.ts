@@ -11,7 +11,9 @@ import { GovernanceConfig } from '../../services/core-api/src/governance/governa
 import { loadCustomers, loadDemoScenarios } from './seed-loader';
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
-function buildMockPrisma(configOverride?: { window_open_hour?: number; window_close_hour?: number } | null) {
+function buildMockPrisma(
+  configOverride?: { window_open_hour?: number; window_close_hour?: number } | null,
+) {
   return {
     purchaseWindowConfig: {
       findFirst: jest.fn(async () => configOverride ?? null),
@@ -33,8 +35,8 @@ function makeService(
 }
 
 // ── Window boundary helpers ───────────────────────────────────────────────────
-const OPEN_HOUR  = GovernanceConfig.DFSP_PURCHASE_WINDOW_OPEN_HOUR;   // 11
-const CLOSE_HOUR = GovernanceConfig.DFSP_PURCHASE_WINDOW_CLOSE_HOUR;  // 23
+const OPEN_HOUR = GovernanceConfig.DFSP_PURCHASE_WINDOW_OPEN_HOUR; // 11
+const CLOSE_HOUR = GovernanceConfig.DFSP_PURCHASE_WINDOW_CLOSE_HOUR; // 23
 
 /**
  * Builds a timezone-aware ISO datetime string that places the clock
@@ -56,12 +58,9 @@ function withMockedHour(targetHour: number, callback: () => Promise<void>): () =
     // gives exactly targetHour. We use 'UTC' as the billing_tz so the UTC hour
     // IS the local hour. This keeps tests hermetic and fast.
     const now = new Date();
-    const fakeDate = new Date(Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      targetHour, 0, 0, 0,
-    ));
+    const fakeDate = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), targetHour, 0, 0, 0),
+    );
     jest.useFakeTimers({ now: fakeDate.getTime() });
     try {
       await callback();
@@ -265,7 +264,7 @@ describe('PurchaseHoursGateService — Ghost Alpha customer scenarios', () => {
     jest.useFakeTimers({ now: Date.UTC(2026, 3, 11, 15, 0, 0) }); // 15:00 UTC — inside
 
     for (const sc of scenarios) {
-      const customer = customers.find(c => c.customer_id === sc.primary_customer_id);
+      const customer = customers.find((c) => c.customer_id === sc.primary_customer_id);
       expect(customer).toBeDefined();
 
       const { svc } = makeService();

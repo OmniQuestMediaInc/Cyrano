@@ -33,9 +33,7 @@ import {
 function makeService(userIds?: string[]) {
   const ledger = new InMemoryRrPointsLedgerRepository();
   const grants = new InMemoryBurnRewardGrantRepository();
-  const activeUsers = userIds
-    ? { listActiveUserIds: async () => userIds }
-    : undefined;
+  const activeUsers = userIds ? { listActiveUserIds: async () => userIds } : undefined;
   const svc = new RedRoomRewardsService(ledger, grants, activeUsers);
   return { svc, ledger, grants };
 }
@@ -190,8 +188,9 @@ describe('RedRoomRewardsService — burnPoints', () => {
   it('throws InsufficientRrrPointsError when balance is too low', async () => {
     const { svc } = makeService();
     await svc.awardPoints('u11', 'MESSAGE_SENT'); // +10, need 200
-    await expect(svc.burnPoints('u11', 'EXTRA_IMAGES'))
-      .rejects.toBeInstanceOf(InsufficientRrrPointsError);
+    await expect(svc.burnPoints('u11', 'EXTRA_IMAGES')).rejects.toBeInstanceOf(
+      InsufficientRrrPointsError,
+    );
   });
 
   it('InsufficientRrrPointsError statusCode is 402', async () => {

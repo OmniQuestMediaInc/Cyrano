@@ -170,10 +170,12 @@ const checks: Array<() => CheckResult> = [
   },
   () => {
     const recovery = readSafe('services/recovery/src/recovery.service.ts') ?? '';
+    // Match either prettier-normalized (`0.2`) or canonical (`0.20`) forms —
+    // the invariant is the VALUE, not the string representation.
     const ok =
       recovery.includes('FIZ-002-REVISION-2026-04-11') &&
-      recovery.includes('TOKEN_BRIDGE_BONUS_PCT: 0.20') &&
-      recovery.includes('THREE_FIFTHS_REFUND_PCT: 0.60');
+      /TOKEN_BRIDGE_BONUS_PCT:\s*0\.20?\b/.test(recovery) &&
+      /THREE_FIFTHS_REFUND_PCT:\s*0\.60?\b/.test(recovery);
     return {
       id: 'GATE-3',
       category: 'Welfare + safety',

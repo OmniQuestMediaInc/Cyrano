@@ -14,20 +14,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import { NATS_TOPICS } from '../../nats/topics.registry';
-import {
-  FlickerNFlameScoringEngine,
-  type FfsScore,
-  type FfsSample,
-} from './ffs.engine';
+import { FlickerNFlameScoringEngine, type FfsScore, type FfsSample } from './ffs.engine';
 import {
   BroadcastTimingCopilot,
   type BroadcastWindowSuggestion,
   type TipperAvailabilityBucket,
 } from './broadcast-timing.copilot';
-import {
-  SessionMonitoringCopilot,
-  type PriceNudge,
-} from './session-monitoring.copilot';
+import { SessionMonitoringCopilot, type PriceNudge } from './session-monitoring.copilot';
 
 export const CREATOR_CONTROL_RULE_ID = 'CREATOR_CONTROL_ZONE_v1';
 
@@ -48,10 +41,7 @@ export class CreatorControlService {
   private readonly logger = new Logger(CreatorControlService.name);
   // Per-creator cache of the most recent FfsScore / nudge — supports the
   // single-pane snapshot without forcing recomputation on every read.
-  private readonly latestByCreator = new Map<
-    string,
-    { heat: FfsScore; nudge: PriceNudge }
-  >();
+  private readonly latestByCreator = new Map<string, { heat: FfsScore; nudge: PriceNudge }>();
 
   constructor(
     private readonly nats: NatsService,

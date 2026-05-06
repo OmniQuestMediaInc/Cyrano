@@ -7,17 +7,21 @@
 ---
 
 ## Repo
+
 OmniQuestMediaInc/ChatNowZone--BUILD
 
 ## Branch
+
 `copilot/nats-dfsp-001-topics`
 
 ## HEAD
+
 `8a8de38`
 
 ---
 
 ## Files Changed
+
 ```
 git diff --stat HEAD~1 HEAD
 
@@ -35,13 +39,13 @@ No services, schemas, GovernanceConfig, or other files modified.
 
 ## Exact Topic Strings Added (6 total)
 
-| Key | Topic String |
-|-----|-------------|
-| `DFSP_OTP_ISSUED` | `dfsp.otp.issued` |
-| `DFSP_OTP_VERIFIED` | `dfsp.otp.verified` |
-| `DFSP_OTP_FAILED` | `dfsp.otp.failed` |
-| `DFSP_OTP_EXPIRED` | `dfsp.otp.expired` |
-| `DFSP_ACCOUNT_HOLD_APPLIED` | `dfsp.account.hold.applied` |
+| Key                          | Topic String                 |
+| ---------------------------- | ---------------------------- |
+| `DFSP_OTP_ISSUED`            | `dfsp.otp.issued`            |
+| `DFSP_OTP_VERIFIED`          | `dfsp.otp.verified`          |
+| `DFSP_OTP_FAILED`            | `dfsp.otp.failed`            |
+| `DFSP_OTP_EXPIRED`           | `dfsp.otp.expired`           |
+| `DFSP_ACCOUNT_HOLD_APPLIED`  | `dfsp.account.hold.applied`  |
 | `DFSP_ACCOUNT_HOLD_RELEASED` | `dfsp.account.hold.released` |
 
 ---
@@ -63,6 +67,7 @@ valid; the error originates in `tsconfig.json:12` (`baseUrl` deprecation), unrel
 ---
 
 ## Invariant Checklist
+
 - [x] No hardcoded string literals — all topics added to registry only
 - [x] No `@angular/core` imports
 - [x] `tsc --noEmit` — zero **new** errors (pre-existing error unchanged)
@@ -74,4 +79,5 @@ valid; the error originates in `tsconfig.json:12` (`baseUrl` deprecation), unrel
 ---
 
 ## Result
+
 **SUCCESS**

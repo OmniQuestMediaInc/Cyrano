@@ -9,7 +9,7 @@
 
 ---
 
-## Audit: All Non-Main, Non-refs/* Remote Branches vs. main
+## Audit: All Non-Main, Non-refs/\* Remote Branches vs. main
 
 Command: `git rev-list --count main..origin/<branch>`
 
@@ -50,9 +50,9 @@ AHEAD  BRANCH
 
 ## Branches Qualifying for Deletion (0 commits ahead of main)
 
-| Branch | HEAD SHA | Commits Ahead |
-|--------|----------|---------------|
-| `copilot/thread-16-cleanup-stale-branches` | `4c576faa03f710bed8b0a9dcc58741be52db883c` | 0 |
+| Branch                                     | HEAD SHA                                   | Commits Ahead |
+| ------------------------------------------ | ------------------------------------------ | ------------- |
+| `copilot/thread-16-cleanup-stale-branches` | `4c576faa03f710bed8b0a9dcc58741be52db883c` | 0             |
 
 This branch is pointing at the exact same commit as `origin/main`. It contains zero unique work.
 
@@ -73,6 +73,7 @@ git push origin --delete copilot/thread-16-cleanup-stale-branches
 ```
 
 Or via GitHub API:
+
 ```
 DELETE /repos/OmniQuestMediaInc/ChatNowZone--BUILD/git/refs/heads/copilot%2Fthread-16-cleanup-stale-branches
 ```
@@ -89,7 +90,7 @@ DELETE /repos/OmniQuestMediaInc/ChatNowZone--BUILD/git/refs/heads/copilot%2Fthre
 
 ## Summary
 
-- **Total branches audited:** 28 (excluding main, refs/*)
+- **Total branches audited:** 28 (excluding main, refs/\*)
 - **Branches qualifying for deletion (0 ahead of main):** 1 — `copilot/thread-16-cleanup-stale-branches`
 - **Branches deleted by this agent:** 0 (sandbox lacks remote delete access)
 - **Operator action required:** Delete `copilot/thread-16-cleanup-stale-branches` using credentials with write access

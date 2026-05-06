@@ -22,9 +22,11 @@ git diff --stat 993f2ad~1 993f2ad
 ```
 
 **Created:**
+
 - `services/core-api/src/dfsp/voice-sample.service.ts`
 
 **Modified:**
+
 - `services/core-api/src/dfsp/dfsp.module.ts`
 - `services/core-api/src/governance/governance.config.ts`
 - `services/nats/topics.registry.ts`
@@ -144,23 +146,23 @@ const count = await this.prisma.voiceSample.count({
 
 ## All 15 Invariants
 
-| # | Invariant | Status |
-|---|-----------|--------|
-| 1 | Two-phase write (consent → collect) and disposal update exceptions documented in code comments | ✅ PASS |
-| 2 | FIZ four-line commit format — REASON/IMPACT/CORRELATION_ID/GATE | ✅ PASS (merge commit, documented below) |
-| 3 | No hardcoded constants — all values from GovernanceConfig | ✅ PASS |
-| 4 | crypto.randomInt() — N/A (no random generation in this service) | ✅ N/A |
-| 5 | No @angular/core imports | ✅ PASS |
-| 6 | npx tsc --noEmit zero new errors before commit | ✅ PASS — EXIT:0 (zero errors confirmed with project TypeScript 5.9.3 via node_modules/.bin/tsc) |
-| 7 | Logger instance on VoiceSampleService | ✅ PASS — `private readonly logger = new Logger(VoiceSampleService.name)` (line 71) |
-| 8 | Report-back filed before DONE | ✅ PASS — this document |
-| 9 | NATS topics from NATS_TOPICS.DFSP_VOICE_SAMPLE_* only — no string literals | ✅ PASS |
-| 10 | AI services advisory only — N/A this service | ✅ N/A |
-| 11 | Step-up auth boundary — service records/manages samples only; does not itself authorize financial actions | ✅ PASS |
-| 12 | RBAC check confirmed upstream before sample collection | ✅ PASS — service is downstream of auth boundary |
-| 13 | SHA-256 for hash operations — N/A (file_reference is opaque reference, not a hash) | ✅ N/A |
-| 14 | All timestamps in America/Toronto | ✅ PASS — `new Date()` captures server time; all ISO strings emitted via `.toISOString()` (UTC). Timestamps stored in DB as UTC DateTime per Prisma convention, consistent with all other DFSP services in this codebase. |
-| 15 | rule_applied_id: 'VOICE_SAMPLE_v1' on every output object | ✅ PASS — all four method return objects include `rule_applied_id: this.RULE_ID` (line 72) |
+| #   | Invariant                                                                                                 | Status                                                                                                                                                                                                                    |
+| --- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Two-phase write (consent → collect) and disposal update exceptions documented in code comments            | ✅ PASS                                                                                                                                                                                                                   |
+| 2   | FIZ four-line commit format — REASON/IMPACT/CORRELATION_ID/GATE                                           | ✅ PASS (merge commit, documented below)                                                                                                                                                                                  |
+| 3   | No hardcoded constants — all values from GovernanceConfig                                                 | ✅ PASS                                                                                                                                                                                                                   |
+| 4   | crypto.randomInt() — N/A (no random generation in this service)                                           | ✅ N/A                                                                                                                                                                                                                    |
+| 5   | No @angular/core imports                                                                                  | ✅ PASS                                                                                                                                                                                                                   |
+| 6   | npx tsc --noEmit zero new errors before commit                                                            | ✅ PASS — EXIT:0 (zero errors confirmed with project TypeScript 5.9.3 via node_modules/.bin/tsc)                                                                                                                          |
+| 7   | Logger instance on VoiceSampleService                                                                     | ✅ PASS — `private readonly logger = new Logger(VoiceSampleService.name)` (line 71)                                                                                                                                       |
+| 8   | Report-back filed before DONE                                                                             | ✅ PASS — this document                                                                                                                                                                                                   |
+| 9   | NATS topics from NATS*TOPICS.DFSP_VOICE_SAMPLE*\* only — no string literals                               | ✅ PASS                                                                                                                                                                                                                   |
+| 10  | AI services advisory only — N/A this service                                                              | ✅ N/A                                                                                                                                                                                                                    |
+| 11  | Step-up auth boundary — service records/manages samples only; does not itself authorize financial actions | ✅ PASS                                                                                                                                                                                                                   |
+| 12  | RBAC check confirmed upstream before sample collection                                                    | ✅ PASS — service is downstream of auth boundary                                                                                                                                                                          |
+| 13  | SHA-256 for hash operations — N/A (file_reference is opaque reference, not a hash)                        | ✅ N/A                                                                                                                                                                                                                    |
+| 14  | All timestamps in America/Toronto                                                                         | ✅ PASS — `new Date()` captures server time; all ISO strings emitted via `.toISOString()` (UTC). Timestamps stored in DB as UTC DateTime per Prisma convention, consistent with all other DFSP services in this codebase. |
+| 15  | rule_applied_id: 'VOICE_SAMPLE_v1' on every output object                                                 | ✅ PASS — all four method return objects include `rule_applied_id: this.RULE_ID` (line 72)                                                                                                                                |
 
 ---
 

@@ -180,23 +180,23 @@ docker-compose up
 
 ## Key API Endpoints
 
-| Endpoint | Description |
-|---|---|
-| `POST /cyrano/ai-twin` | Create a new AI twin record |
-| `POST /cyrano/ai-twin/:id/photos` | Record a photo upload |
-| `POST /cyrano/ai-twin/:id/train` | Start Flux LoRA training |
-| `GET  /cyrano/ai-twin/house-models` | List platform house models (public) |
-| `GET  /admin/house-models` | List house models — ADMIN only (`x-actor-role: ADMIN`) |
-| `POST /cyrano/spark/provision` | Provision a free Spark Twin on signup |
-| `POST /cyrano/spark/track-message` | Track Spark message + return upgrade nudge if threshold crossed |
-| `POST /cyrano/images/generate` | Generate a photorealistic image |
-| `POST /cyrano/voice` | Create a voice clone |
-| `POST /cyrano/voice/tts` | Text-to-speech with cloned voice |
-| `POST /cyrano/narrative/memory` | Store a memory for a user+twin |
-| `POST /cyrano/narrative/context` | Build LLM context from memory bank |
-| `POST /cyrano/narrative/branch` | Create a cinematic branch point |
-| `POST /cyrano/narrative/branch/:id/resolve` | Resolve a branch choice |
-| `POST /cyrano/narrative/nudge` | Inject upgrade nudge into narrative memory |
+| Endpoint                                    | Description                                                     |
+| ------------------------------------------- | --------------------------------------------------------------- |
+| `POST /cyrano/ai-twin`                      | Create a new AI twin record                                     |
+| `POST /cyrano/ai-twin/:id/photos`           | Record a photo upload                                           |
+| `POST /cyrano/ai-twin/:id/train`            | Start Flux LoRA training                                        |
+| `GET  /cyrano/ai-twin/house-models`         | List platform house models (public)                             |
+| `GET  /admin/house-models`                  | List house models — ADMIN only (`x-actor-role: ADMIN`)          |
+| `POST /cyrano/spark/provision`              | Provision a free Spark Twin on signup                           |
+| `POST /cyrano/spark/track-message`          | Track Spark message + return upgrade nudge if threshold crossed |
+| `POST /cyrano/images/generate`              | Generate a photorealistic image                                 |
+| `POST /cyrano/voice`                        | Create a voice clone                                            |
+| `POST /cyrano/voice/tts`                    | Text-to-speech with cloned voice                                |
+| `POST /cyrano/narrative/memory`             | Store a memory for a user+twin                                  |
+| `POST /cyrano/narrative/context`            | Build LLM context from memory bank                              |
+| `POST /cyrano/narrative/branch`             | Create a cinematic branch point                                 |
+| `POST /cyrano/narrative/branch/:id/resolve` | Resolve a branch choice                                         |
+| `POST /cyrano/narrative/nudge`              | Inject upgrade nudge into narrative memory                      |
 
 ---
 
@@ -204,14 +204,14 @@ docker-compose up
 
 See [`.env.example`](.env.example) for a full list. Key variables:
 
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | Postgres connection string |
-| `ELEVENLABS_API_KEY` | ElevenLabs API key for voice cloning + TTS |
-| `BANANA_API_KEY` | Banana.dev API key for Flux LoRA training |
-| `BANANA_MODEL_KEY_FLUX_PRO` | Banana.dev model key for Flux Pro |
-| `AI_TWIN_LORA_RANK` | LoRA rank for training (default: 16) |
-| `NARRATIVE_MEMORY_TTL_DAYS` | Memory retention in days (default: 365) |
+| Variable                    | Description                                |
+| --------------------------- | ------------------------------------------ |
+| `DATABASE_URL`              | Postgres connection string                 |
+| `ELEVENLABS_API_KEY`        | ElevenLabs API key for voice cloning + TTS |
+| `BANANA_API_KEY`            | Banana.dev API key for Flux LoRA training  |
+| `BANANA_MODEL_KEY_FLUX_PRO` | Banana.dev model key for Flux Pro          |
+| `AI_TWIN_LORA_RANK`         | LoRA rank for training (default: 16)       |
+| `NARRATIVE_MEMORY_TTL_DAYS` | Memory retention in days (default: 365)    |
 
 ---
 
@@ -256,4 +256,4 @@ user system as the main ChatNow.Zone platform. When ready to merge:
 
 ---
 
-*Cyrano™ — OmniQuest Media Inc. · All rights reserved.*
+_Cyrano™ — OmniQuest Media Inc. · All rights reserved._

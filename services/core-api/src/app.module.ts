@@ -89,8 +89,6 @@ export class AppModule implements NestModule {
 
     // CYR-SUB-002: Benefits middleware runs on Cyrano feature routes.
     // Enforces monthly image / message / video limits per subscription tier.
-    consumer
-      .apply(BenefitsMiddleware)
-      .forRoutes('/image', '/chat', '/video');
+    consumer.apply(BenefitsMiddleware).forRoutes('/image', '/chat', '/video');
   }
 }

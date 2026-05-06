@@ -19,36 +19,36 @@ Suggestions are never visible to the guest.
 Cyrano ships in four layers, all backed by the **same core suggestion
 engine + shared template surface**:
 
-| Layer | Role | Surface |
-|-------|------|---------|
-| 1 | Deterministic whisper copilot for ChatNow.Zone creators | NATS-only |
-| 2 | LLM-backed standalone role-play platform (`apps/cyrano-standalone/`) | `/cyrano/auth/session` + standalone runtime |
-| 3 | HCZ shift-briefing consumer | NATS subscriber |
-| 4 | Enterprise multi-tenant Whisper API (teaching, coaching, first-responder, factory-safety, medical) | `/cyrano/layer4/*` REST + NATS |
+| Layer | Role                                                                                               | Surface                                     |
+| ----- | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| 1     | Deterministic whisper copilot for ChatNow.Zone creators                                            | NATS-only                                   |
+| 2     | LLM-backed standalone role-play platform (`apps/cyrano-standalone/`)                               | `/cyrano/auth/session` + standalone runtime |
+| 3     | HCZ shift-briefing consumer                                                                        | NATS subscriber                             |
+| 4     | Enterprise multi-tenant Whisper API (teaching, coaching, first-responder, factory-safety, medical) | `/cyrano/layer4/*` REST + NATS              |
 
 ### Components
 
-| File | Role |
-|------|------|
-| `cyrano.service.ts` | Layer 1 suggestion engine — category selection, weight computation, copy generation |
-| `persona.manager.ts` | Creator persona registry + session activation |
-| `session-memory.store.ts` | In-process (creator_id, guest_id) durable fact + arc store |
-| `cyrano.types.ts` | Shared TypeScript contracts (Layers 1-4) |
-| `cyrano-prompt-templates.ts` | Shared template engine + Layer 4 content_mode resolver + extension-point registry |
-| `cyrano-layer3-hcz.service.ts` | Layer 3 HCZ shift-briefing consumer |
-| `cyrano-layer4-enterprise.service.ts` | Layer 4 orchestrator (tenant + rate-limit + audit + voice + translation composition) |
-| `cyrano-layer4.controller.ts` | Layer 4 REST surface — tenant register, key mint/list/revoke, prompt resolve, audit read |
-| `cyrano-layer4.guard.ts` | Layer 4 request guard — tenant + API-key isolation |
-| `cyrano-layer4.types.ts` | Layer 4 DTOs and reason-code enum |
-| `cyrano-layer4-tenant.store.ts` | Append-only tenant registry (in-process; Phase-2 Prisma swap is drop-in) |
-| `cyrano-layer4-api-key.service.ts` | Mint / verify / revoke API keys (SHA-256 hashed, never persists raw key) |
-| `cyrano-layer4-rate-limiter.service.ts` | Per-tenant minute window + per-API-key 1-second burst |
-| `cyrano-layer4-audit.service.ts` | Hash-chained tenant audit log (correlation_id idempotent, `verifyChain()` replay) |
-| `cyrano-layer4-voice.bridge.ts` | Voice synthesis bridge — domain-default voice profiles + HIPAA consent enforcement |
-| `cyrano-translation.service.ts` | **Phase 4** — Real-time text + voice translation layer (Issue #15) |
-| `cyrano-beta-registry.service.ts` | **Phase 4** — Beta creator allowlist (max 30 creators, Issue #16) |
-| `cyrano-beta-analytics.service.ts` | **Phase 4** — Beta usage metrics + aggregate summaries (Issue #16) |
-| `cyrano.module.ts` | NestJS module wiring (Layers 1, 3, 4 + Phase 4 services) |
+| File                                    | Role                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `cyrano.service.ts`                     | Layer 1 suggestion engine — category selection, weight computation, copy generation      |
+| `persona.manager.ts`                    | Creator persona registry + session activation                                            |
+| `session-memory.store.ts`               | In-process (creator_id, guest_id) durable fact + arc store                               |
+| `cyrano.types.ts`                       | Shared TypeScript contracts (Layers 1-4)                                                 |
+| `cyrano-prompt-templates.ts`            | Shared template engine + Layer 4 content_mode resolver + extension-point registry        |
+| `cyrano-layer3-hcz.service.ts`          | Layer 3 HCZ shift-briefing consumer                                                      |
+| `cyrano-layer4-enterprise.service.ts`   | Layer 4 orchestrator (tenant + rate-limit + audit + voice + translation composition)     |
+| `cyrano-layer4.controller.ts`           | Layer 4 REST surface — tenant register, key mint/list/revoke, prompt resolve, audit read |
+| `cyrano-layer4.guard.ts`                | Layer 4 request guard — tenant + API-key isolation                                       |
+| `cyrano-layer4.types.ts`                | Layer 4 DTOs and reason-code enum                                                        |
+| `cyrano-layer4-tenant.store.ts`         | Append-only tenant registry (in-process; Phase-2 Prisma swap is drop-in)                 |
+| `cyrano-layer4-api-key.service.ts`      | Mint / verify / revoke API keys (SHA-256 hashed, never persists raw key)                 |
+| `cyrano-layer4-rate-limiter.service.ts` | Per-tenant minute window + per-API-key 1-second burst                                    |
+| `cyrano-layer4-audit.service.ts`        | Hash-chained tenant audit log (correlation_id idempotent, `verifyChain()` replay)        |
+| `cyrano-layer4-voice.bridge.ts`         | Voice synthesis bridge — domain-default voice profiles + HIPAA consent enforcement       |
+| `cyrano-translation.service.ts`         | **Phase 4** — Real-time text + voice translation layer (Issue #15)                       |
+| `cyrano-beta-registry.service.ts`       | **Phase 4** — Beta creator allowlist (max 30 creators, Issue #16)                        |
+| `cyrano-beta-analytics.service.ts`      | **Phase 4** — Beta usage metrics + aggregate summaries (Issue #16)                       |
+| `cyrano.module.ts`                      | NestJS module wiring (Layers 1, 3, 4 + Phase 4 services)                                 |
 
 ## Layer 4 — Enterprise Whisper API
 
@@ -69,14 +69,14 @@ Layer 4 exposes Cyrano flows to enterprise tenants. Every request:
 
 ### REST surface
 
-| Method | Path | Notes |
-|--------|------|-------|
-| POST | `/cyrano/layer4/tenants` | Register/upsert a tenant (admin) |
-| POST | `/cyrano/layer4/tenants/:tenantId/keys` | Mint an API key (returns raw key once) |
-| GET | `/cyrano/layer4/tenants/:tenantId/keys` | List hashed key records |
-| DELETE | `/cyrano/layer4/tenants/:tenantId/keys/:apiKeyId` | Revoke a key |
-| GET | `/cyrano/layer4/tenants/:tenantId/audit` | Read tenant audit log + chain verify |
-| POST | `/cyrano/layer4/prompt` | Resolve a domain prompt (gated by Layer 4 guard) |
+| Method | Path                                              | Notes                                            |
+| ------ | ------------------------------------------------- | ------------------------------------------------ |
+| POST   | `/cyrano/layer4/tenants`                          | Register/upsert a tenant (admin)                 |
+| POST   | `/cyrano/layer4/tenants/:tenantId/keys`           | Mint an API key (returns raw key once)           |
+| GET    | `/cyrano/layer4/tenants/:tenantId/keys`           | List hashed key records                          |
+| DELETE | `/cyrano/layer4/tenants/:tenantId/keys/:apiKeyId` | Revoke a key                                     |
+| GET    | `/cyrano/layer4/tenants/:tenantId/audit`          | Read tenant audit log + chain verify             |
+| POST   | `/cyrano/layer4/prompt`                           | Resolve a domain prompt (gated by Layer 4 guard) |
 
 ### Prompt Request — Phase 4 additions
 
@@ -146,20 +146,20 @@ changing any caller contract.
 
 ### Skip reason codes
 
-| Code | Reason |
-|------|--------|
+| Code                                | Reason                                         |
+| ----------------------------------- | ---------------------------------------------- |
 | `TRANSLATION_LOCALE_SAME_AS_SOURCE` | `target_locale` is `en-US` (canonical source). |
-| `TRANSLATION_INPUT_EMPTY` | `copy` is blank / whitespace only. |
-| `TRANSLATION_LOCALE_NOT_SUPPORTED` | Locale not in the supported set. |
-| `TRANSLATION_DISABLED_BY_TENANT` | Reserved for Phase 1 tenant-level flag. |
+| `TRANSLATION_INPUT_EMPTY`           | `copy` is blank / whitespace only.             |
+| `TRANSLATION_LOCALE_NOT_SUPPORTED`  | Locale not in the supported set.               |
+| `TRANSLATION_DISABLED_BY_TENANT`    | Reserved for Phase 1 tenant-level flag.        |
 
 ### NATS topics (Translation)
 
-| Topic | When |
-|-------|------|
-| `cyrano.translation.requested` | Translation job started. |
-| `cyrano.translation.completed` | Translation produced. |
-| `cyrano.translation.skipped` | Skip — same locale or empty copy. |
+| Topic                            | When                                |
+| -------------------------------- | ----------------------------------- |
+| `cyrano.translation.requested`   | Translation job started.            |
+| `cyrano.translation.completed`   | Translation produced.               |
+| `cyrano.translation.skipped`     | Skip — same locale or empty copy.   |
 | `cyrano.translation.unsupported` | Target locale not in supported set. |
 
 ---
@@ -175,11 +175,11 @@ Supports the internal beta with up to **30 creators**.
 Manages the creator allowlist. Capacity ceiling: `BETA_MAX_CREATORS = 30`.
 
 ```typescript
-betaRegistry.enroll('creator-uuid');     // { enrolled: true, ... }
+betaRegistry.enroll('creator-uuid'); // { enrolled: true, ... }
 betaRegistry.isEnrolled('creator-uuid'); // true
-betaRegistry.count();                    // 1
-betaRegistry.remove('creator-uuid');     // true
-betaRegistry.listEnrolled();             // BetaCreatorRecord[]
+betaRegistry.count(); // 1
+betaRegistry.remove('creator-uuid'); // true
+betaRegistry.listEnrolled(); // BetaCreatorRecord[]
 ```
 
 Over-capacity enrollments return `rejection_reason: 'BETA_CAPACITY_REACHED'`.
@@ -204,34 +204,34 @@ const summary = betaAnalytics.emitSummary();
 
 ### NATS topics (Beta Analytics)
 
-| Topic | When |
-|-------|------|
-| `cyrano.beta.creator.enrolled` | Creator added to beta. |
-| `cyrano.beta.creator.removed` | Creator removed from beta. |
-| `cyrano.beta.prompt.tracked` | Prompt event tracked. |
+| Topic                             | When                       |
+| --------------------------------- | -------------------------- |
+| `cyrano.beta.creator.enrolled`    | Creator added to beta.     |
+| `cyrano.beta.creator.removed`     | Creator removed from beta. |
+| `cyrano.beta.prompt.tracked`      | Prompt event tracked.      |
 | `cyrano.beta.translation.tracked` | Translation event tracked. |
-| `cyrano.beta.summary.emitted` | Aggregate summary emitted. |
+| `cyrano.beta.summary.emitted`     | Aggregate summary emitted. |
 
 ---
 
 ## Suggestion Categories
 
-| Category | When to Surface |
-|----------|----------------|
-| `CAT_SESSION_OPEN` | Session start (COLD heat, OPENING phase) |
-| `CAT_ENGAGEMENT` | Mid-session flow maintenance |
-| `CAT_ESCALATION` | HOT / INFERNO heat — intimacy escalation |
-| `CAT_NARRATIVE` | Arc reinforcement |
-| `CAT_CALLBACK` | ≥2 durable facts on record + WARM/HOT phase |
-| `CAT_RECOVERY` | Silence ≥ 60 s or COLD heat in mid-session |
-| `CAT_MONETIZATION` | HOT+ heat, untipped guest, or PEAK phase |
-| `CAT_SESSION_CLOSE` | CLOSING phase or INFERNO heat winding down |
+| Category            | When to Surface                             |
+| ------------------- | ------------------------------------------- |
+| `CAT_SESSION_OPEN`  | Session start (COLD heat, OPENING phase)    |
+| `CAT_ENGAGEMENT`    | Mid-session flow maintenance                |
+| `CAT_ESCALATION`    | HOT / INFERNO heat — intimacy escalation    |
+| `CAT_NARRATIVE`     | Arc reinforcement                           |
+| `CAT_CALLBACK`      | ≥2 durable facts on record + WARM/HOT phase |
+| `CAT_RECOVERY`      | Silence ≥ 60 s or COLD heat in mid-session  |
+| `CAT_MONETIZATION`  | HOT+ heat, untipped guest, or PEAK phase    |
+| `CAT_SESSION_CLOSE` | CLOSING phase or INFERNO heat winding down  |
 
 ## Latency SLOs
 
-| Target | Value |
-|--------|-------|
-| Ideal | < 2 000 ms |
+| Target      | Value      |
+| ----------- | ---------- |
+| Ideal       | < 2 000 ms |
 | Hard cutoff | < 4 000 ms |
 
 Suggestions exceeding the hard cutoff are silently discarded. A
@@ -251,11 +251,11 @@ In Layer 1, storage is in-process; Layer 2 will persist to Prisma.
 
 ## NATS Topics Emitted
 
-| Topic | When |
-|-------|------|
-| `cyrano.suggestion.emitted` | Valid suggestion dispatched |
+| Topic                       | When                                       |
+| --------------------------- | ------------------------------------------ |
+| `cyrano.suggestion.emitted` | Valid suggestion dispatched                |
 | `cyrano.suggestion.dropped` | Suggestion discarded (latency or no match) |
-| `cyrano.memory.updated` | Durable fact updated (emitted by caller) |
+| `cyrano.memory.updated`     | Durable fact updated (emitted by caller)   |
 
 ## Integration
 
@@ -277,15 +277,14 @@ yarn jest services/cyrano --passWithNoTests
 yarn test
 ```
 
-| Test file | Coverage |
-|-----------|----------|
+| Test file                                  | Coverage                                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
 | `cyrano-layer4-enterprise.service.spec.ts` | Tenant isolation, content-mode, HIPAA, rate limiting, API keys, audit chain, voice, overlays |
-| `cyrano-translation.service.spec.ts` | Translation success, locale skip, unsupported locale, empty copy, NATS events |
-| `cyrano-beta.service.spec.ts` | Registry CRUD, capacity enforcement, analytics counters, summary aggregation, NATS events |
+| `cyrano-translation.service.spec.ts`       | Translation success, locale skip, unsupported locale, empty copy, NATS events                |
+| `cyrano-beta.service.spec.ts`              | Registry CRUD, capacity enforcement, analytics counters, summary aggregation, NATS events    |
 
 ## Governance Invariants
 
 All commits to `services/cyrano/` use the `CYR:` prefix. Payout-touching paths additionally require `FIZ:` + `REASON:` / `IMPACT:` / `CORRELATION_ID:` in the commit body.
 
 See [`PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`](../../PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md) for the full invariant set.
-

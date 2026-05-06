@@ -36,13 +36,9 @@ export interface SessionTopUpPageRender {
   rule_applied_id: string;
 }
 
-export function renderSessionTopUpPage(
-  inputs: SessionTopUpPageInputs,
-): SessionTopUpPageRender {
-  const is_expired =
-    inputs.session_state === 'expired' || inputs.remaining_minutes === 0;
-  const can_resume =
-    inputs.selected_sku_id !== null && inputs.selected_bucket !== null;
+export function renderSessionTopUpPage(inputs: SessionTopUpPageInputs): SessionTopUpPageRender {
+  const is_expired = inputs.session_state === 'expired' || inputs.remaining_minutes === 0;
+  const can_resume = inputs.selected_sku_id !== null && inputs.selected_bucket !== null;
   const context_restorable = inputs.context_snapshot !== null;
 
   const view: SessionTopUpPageView = {
@@ -73,10 +69,17 @@ export function renderSessionTopUpPage(
       aria: { 'aria-label': 'Cyrano Session Top-Up & Recovery' },
     },
     [
-      is_expired ? renderExpiredBanner(inputs.session_id) : renderMinutesIndicator(inputs.remaining_minutes),
+      is_expired
+        ? renderExpiredBanner(inputs.session_id)
+        : renderMinutesIndicator(inputs.remaining_minutes),
       renderSkuList(inputs.recommended_skus, inputs.selected_sku_id),
       renderWalletSelector(inputs.wallet_buckets, inputs.selected_bucket),
-      renderPurchaseAction(can_resume, context_restorable, inputs.selected_sku_id, inputs.selected_bucket),
+      renderPurchaseAction(
+        can_resume,
+        context_restorable,
+        inputs.selected_sku_id,
+        inputs.selected_bucket,
+      ),
     ],
   );
 
@@ -102,14 +105,10 @@ function renderExpiredBanner(sessionId: string): RenderElement {
     [
       el('strong', {}, ['Session expired']),
       el('p', {}, ['Your Cyrano session has ended. Top up to continue.']),
-      el(
-        'dl',
-        { classes: ['cnz-stat-grid', 'cnz-stat-grid--inline'] },
-        [
-          el('dt', {}, ['Remaining minutes']),
-          el('dd', { test_id: 'session-topup-remaining-minutes' }, ['0']),
-        ],
-      ),
+      el('dl', { classes: ['cnz-stat-grid', 'cnz-stat-grid--inline'] }, [
+        el('dt', {}, ['Remaining minutes']),
+        el('dd', { test_id: 'session-topup-remaining-minutes' }, ['0']),
+      ]),
     ],
   );
 }
@@ -174,9 +173,7 @@ function renderSkuCard(sku: TopUpSku, selectedSkuId: string | null): RenderEleme
       },
     },
     [
-      sku.is_recommended
-        ? el('span', { classes: ['cnz-sku-card__badge'] }, ['Recommended'])
-        : null,
+      sku.is_recommended ? el('span', { classes: ['cnz-sku-card__badge'] }, ['Recommended']) : null,
       el('header', {}, [
         el('strong', { test_id: `session-topup-sku-label-${sku.sku_id}` }, [sku.label]),
         el('span', { classes: ['cnz-sku-card__type'] }, [sku.sku_type]),
@@ -188,18 +185,13 @@ function renderSkuCard(sku: TopUpSku, selectedSkuId: string | null): RenderEleme
           String(sku.minutes_granted),
         ]),
         el('dt', {}, ['Price']),
-        el('dd', { test_id: `session-topup-sku-price-${sku.sku_id}` }, [
-          `${sku.price_czt} CZT`,
-        ]),
+        el('dd', { test_id: `session-topup-sku-price-${sku.sku_id}` }, [`${sku.price_czt} CZT`]),
       ]),
       el(
         'button',
         {
           test_id: `session-topup-sku-select-${sku.sku_id}`,
-          classes: [
-            'cnz-button',
-            isSelected ? 'cnz-button--primary' : 'cnz-button--ghost',
-          ],
+          classes: ['cnz-button', isSelected ? 'cnz-button--primary' : 'cnz-button--ghost'],
           on: { click: 'selectTopUpSku' },
           props: { sku_id: sku.sku_id },
         },
@@ -262,9 +254,7 @@ function renderWalletBucketRow(
         },
         [bucket.label],
       ),
-      el('span', { classes: ['cnz-wallet-bucket__balance'] }, [
-        `${bucket.balance_tokens} CZT`,
-      ]),
+      el('span', { classes: ['cnz-wallet-bucket__balance'] }, [`${bucket.balance_tokens} CZT`]),
       bucket.will_drain_next
         ? el('span', { classes: ['cnz-wallet-bucket__drain-badge'] }, ['Drains first'])
         : null,

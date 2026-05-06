@@ -78,9 +78,7 @@ describe('DiamondConciergeService — platform floor guarantee', () => {
     // 60k tier base $0.082 × 1.00 = $0.082 — above floor, floor NOT applied
     const q = svc.quotePrice({ tokens: 70_000, velocity_days: 14 });
     expect(q.platform_floor_applied).toBe(false);
-    expect(q.platform_rate_usd).toBeGreaterThanOrEqual(
-      DIAMOND_TIER.PLATFORM_FLOOR_PER_TOKEN,
-    );
+    expect(q.platform_rate_usd).toBeGreaterThanOrEqual(DIAMOND_TIER.PLATFORM_FLOOR_PER_TOKEN);
   });
 
   it('platform floor is the $0.077 constant', () => {

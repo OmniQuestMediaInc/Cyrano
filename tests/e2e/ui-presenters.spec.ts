@@ -20,16 +20,12 @@ import {
 } from '../../ui/view-models/gamification.presenter';
 import { renderSlotMachine } from '../../ui/components/slot-machine';
 import { SEO } from '../../ui/config/seo';
-import type {
-  CreatorCommandCenterView,
-} from '../../ui/types/creator-panel-contracts';
+import type { CreatorCommandCenterView } from '../../ui/types/creator-panel-contracts';
 import type {
   DiamondCommandCenterView,
   RecoveryCommandCenterView,
 } from '../../ui/types/admin-diamond-contracts';
-import type {
-  WalletThreeBucketView,
-} from '../../ui/types/public-wallet-contracts';
+import type { WalletThreeBucketView } from '../../ui/types/public-wallet-contracts';
 
 describe('PublicWalletPresenter — /wallet, /tokens, /diamond/purchase', () => {
   const presenter = new PublicWalletPresenter();

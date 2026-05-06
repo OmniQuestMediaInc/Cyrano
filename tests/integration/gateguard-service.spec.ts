@@ -23,7 +23,7 @@ function buildMemoryPrisma() {
   return {
     welfareGuardianScore: {
       findUnique: jest.fn(async ({ where }: { where: Row }) => {
-        return welfareStore.find(r => r.transaction_id === where.transaction_id) ?? null;
+        return welfareStore.find((r) => r.transaction_id === where.transaction_id) ?? null;
       }),
       findFirst: jest.fn(async () => null),
       create: jest.fn(async ({ data }: { data: Row }) => {
@@ -34,19 +34,13 @@ function buildMemoryPrisma() {
     },
     gateGuardLog: {
       findUnique: jest.fn(async () => null),
-      findFirst: jest.fn(
-        async ({ where, orderBy }: { where: Row; orderBy: Row }) => {
-          void orderBy;
-          const hits = logStore
-            .filter(r => r.transaction_id === where.transaction_id)
-            .sort(
-              (a, b) =>
-                (b.created_at as Date).getTime() -
-                (a.created_at as Date).getTime(),
-            );
-          return hits[0] ?? null;
-        },
-      ),
+      findFirst: jest.fn(async ({ where, orderBy }: { where: Row; orderBy: Row }) => {
+        void orderBy;
+        const hits = logStore
+          .filter((r) => r.transaction_id === where.transaction_id)
+          .sort((a, b) => (b.created_at as Date).getTime() - (a.created_at as Date).getTime());
+        return hits[0] ?? null;
+      }),
       create: jest.fn(async ({ data }: { data: Row }) => {
         const row = { ...data, created_at: new Date() };
         logStore.push(row);
@@ -96,7 +90,7 @@ describe('GateGuardService.evaluate', () => {
     expect(prisma.__stores.logStore).toHaveLength(1);
 
     // NATS emits APPROVED + evaluation_completed + welfare_signal.
-    const topics = nats.__published.map(p => p.topic);
+    const topics = nats.__published.map((p) => p.topic);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_EVALUATION_COMPLETED);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_DECISION_APPROVED);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_WELFARE_SIGNAL);
@@ -116,7 +110,7 @@ describe('GateGuardService.evaluate', () => {
     expect(result.decision).toBe('HUMAN_ESCALATE');
     expect(result.fraudScore).toBe(100);
 
-    const topics = nats.__published.map(p => p.topic);
+    const topics = nats.__published.map((p) => p.topic);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_DECISION_HUMAN_ESCALATE);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_HUMAN_CONTACT_ZONE);
   });
@@ -335,9 +329,7 @@ describe('GateGuardService log hash chain', () => {
       providerSignatureId: 'sig-abc-123',
     });
 
-    const logs = prisma.__stores.logStore.filter(
-      r => r.transaction_id === 'tx-hash-002',
-    );
+    const logs = prisma.__stores.logStore.filter((r) => r.transaction_id === 'tx-hash-002');
     expect(logs).toHaveLength(2);
     // Second entry's prior == first entry's current.
     expect(logs[1].hash_prior).toBe(logs[0].hash_current);
@@ -393,7 +385,7 @@ describe('GateGuardService AV + escalation integration', () => {
       action: 'PURCHASE',
       federationVersion: 'v1.0',
     });
-    const topics = nats.__published.map(p => p.topic);
+    const topics = nats.__published.map((p) => p.topic);
     expect(topics).toContain(NATS_TOPICS.GATEGUARD_FEDERATED_LOOKUP);
   });
 
@@ -444,9 +436,7 @@ describe('GateGuardService AV + escalation integration', () => {
       },
       'MANUAL_ESCALATION_TEST',
     );
-    const hcz = nats.__published.find(
-      p => p.topic === NATS_TOPICS.GATEGUARD_HUMAN_CONTACT_ZONE,
-    );
+    const hcz = nats.__published.find((p) => p.topic === NATS_TOPICS.GATEGUARD_HUMAN_CONTACT_ZONE);
     expect(hcz).toBeDefined();
     expect((hcz!.payload as any).reason_codes).toContain('SELF_REPORTED_DISTRESS');
   });

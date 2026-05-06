@@ -11,10 +11,7 @@
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import {
-  RbacService,
-  RBAC_SERVICE_RULE_ID,
-} from '../../services/core-api/src/auth/rbac.service';
+import { RbacService, RBAC_SERVICE_RULE_ID } from '../../services/core-api/src/auth/rbac.service';
 import { NATS_TOPICS } from '../../services/nats/topics.registry';
 
 const RBAC_SOURCE = readFileSync(
@@ -42,13 +39,13 @@ describe('RbacService.requiresStepUp — runtime mapping (primary check)', () =>
   // Mirrors ship-gate-verifier.ts RBAC-1 (lines 192-213) and the
   // PERMISSION_TO_STEP_UP table at services/core-api/src/auth/rbac.service.ts:33.
   const required: ReadonlyArray<{ permission: string; action: string }> = [
-    { permission: 'refund:override',     action: 'REFUND_OVERRIDE' },
+    { permission: 'refund:override', action: 'REFUND_OVERRIDE' },
     { permission: 'suspension:override', action: 'ACCOUNT_FREEZE' },
-    { permission: 'ncii:suppress',       action: 'CONTENT_DELETION' },
-    { permission: 'legal_hold:trigger',  action: 'TAKEDOWN_SUBMISSION' },
-    { permission: 'geo_block:modify',    action: 'GEO_BLOCK_MODIFICATION' },
+    { permission: 'ncii:suppress', action: 'CONTENT_DELETION' },
+    { permission: 'legal_hold:trigger', action: 'TAKEDOWN_SUBMISSION' },
+    { permission: 'geo_block:modify', action: 'GEO_BLOCK_MODIFICATION' },
     { permission: 'rate_card:configure', action: 'PAYOUT_CHANGE' },
-    { permission: 'worm:export',         action: 'WALLET_MODIFICATION' },
+    { permission: 'worm:export', action: 'WALLET_MODIFICATION' },
   ];
 
   it('exposes exactly seven step-up actions (no drift)', () => {

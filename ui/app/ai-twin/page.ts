@@ -153,22 +153,16 @@ function renderComplianceOverlay(av: GateGuardAvStatus): RenderElement {
         clearance_id: av.clearance_id ?? null,
       },
       aria: {
-        'aria-label': av.av_cleared
-          ? 'GateGuard AV cleared'
-          : 'GateGuard AV verification required',
+        'aria-label': av.av_cleared ? 'GateGuard AV cleared' : 'GateGuard AV verification required',
         'aria-live': 'polite',
       },
     },
     [
-      el(
-        'p',
-        { test_id: 'ai-twin-gateguard-av-status' },
-        [
-          av.av_cleared
-            ? `AV cleared — ID: ${av.clearance_id ?? 'n/a'}`
-            : 'Age verification required before uploading photos or generating content.',
-        ],
-      ),
+      el('p', { test_id: 'ai-twin-gateguard-av-status' }, [
+        av.av_cleared
+          ? `AV cleared — ID: ${av.clearance_id ?? 'n/a'}`
+          : 'Age verification required before uploading photos or generating content.',
+      ]),
       av.av_cleared
         ? null
         : el(
@@ -261,11 +255,7 @@ function renderWizardStepper(currentStep: WizardStep): RenderElement {
               props: { step_index: index, active: index === currentStep },
             },
             [
-              el(
-                'span',
-                { classes: ['cnz-wizard-stepper__step-number'] },
-                [String(index + 1)],
-              ),
+              el('span', { classes: ['cnz-wizard-stepper__step-number'] }, [String(index + 1)]),
               el('span', { classes: ['cnz-wizard-stepper__step-label'] }, [label]),
             ],
           ),
@@ -314,10 +304,7 @@ function renderPhotosStep(
         'button',
         {
           test_id: 'ai-twin-photos-upload-btn',
-          classes: [
-            'cnz-button',
-            uploadDisabled ? 'cnz-button--disabled' : 'cnz-button--primary',
-          ],
+          classes: ['cnz-button', uploadDisabled ? 'cnz-button--disabled' : 'cnz-button--primary'],
           on: { click: 'openPhotoUpload' },
           props: { disabled: uploadDisabled },
         },
@@ -360,8 +347,7 @@ function renderPhotosStep(
 
 function renderTrainLoraStep(status: TwinTrainingStatus, twinId: string): RenderElement {
   const canTrain = status === 'UPLOAD_COMPLETE';
-  const inProgress =
-    status === 'TRAINING_QUEUED' || status === 'TRAINING_IN_PROGRESS';
+  const inProgress = status === 'TRAINING_QUEUED' || status === 'TRAINING_IN_PROGRESS';
   const failed = status === 'TRAINING_FAILED';
 
   return el(
@@ -415,10 +401,7 @@ function renderTrainLoraStep(status: TwinTrainingStatus, twinId: string): Render
   );
 }
 
-function renderTestGenerateStep(
-  twinId: string,
-  bill149: Bill149ComplianceTag,
-): RenderElement {
+function renderTestGenerateStep(twinId: string, bill149: Bill149ComplianceTag): RenderElement {
   return el(
     'section',
     {
@@ -551,11 +534,7 @@ function renderMemoryBankSummary(memories: TwinMemorySummaryEntry[]): RenderElem
               props: { memory_type: m.memory_type, importance_score: m.importance_score },
             },
             [
-              el(
-                'span',
-                { classes: ['cnz-memory-list__type-chip'] },
-                [m.memory_type],
-              ),
+              el('span', { classes: ['cnz-memory-list__type-chip'] }, [m.memory_type]),
               el('span', { classes: ['cnz-memory-list__preview'] }, [m.content_preview]),
             ],
           ),
@@ -579,7 +558,7 @@ function renderVoiceCloneCta(voice: VoiceCloneCtaState, twinId: string): RenderE
         voice.voice_clone_ready
           ? 'Your voice clone is active. Subscribers hear your voice in Cyrano sessions.'
           : 'Add a voice clone to make Cyrano sessions immersive. ' +
-              'Available after training completes.',
+            'Available after training completes.',
       ]),
       el(
         'button',

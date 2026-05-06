@@ -12,7 +12,9 @@ export class RiskScoreMLInference implements OnModuleInit {
     try {
       // Dynamic import avoids hard dep on onnxruntime-node at startup
       // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-      const ort = require('onnxruntime-node') as { InferenceSession: { create(p: string): Promise<unknown> } };
+      const ort = require('onnxruntime-node') as {
+        InferenceSession: { create(p: string): Promise<unknown> };
+      };
       this.session = await ort.InferenceSession.create(modelPath);
       this.logger.log('ONNX model loaded', { modelPath });
     } catch {
@@ -28,8 +30,13 @@ export class RiskScoreMLInference implements OnModuleInit {
           Tensor: new (type: string, data: Float32Array, dims: number[]) => unknown;
         };
         const featureValues = Object.values(features) as number[];
-        const inputTensor = new ort.Tensor('float32', new Float32Array(featureValues), [1, featureValues.length]);
-        const inferenceSession = this.session as { run(feeds: Record<string, unknown>): Promise<Record<string, { data: Float32Array }>> };
+        const inputTensor = new ort.Tensor('float32', new Float32Array(featureValues), [
+          1,
+          featureValues.length,
+        ]);
+        const inferenceSession = this.session as {
+          run(feeds: Record<string, unknown>): Promise<Record<string, { data: Float32Array }>>;
+        };
         const results = await inferenceSession.run({ input: inputTensor });
         const score = results['output'].data[0] * 100;
         return {

@@ -5,10 +5,7 @@
 
 import { el, RenderElement } from './render-plan';
 import { renderHoldRelease } from './wheel-of-fortune';
-import type {
-  PrizePoolEntryViewModel,
-  PaymentMethod,
-} from '../types/gamification-contracts';
+import type { PrizePoolEntryViewModel, PaymentMethod } from '../types/gamification-contracts';
 
 export interface DiceGameInputs {
   creator_id: string;
@@ -61,12 +58,10 @@ export function renderDiceGame(inputs: DiceGameInputs): RenderElement {
       ),
       renderHoldRelease({
         test_id: 'game-dice-roll-button',
-        label: inputs.ready
-          ? 'Hold + shake to roll'
-          : (inputs.cooldown_message ?? 'Cooling down'),
+        label: inputs.ready ? 'Hold + shake to roll' : (inputs.cooldown_message ?? 'Cooling down'),
         disabled: !inputs.ready,
         on_release: 'diceRollRelease',
-        require_shake: true,                  // dice REQUIRES shake telemetry
+        require_shake: true, // dice REQUIRES shake telemetry
       }),
     ],
   );

@@ -1,9 +1,6 @@
 // FFS — Flicker n'Flame Scoring: DTOs (request validation shapes)
 
-import type {
-  FfsInput,
-  LeaderboardCategory,
-} from '../types/ffs.types';
+import type { FfsInput, LeaderboardCategory } from '../types/ffs.types';
 
 // ── Ingest DTO ────────────────────────────────────────────────────────────────
 export class IngestFfsDto implements FfsInput {

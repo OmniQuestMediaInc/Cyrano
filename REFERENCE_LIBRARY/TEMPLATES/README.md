@@ -6,11 +6,11 @@ before use. See each template file for its parameter list.
 
 ## Templates in This Directory
 
-| File | Purpose |
-|------|---------|
+| File                                        | Purpose                                                  |
+| ------------------------------------------- | -------------------------------------------------------- |
 | OQMInc_REFERENCE_LIBRARY_MASTER_TEMPLATE.md | Initialize Reference Library workflow in any OQMInc repo |
-| OQMInc_OSS_HARVEST_TEMPLATE.md | Harvest OSS repos into refs/* reference branches |
-| OQMInc_DIRECTIVE_TEMPLATE.md | Standard format for all CNZ directives |
+| OQMInc_OSS_HARVEST_TEMPLATE.md              | Harvest OSS repos into refs/\* reference branches        |
+| OQMInc_DIRECTIVE_TEMPLATE.md                | Standard format for all CNZ directives                   |
 
 ## How Templates Are Maintained
 

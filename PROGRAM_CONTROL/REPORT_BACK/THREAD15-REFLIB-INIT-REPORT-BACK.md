@@ -13,6 +13,7 @@ None — both target files existed prior to this directive execution.
 See verification section below.
 
 **git diff --stat vs main:**
+
 ```
 (no diff — branch is at same commit as origin/main)
 ```
@@ -63,10 +64,12 @@ $ ls .github/refs-branch-policy.md
 ## Verification
 
 ### Step 1 — `.github/workflows/protect-ref-branches.yml`
+
 - **Status:** EXISTS — content matches directive specification EXACTLY
 - **Match:** 100% — all lines verified verbatim
 
 ### Step 2 — `.github/refs-branch-policy.md`
+
 - **Status:** EXISTS — file pre-dates this directive (created 2026-04-18)
 - **Constraint applied:** "Do NOT modify any existing workflow or existing .github/ file"
 - **Action:** No modification made per directive constraint

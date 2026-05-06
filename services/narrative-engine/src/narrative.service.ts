@@ -9,7 +9,7 @@
 //   5. Emit NATS events on story milestones
 
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../core-api/src/prisma.module';
+import { PrismaService } from '../../core-api/src/prisma.service';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import {
   BranchDecision,
@@ -96,11 +96,7 @@ export class NarrativeService {
    * Recall the top N most important memories for a user+twin pair.
    * Filters out expired entries. Used for context window injection.
    */
-  async recallMemories(
-    twin_id: string,
-    user_id: string,
-    limit = 20,
-  ): Promise<MemoryEntry[]> {
+  async recallMemories(twin_id: string, user_id: string, limit = 20): Promise<MemoryEntry[]> {
     const records = await this.prisma.memoryBank.findMany({
       where: {
         twin_id,
@@ -130,24 +126,18 @@ export class NarrativeService {
       orderBy: { created_at: 'desc' },
     });
 
-    const activeBranch = activeBranchRecord
-      ? this.toBranchSummary(activeBranchRecord)
-      : null;
+    const activeBranch = activeBranchRecord ? this.toBranchSummary(activeBranchRecord) : null;
 
     const memoryBlock =
       memories.length > 0
-        ? 'MEMORY BANK:\n' +
-          memories
-            .map((m) => `[${m.memory_type}] ${m.content}`)
-            .join('\n')
+        ? 'MEMORY BANK:\n' + memories.map((m) => `[${m.memory_type}] ${m.content}`).join('\n')
         : '';
 
     const branchBlock = activeBranch
       ? `\nACTIVE STORY BRANCH: "${activeBranch.branch_title}" — ${activeBranch.branch_premise}`
       : '';
 
-    const personaPromptInjection =
-      SYSTEM_PERSONA_HEADER + memoryBlock + branchBlock;
+    const personaPromptInjection = SYSTEM_PERSONA_HEADER + memoryBlock + branchBlock;
 
     return {
       twin_id: req.twin_id,

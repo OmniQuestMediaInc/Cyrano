@@ -17,7 +17,6 @@ permissions:
   pull-requests: write
 
 jobs:
-
   # ─────────────────────────────────────────────────────────────
   # Job 1 — assign-to-agent
   # Fires when directive-intake.yml opens a new issue.

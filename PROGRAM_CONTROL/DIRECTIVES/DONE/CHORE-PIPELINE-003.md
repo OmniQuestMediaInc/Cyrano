@@ -1,4 +1,5 @@
 # DIRECTIVE: CHORE-PIPELINE-003
+
 # Directive Dispatch Workflow — Auto-Routing, Lifecycle, Conflict Detection
 
 **Directive ID:** CHORE-PIPELINE-003

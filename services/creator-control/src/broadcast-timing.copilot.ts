@@ -21,7 +21,7 @@ export interface TipperAvailabilityBucket {
 export interface BroadcastWindowSuggestion {
   creator_id: string;
   suggested_slot_utc: string;
-  confidence: number;             // 0..1 — based on sample_count
+  confidence: number; // 0..1 — based on sample_count
   expected_tippers: number;
   expected_tips_per_minute: number;
   reason_code: string;
@@ -60,12 +60,9 @@ export class BroadcastTimingCopilot {
 
     const scored = args.history.map((b) => {
       const confidence = Math.min(1, b.sample_count / MIN_SAMPLES_FOR_CONFIDENCE);
-      const diamondBoost = diamondSlots.has(b.slot_start_utc)
-        ? DIAMOND_CORRELATION_BOOST
-        : 0;
+      const diamondBoost = diamondSlots.has(b.slot_start_utc) ? DIAMOND_CORRELATION_BOOST : 0;
       const composite =
-        b.avg_tippers_online * Math.max(1, b.avg_tips_per_minute) * confidence +
-        diamondBoost * 100;
+        b.avg_tippers_online * Math.max(1, b.avg_tips_per_minute) * confidence + diamondBoost * 100;
       return { bucket: b, confidence, composite, diamondBoost };
     });
 
@@ -81,9 +78,7 @@ export class BroadcastTimingCopilot {
       expected_tippers: Math.round(s.bucket.avg_tippers_online),
       expected_tips_per_minute: +s.bucket.avg_tips_per_minute.toFixed(2),
       reason_code:
-        s.diamondBoost > 0
-          ? 'HIGH_AVAILABILITY_WITH_DIAMOND_CORRELATION'
-          : 'HIGH_AVAILABILITY',
+        s.diamondBoost > 0 ? 'HIGH_AVAILABILITY_WITH_DIAMOND_CORRELATION' : 'HIGH_AVAILABILITY',
       rule_applied_id: BROADCAST_TIMING_RULE_ID,
     }));
   }

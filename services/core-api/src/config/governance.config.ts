@@ -601,10 +601,10 @@ export const PROMOTION = {
 // ─── BENEFIT LIMITS BY TIER ───────────────────────────────────────────────────
 // Per-month caps enforced by BenefitsGuard. -1 = unlimited.
 export const BENEFIT_LIMITS: Record<string, { images: number; voiceMin: number }> = {
-  GUEST:        { images: 0,   voiceMin: 0   },
-  VIP:          { images: 5,   voiceMin: 0   },
-  VIP_SILVER:   { images: 20,  voiceMin: 30  },
-  VIP_GOLD:     { images: 50,  voiceMin: 60  },
+  GUEST: { images: 0, voiceMin: 0 },
+  VIP: { images: 5, voiceMin: 0 },
+  VIP_SILVER: { images: 20, voiceMin: 30 },
+  VIP_GOLD: { images: 50, voiceMin: 60 },
   VIP_PLATINUM: { images: 100, voiceMin: 120 },
-  VIP_DIAMOND:  { images: -1,  voiceMin: -1  },
+  VIP_DIAMOND: { images: -1, voiceMin: -1 },
 } as const;

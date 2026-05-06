@@ -9,7 +9,7 @@
 //   5. Emit NATS events for voice clone lifecycle
 
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../core-api/src/prisma.module';
+import { PrismaService } from '../../core-api/src/prisma.service';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import {
   CreateVoiceCloneRequest,
@@ -136,10 +136,17 @@ export class VoiceService {
 
       const updated = await this.prisma.voiceClone.update({
         where: { voice_clone_id },
-        data: { status: 'CLONE_COMPLETE', elevenlabs_voice_id: data.voice_id, cloned_at: new Date() },
+        data: {
+          status: 'CLONE_COMPLETE',
+          elevenlabs_voice_id: data.voice_id,
+          cloned_at: new Date(),
+        },
       });
 
-      await this.nats.publish(NATS_VOICE_CLONE_COMPLETE, { voice_clone_id, twin_id: clone.twin_id });
+      await this.nats.publish(NATS_VOICE_CLONE_COMPLETE, {
+        voice_clone_id,
+        twin_id: clone.twin_id,
+      });
       this.logger.log(`Voice clone complete: ${voice_clone_id} → EL voice ${data.voice_id}`);
 
       return this.toSummary(updated);
@@ -172,27 +179,24 @@ export class VoiceService {
 
     const model: VoiceModel = req.model ?? 'eleven_multilingual_v2';
 
-    const response = await fetch(
-      `${ELEVENLABS_BASE}/text-to-speech/${clone.elevenlabs_voice_id}`,
-      {
-        method: 'POST',
-        headers: {
-          'xi-api-key': ELEVENLABS_API_KEY,
-          'Content-Type': 'application/json',
-          Accept: 'audio/mpeg',
-        },
-        body: JSON.stringify({
-          text: req.text,
-          model_id: model,
-          voice_settings: {
-            stability: req.stability ?? 0.5,
-            similarity_boost: req.similarity_boost ?? 0.75,
-            style: req.style ?? 0.0,
-            use_speaker_boost: req.use_speaker_boost ?? true,
-          },
-        }),
+    const response = await fetch(`${ELEVENLABS_BASE}/text-to-speech/${clone.elevenlabs_voice_id}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': ELEVENLABS_API_KEY,
+        'Content-Type': 'application/json',
+        Accept: 'audio/mpeg',
       },
-    );
+      body: JSON.stringify({
+        text: req.text,
+        model_id: model,
+        voice_settings: {
+          stability: req.stability ?? 0.5,
+          similarity_boost: req.similarity_boost ?? 0.75,
+          style: req.style ?? 0.0,
+          use_speaker_boost: req.use_speaker_boost ?? true,
+        },
+      }),
+    });
 
     if (!response.ok) {
       throw new Error(`ElevenLabs TTS ${response.status}: ${await response.text()}`);

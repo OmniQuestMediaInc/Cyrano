@@ -106,11 +106,9 @@ function renderCommissionCard(inputs: StudioDashboardPageInputs): RenderElement 
     },
     [
       el('h2', {}, ['Commission rate']),
-      el(
-        'strong',
-        { test_id: 'studio-dashboard-commission-pct' },
-        [inputs.commission.commission_rate_pct],
-      ),
+      el('strong', { test_id: 'studio-dashboard-commission-pct' }, [
+        inputs.commission.commission_rate_pct,
+      ]),
       el('p', {}, [
         `Last updated ${inputs.commission.last_updated_at}. Set by PLATFORM_ADMIN — not editable here.`,
       ]),
@@ -173,9 +171,7 @@ function renderContractsSummary(inputs: StudioDashboardPageInputs): RenderElemen
       el('h2', {}, ['Contracts']),
       el('dl', { classes: ['cnz-stat-grid'] }, [
         el('dt', {}, ['Total']),
-        el('dd', { test_id: 'studio-dashboard-contracts-total' }, [
-          String(inputs.contracts.total),
-        ]),
+        el('dd', { test_id: 'studio-dashboard-contracts-total' }, [String(inputs.contracts.total)]),
         el('dt', {}, ['Signed']),
         el('dd', { test_id: 'studio-dashboard-contracts-signed' }, [
           String(inputs.contracts.signed),

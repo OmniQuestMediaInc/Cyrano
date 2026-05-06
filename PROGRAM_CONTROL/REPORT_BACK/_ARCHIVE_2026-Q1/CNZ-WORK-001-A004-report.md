@@ -31,24 +31,29 @@ PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A004-report.md (this file)
 ## Commands Run + Outputs
 
 ### Verify §8 before change
+
 ```
 grep -n "§8\|Provenance" PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md
 → 126:## 8. PROVENANCE NOTES
 ```
 
 ### Add bullet (edit via tool)
+
 Added to line 132 (after existing placeholder bullets):
+
 ```
 - `/tests/seed_data/` is the authoritative source for Ghost Alpha simulations.
 ```
 
 ### Update A004 status
+
 ```
 python3 replace Status: QUEUED → Status: DONE for CNZ-WORK-001-A004 block
 → Done
 ```
 
 ### Verify change
+
 ```
 sed -n '181,195p' PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ_WORK-001
 → Status: DONE confirmed

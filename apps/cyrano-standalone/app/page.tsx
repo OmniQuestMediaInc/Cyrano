@@ -22,14 +22,18 @@ export default function Page() {
       </p>
 
       {session ? (
-        <section style={{ marginBottom: 24, padding: 16, border: '1px solid #2a2', borderRadius: 6 }}>
+        <section
+          style={{ marginBottom: 24, padding: 16, border: '1px solid #2a2', borderRadius: 6 }}
+        >
           <strong>Welcome, {session.tier_display} member.</strong>{' '}
           <span style={{ color: '#666', fontSize: 14 }}>
             Tier: {session.resolved_tier} · Session: {session.session_id}
           </span>
         </section>
       ) : (
-        <p style={{ color: '#a00', marginBottom: 24 }}>No Cyrano session (gate bypassed in dev mode).</p>
+        <p style={{ color: '#a00', marginBottom: 24 }}>
+          No Cyrano session (gate bypassed in dev mode).
+        </p>
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>

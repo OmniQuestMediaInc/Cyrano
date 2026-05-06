@@ -49,21 +49,21 @@ DNS for api.github.com: "Blocked by DNS monitoring proxy"
 
 ### On PR branch (`copilot/chore-harvest-oss-reference-branches`)
 
-| File | Purpose |
-|------|---------|
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/README.md` | Explains the seeds directory |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/PUSH_ALL_REFS.sh` | Manual push script |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-booking-api/REFS_MANIFEST.md` | Manifest for refs/oss/booking-api |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-socketio-chat/REFS_MANIFEST.md` | Manifest for refs/oss/socketio-chat |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-react-chat-app/REFS_MANIFEST.md` | Manifest for refs/oss/react-chat-app |
+| File                                                                                   | Purpose                                   |
+| -------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/README.md`                                     | Explains the seeds directory              |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/PUSH_ALL_REFS.sh`                              | Manual push script                        |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-booking-api/REFS_MANIFEST.md`         | Manifest for refs/oss/booking-api         |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-socketio-chat/REFS_MANIFEST.md`       | Manifest for refs/oss/socketio-chat       |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-react-chat-app/REFS_MANIFEST.md`      | Manifest for refs/oss/react-chat-app      |
 | `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-discussion-platform/REFS_MANIFEST.md` | Manifest for refs/oss/discussion-platform |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-live-polling/REFS_MANIFEST.md` | Manifest for refs/oss/live-polling |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-zoom-clone/REFS_MANIFEST.md` | Manifest for refs/oss/zoom-clone |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-loadbalancer-nginx/REFS_MANIFEST.md` | Manifest for refs/oss/loadbalancer-nginx |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-social-media-app/REFS_MANIFEST.md` | Manifest for refs/oss/social-media-app |
-| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oqminc-ai-resources/REFS_MANIFEST.md` | Manifest for refs/oqminc/ai-resources |
-| `.github/workflows/harvest-oss-refs.yml` | GA workflow to push refs after merge |
-| `PROGRAM_CONTROL/REPORT_BACK/THREAD15-OSS-HARVEST-REPORT-BACK.md` | This file |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-live-polling/REFS_MANIFEST.md`        | Manifest for refs/oss/live-polling        |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-zoom-clone/REFS_MANIFEST.md`          | Manifest for refs/oss/zoom-clone          |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-loadbalancer-nginx/REFS_MANIFEST.md`  | Manifest for refs/oss/loadbalancer-nginx  |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-social-media-app/REFS_MANIFEST.md`    | Manifest for refs/oss/social-media-app    |
+| `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oqminc-ai-resources/REFS_MANIFEST.md`     | Manifest for refs/oqminc/ai-resources     |
+| `.github/workflows/harvest-oss-refs.yml`                                               | GA workflow to push refs after merge      |
+| `PROGRAM_CONTROL/REPORT_BACK/THREAD15-OSS-HARVEST-REPORT-BACK.md`                      | This file                                 |
 
 ### Ref branches NOT yet on remote (blocked)
 
@@ -78,17 +78,17 @@ They could not be pushed due to the MITM proxy.
 These commits exist in `/tmp/oss-harvest` (local temp repo) and as
 unreachable objects in the main repo (`git cat-file -t <hash>` = commit):
 
-| Target Ref | Commit Hash (tmp repo) | Main-Repo Plumbing Commit |
-|---|---|---|
-| `refs/oss/booking-api` | `bd92a977` | `0efcd0f2` |
-| `refs/oss/socketio-chat` | `aa308072` | — |
-| `refs/oss/react-chat-app` | `21646e17` | — |
-| `refs/oss/discussion-platform` | `aa62dd37` | — |
-| `refs/oss/live-polling` | `85236a6f` | — |
-| `refs/oss/zoom-clone` | `f9ac2d67` | — |
-| `refs/oss/loadbalancer-nginx` | `17fd5d46` | — |
-| `refs/oss/social-media-app` | `01b789f3` | — |
-| `refs/oqminc/ai-resources` | `aee7200c` | — |
+| Target Ref                     | Commit Hash (tmp repo) | Main-Repo Plumbing Commit |
+| ------------------------------ | ---------------------- | ------------------------- |
+| `refs/oss/booking-api`         | `bd92a977`             | `0efcd0f2`                |
+| `refs/oss/socketio-chat`       | `aa308072`             | —                         |
+| `refs/oss/react-chat-app`      | `21646e17`             | —                         |
+| `refs/oss/discussion-platform` | `aa62dd37`             | —                         |
+| `refs/oss/live-polling`        | `85236a6f`             | —                         |
+| `refs/oss/zoom-clone`          | `f9ac2d67`             | —                         |
+| `refs/oss/loadbalancer-nginx`  | `17fd5d46`             | —                         |
+| `refs/oss/social-media-app`    | `01b789f3`             | —                         |
+| `refs/oqminc/ai-resources`     | `aee7200c`             | —                         |
 
 ---
 
@@ -133,7 +133,9 @@ $ git push origin "0efcd0f:refs/oss/booking-api"
 ## How to Complete the Harvest
 
 ### Option A — GitHub Actions workflow (recommended)
+
 After merging this PR to main:
+
 1. Go to Actions → "Harvest OSS Reference Branches"
 2. Click "Run workflow" → select `main` branch
 3. Set `seed_content: true` to include full OSS source (needs internet)
@@ -144,7 +146,9 @@ The workflow uses `GITHUB_TOKEN` with `contents: write`, which has full
 push access including to `refs/oss/*` custom namespaces.
 
 ### Option B — Manual push
+
 From a machine with GitHub access:
+
 ```bash
 git clone https://github.com/OmniQuestMediaInc/ChatNowZone--BUILD
 cd ChatNowZone--BUILD
@@ -189,4 +193,4 @@ RESOLUTION: Trigger .github/workflows/harvest-oss-refs.yml after PR merge
 
 ---
 
-*END REPORT BACK — THREAD15-OSS-HARVEST*
+_END REPORT BACK — THREAD15-OSS-HARVEST_

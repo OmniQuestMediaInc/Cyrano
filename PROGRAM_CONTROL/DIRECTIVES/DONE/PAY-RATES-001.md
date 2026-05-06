@@ -1,4 +1,5 @@
 # DIRECTIVE: PAY-RATES-001
+
 # Add Flicker n'Flame Scoring Payout Rate Constants to GovernanceConfig
 
 **Directive ID:** PAY-RATES-001
@@ -25,6 +26,7 @@ Locked by CEO 2026-04-16. Not operator-configurable.
 ## Scope
 
 ### File Modified
+
 - `services/core-api/src/governance/governance.config.ts`
 
 ### Definition of Done

@@ -11,6 +11,7 @@
 ## What Was Built
 
 ### Task 1: `services/showzone/src/room-session.service.ts`
+
 - **RoomStatus** type with all 7 status values: DRAFT, SCHEDULED, COUNTDOWN, LIVE_PHASE_1, LIVE_PHASE_2, ENDED, CANCELLED
 - **RoomSession** interface with full session fields including timestamps, pricing, and cancellation metadata
 - **VALID_TRANSITIONS** map covering all 7 statuses — enforces deterministic lifecycle
@@ -20,24 +21,26 @@
   - `buildReconciliationSnapshot()` — computes gross, creator pool (85%), platform pool, Phase 2 gross using SHOWZONE_PRICING constants
 
 ### Task 2: `services/showzone/src/showzone.module.ts`
+
 - NestJS module providing and exporting RoomSessionService
 
 ### Task 3: AppModule Registration
+
 - `ShowZoneModule` added to `services/core-api/src/app.module.ts` imports array
 
 ---
 
 ## Validation Checklist
 
-| Check | Result |
-|-------|--------|
-| All 7 status values in RoomStatus | PASS |
-| VALID_TRANSITIONS covers all 7 statuses | PASS |
-| DRAFT → LIVE_PHASE_1 throws (invalid) | PASS — not in VALID_TRANSITIONS[DRAFT] |
-| DRAFT → SCHEDULED succeeds (valid) | PASS — listed in VALID_TRANSITIONS[DRAFT] |
-| evaluateMinSeatGate returns cancelled: true when seats_sold < min_seats | PASS |
-| NATS publish on ENDED and LIVE_PHASE_2 | PASS — uses NATS_TOPICS.SHOWZONE_SHOW_ENDED and SHOWZONE_PHASE2_TRIGGER |
-| npx tsc --noEmit zero new errors | PASS — only pre-existing @nestjs/common module resolution errors (no node_modules installed) |
+| Check                                                                   | Result                                                                                       |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| All 7 status values in RoomStatus                                       | PASS                                                                                         |
+| VALID_TRANSITIONS covers all 7 statuses                                 | PASS                                                                                         |
+| DRAFT → LIVE_PHASE_1 throws (invalid)                                   | PASS — not in VALID_TRANSITIONS[DRAFT]                                                       |
+| DRAFT → SCHEDULED succeeds (valid)                                      | PASS — listed in VALID_TRANSITIONS[DRAFT]                                                    |
+| evaluateMinSeatGate returns cancelled: true when seats_sold < min_seats | PASS                                                                                         |
+| NATS publish on ENDED and LIVE_PHASE_2                                  | PASS — uses NATS_TOPICS.SHOWZONE_SHOW_ENDED and SHOWZONE_PHASE2_TRIGGER                      |
+| npx tsc --noEmit zero new errors                                        | PASS — only pre-existing @nestjs/common module resolution errors (no node_modules installed) |
 
 ---
 

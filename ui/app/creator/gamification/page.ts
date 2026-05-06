@@ -2,7 +2,10 @@
 // Renders the prize-pool editor + per-game configuration cards (Wheel, Slots,
 // Dice) + 30-day analytics row. Pure render-plan — no React, no IO.
 
-import { presentCreatorGamificationDashboard, type GamificationPresenterInput } from '../../../view-models/gamification.presenter';
+import {
+  presentCreatorGamificationDashboard,
+  type GamificationPresenterInput,
+} from '../../../view-models/gamification.presenter';
 import { SEO } from '../../../config/seo';
 import { THEME } from '../../../config/theme';
 import { el, RenderElement } from '../../../components/render-plan';
@@ -44,15 +47,9 @@ export function renderCreatorGamificationPage(
           'span',
           {
             test_id: 'creator-gamification-rrr-flag',
-            classes: [
-              view.rrr_burn_globally_enabled ? 'cnz-status--ok' : 'cnz-status--warn',
-            ],
+            classes: [view.rrr_burn_globally_enabled ? 'cnz-status--ok' : 'cnz-status--warn'],
           },
-          [
-            view.rrr_burn_globally_enabled
-              ? 'RRR burn enabled'
-              : 'RRR burn disabled platform-wide',
-          ],
+          [view.rrr_burn_globally_enabled ? 'RRR burn enabled' : 'RRR burn disabled platform-wide'],
         ),
       ]),
       renderPoolsPanel(view.pools),
@@ -112,9 +109,7 @@ function renderPoolsPanel(pools: PrizePoolViewModel[]): RenderElement {
                   el('header', {}, [
                     el('strong', {}, [p.name]),
                     el('span', { classes: ['cnz-pool__scope'] }, [
-                      p.scoped_game_type
-                        ? `Scoped: ${p.scoped_game_type}`
-                        : 'Shared (all games)',
+                      p.scoped_game_type ? `Scoped: ${p.scoped_game_type}` : 'Shared (all games)',
                     ]),
                   ]),
                   el(
@@ -125,10 +120,7 @@ function renderPoolsPanel(pools: PrizePoolViewModel[]): RenderElement {
                         'li',
                         {
                           test_id: `creator-gamification-prize-${p.pool_id}-${e.prize_slot}`,
-                          classes: [
-                            'cnz-pool__entry',
-                            `cnz-rarity-${e.rarity.toLowerCase()}`,
-                          ],
+                          classes: ['cnz-pool__entry', `cnz-rarity-${e.rarity.toLowerCase()}`],
                           props: {
                             prize_slot: e.prize_slot,
                             rarity: e.rarity,
@@ -192,10 +184,7 @@ function renderGameCards(cards: CreatorGameCard[]): RenderElement {
             'article',
             {
               test_id: `creator-gamification-card-${card.game_type}`,
-              classes: [
-                'cnz-game-card',
-                card.enabled ? 'cnz-game-card--on' : 'cnz-game-card--off',
-              ],
+              classes: ['cnz-game-card', card.enabled ? 'cnz-game-card--on' : 'cnz-game-card--off'],
               props: {
                 game_type: card.game_type,
                 enabled: card.enabled,
@@ -210,7 +199,10 @@ function renderGameCards(cards: CreatorGameCard[]): RenderElement {
                   'button',
                   {
                     test_id: `creator-gamification-toggle-${card.game_type}`,
-                    classes: ['cnz-button', card.enabled ? 'cnz-button--primary' : 'cnz-button--ghost'],
+                    classes: [
+                      'cnz-button',
+                      card.enabled ? 'cnz-button--primary' : 'cnz-button--ghost',
+                    ],
                     on: { click: 'toggleGame' },
                     props: { game_type: card.game_type, enabled: card.enabled },
                   },

@@ -64,9 +64,9 @@ Both files fall under Blocker 1 above. The script update alone does not enable t
 
 ## Summary of all four commits
 
-| Commit | Status |
-|--------|--------|
-| 1 — SHOWTOKEN_EXCHANGE + canonical comments | SUCCESS — `59ce944` |
-| 2 — TOKEN_EXTENSION block | SUCCESS — `7d79182` |
-| 3 — TokenExtensionService rename | SUCCESS — `9129329` |
-| 4 — GOV gate clearance files | HARD_STOP — see blockers above |
+| Commit                                      | Status                         |
+| ------------------------------------------- | ------------------------------ |
+| 1 — SHOWTOKEN_EXCHANGE + canonical comments | SUCCESS — `59ce944`            |
+| 2 — TOKEN_EXTENSION block                   | SUCCESS — `7d79182`            |
+| 3 — TokenExtensionService rename            | SUCCESS — `9129329`            |
+| 4 — GOV gate clearance files                | HARD_STOP — see blockers above |

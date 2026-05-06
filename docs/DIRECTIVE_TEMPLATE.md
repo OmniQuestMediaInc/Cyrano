@@ -1,4 +1,5 @@
 # DIRECTIVE: [ID]
+
 # [Short title]
 
 **Directive ID:** [ID]
@@ -23,12 +24,15 @@
 ## Scope
 
 ### Files to Create
+
 [list]
 
 ### Files to Modify
+
 [list]
 
 ### Files to Confirm Unchanged
+
 [list]
 
 ---
@@ -51,14 +55,14 @@ Reference Prisma models by exact model name and field names.]
 - [ ] 6. npx tsc --noEmit zero new errors
 - [ ] 7. Logger instance on every service
 - [ ] 8. Report-back filed before DONE
-- [ ] 9. NATS topics from NATS_TOPICS.* only
+- [ ] 9. NATS topics from NATS_TOPICS.\* only
 - [ ] 10. AI services advisory only
 - [ ] 11. Step-up auth boundary respected
 - [ ] 12. RBAC check upstream
 - [ ] 13. SHA-256 for hash ops (bcrypt carve-out documented if used)
 - [ ] 14. Timestamps in America/Toronto
 - [ ] 15. rule_applied_id on every output object
-**Multi-tenant:** organization_id + tenant_id on all Prisma writes
+      **Multi-tenant:** organization_id + tenant_id on all Prisma writes
 
 ---
 
@@ -86,6 +90,7 @@ GATE: [gate clearance reference]
 File to: `PROGRAM_CONTROL/REPORT_BACK/[ID]-REPORT-BACK.md`
 
 Must include:
+
 - Commit hash
 - Files created / modified
 - All invariants confirmed or flagged

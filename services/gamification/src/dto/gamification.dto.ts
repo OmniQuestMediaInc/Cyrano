@@ -6,9 +6,9 @@
 import type { GameType, PaymentMethod, RarityTier } from '../types/gamification.types';
 
 export interface UpsertPrizePoolDto {
-  pool_id?: string;                    // omit to create
+  pool_id?: string; // omit to create
   name: string;
-  scoped_game_type: GameType | null;   // null = shared
+  scoped_game_type: GameType | null; // null = shared
   entries: Array<{
     prize_slot: string;
     name: string;
@@ -21,7 +21,7 @@ export interface UpsertPrizePoolDto {
 
 export interface UpsertCreatorGameConfigDto {
   game_type: GameType;
-  token_tiers: number[];               // 1–3 positive integers
+  token_tiers: number[]; // 1–3 positive integers
   prize_pool_id: string;
   cooldown_seconds_override?: number | null;
   enabled: boolean;
@@ -37,7 +37,7 @@ export interface InitiatePlayDto {
   /** Required when GAMIFICATION_MOUSE_SHAKE_REQUIRED=true. */
   shake_proof?: {
     duration_ms: number;
-    samples: number;                   // # of mouse-move samples observed
+    samples: number; // # of mouse-move samples observed
     avg_amplitude_px: number;
   };
   /** Optional CAPTCHA token; required after rate-limit trip. */

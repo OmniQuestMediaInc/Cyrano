@@ -2,12 +2,12 @@
 // CYR: Narrative Engine — persistent memory + cinematic branching type definitions
 
 export type MemoryType =
-  | 'FACT'         // Hard fact about the user stated in conversation
-  | 'PREFERENCE'   // User preference learned over time
-  | 'EMOTION'      // Emotional state / tone cue
-  | 'STORY_BEAT'   // Key moment in the narrative arc
+  | 'FACT' // Hard fact about the user stated in conversation
+  | 'PREFERENCE' // User preference learned over time
+  | 'EMOTION' // Emotional state / tone cue
+  | 'STORY_BEAT' // Key moment in the narrative arc
   | 'RELATIONSHIP' // Relationship development milestone
-  | 'SECRET';      // Revealed secret / confession
+  | 'SECRET'; // Revealed secret / confession
 
 export type BranchDecision = 'ACCEPT' | 'REJECT' | 'DEFER';
 

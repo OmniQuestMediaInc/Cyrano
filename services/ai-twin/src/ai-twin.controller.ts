@@ -1,7 +1,7 @@
 // services/ai-twin/src/ai-twin.controller.ts
 // CYR: AI Twin REST controller — wizard upload/train endpoints
 
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AiTwinService } from './ai-twin.service';
 import { CreateTwinRequest, TrainingJobResult } from './ai-twin.types';
 
@@ -26,10 +26,7 @@ export class AiTwinController {
 
   /** Kick off LoRA training for a twin that has uploads complete. */
   @Post(':twinId/train')
-  async train(
-    @Param('twinId') twinId: string,
-    @Body() body: { correlation_id: string },
-  ) {
+  async train(@Param('twinId') twinId: string, @Body() body: { correlation_id: string }) {
     return this.aiTwinService.startTraining(twinId, body.correlation_id);
   }
 

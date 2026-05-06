@@ -12,15 +12,14 @@ export class CommissionSplittingEngine {
     tokenRate: number,
     agencyFeePct: number,
     activeFees: Array<{ type: string; value: number; units?: number }>,
-    enableTiered: boolean = false
-  ): CommissionSplitEntry { 
-    
+    enableTiered: boolean = false,
+  ): CommissionSplitEntry {
     // GUARDRAIL: Mutually Exclusive Fee Check (Hourly vs Session)
-    const hasHourly = activeFees.some(f => f.type === 'STUDIO_SERVICE_HOURLY');
-    const hasSession = activeFees.some(f => f.type === 'STUDIO_SERVICE_SESSION');
-    
+    const hasHourly = activeFees.some((f) => f.type === 'STUDIO_SERVICE_HOURLY');
+    const hasSession = activeFees.some((f) => f.type === 'STUDIO_SERVICE_SESSION');
+
     if (hasHourly && hasSession) {
-      throw new Error("GOVERNANCE_VIOLATION: Hourly and Session fees are mutually exclusive.");
+      throw new Error('GOVERNANCE_VIOLATION: Hourly and Session fees are mutually exclusive.');
     }
 
     // Step 1: BigInt Cent Conversion (USD * 100)
@@ -30,7 +29,7 @@ export class CommissionSplittingEngine {
 
     // Step 2: Studio Fee Aggregation
     let serviceFeesTotal = 0n;
-    activeFees.forEach(fee => {
+    activeFees.forEach((fee) => {
       if (fee.type === 'STUDIO_MEMBERSHIP_FIXED') {
         serviceFeesTotal += BigInt(Math.round(fee.value * 100));
       } else if (fee.type === 'STUDIO_SERVICE_HOURLY') {
@@ -49,8 +48,8 @@ export class CommissionSplittingEngine {
 
     return {
       transactionId: `OQMI-WO18-${Date.now()}`,
-      modelId: "UNRESOLVED",
-      studioId: "UNRESOLVED",
+      modelId: 'UNRESOLVED',
+      studioId: 'UNRESOLVED',
       grossCents,
       modelNetCents: modelNet,
       studioAgencyHoldbackCents: agencyHoldback,
@@ -60,8 +59,8 @@ export class CommissionSplittingEngine {
       metadata: {
         isTieredApplied: enableTiered,
         feeExclusionVerified: true,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     };
   }
 

@@ -19,6 +19,7 @@
 ## Indexed decision contents
 
 **Top-line decisions (D1–D5):**
+
 - **D1** Slot Machine: RETIRED (slot machine + chance-based games removed; SLOT_MACHINE_BRIEFING.md and docs/specs/SLOT_MACHINE_SPEC_v1.0.md to archive/delete; archive/xxxchatnow-seed/ to remove).
 - **D2** Primary Tenant: ChatNow.Zone (XXXChatNow.com prior name; merchant tenant 1; RedRoomPleasures and Cyrano onboard first Phase 1; ChatNow.Zone Phase 2).
 - **D3** Diamond Concierge Earn: Zero Points (Diamond purchases earn 0 RRR points; discount built into Diamond pricing; RRR points CAN be burned against Diamond purchases; RRR-P3-003 REMOVED from build scope).

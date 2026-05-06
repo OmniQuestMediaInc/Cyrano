@@ -112,7 +112,8 @@ describe('Subscription flow: Free Spark → Upgrade → Benefits Enforcement', (
     expect(infernoBenefits.limits.messages).toBe(-1);
     expect(largeUsage >= infernoBenefits.limits.messages).toBe(true); // arithmetic: fine, 1m >= -1
     // The actual guard in the enforcement layer is: if (limit !== -1 && usage >= limit) block
-    const isBlocked = infernoBenefits.limits.messages !== -1 && largeUsage >= infernoBenefits.limits.messages;
+    const isBlocked =
+      infernoBenefits.limits.messages !== -1 && largeUsage >= infernoBenefits.limits.messages;
     expect(isBlocked).toBe(false);
   });
 });
@@ -174,30 +175,22 @@ describe('LAUNCH70 promo code validation', () => {
 
   it('LAUNCH70 discount is 70%', async () => {
     // Governance constant — verifies the canonical value has not drifted
-    const { PROMOTION } = await import(
-      '../../services/core-api/src/config/governance.config'
-    );
+    const { PROMOTION } = await import('../../services/core-api/src/config/governance.config');
     expect(PROMOTION.LAUNCH70_DISCOUNT_PCT).toBe(70);
   });
 
   it('LAUNCH70 code string matches governance constant', async () => {
-    const { PROMOTION } = await import(
-      '../../services/core-api/src/config/governance.config'
-    );
+    const { PROMOTION } = await import('../../services/core-api/src/config/governance.config');
     expect(PROMOTION.LAUNCH70_CODE).toBe('LAUNCH70');
   });
 
   it('LAUNCH70 annual promo grants 12 months', async () => {
-    const { PROMOTION } = await import(
-      '../../services/core-api/src/config/governance.config'
-    );
+    const { PROMOTION } = await import('../../services/core-api/src/config/governance.config');
     expect(PROMOTION.LAUNCH70_ANNUAL_MONTHS).toBe(12);
   });
 
   it('LAUNCH70 standard (monthly) promo grants 1 month', async () => {
-    const { PROMOTION } = await import(
-      '../../services/core-api/src/config/governance.config'
-    );
+    const { PROMOTION } = await import('../../services/core-api/src/config/governance.config');
     expect(PROMOTION.LAUNCH70_STANDARD_MONTHS).toBe(1);
   });
 
@@ -206,7 +199,10 @@ describe('LAUNCH70 promo code validation', () => {
     // if promo is null → false
     const promoCodeLookup = async (code: string) => {
       // Simulate the DB returning null for an unknown code
-      const mockPromoRegistry: Record<string, { expires_at: Date; used_count: number; max_uses: number }> = {};
+      const mockPromoRegistry: Record<
+        string,
+        { expires_at: Date; used_count: number; max_uses: number }
+      > = {};
       const promo = mockPromoRegistry[code] ?? null;
       if (!promo) return false;
       if (new Date() > promo.expires_at) return false;
@@ -276,9 +272,19 @@ describe('Red Room Rewards: earning and burning points', () => {
     const sink = new InMemoryPointsLedgerSink();
     const ledger = new RedRoomLedgerService(sink);
     await ledger.creditPoints('creator_4', 2000, 'REDROOM_REWARDS', 'earn-1');
-    await sink.appendEntry({ creatorId: 'creator_4', amount: -500, reasonCode: 'POINTS_SPEND', description: 'burn-1' });
+    await sink.appendEntry({
+      creatorId: 'creator_4',
+      amount: -500,
+      reasonCode: 'POINTS_SPEND',
+      description: 'burn-1',
+    });
     await ledger.creditPoints('creator_4', 1000, 'POINTS_BONUS', 'earn-2');
-    await sink.appendEntry({ creatorId: 'creator_4', amount: -200, reasonCode: 'POINTS_SPEND', description: 'burn-2' });
+    await sink.appendEntry({
+      creatorId: 'creator_4',
+      amount: -200,
+      reasonCode: 'POINTS_SPEND',
+      description: 'burn-2',
+    });
     expect(await ledger.getBalance('creator_4')).toBe(2300);
   });
 
@@ -473,7 +479,7 @@ describe('House Model: 100% platform revenue flow', () => {
   it('house model revenue: creator split + OQMI split both accrue to platform', () => {
     const grossCzt = 1_000;
     const creatorShare = Math.round(grossCzt * BIJOU_PRICING.CREATOR_SPLIT_PCT); // 850
-    const platformShare = grossCzt - creatorShare;                                // 150
+    const platformShare = grossCzt - creatorShare; // 150
     // For house models: creator_id is platform-owned → both shares stay on-platform
     const totalPlatformRevenue = creatorShare + platformShare;
     expect(totalPlatformRevenue).toBe(grossCzt);

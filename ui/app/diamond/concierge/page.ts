@@ -39,9 +39,7 @@ export function renderDiamondConciergePage(
     [
       el('header', { test_id: 'concierge-header', classes: ['cnz-concierge__header'] }, [
         el('h1', {}, ['✨ Your Personal Diamond Concierge']),
-        el('p', {}, [
-          'Request custom experiences, private events, or ultra-personalized Twins.',
-        ]),
+        el('p', {}, ['Request custom experiences, private events, or ultra-personalized Twins.']),
         view.tier_permitted
           ? el(
               'span',
@@ -60,11 +58,9 @@ export function renderDiamondConciergePage(
               },
               [
                 'Diamond Concierge requires an active Inferno subscription. ',
-                el(
-                  'a',
-                  { on: { click: 'upgradeSubscription' }, classes: ['cnz-link'] },
-                  ['Upgrade now →'],
-                ),
+                el('a', { on: { click: 'upgradeSubscription' }, classes: ['cnz-link'] }, [
+                  'Upgrade now →',
+                ]),
               ],
             ),
       ]),
@@ -102,19 +98,15 @@ function renderRequestForm(): RenderElement {
           on: { submit: 'submitConciergeRequest' },
         },
         [
-          el(
-            'label',
-            { classes: ['cnz-form-label'] },
-            [
-              'Your Request',
-              el('textarea', {
-                test_id: 'concierge-request-textarea',
-                classes: ['cnz-form-textarea'],
-                props: { name: 'request', maxLength: 2000, rows: 6, required: true },
-                aria: { 'aria-label': 'Concierge request text' },
-              }),
-            ],
-          ),
+          el('label', { classes: ['cnz-form-label'] }, [
+            'Your Request',
+            el('textarea', {
+              test_id: 'concierge-request-textarea',
+              classes: ['cnz-form-textarea'],
+              props: { name: 'request', maxLength: 2000, rows: 6, required: true },
+              aria: { 'aria-label': 'Concierge request text' },
+            }),
+          ]),
           el(
             'button',
             {
@@ -133,10 +125,10 @@ function renderRequestForm(): RenderElement {
 
 function renderSessionHistory(sessions: ConciergeSessionViewModel[]): RenderElement {
   const statusClass: Record<string, string> = {
-    pending:     'cnz-status--pending',
+    pending: 'cnz-status--pending',
     in_progress: 'cnz-status--active',
-    completed:   'cnz-status--ok',
-    cancelled:   'cnz-status--warn',
+    completed: 'cnz-status--ok',
+    cancelled: 'cnz-status--warn',
   };
 
   return el(

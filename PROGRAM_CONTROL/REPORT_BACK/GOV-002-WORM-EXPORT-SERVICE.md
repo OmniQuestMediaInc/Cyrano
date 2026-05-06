@@ -1,19 +1,19 @@
 # REPORT-BACK: GOV-002 — WormExportService
 
-| Field | Value |
-|-------|-------|
-| Directive | GOV-002 |
-| Repo | OmniQuestMediaInc/ChatNowZone--BUILD |
-| Branch | claude/execute-hz-001-directive-ASXZR |
-| Base HEAD | 9ed13f4 |
-| Status | **SUCCESS** |
+| Field     | Value                                 |
+| --------- | ------------------------------------- |
+| Directive | GOV-002                               |
+| Repo      | OmniQuestMediaInc/ChatNowZone--BUILD  |
+| Branch    | claude/execute-hz-001-directive-ASXZR |
+| Base HEAD | 9ed13f4                               |
+| Status    | **SUCCESS**                           |
 
 ## Files Changed
 
-| Action | Path |
-|--------|------|
-| CREATE | `services/core-api/src/compliance/worm-export.service.ts` |
-| CREATE | `services/core-api/src/compliance/compliance.module.ts` |
+| Action | Path                                                                  |
+| ------ | --------------------------------------------------------------------- |
+| CREATE | `services/core-api/src/compliance/worm-export.service.ts`             |
+| CREATE | `services/core-api/src/compliance/compliance.module.ts`               |
 | MODIFY | `services/core-api/src/app.module.ts` (added ComplianceModule import) |
 
 ## Validation Checklist

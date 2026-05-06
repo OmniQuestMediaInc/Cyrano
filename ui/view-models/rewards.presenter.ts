@@ -6,9 +6,7 @@ import type {
   UserRrPointsEntry,
   BurnRewardGrantRecord,
 } from '../../services/core-api/src/rr-rewards/rr.service';
-import type {
-  ConciergeSessionRecord,
-} from '../../services/core-api/src/diamond-concierge/concierge-session.service';
+import type { ConciergeSessionRecord } from '../../services/core-api/src/diamond-concierge/concierge-session.service';
 import type {
   ActiveGrantViewModel,
   BurnShopItem,
@@ -36,7 +34,7 @@ const BURN_LABELS: Record<string, { label: string; description: string }> = {
 const BURN_EXPIRY_DAYS: Record<string, number | null> = {
   EXTRA_IMAGES: 30,
   TEMP_INFERNO: 7,
-  CUSTOM_TWIN:  null,
+  CUSTOM_TWIN: null,
 };
 
 function toEntryViewModel(e: UserRrPointsEntry): RrrPointsEntryViewModel {
@@ -132,13 +130,13 @@ export interface EarningRuleCard {
 }
 
 const EARNING_LABELS: Record<string, string> = {
-  DAILY_LOGIN:       'Daily Login',
-  MESSAGE_SENT:      'Send a Message',
-  IMAGE_GENERATED:   'Generate an Image',
-  VOICE_CALL:        'Join a Voice Call',
-  REFERRAL:          'Refer a Friend',
-  HOUSE_MODEL_CHAT:  'Chat with a House Model',
-  PORTAL_SWITCH:     'Switch Portals',
+  DAILY_LOGIN: 'Daily Login',
+  MESSAGE_SENT: 'Send a Message',
+  IMAGE_GENERATED: 'Generate an Image',
+  VOICE_CALL: 'Join a Voice Call',
+  REFERRAL: 'Refer a Friend',
+  HOUSE_MODEL_CHAT: 'Chat with a House Model',
+  PORTAL_SWITCH: 'Switch Portals',
 };
 
 export function buildEarningRuleCards(): EarningRuleCard[] {

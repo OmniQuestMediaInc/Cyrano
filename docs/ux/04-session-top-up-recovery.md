@@ -9,11 +9,11 @@
 
 ## API / Presenter Binding
 
-| Operation | Endpoint | Notes |
-|---|---|---|
-| Get top-up options | `GET /cyrano/session/top-up-options` | Returns available minute bundles for guest's tier |
-| Purchase top-up | `POST /cyrano/session/top-up` | FIZ-scoped; requires `correlation_id` + `idempotency_key` |
-| Resume session | NATS: `cyrano.session.resumed` | Emitted by server on payment confirmation |
+| Operation          | Endpoint                             | Notes                                                     |
+| ------------------ | ------------------------------------ | --------------------------------------------------------- |
+| Get top-up options | `GET /cyrano/session/top-up-options` | Returns available minute bundles for guest's tier         |
+| Purchase top-up    | `POST /cyrano/session/top-up`        | FIZ-scoped; requires `correlation_id` + `idempotency_key` |
+| Resume session     | NATS: `cyrano.session.resumed`       | Emitted by server on payment confirmation                 |
 
 **FIZ scope:** `POST /cyrano/session/top-up` touches CZT balance — FIZ rules apply.
 Commit prefix for any changes to this endpoint: `CYR: + FIZ:` with `REASON`, `IMPACT`,
@@ -164,10 +164,10 @@ If the guest taps "Dismiss" on the expiry modal:
 
 ## Idempotency
 
-| Field | Requirement |
-|---|---|
-| `correlation_id` | Must match the originating session's `correlation_id` |
-| `idempotency_key` | New UUID v4 per top-up attempt (not per session) |
+| Field             | Requirement                                           |
+| ----------------- | ----------------------------------------------------- |
+| `correlation_id`  | Must match the originating session's `correlation_id` |
+| `idempotency_key` | New UUID v4 per top-up attempt (not per session)      |
 
 The server returns HTTP 200 with the cached response if the same `idempotency_key` is replayed
 within 24 hours, preventing double-charge on network retry.
@@ -176,13 +176,13 @@ within 24 hours, preventing double-charge on network retry.
 
 ## Compliance
 
-| Layer | Trigger | Action |
-|---|---|---|
-| Welfare Guardian `SOFT_NUDGE` | Guest top-up count ≥ 3 in single day | Non-blocking nudge on modal header |
-| Welfare Guardian `COOL_DOWN` | FFS INFERNO band active during top-up | 5-min cool-down before top-up is permitted |
-| Welfare Guardian `HARD_DECLINE_HCZ` | WGS critical threshold | Top-up blocked; HCZ escalation; `reason_code: HARD_DECLINE_HCZ` |
-| Bill 149 | CZT purchase (if routed to CNZ bridge) | Handled by CNZ wallet surface |
-| FIZ | All CZT balance mutations in top-up endpoint | `REASON`, `IMPACT`, `CORRELATION_ID` required in commit |
+| Layer                               | Trigger                                      | Action                                                          |
+| ----------------------------------- | -------------------------------------------- | --------------------------------------------------------------- |
+| Welfare Guardian `SOFT_NUDGE`       | Guest top-up count ≥ 3 in single day         | Non-blocking nudge on modal header                              |
+| Welfare Guardian `COOL_DOWN`        | FFS INFERNO band active during top-up        | 5-min cool-down before top-up is permitted                      |
+| Welfare Guardian `HARD_DECLINE_HCZ` | WGS critical threshold                       | Top-up blocked; HCZ escalation; `reason_code: HARD_DECLINE_HCZ` |
+| Bill 149                            | CZT purchase (if routed to CNZ bridge)       | Handled by CNZ wallet surface                                   |
+| FIZ                                 | All CZT balance mutations in top-up endpoint | `REASON`, `IMPACT`, `CORRELATION_ID` required in commit         |
 
 ---
 
@@ -204,6 +204,6 @@ Sticky banner:            ⏱ {N} min remaining — [Top Up Session]
 
 ---
 
-*Binding: `services/narrative-engine/src/narrative.types.ts` ·
+_Binding: `services/narrative-engine/src/narrative.types.ts` ·
 NATS: `cyrano.session.expired`, `cyrano.session.resumed`, `cyrano.session.tick` ·
-FIZ-scoped endpoint: `POST /cyrano/session/top-up`*
+FIZ-scoped endpoint: `POST /cyrano/session/top-up`_

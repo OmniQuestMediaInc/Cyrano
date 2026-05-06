@@ -23,7 +23,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./infra/postgres/init-ledger.sql:/docker-entrypoint-initdb.d/01-init-ledger.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-chatnow_app} -d ${POSTGRES_DB:-chatnow}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-chatnow_app} -d ${POSTGRES_DB:-chatnow}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,7 +39,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: ['CMD', 'redis-cli', '--no-auth-warning', '-a', '${REDIS_PASSWORD}', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,12 +57,12 @@ services:
       -sd /data
       -m 8222
     ports:
-      - "4222:4222"
-      - "8222:8222"
+      - '4222:4222'
+      - '8222:8222'
     volumes:
       - nats_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8222/healthz || exit 1"]
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:8222/healthz || exit 1']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -105,7 +105,7 @@ services:
       WEBHOOK_SIGNING_SECRET: ${WEBHOOK_SIGNING_SECRET:?WEBHOOK_SIGNING_SECRET is required}
       RBAC_STEP_UP_SIGNING_SECRET: ${RBAC_STEP_UP_SIGNING_SECRET:?RBAC_STEP_UP_SIGNING_SECRET is required}
     ports:
-      - "${API_PORT:-3000}:3000"
+      - '${API_PORT:-3000}:3000'
     depends_on:
       db:
         condition: service_healthy
@@ -114,7 +114,7 @@ services:
       nats:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health || exit 1"]
+      test: ['CMD-SHELL', 'curl -fsS http://localhost:3000/health || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -136,7 +136,7 @@ services:
       NEXT_PUBLIC_CYRANO_API_URL: ${NEXT_PUBLIC_CYRANO_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3100:3100"
+      - '3100:3100'
     depends_on:
       api:
         condition: service_healthy
@@ -188,7 +188,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3001:3000"
+      - '3001:3000'
     depends_on:
       api:
         condition: service_healthy
@@ -206,7 +206,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3002:3000"
+      - '3002:3000'
     depends_on:
       api:
         condition: service_healthy
@@ -224,7 +224,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3003:3000"
+      - '3003:3000'
     depends_on:
       api:
         condition: service_healthy
@@ -242,7 +242,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3004:3000"
+      - '3004:3000'
     depends_on:
       api:
         condition: service_healthy
@@ -260,7 +260,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3005:3000"
+      - '3005:3000'
     depends_on:
       api:
         condition: service_healthy
@@ -278,7 +278,7 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
       NODE_ENV: ${NODE_ENV:-production}
     ports:
-      - "3006:3000"
+      - '3006:3000'
     depends_on:
       api:
         condition: service_healthy

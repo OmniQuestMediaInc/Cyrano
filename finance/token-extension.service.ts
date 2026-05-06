@@ -27,7 +27,7 @@ export interface DisputeResolutionResult {
   new_stage: DisputeStage;
   offer?: {
     type: 'TOKEN_BRIDGE';
-    bonus_tokens?: bigint;           // For TOKEN_BRIDGE offer
+    bonus_tokens?: bigint; // For TOKEN_BRIDGE offer
   };
   requires_step_up: boolean;
   ledger_entry_ref?: string;
@@ -49,7 +49,7 @@ export interface DisputeResolutionResult {
 export class TokenExtensionService {
   private readonly logger = new Logger(TokenExtensionService.name);
   private readonly RULE_ID = 'TOKEN_EXTENSION_v1';
-  private readonly TOKEN_BRIDGE_BONUS_PCT = 0.20;   // 20% bonus tokens
+  private readonly TOKEN_BRIDGE_BONUS_PCT = 0.2; // 20% bonus tokens
 
   /**
    * Stage 1: Offer the Token Bridge.
@@ -62,9 +62,9 @@ export class TokenExtensionService {
     remaining_token_balance: bigint;
     original_amount_cents: bigint;
   }): DisputeResolutionResult {
-    const bonus_tokens = BigInt(Math.floor(
-      Number(params.remaining_token_balance) * this.TOKEN_BRIDGE_BONUS_PCT
-    ));
+    const bonus_tokens = BigInt(
+      Math.floor(Number(params.remaining_token_balance) * this.TOKEN_BRIDGE_BONUS_PCT),
+    );
 
     this.logger.log('TokenExtensionService: TOKEN_BRIDGE offer computed', {
       dispute_id: params.dispute_id,
@@ -84,8 +84,6 @@ export class TokenExtensionService {
 
   /** Utility: generate a deterministic audit hash for a dispute event. */
   static computeAuditHash(dispute_id: string, stage: DisputeStage, timestamp_utc: string): string {
-    return createHash('sha256')
-      .update(`${dispute_id}:${stage}:${timestamp_utc}`)
-      .digest('hex');
+    return createHash('sha256').update(`${dispute_id}:${stage}:${timestamp_utc}`).digest('hex');
   }
 }

@@ -12,15 +12,7 @@
 // validation in a single call, so no secondary raw_body forwarding is needed.
 // StripeService.handleWebhook() uses upsert for idempotent writes — safe under
 // Stripe's at-least-once delivery guarantee.
-import {
-  Controller,
-  Post,
-  Headers,
-  Req,
-  Res,
-  Logger,
-  HttpCode,
-} from '@nestjs/common';
+import { Controller, Post, Headers, Req, Res, Logger, HttpCode } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { StripeService } from './stripe.service';
 

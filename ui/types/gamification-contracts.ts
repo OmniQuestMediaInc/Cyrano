@@ -51,10 +51,10 @@ export interface CreatorGameConfigViewModel {
 /** Card rendered for each game in the creator gamification dashboard. */
 export interface CreatorGameCard {
   game_type: GameType;
-  display_name: string;            // 'Wheel of Fortune' | 'Slot Machine' | 'Dice'
+  display_name: string; // 'Wheel of Fortune' | 'Slot Machine' | 'Dice'
   enabled: boolean;
   token_tiers: number[];
-  cooldown_seconds: number;        // resolved (override ?? default)
+  cooldown_seconds: number; // resolved (override ?? default)
   accepts_rrr_burn: boolean;
   active_pool_name: string | null;
   /** Quick analytics for the last 30 days. */

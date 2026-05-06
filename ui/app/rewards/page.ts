@@ -6,16 +6,16 @@ import {
   presentRewardsDashboard,
   buildEarningRuleCards,
   type RewardsDashboardPresenterInput,
-} from '../../../view-models/rewards.presenter';
-import { SEO } from '../../../config/seo';
-import { THEME } from '../../../config/theme';
-import { el, RenderElement } from '../../../components/render-plan';
+} from '../../view-models/rewards.presenter';
+import { SEO } from '../../config/seo';
+import { THEME } from '../../config/theme';
+import { el, RenderElement } from '../../components/render-plan';
 import type {
   RewardsDashboardView,
   RrrPointsEntryViewModel,
   BurnShopItem,
   ActiveGrantViewModel,
-} from '../../../types/rewards-contracts';
+} from '../../types/rewards-contracts';
 
 export const REWARDS_PAGE_RULE_ID = 'REWARDS_DASHBOARD_PAGE_v1';
 
@@ -117,9 +117,7 @@ function renderEarningRulesPanel(): RenderElement {
             },
             [
               el('span', { classes: ['cnz-earning-rule__label'] }, [r.label]),
-              el('strong', { classes: ['cnz-earning-rule__points'] }, [
-                `+${r.points} pts`,
-              ]),
+              el('strong', { classes: ['cnz-earning-rule__points'] }, [`+${r.points} pts`]),
             ],
           ),
         ),
@@ -161,9 +159,7 @@ function renderHistoryPanel(history: RrrPointsEntryViewModel[]): RenderElement {
                   el('strong', { classes: ['cnz-history-item__amount'] }, [
                     entry.amount > 0 ? `+${entry.amount}` : String(entry.amount),
                   ]),
-                  el('time', { props: { dateTime: entry.created_at_utc } }, [
-                    entry.created_at_utc,
-                  ]),
+                  el('time', { props: { dateTime: entry.created_at_utc } }, [entry.created_at_utc]),
                 ],
               ),
             ),
@@ -182,9 +178,7 @@ function renderBurnShopPanel(shop: BurnShopItem[], balance: number): RenderEleme
     },
     [
       el('h2', {}, ['🔥 Burn Shop']),
-      el('p', { classes: ['cnz-burn-shop__intro'] }, [
-        'Spend your points for exclusive perks.',
-      ]),
+      el('p', { classes: ['cnz-burn-shop__intro'] }, ['Spend your points for exclusive perks.']),
       el(
         'ul',
         { classes: ['cnz-burn-shop-list'] },
@@ -249,7 +243,9 @@ function renderActiveGrantsPanel(grants: ActiveGrantViewModel[]): RenderElement 
     [
       el('h2', {}, ['Active Rewards']),
       grants.length === 0
-        ? el('p', { classes: ['cnz-panel--empty'] }, ['No active rewards. Burn points to unlock perks!'])
+        ? el('p', { classes: ['cnz-panel--empty'] }, [
+            'No active rewards. Burn points to unlock perks!',
+          ])
         : el(
             'ul',
             { classes: ['cnz-grants-list'] },

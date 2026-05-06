@@ -43,26 +43,26 @@ services/core-api/src/risk/risk-score.service.ts(16,32): error TS2551: Property 
 
 ## Files Modified
 
-| File | Change |
-|------|--------|
-| `services/core-api/src/audit/audit-dashboard.controller.ts` | `db.ledger_entries` → `db.ledgerEntry` (2 occurrences) |
-| `services/core-api/src/audit/audit-dashboard.service.ts` | `db.ledger_entries` → `db.ledgerEntry` (1 occurrence) |
-| `services/core-api/src/creator/statements.service.ts` | `db.ledger_entries` → `db.ledgerEntry` (2 occurrences) |
-| `services/core-api/src/finance/batch-payout.service.ts` | `db.ledger_entries` → `db.ledgerEntry` (1 occurrence) |
-| `services/core-api/src/risk/risk-score.service.ts` | `db.user_risk_profiles` → `db.userRiskProfile` (1 occurrence) |
-| `services/core-api/src/finance/ledger.service.ts` | `@InjectRepository('ledger_entries')` → `@InjectRepository('ledger_entries' as any)` |
-| `services/core-api/src/growth/guarded-notification.service.ts` | `@InjectRepository(string)` → `@InjectRepository(string as any)` (2 occurrences) |
-| `services/core-api/src/growth/referral-reward.service.ts` | `@InjectRepository(string)` → `@InjectRepository(string as any)` (3 occurrences) |
+| File                                                           | Change                                                                               |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `services/core-api/src/audit/audit-dashboard.controller.ts`    | `db.ledger_entries` → `db.ledgerEntry` (2 occurrences)                               |
+| `services/core-api/src/audit/audit-dashboard.service.ts`       | `db.ledger_entries` → `db.ledgerEntry` (1 occurrence)                                |
+| `services/core-api/src/creator/statements.service.ts`          | `db.ledger_entries` → `db.ledgerEntry` (2 occurrences)                               |
+| `services/core-api/src/finance/batch-payout.service.ts`        | `db.ledger_entries` → `db.ledgerEntry` (1 occurrence)                                |
+| `services/core-api/src/risk/risk-score.service.ts`             | `db.user_risk_profiles` → `db.userRiskProfile` (1 occurrence)                        |
+| `services/core-api/src/finance/ledger.service.ts`              | `@InjectRepository('ledger_entries')` → `@InjectRepository('ledger_entries' as any)` |
+| `services/core-api/src/growth/guarded-notification.service.ts` | `@InjectRepository(string)` → `@InjectRepository(string as any)` (2 occurrences)     |
+| `services/core-api/src/growth/referral-reward.service.ts`      | `@InjectRepository(string)` → `@InjectRepository(string as any)` (3 occurrences)     |
 
 ---
 
 ## Validation
 
-| Check | Result |
-|-------|--------|
-| `npx tsc --noEmit` output: 0 errors | PASS |
-| No source logic changed — types and accessors only | PASS |
-| All Prisma accessors use camelCase | PASS |
+| Check                                              | Result |
+| -------------------------------------------------- | ------ |
+| `npx tsc --noEmit` output: 0 errors                | PASS   |
+| No source logic changed — types and accessors only | PASS   |
+| All Prisma accessors use camelCase                 | PASS   |
 
 ---
 

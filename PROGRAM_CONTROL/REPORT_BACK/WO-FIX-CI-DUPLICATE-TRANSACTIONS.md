@@ -24,7 +24,7 @@ Root cause: `infra/postgres/init-ledger.sql` defined the `transactions` table **
    `performer_id`, `studio_id`, and the append-only mutation-blocking triggers.
 
 Because `CREATE TABLE IF NOT EXISTS` was used, the first definition was created and the
-second was silently skipped.  The subsequent `CREATE INDEX … ON transactions (user_id)`
+second was silently skipped. The subsequent `CREATE INDEX … ON transactions (user_id)`
 then failed because `user_id` did not exist in the already-created (first) table.
 
 ---
@@ -32,7 +32,7 @@ then failed because `user_id` did not exist in the already-created (first) table
 ## Fix Applied
 
 The earlier `transactions` table block (the non-ledger-grade definition) along with its
-associated duplicate triggers, index, and comment was **deleted**.  Only the single
+associated duplicate triggers, index, and comment was **deleted**. Only the single
 ledger-grade definition remains in `infra/postgres/init-ledger.sql`:
 
 - **One** `CREATE TABLE IF NOT EXISTS transactions` block (lines 241–276)

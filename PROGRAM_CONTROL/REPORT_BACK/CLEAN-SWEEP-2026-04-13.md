@@ -8,13 +8,13 @@
 
 ## DELETIONS EXECUTED
 
-| File | Reason |
-|------|--------|
-| `package-lock.json` | Yarn is the canonical package manager (OQMI CODING DOCTRINE v2.0, Package Manager Policy). Both `package-lock.json` AND `yarn.lock` were present. `package-lock.json` is npm-generated noise — deleted. |
-| `docs/manuals` | Not a directory — a 1-byte file containing only `\n` (confirmed via `xxd`). Clearly a corrupted stub or placeholder that was never completed. Not referenced in `required-files.txt` or any import. Deleted. |
-| `services/core-api/.gitkeep` | `.gitkeep` is used to hold empty directories in git. `services/core-api/` has 26 subdirectories and is fully populated. `.gitkeep` is no longer needed. |
-| `services/rewards-api/.gitkeep` | Same reason — `rewards-api/src/engine/` and `src/white-label/` have content. |
-| `services/risk-engine/.gitkeep` | Same reason — `risk-engine/src/` has content. |
+| File                            | Reason                                                                                                                                                                                                       |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `package-lock.json`             | Yarn is the canonical package manager (OQMI CODING DOCTRINE v2.0, Package Manager Policy). Both `package-lock.json` AND `yarn.lock` were present. `package-lock.json` is npm-generated noise — deleted.      |
+| `docs/manuals`                  | Not a directory — a 1-byte file containing only `\n` (confirmed via `xxd`). Clearly a corrupted stub or placeholder that was never completed. Not referenced in `required-files.txt` or any import. Deleted. |
+| `services/core-api/.gitkeep`    | `.gitkeep` is used to hold empty directories in git. `services/core-api/` has 26 subdirectories and is fully populated. `.gitkeep` is no longer needed.                                                      |
+| `services/rewards-api/.gitkeep` | Same reason — `rewards-api/src/engine/` and `src/white-label/` have content.                                                                                                                                 |
+| `services/risk-engine/.gitkeep` | Same reason — `risk-engine/src/` has content.                                                                                                                                                                |
 
 ---
 
@@ -24,6 +24,7 @@
 
 **Status:** MISSING  
 **Impact:** HIGH — Referenced as the naming authority in three governance files:
+
 - `.github/copilot-instructions.md` line 32
 - `CLAUDE.md` line 7
 - `services/core-api/src/config/governance.config.ts` lines 199–203
@@ -59,6 +60,7 @@ The `services/core-api/src/database/` directory has no module file, is not impor
 ### ℹ️ INFO — `.gitkeep` files in populated PROGRAM_CONTROL directories
 
 The following `.gitkeep` files are still present in directories with actual content. They are 0-byte and harmless, but are technically noise:
+
 - `tests/seed_data/.gitkeep` (10 CSV files alongside it)
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/.gitkeep` (11 directive files)
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/.gitkeep` (4 directive files)
@@ -95,15 +97,15 @@ These are **different configs with different scopes**, not duplicates. No action
 
 The following TODOs are present in production code and represent known incomplete work:
 
-| File | TODO |
-|------|------|
-| `src/audit/audit-dashboard.controller.ts` | Full Red Book scenario filtering not implemented |
-| `src/dfsp/checkout-confirmation.service.ts` | Email/SMS delivery stubbed — wired in v6 |
-| `src/compliance/geo-fencing.service.ts` | GEO-OVERRIDE-DB — migrate to DB-backed store before go-live |
-| `src/finance/ledger.service.ts` | `recordSplitTip` is a stub |
-| `src/growth/guarded-notification.service.ts` | SendGrid/Twilio/APNs integration pending Scale Phase |
-| `src/creator/roster.gateway.ts` | Roster and contract retrieval not implemented |
-| `src/creator/dashboard.controller.ts` | Dashboard summary aggregation not implemented |
+| File                                         | TODO                                                        |
+| -------------------------------------------- | ----------------------------------------------------------- |
+| `src/audit/audit-dashboard.controller.ts`    | Full Red Book scenario filtering not implemented            |
+| `src/dfsp/checkout-confirmation.service.ts`  | Email/SMS delivery stubbed — wired in v6                    |
+| `src/compliance/geo-fencing.service.ts`      | GEO-OVERRIDE-DB — migrate to DB-backed store before go-live |
+| `src/finance/ledger.service.ts`              | `recordSplitTip` is a stub                                  |
+| `src/growth/guarded-notification.service.ts` | SendGrid/Twilio/APNs integration pending Scale Phase        |
+| `src/creator/roster.gateway.ts`              | Roster and contract retrieval not implemented               |
+| `src/creator/dashboard.controller.ts`        | Dashboard summary aggregation not implemented               |
 
 These are tracked in the backlog. No deletion warranted.
 

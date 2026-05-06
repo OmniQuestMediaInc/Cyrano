@@ -11,6 +11,7 @@
 ## What Was Built
 
 ### Task 1: `services/zone-gpt/src/proposal.service.ts` (CREATED)
+
 - Full `ProposalService` implementing Corpus v10 Ch.8 §6
 - Types: `ProposalType`, `ProposalDecision`, `ProposalStatus`
 - Interfaces: `Proposal`, `CreateProposalInput`, `RecordDecisionInput`
@@ -21,9 +22,11 @@
 - In-memory Map store for MVP (DB-backed follow-on in GM-003)
 
 ### Task 2: `services/zone-gpt/src/zone-gpt.module.ts` (CREATED)
+
 - NestJS module providing and exporting `ProposalService`
 
 ### Task 3: `services/core-api/src/app.module.ts` (MODIFIED)
+
 - Added `ZoneGptModule` to `AppModule` imports
 
 ---

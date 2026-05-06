@@ -13,7 +13,7 @@ Delivered a new canonical `services/ledger/` module housing a three-bucket walle
 ### Prisma + Migration
 
 - `prisma/schema.prisma` — four new Prisma models:
-  - `CanonicalWallet`     → `wallets`
+  - `CanonicalWallet` → `wallets`
   - `CanonicalLedgerEntry` → `wallet_ledger_entries` (append-only, hash-chained)
   - `CanonicalTokenExpiration` → `token_expirations`
   - `CanonicalRateCard` → `rate_cards`
@@ -26,6 +26,7 @@ Delivered a new canonical `services/ledger/` module housing a three-bucket walle
 ### Governance Constants (no hardcoded prices anywhere in services)
 
 `services/core-api/src/config/governance.config.ts`:
+
 - `REDBOOK_RATE_CARDS` — Tease Regular bundle table (150/500/1 000/5 000/10 000), ShowZone Premium (300/1 000), Diamond Floor min/max, VIP baseline.
 - `RECOVERY_ENGINE` — 14-day Diamond expiry, 48-hour warning window, $49 extension, $79 recovery, 70/30 redistribution, 20% Token Bridge, 60% 3/5ths Exit + 24-hour lock.
 - `LEDGER_SPEND_ORDER` — canonical spend authority: `['purchased', 'membership', 'bonus']`. Compile-time guarded against drift.

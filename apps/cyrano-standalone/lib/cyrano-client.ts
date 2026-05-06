@@ -12,18 +12,23 @@ export interface CyranoSuggestionView {
   emitted_at_utc: string;
 }
 
-const apiBase = (typeof process !== 'undefined' && process.env.CYRANO_CORE_API_URL) ||
-  'http://localhost:3000';
+const apiBase =
+  (typeof process !== 'undefined' && process.env.CYRANO_CORE_API_URL) || 'http://localhost:3000';
 
 /** Fetch the latest emitted suggestions for a session. */
 export async function getRecentSuggestions(session_id: string): Promise<CyranoSuggestionView[]> {
-  const res = await fetch(`${apiBase}/cyrano/sessions/${encodeURIComponent(session_id)}/suggestions`);
+  const res = await fetch(
+    `${apiBase}/cyrano/sessions/${encodeURIComponent(session_id)}/suggestions`,
+  );
   if (!res.ok) throw new Error(`getRecentSuggestions failed: ${res.status}`);
   return res.json() as Promise<CyranoSuggestionView[]>;
 }
 
 /** Subscribe to the platform's NATS bridge for live updates (Server-Sent Events). */
-export function openSuggestionStream(session_id: string, onMessage: (s: CyranoSuggestionView) => void): () => void {
+export function openSuggestionStream(
+  session_id: string,
+  onMessage: (s: CyranoSuggestionView) => void,
+): () => void {
   const url = `${apiBase}/cyrano/sessions/${encodeURIComponent(session_id)}/stream`;
   // EventSource is browser-native; this is a Layer 2 (browser-only) helper.
   const es = new EventSource(url);

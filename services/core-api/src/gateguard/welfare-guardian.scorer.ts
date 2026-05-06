@@ -110,28 +110,22 @@ function dwellPenalty(minutes?: number): number {
 /**
  * Fraud penalties compose the fraud side of the score.
  */
-function fraudEnvelope(
-  signals: FraudSignals | undefined,
-): RiskFactorEnvelope['fraud'] {
+function fraudEnvelope(signals: FraudSignals | undefined): RiskFactorEnvelope['fraud'] {
   const s = signals ?? {};
 
   const newAccountPenalty =
     s.accountAgeDays === undefined
       ? 0
       : s.accountAgeDays < 1
-      ? 25
-      : s.accountAgeDays < 7
-      ? 15
-      : s.accountAgeDays < 30
-      ? 8
-      : 0;
+        ? 25
+        : s.accountAgeDays < 7
+          ? 15
+          : s.accountAgeDays < 30
+            ? 8
+            : 0;
 
   const deviceChurnPenalty =
-    (s.deviceFingerprintCount7d ?? 0) >= 4
-      ? 18
-      : (s.deviceFingerprintCount7d ?? 0) >= 2
-      ? 8
-      : 0;
+    (s.deviceFingerprintCount7d ?? 0) >= 4 ? 18 : (s.deviceFingerprintCount7d ?? 0) >= 2 ? 8 : 0;
 
   const geoMismatchPenalty = s.ipCountryMismatch ? 12 : 0;
   const vpnPenalty = s.vpnDetected ? 10 : 0;
@@ -139,11 +133,7 @@ function fraudEnvelope(
   const chargebackAutoBar = !!s.priorChargeback;
 
   const disputesPenalty =
-    (s.priorDisputes180d ?? 0) >= 3
-      ? 20
-      : (s.priorDisputes180d ?? 0) >= 1
-      ? 10
-      : 0;
+    (s.priorDisputes180d ?? 0) >= 3 ? 20 : (s.priorDisputes180d ?? 0) >= 1 ? 10 : 0;
 
   const structuringPenalty = s.structuringPattern ? 25 : 0;
 
@@ -185,31 +175,17 @@ function welfareEnvelope(
 ): RiskFactorEnvelope['welfare'] {
   const s = signals ?? {};
 
-  const velPenalty = velocityPenalty(
-    action,
-    amountTokens,
-    s.spendVelocity60m,
-    s.spendVelocity24h,
-  );
+  const velPenalty = velocityPenalty(action, amountTokens, s.spendVelocity60m, s.spendVelocity24h);
   const hourPenalty = hoursOfDayPenalty(s.localHourOfDay);
   const dwellPen = dwellPenalty(s.sessionDwellMinutes);
   const chaseLossPenalty = s.chaseLossPattern ? 25 : 0;
   const distressPenalty = s.selfReportedDistress ? 40 : 0;
 
   const declinesPenalty =
-    (s.recentDeclines72h ?? 0) >= 3
-      ? 20
-      : (s.recentDeclines72h ?? 0) >= 1
-      ? 10
-      : 0;
+    (s.recentDeclines72h ?? 0) >= 3 ? 20 : (s.recentDeclines72h ?? 0) >= 1 ? 10 : 0;
 
   const raw =
-    velPenalty +
-    hourPenalty +
-    dwellPen +
-    chaseLossPenalty +
-    distressPenalty +
-    declinesPenalty;
+    velPenalty + hourPenalty + dwellPen + chaseLossPenalty + distressPenalty + declinesPenalty;
 
   return {
     score: clamp(raw, 0, 100),
@@ -304,11 +280,7 @@ export function computeWelfareGuardianScore(params: {
   welfareScore: number;
   riskFactors: RiskFactorEnvelope;
 } {
-  const welfare = welfareEnvelope(
-    params.action,
-    params.amountTokens,
-    params.welfareSignals,
-  );
+  const welfare = welfareEnvelope(params.action, params.amountTokens, params.welfareSignals);
   const fraud = fraudEnvelope(params.fraudSignals);
 
   const avStatus: AvStatus = params.avStatus ?? 'UNKNOWN';

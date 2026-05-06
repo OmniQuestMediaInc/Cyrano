@@ -13,9 +13,7 @@ import {
   GENESIS_HASH,
   IMMUTABLE_AUDIT_RULE_ID,
 } from '../../services/core-api/src/audit/immutable-audit.service';
-import type {
-  AuditChainRow,
-} from '../../ui/types/admin-diamond-contracts';
+import type { AuditChainRow } from '../../ui/types/admin-diamond-contracts';
 
 const SHA256 = (s: string): string => createHash('sha256').update(s).digest('hex');
 

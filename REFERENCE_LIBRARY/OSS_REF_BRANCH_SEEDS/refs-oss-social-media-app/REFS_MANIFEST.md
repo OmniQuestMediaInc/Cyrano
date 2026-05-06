@@ -21,11 +21,13 @@ React social media application. Feed, notifications, follower graph, and content
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/social-media-app:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/social-media-app:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/social-media-app:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/Social-media-react-app.git /tmp/Social-media-react-app
 > cd /tmp/Social-media-react-app
@@ -45,6 +48,7 @@ git show refs/oss/social-media-app:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/Social-media-react-app.git HEAD
 > git push origin FETCH_HEAD:refs/oss/social-media-app --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/social-media-app:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

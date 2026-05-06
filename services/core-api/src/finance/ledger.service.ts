@@ -105,10 +105,7 @@ export class LedgerService {
     // TOK-006-FOLLOWUP: tokenOrigin must be PURCHASED or GIFTED on every write.
     // Defence-in-depth: TS already requires the field, but a JS caller could
     // still slip undefined through. ASC 606 / breakage calc depend on this.
-    if (
-      data.tokenOrigin !== TokenOrigin.PURCHASED &&
-      data.tokenOrigin !== TokenOrigin.GIFTED
-    ) {
+    if (data.tokenOrigin !== TokenOrigin.PURCHASED && data.tokenOrigin !== TokenOrigin.GIFTED) {
       throw new Error(
         `INVALID_TOKEN_ORIGIN: tokenOrigin must be 'PURCHASED' or 'GIFTED' (got '${data.tokenOrigin}').`,
       );

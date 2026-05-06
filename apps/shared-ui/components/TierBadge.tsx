@@ -6,9 +6,9 @@ import type { SubscriptionTier } from '../../portals/portal.types';
 export type { SubscriptionTier };
 
 const TIER_COLORS: Record<SubscriptionTier | 'FREE', string> = {
-  FREE:    '#9e9e9e',
-  SPARK:   '#2196f3',
-  FLAME:   '#9c27b0',
+  FREE: '#9e9e9e',
+  SPARK: '#2196f3',
+  FLAME: '#9c27b0',
   INFERNO: '#f44336',
 };
 

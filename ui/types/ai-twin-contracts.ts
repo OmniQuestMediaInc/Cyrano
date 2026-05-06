@@ -15,16 +15,16 @@ export type TwinTrainingStatus =
 export type WizardStep = 0 | 1 | 2 | 3; // Photos | Train LoRA | Test Generate | Publish
 
 export type TwinSessionState =
-  | 'GRANTED'      // Minutes available; session may start
-  | 'ACTIVE'       // Session in progress — minutes decrementing
-  | 'EXPIRED'      // Zero minutes remaining
-  | 'TOP_UP';      // User has been prompted to purchase more minutes
+  | 'GRANTED' // Minutes available; session may start
+  | 'ACTIVE' // Session in progress — minutes decrementing
+  | 'EXPIRED' // Zero minutes remaining
+  | 'TOP_UP'; // User has been prompted to purchase more minutes
 
 export type TwinVisibility = 'PRIVATE' | 'PLATFORM_INTERNAL' | 'SUBSCRIBER';
 
 /** Bill 149 compliance prefix required on every generated output. */
 export interface Bill149ComplianceTag {
-  prefix: string;          // e.g. "AI-GENERATED:"
+  prefix: string; // e.g. "AI-GENERATED:"
   required: boolean;
   reason_code: string;
 }

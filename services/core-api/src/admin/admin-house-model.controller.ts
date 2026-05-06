@@ -16,7 +16,7 @@ import {
   Headers,
   Logger,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma.module';
+import { PrismaService } from '../prisma.service';
 import { RbacGuard, RbacRole } from '../auth/rbac.guard';
 
 @Controller('admin')

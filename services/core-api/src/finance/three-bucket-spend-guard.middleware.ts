@@ -30,10 +30,10 @@ const CANONICAL_SPEND_ORDER = [
 type CanonicalBucket = (typeof CANONICAL_SPEND_ORDER)[number];
 
 const BUCKET_PRIORITY: Record<string, number> = {
-  PROMOTIONAL_BONUS:     1,
+  PROMOTIONAL_BONUS: 1,
   MEMBERSHIP_ALLOCATION: 2,
-  MEMBERSHIP:            2, // legacy alias — same priority
-  PURCHASED:             3,
+  MEMBERSHIP: 2, // legacy alias — same priority
+  PURCHASED: 3,
 };
 
 function extractSpendOrder(req: Request): string[] | null {
@@ -90,8 +90,7 @@ export class ThreeBucketSpendGuardMiddleware implements NestMiddleware {
     }
 
     const correlation_id = `spend_guard_${randomUUID()}`;
-    const actor_id =
-      (req.headers['x-actor-id'] as string | undefined) ?? 'unknown_actor';
+    const actor_id = (req.headers['x-actor-id'] as string | undefined) ?? 'unknown_actor';
 
     this.logger.warn('ThreeBucketSpendGuard: mis-ordered spend plan rejected', {
       actor_id,

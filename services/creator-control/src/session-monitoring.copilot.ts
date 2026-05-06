@@ -34,11 +34,14 @@ export interface PriceNudge {
  * Tier → nudge policy. Deterministic; any change is a governance edit.
  * Magnitudes are conservative — the copilot nudges, it does not leap.
  */
-const NUDGE_POLICY: Record<FfsTier, { direction: NudgeDirection; magnitude: number; reason: string }> = {
-  INFERNO: { direction: 'RAISE', magnitude: 0.20, reason: 'HEAT_INFERNO_PRICE_PUSH' },
-  HOT:     { direction: 'RAISE', magnitude: 0.10, reason: 'HEAT_HOT_PRICE_PUSH' },
-  WARM:    { direction: 'HOLD',  magnitude: 0.00, reason: 'HEAT_WARM_STEADY' },
-  COLD:    { direction: 'LOWER', magnitude: 0.10, reason: 'HEAT_COLD_PRICE_PULL' },
+const NUDGE_POLICY: Record<
+  FfsTier,
+  { direction: NudgeDirection; magnitude: number; reason: string }
+> = {
+  INFERNO: { direction: 'RAISE', magnitude: 0.2, reason: 'HEAT_INFERNO_PRICE_PUSH' },
+  HOT: { direction: 'RAISE', magnitude: 0.1, reason: 'HEAT_HOT_PRICE_PUSH' },
+  WARM: { direction: 'HOLD', magnitude: 0.0, reason: 'HEAT_WARM_STEADY' },
+  COLD: { direction: 'LOWER', magnitude: 0.1, reason: 'HEAT_COLD_PRICE_PULL' },
 };
 
 @Injectable()

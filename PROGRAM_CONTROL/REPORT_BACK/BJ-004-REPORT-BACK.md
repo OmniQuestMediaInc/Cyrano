@@ -97,7 +97,7 @@ No raw topic strings used.
    this service ✅
 2. **`idempotency_key = admission_id + session_id`** — enforced via
    `recordEntry.referenceId` uniqueness AND `@@unique([admission_id,
-   session_id])` on DwellLog ✅
+session_id])` on DwellLog ✅
 3. **`token_origin: GIFTED` on all guest dwell credits** — hardcoded
    at the `recordEntry` call site; no other origin used ✅
 4. **All split constants from GovernanceConfig.BIJOU** — no hardcoded
@@ -136,10 +136,11 @@ PROGRAM_CONTROL/REPORT_BACK/BJ-004-REPORT-BACK.md     | (created)
 **SUCCESS**
 
 All BJ-004 scope items delivered:
+
 - ✅ `DwellLog` + `CreatorDwellAccrual` Prisma schemas (append-only)
 - ✅ 65/35 split; guest credited GIFTED CZT on session close
 - ✅ Creator payout staged in `CreatorDwellAccrual` (`settled=false`;
-     settlement out of scope)
+  settlement out of scope)
 - ✅ `BIJOU_DWELL_CREDITED` NATS topic registered
 - ✅ Idempotent on `admission_id + session_id`
 - ✅ Zero new tsc errors

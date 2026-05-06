@@ -70,9 +70,7 @@ describe('BijouSessionService — admitParticipant (admission gate)', () => {
     const { svc } = makeService();
     let session = makeSession();
     session = fillSession(svc, session, BIJOU_PRICING.MAX_PARTICIPANTS);
-    expect(() => svc.admitParticipant(session, 'late_vip', false)).toThrow(
-      'SEAT_CAPACITY_FULL',
-    );
+    expect(() => svc.admitParticipant(session, 'late_vip', false)).toThrow('SEAT_CAPACITY_FULL');
   });
 
   it('host can still be admitted when VIP cap is reached', () => {
@@ -101,8 +99,7 @@ describe('BijouSessionService — admitParticipant (admission gate)', () => {
     const p = session.participants[0];
     expect(p.camera_grace_expires_at_utc).toBeDefined();
     const graceDelta =
-      new Date(p.camera_grace_expires_at_utc!).getTime() -
-      new Date(p.entered_at_utc).getTime();
+      new Date(p.camera_grace_expires_at_utc!).getTime() - new Date(p.entered_at_utc).getTime();
     expect(graceDelta).toBe(BIJOU_PRICING.CAMERA_GRACE_PERIOD_SEC * 1000);
   });
 
@@ -115,8 +112,8 @@ describe('BijouSessionService — admitParticipant (admission gate)', () => {
       session = svc.admitParticipant(session, sc.primary_customer_id, false);
     }
     expect(session.participants).toHaveLength(5);
-    const ids = session.participants.map(p => p.user_id);
-    scenarios.forEach(sc => expect(ids).toContain(sc.primary_customer_id));
+    const ids = session.participants.map((p) => p.user_id);
+    scenarios.forEach((sc) => expect(ids).toContain(sc.primary_customer_id));
   });
 });
 
@@ -137,7 +134,7 @@ describe('BijouSessionService — evaluateCameraCompliance', () => {
     // Simulate camera active
     session = {
       ...session,
-      participants: session.participants.map(p =>
+      participants: session.participants.map((p) =>
         p.user_id === 'vip_cam_on' ? { ...p, camera_active: true } : p,
       ),
     };
@@ -162,10 +159,8 @@ describe('BijouSessionService — evaluateCameraCompliance', () => {
     const past = new Date(Date.now() - 1000).toISOString();
     session = {
       ...session,
-      participants: session.participants.map(p =>
-        p.user_id === 'vip_grace_expired'
-          ? { ...p, camera_grace_expires_at_utc: past }
-          : p,
+      participants: session.participants.map((p) =>
+        p.user_id === 'vip_grace_expired' ? { ...p, camera_grace_expires_at_utc: past } : p,
       ),
     };
     const { action } = svc.evaluateCameraCompliance(session, 'vip_grace_expired');
@@ -183,7 +178,7 @@ describe('BijouSessionService — evaluateCameraCompliance', () => {
     const past = new Date(Date.now() - 10_000).toISOString();
     session = {
       ...session,
-      participants: session.participants.map(p =>
+      participants: session.participants.map((p) =>
         p.user_id === 'vip_eject'
           ? {
               ...p,
@@ -212,10 +207,7 @@ describe('BijouSessionService — evaluateCameraCompliance', () => {
 
     // Within grace period — all should be NONE
     for (const sc of scenarios) {
-      const { action } = svc.evaluateCameraCompliance(
-        session,
-        sc.primary_customer_id,
-      );
+      const { action } = svc.evaluateCameraCompliance(session, sc.primary_customer_id);
       expect(action).toBe('NONE');
     }
   });
@@ -282,8 +274,7 @@ describe('BijouSessionService — standby queue', () => {
     const entry = updated.standby_queue[0];
     expect(entry.accept_expires_at_utc).toBeDefined();
     const windowMs =
-      new Date(entry.accept_expires_at_utc!).getTime() -
-      new Date(entry.notified_at_utc!).getTime();
+      new Date(entry.accept_expires_at_utc!).getTime() - new Date(entry.notified_at_utc!).getTime();
     expect(windowMs).toBe(BIJOU_PRICING.STANDBY_ACCEPT_WINDOW_SEC * 1000);
   });
 
@@ -297,9 +288,7 @@ describe('BijouSessionService — standby queue', () => {
       session = svc.joinStandby(session, sc.primary_customer_id);
     }
     expect(session.standby_queue).toHaveLength(5);
-    expect(session.standby_queue[0].user_id).toBe(
-      lateArrivals[0].primary_customer_id,
-    );
+    expect(session.standby_queue[0].user_id).toBe(lateArrivals[0].primary_customer_id);
   });
 });
 
@@ -326,7 +315,7 @@ describe('BijouSessionService — MAX_PARTICIPANTS constant', () => {
 describe('BijouSessionService — seed-backed creator/customer cross-reference', () => {
   it('all Ghost Alpha scenario creator IDs are valid creator references', () => {
     const creators = loadCreators();
-    const creatorIds = new Set(creators.map(c => c.creator_id));
+    const creatorIds = new Set(creators.map((c) => c.creator_id));
     const scenarios = loadDemoScenarios();
     for (const sc of scenarios) {
       expect(creatorIds.has(sc.primary_creator_id)).toBe(true);
@@ -335,7 +324,7 @@ describe('BijouSessionService — seed-backed creator/customer cross-reference',
 
   it('all Ghost Alpha scenario customer IDs are valid customer references', () => {
     const customers = loadCustomers();
-    const customerIds = new Set(customers.map(c => c.customer_id));
+    const customerIds = new Set(customers.map((c) => c.customer_id));
     const scenarios = loadDemoScenarios();
     for (const sc of scenarios) {
       expect(customerIds.has(sc.primary_customer_id)).toBe(true);

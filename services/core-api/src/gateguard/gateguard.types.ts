@@ -12,11 +12,7 @@ export type GateGuardAction = 'PURCHASE' | 'SPEND' | 'PAYOUT';
  * Deterministic decision vocabulary. These are the only four outcomes a
  * caller must handle. Any new outcome requires a governance increment.
  */
-export type GateGuardDecision =
-  | 'APPROVE'
-  | 'COOLDOWN'
-  | 'HARD_DECLINE'
-  | 'HUMAN_ESCALATE';
+export type GateGuardDecision = 'APPROVE' | 'COOLDOWN' | 'HARD_DECLINE' | 'HUMAN_ESCALATE';
 
 /**
  * Welfare signals are continuous per-user observations captured at session

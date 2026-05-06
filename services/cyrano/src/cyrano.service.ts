@@ -55,14 +55,17 @@ export const CYRANO_LATENCY = {
  *   • HOT    → ESCALATION / NARRATIVE / MONETIZATION
  *   • INFERNO→ MONETIZATION / ESCALATION / CLOSE (peak is for revenue)
  */
-const CATEGORY_TIER_WEIGHTS: Record<CyranoCategory, Record<'COLD' | 'WARM' | 'HOT' | 'INFERNO', number>> = {
-  CAT_SESSION_OPEN:  { COLD: 90, WARM: 40, HOT: 10, INFERNO: 5  },
-  CAT_ENGAGEMENT:    { COLD: 70, WARM: 80, HOT: 55, INFERNO: 30 },
-  CAT_ESCALATION:    { COLD: 20, WARM: 55, HOT: 85, INFERNO: 80 },
-  CAT_NARRATIVE:     { COLD: 35, WARM: 70, HOT: 70, INFERNO: 45 },
-  CAT_CALLBACK:      { COLD: 45, WARM: 65, HOT: 40, INFERNO: 25 },
-  CAT_RECOVERY:      { COLD: 80, WARM: 50, HOT: 20, INFERNO: 10 },
-  CAT_MONETIZATION:  { COLD: 15, WARM: 45, HOT: 80, INFERNO: 95 },
+const CATEGORY_TIER_WEIGHTS: Record<
+  CyranoCategory,
+  Record<'COLD' | 'WARM' | 'HOT' | 'INFERNO', number>
+> = {
+  CAT_SESSION_OPEN: { COLD: 90, WARM: 40, HOT: 10, INFERNO: 5 },
+  CAT_ENGAGEMENT: { COLD: 70, WARM: 80, HOT: 55, INFERNO: 30 },
+  CAT_ESCALATION: { COLD: 20, WARM: 55, HOT: 85, INFERNO: 80 },
+  CAT_NARRATIVE: { COLD: 35, WARM: 70, HOT: 70, INFERNO: 45 },
+  CAT_CALLBACK: { COLD: 45, WARM: 65, HOT: 40, INFERNO: 25 },
+  CAT_RECOVERY: { COLD: 80, WARM: 50, HOT: 20, INFERNO: 10 },
+  CAT_MONETIZATION: { COLD: 15, WARM: 45, HOT: 80, INFERNO: 95 },
   CAT_SESSION_CLOSE: { COLD: 10, WARM: 15, HOT: 35, INFERNO: 60 },
 };
 
@@ -178,11 +181,7 @@ export class CyranoService {
     if (frame.phase === 'CLOSING') return 'CAT_SESSION_CLOSE';
 
     // Recovery override — a never-tipped guest in long silence needs RECOVERY.
-    if (
-      !frame.guest_has_tipped &&
-      frame.silence_seconds >= 30 &&
-      frame.heat.tier !== 'INFERNO'
-    ) {
+    if (!frame.guest_has_tipped && frame.silence_seconds >= 30 && frame.heat.tier !== 'INFERNO') {
       return 'CAT_RECOVERY';
     }
 
@@ -231,11 +230,7 @@ export class CyranoService {
     if (category === 'CAT_SESSION_OPEN' && frame.dwell_minutes >= 5) w -= 20;
 
     // FFS modulator: high-scoring room boosts monetization suggestions.
-    if (
-      category === 'CAT_MONETIZATION' &&
-      frame.ffs_score !== undefined &&
-      frame.ffs_score >= 75
-    ) {
+    if (category === 'CAT_MONETIZATION' && frame.ffs_score !== undefined && frame.ffs_score >= 75) {
       w += 5;
     }
 
@@ -257,10 +252,7 @@ export class CyranoService {
    * Adult-only categories: ESCALATION, MONETIZATION (in non-adult contexts
    * these are replaced by domain-neutral guidance or silenced).
    */
-  private isAdultCategoryBlockedByDomain(
-    category: CyranoCategory,
-    domain?: CyranoDomain,
-  ): boolean {
+  private isAdultCategoryBlockedByDomain(category: CyranoCategory, domain?: CyranoDomain): boolean {
     if (!domain || domain === 'ADULT_ENTERTAINMENT') return false;
     return (ADULT_ONLY_CATEGORIES as readonly CyranoCategory[]).includes(category);
   }
@@ -270,7 +262,11 @@ export class CyranoService {
     if (!frame.guest_has_tipped) codes.push('GUEST_NO_TIP_YET');
     if (frame.silence_seconds >= 60) codes.push('SILENCE_HIGH');
     if (frame.ffs_score !== undefined && frame.ffs_score >= 75) codes.push('FFS_SCORE_HIGH');
-    if (frame.sensync_consent_active && frame.sensync_bpm !== undefined && frame.sensync_bpm >= 90) {
+    if (
+      frame.sensync_consent_active &&
+      frame.sensync_bpm !== undefined &&
+      frame.sensync_bpm >= 90
+    ) {
       codes.push('SENSYNC_BPM_ELEVATED');
     }
     if (frame.domain && frame.domain !== 'ADULT_ENTERTAINMENT') {
@@ -279,11 +275,7 @@ export class CyranoService {
     return codes;
   }
 
-  private buildCopy(
-    category: CyranoCategory,
-    frame: CyranoInputFrame,
-    tone: string,
-  ): string {
+  private buildCopy(category: CyranoCategory, frame: CyranoInputFrame, tone: string): string {
     // Prefer the shared template engine — same templates are consumed by
     // Layer 3 (HCZ) and Layer 4 (enterprise) so all surfaces stay aligned.
     const domain: CyranoDomain = frame.domain ?? 'ADULT_ENTERTAINMENT';

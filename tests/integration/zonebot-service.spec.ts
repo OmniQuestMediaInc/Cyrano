@@ -46,9 +46,7 @@ describe('ZoneBotService', () => {
     it('should set 16-hour expiry from offer time', () => {
       const ZONEBOT_CONFIRMATION_HOURS = 16;
       const offeredAt = new Date('2026-05-01T10:00:00Z');
-      const expiresAt = new Date(
-        offeredAt.getTime() + ZONEBOT_CONFIRMATION_HOURS * 3_600_000,
-      );
+      const expiresAt = new Date(offeredAt.getTime() + ZONEBOT_CONFIRMATION_HOURS * 3_600_000);
       expect(expiresAt.toISOString()).toBe('2026-05-02T02:00:00.000Z');
     });
 
@@ -70,9 +68,7 @@ describe('ZoneBotService', () => {
     it('should compute suppression end date from gap date', () => {
       const gapDate = new Date('2026-05-01');
       const suppressionDays = 28;
-      const suppressedUntil = new Date(
-        gapDate.getTime() + suppressionDays * 86_400_000,
-      );
+      const suppressedUntil = new Date(gapDate.getTime() + suppressionDays * 86_400_000);
       expect(suppressedUntil.toISOString().split('T')[0]).toBe('2026-05-29');
     });
   });

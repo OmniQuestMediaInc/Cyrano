@@ -36,13 +36,13 @@ services/core-api/src/safety/provisional-suppression.service.ts | 82 +++++++++++
 
 ## Validation
 
-| Check | Result |
-|-------|--------|
-| No `Map<` declarations remain | PASS |
-| `WARNING` comment removed | PASS |
-| `PrismaService` injected via constructor | PASS |
-| `npx prisma generate` succeeds | PASS (16 models) |
-| `npx tsc --noEmit` zero new errors | PASS (0 new errors; pre-existing errors in unrelated files) |
+| Check                                    | Result                                                      |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| No `Map<` declarations remain            | PASS                                                        |
+| `WARNING` comment removed                | PASS                                                        |
+| `PrismaService` injected via constructor | PASS                                                        |
+| `npx prisma generate` succeeds           | PASS (16 models)                                            |
+| `npx tsc --noEmit` zero new errors       | PASS (0 new errors; pre-existing errors in unrelated files) |
 
 ## Result
 

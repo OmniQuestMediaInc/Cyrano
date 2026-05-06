@@ -44,10 +44,7 @@ export class CyranoLayer3HczService implements OnModuleInit {
     });
   }
 
-  private emitShiftBriefing(
-    payload: Record<string, unknown>,
-    category: CyranoCategory,
-  ): void {
+  private emitShiftBriefing(payload: Record<string, unknown>, category: CyranoCategory): void {
     const domain: CyranoDomain = 'COACHING'; // HCZ defaults to coaching tone.
     const tier: CyranoTier = 'WARM';
     const template = resolvePromptTemplate({ category, domain, tier });

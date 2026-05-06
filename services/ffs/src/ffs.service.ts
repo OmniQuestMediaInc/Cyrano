@@ -14,20 +14,12 @@
 //   - No ledger or payment mutations. No PII logged.
 //   - SenSync™ BPM takes precedence over heart_rate_bpm when consent is granted and device is paired.
 
-import {
-  Injectable,
-  Logger,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { GovernanceConfig } from '../../core-api/src/governance/governance.config';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import { PrismaService } from '../../core-api/src/prisma.service';
 import { NATS_TOPICS } from '../../nats/topics.registry';
-import {
-  SENSYNC_FFS_BOOST_MAX,
-  SENSYNC_FFS_BOOST_MIN,
-} from './types/ffs.types';
+import { SENSYNC_FFS_BOOST_MAX, SENSYNC_FFS_BOOST_MIN } from './types/ffs.types';
 import type {
   AdaptiveWeights,
   AntiFlickerState,
@@ -53,31 +45,31 @@ const TIER_THRESHOLDS: ReadonlyArray<{ min: number; tier: FfsTier }> = [
 
 // ── Component weight ceilings (sum of all ceilings = 100) ────────────────────
 const WEIGHT_CEILINGS = {
-  tip_pressure:      15,
-  chat_velocity:      8,
-  dwell:              5,
-  hearts:             8,
-  private_spying:     5,
-  heart_rate:        12,
-  eye_tracking:       6,
-  facial_excitement:  7,
-  skin_exposure:      5,
-  motion:             5,
-  audio_vocal:        5,
-  momentum:          10,
-  hot_streak:         9,
+  tip_pressure: 15,
+  chat_velocity: 8,
+  dwell: 5,
+  hearts: 8,
+  private_spying: 5,
+  heart_rate: 12,
+  eye_tracking: 6,
+  facial_excitement: 7,
+  skin_exposure: 5,
+  motion: 5,
+  audio_vocal: 5,
+  momentum: 10,
+  hot_streak: 9,
 } as const;
 
 // ── Normalisation reference maxima ────────────────────────────────────────────
 const INPUT_MAX = {
-  tips_per_min:            2,
-  chat_velocity_per_min:  30,
-  dwell_minutes:          60,
+  tips_per_min: 2,
+  chat_velocity_per_min: 30,
+  dwell_minutes: 60,
   heart_reactions_per_min: 10,
-  private_spy_count:      10,
-  hr_delta_bpm:           40,
-  heat_trend_5min:        50,
-  hot_streak_ticks:       10,
+  private_spy_count: 10,
+  hr_delta_bpm: 40,
+  heat_trend_5min: 50,
+  hot_streak_ticks: 10,
 } as const;
 
 // ── Anti-flicker: ticks required before a tier transition is confirmed ────────
@@ -85,7 +77,7 @@ const ANTI_FLICKER_TICKS_REQUIRED = 3;
 
 // ── Early-phase generosity ────────────────────────────────────────────────────
 const EARLY_PHASE_MINUTES = 5;
-const EARLY_PHASE_BOOST   = 1.10;
+const EARLY_PHASE_BOOST = 1.1;
 
 // ── Dual Flame: max bonus points contributed by partner score ─────────────────
 const DUAL_FLAME_PARTNER_MAX_BONUS = 5;
@@ -97,29 +89,29 @@ const SENSYNC_BOOST_MAX = 25;
 // ── Hot-and-Ready / New-Flames thresholds ─────────────────────────────────────
 const HOT_AND_READY_MIN_SCORE = 70;
 const HOT_AND_READY_MIN_DWELL = 10;
-const NEW_FLAMES_MAX_DWELL    = 15;
+const NEW_FLAMES_MAX_DWELL = 15;
 
 // ── Leaderboard grid dimensions ───────────────────────────────────────────────
 const LEADERBOARD_GRID_SIZE = 100; // 10 × 10
 
 // ── Adaptive weight defaults and guard rails ──────────────────────────────────
 const ADAPTIVE_DEFAULT_WEIGHT = 1.0;
-const ADAPTIVE_MIN            = 0.80;
-const ADAPTIVE_MAX            = 1.20;
-const ADAPTIVE_BOOST_ON_TIP   = 0.02;
-const ADAPTIVE_DECAY_ON_TIP   = 0.005;
-const ADAPTIVE_ELEVATION_THRESHOLD = 0.70;
+const ADAPTIVE_MIN = 0.8;
+const ADAPTIVE_MAX = 1.2;
+const ADAPTIVE_BOOST_ON_TIP = 0.02;
+const ADAPTIVE_DECAY_ON_TIP = 0.005;
+const ADAPTIVE_ELEVATION_THRESHOLD = 0.7;
 
 @Injectable()
 export class FfsService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(FfsService.name);
 
-  private readonly antiFlicker   = new Map<string, AntiFlickerState>();
-  private readonly sessionState  = new Map<string, SessionLiveState>();
+  private readonly antiFlicker = new Map<string, AntiFlickerState>();
+  private readonly sessionState = new Map<string, SessionLiveState>();
   private readonly adaptiveCache = new Map<string, Record<string, number>>();
-  private readonly ffsIntervals  = new Map<string, NodeJS.Timeout>();
-  private readonly lastInput     = new Map<string, FfsInput>();
-  private readonly tickCounters  = new Map<string, number>();
+  private readonly ffsIntervals = new Map<string, NodeJS.Timeout>();
+  private readonly lastInput = new Map<string, FfsInput>();
+  private readonly tickCounters = new Map<string, number>();
   /** Emit leaderboard broadcast every N ticks (default: every 10 s at 1 Hz). */
   private static readonly LEADERBOARD_EMIT_EVERY_TICKS = 10;
 
@@ -168,7 +160,7 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
    */
   calculateFfsScore(input: FfsInput): FfsScore {
     const adaptiveWeights = this.getAdaptiveWeights(input.creator_id);
-    const components      = this.calculateComponents(input, adaptiveWeights);
+    const components = this.calculateComponents(input, adaptiveWeights);
 
     let rawScore = (Object.values(components) as number[]).reduce(
       (acc: number, v: number) => acc + v,
@@ -197,8 +189,7 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     if (input.sensync_bpm !== undefined) {
       const hrDelta = Math.max(0, input.sensync_bpm - input.heart_rate_baseline_bpm);
       const t = this.norm(hrDelta, INPUT_MAX.hr_delta_bpm);
-      const boost =
-        SENSYNC_FFS_BOOST_MIN + t * (SENSYNC_FFS_BOOST_MAX - SENSYNC_FFS_BOOST_MIN);
+      const boost = SENSYNC_FFS_BOOST_MIN + t * (SENSYNC_FFS_BOOST_MAX - SENSYNC_FFS_BOOST_MIN);
       rawScore += boost;
     }
 
@@ -218,25 +209,22 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     }
 
     const ffsScore = Math.min(100, Math.max(0, Math.round(rawScore)));
-    const { tier, pendingTier, ticks } = this.resolveAntiFlickerTier(
-      input.session_id,
-      ffsScore,
-    );
+    const { tier, pendingTier, ticks } = this.resolveAntiFlickerTier(input.session_id, ffsScore);
 
     const adaptiveMultiplier = this.computeAdaptiveMultiplier(adaptiveWeights);
 
     return {
-      session_id:              input.session_id,
-      creator_id:              input.creator_id,
-      ffs_score:               ffsScore,
-      ffs_tier:                tier,
+      session_id: input.session_id,
+      creator_id: input.creator_id,
+      ffs_score: ffsScore,
+      ffs_tier: tier,
       components,
-      adaptive_multiplier:     adaptiveMultiplier,
+      adaptive_multiplier: adaptiveMultiplier,
       anti_flicker_pending_tier: pendingTier,
-      anti_flicker_ticks:      ticks,
-      is_dual_flame:           input.is_dual_flame,
-      captured_at_utc:         input.captured_at_utc,
-      rule_applied_id:         FFS_RULE_ID,
+      anti_flicker_ticks: ticks,
+      is_dual_flame: input.is_dual_flame,
+      captured_at_utc: input.captured_at_utc,
+      rule_applied_id: FFS_RULE_ID,
     };
   }
 
@@ -249,13 +237,9 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     for (const key of Object.keys(weights)) {
       const prev = weights[key];
       if (elevated.includes(key)) {
-        weights[key] = +(
-          Math.min(ADAPTIVE_MAX, weights[key] + ADAPTIVE_BOOST_ON_TIP)
-        ).toFixed(4);
+        weights[key] = +Math.min(ADAPTIVE_MAX, weights[key] + ADAPTIVE_BOOST_ON_TIP).toFixed(4);
       } else {
-        weights[key] = +(
-          Math.max(ADAPTIVE_MIN, weights[key] - ADAPTIVE_DECAY_ON_TIP)
-        ).toFixed(4);
+        weights[key] = +Math.max(ADAPTIVE_MIN, weights[key] - ADAPTIVE_DECAY_ON_TIP).toFixed(4);
       }
       if (weights[key] !== prev) changed = true;
     }
@@ -264,11 +248,11 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
       this.adaptiveCache.set(input.creator_id, weights);
       void this.persistAdaptiveWeights(input.creator_id, weights);
       this.nats.publish(NATS_TOPICS.FFS_ADAPTIVE_UPDATED, {
-        creator_id:       input.creator_id,
+        creator_id: input.creator_id,
         elevated,
         weights_snapshot: weights,
-        rule_applied_id:  FFS_RULE_ID,
-        updated_at_utc:   new Date().toISOString(),
+        rule_applied_id: FFS_RULE_ID,
+        updated_at_utc: new Date().toISOString(),
       });
     }
   }
@@ -283,21 +267,26 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
    * Grid: 10×10, coolest session at rank 0 (top-left), hottest at rank 99.
    */
   getLeaderboard(category: LeaderboardCategory = 'all'): FfsLeaderboard {
-    const now   = new Date();
+    const now = new Date();
     const nowMs = now.getTime();
     const states = [...this.sessionState.entries()];
 
     const filtered = states.filter(([, state]) => {
       const dwellMs = nowMs - state.sessionStartedAt.getTime();
-      const dwell   = dwellMs / 60_000;
-      const s       = state.currentScore.ffs_score;
+      const dwell = dwellMs / 60_000;
+      const s = state.currentScore.ffs_score;
 
       switch (category) {
-        case 'dual_flame':    return state.isDualFlame;
-        case 'hot_and_ready': return s >= HOT_AND_READY_MIN_SCORE && dwell >= HOT_AND_READY_MIN_DWELL;
-        case 'new_flames':    return dwell < NEW_FLAMES_MAX_DWELL;
-        case 'standard':      return !state.isDualFlame;
-        default:              return true;
+        case 'dual_flame':
+          return state.isDualFlame;
+        case 'hot_and_ready':
+          return s >= HOT_AND_READY_MIN_SCORE && dwell >= HOT_AND_READY_MIN_DWELL;
+        case 'new_flames':
+          return dwell < NEW_FLAMES_MAX_DWELL;
+        case 'standard':
+          return !state.isDualFlame;
+        default:
+          return true;
       }
     });
 
@@ -307,28 +296,28 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
 
     const entries = grid.map(([sessionId, state], index) => {
       const dwellMs = nowMs - state.sessionStartedAt.getTime();
-      const dwell   = dwellMs / 60_000;
-      const s       = state.currentScore.ffs_score;
+      const dwell = dwellMs / 60_000;
+      const s = state.currentScore.ffs_score;
       return {
-        session_id:        sessionId,
-        creator_id:        state.currentScore.creator_id,
-        ffs_score:         s,
-        ffs_tier:          state.currentScore.ffs_tier,
-        rank:              index,
-        grid_row:          Math.floor(index / 10),
-        grid_col:          index % 10,
-        is_dual_flame:     state.isDualFlame,
-        is_hot_and_ready:  s >= HOT_AND_READY_MIN_SCORE && dwell >= HOT_AND_READY_MIN_DWELL,
-        is_new_flame:      dwell < NEW_FLAMES_MAX_DWELL,
+        session_id: sessionId,
+        creator_id: state.currentScore.creator_id,
+        ffs_score: s,
+        ffs_tier: state.currentScore.ffs_tier,
+        rank: index,
+        grid_row: Math.floor(index / 10),
+        grid_col: index % 10,
+        is_dual_flame: state.isDualFlame,
+        is_hot_and_ready: s >= HOT_AND_READY_MIN_SCORE && dwell >= HOT_AND_READY_MIN_DWELL,
+        is_new_flame: dwell < NEW_FLAMES_MAX_DWELL,
         session_started_at: state.sessionStartedAt.toISOString(),
       };
     });
 
     return {
       entries,
-      total:             filtered.length,
-      generated_at_utc:  now.toISOString(),
-      rule_applied_id:   FFS_RULE_ID,
+      total: filtered.length,
+      generated_at_utc: now.toISOString(),
+      rule_applied_id: FFS_RULE_ID,
     };
   }
 
@@ -337,32 +326,32 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
    */
   startSession(sessionId: string, creatorId: string, isDualFlame: boolean): void {
     if (!this.sessionState.has(sessionId)) {
-      const now     = new Date();
+      const now = new Date();
       const initial: FfsScore = {
-        session_id:               sessionId,
-        creator_id:               creatorId,
-        ffs_score:                0,
-        ffs_tier:                 'COLD',
-        components:               this.zeroComponents(),
-        adaptive_multiplier:      1.0,
+        session_id: sessionId,
+        creator_id: creatorId,
+        ffs_score: 0,
+        ffs_tier: 'COLD',
+        components: this.zeroComponents(),
+        adaptive_multiplier: 1.0,
         anti_flicker_pending_tier: null,
-        anti_flicker_ticks:       0,
-        is_dual_flame:            isDualFlame,
-        captured_at_utc:          now.toISOString(),
-        rule_applied_id:          FFS_RULE_ID,
+        anti_flicker_ticks: 0,
+        is_dual_flame: isDualFlame,
+        captured_at_utc: now.toISOString(),
+        rule_applied_id: FFS_RULE_ID,
       };
       this.sessionState.set(sessionId, {
-        currentScore:     initial,
+        currentScore: initial,
         sessionStartedAt: now,
         isDualFlame,
       });
     }
     this.nats.publish(NATS_TOPICS.FFS_SESSION_STARTED, {
-      session_id:      sessionId,
-      creator_id:      creatorId,
-      is_dual_flame:   isDualFlame,
+      session_id: sessionId,
+      creator_id: creatorId,
+      is_dual_flame: isDualFlame,
       rule_applied_id: FFS_RULE_ID,
-      started_at_utc:  new Date().toISOString(),
+      started_at_utc: new Date().toISOString(),
     });
   }
 
@@ -377,12 +366,12 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     this.lastInput.delete(sessionId);
 
     this.nats.publish(NATS_TOPICS.FFS_SESSION_ENDED, {
-      session_id:      sessionId,
-      creator_id:      state?.currentScore.creator_id ?? null,
+      session_id: sessionId,
+      creator_id: state?.currentScore.creator_id ?? null,
       final_ffs_score: state?.currentScore.ffs_score ?? 0,
-      final_ffs_tier:  state?.currentScore.ffs_tier ?? 'COLD',
+      final_ffs_tier: state?.currentScore.ffs_tier ?? 'COLD',
       rule_applied_id: FFS_RULE_ID,
-      ended_at_utc:    new Date().toISOString(),
+      ended_at_utc: new Date().toISOString(),
     });
   }
 
@@ -404,31 +393,34 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const tip_pressure = Math.min(
       WEIGHT_CEILINGS.tip_pressure,
       this.norm(input.tips_per_min, INPUT_MAX.tips_per_min) *
-        WEIGHT_CEILINGS.tip_pressure * w('tip_pressure'),
+        WEIGHT_CEILINGS.tip_pressure *
+        w('tip_pressure'),
     );
 
     const chat_velocity = Math.min(
       WEIGHT_CEILINGS.chat_velocity,
       this.norm(input.chat_velocity_per_min, INPUT_MAX.chat_velocity_per_min) *
-        WEIGHT_CEILINGS.chat_velocity * w('chat_velocity'),
+        WEIGHT_CEILINGS.chat_velocity *
+        w('chat_velocity'),
     );
 
     const dwell = Math.min(
       WEIGHT_CEILINGS.dwell,
-      this.norm(input.dwell_minutes, INPUT_MAX.dwell_minutes) *
-        WEIGHT_CEILINGS.dwell * w('dwell'),
+      this.norm(input.dwell_minutes, INPUT_MAX.dwell_minutes) * WEIGHT_CEILINGS.dwell * w('dwell'),
     );
 
     const hearts = Math.min(
       WEIGHT_CEILINGS.hearts,
       this.norm(input.heart_reactions_per_min, INPUT_MAX.heart_reactions_per_min) *
-        WEIGHT_CEILINGS.hearts * w('hearts'),
+        WEIGHT_CEILINGS.hearts *
+        w('hearts'),
     );
 
     const private_spying = Math.min(
       WEIGHT_CEILINGS.private_spying,
       this.norm(input.private_spy_count, INPUT_MAX.private_spy_count) *
-        WEIGHT_CEILINGS.private_spying * w('private_spying'),
+        WEIGHT_CEILINGS.private_spying *
+        w('private_spying'),
     );
 
     // SenSync™ BPM takes precedence when available; falls back to heart_rate_bpm otherwise.
@@ -436,38 +428,40 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const hrDelta = Math.max(0, effectiveBpm - input.heart_rate_baseline_bpm);
     const heart_rate = Math.min(
       WEIGHT_CEILINGS.heart_rate,
-      this.norm(hrDelta, INPUT_MAX.hr_delta_bpm) *
-        WEIGHT_CEILINGS.heart_rate * w('heart_rate'),
+      this.norm(hrDelta, INPUT_MAX.hr_delta_bpm) * WEIGHT_CEILINGS.heart_rate * w('heart_rate'),
     );
 
     const eye_tracking = Math.min(
       WEIGHT_CEILINGS.eye_tracking,
       Math.min(1, Math.max(0, input.eye_tracking_score)) *
-        WEIGHT_CEILINGS.eye_tracking * w('eye_tracking'),
+        WEIGHT_CEILINGS.eye_tracking *
+        w('eye_tracking'),
     );
 
     const facial_excitement = Math.min(
       WEIGHT_CEILINGS.facial_excitement,
       Math.min(1, Math.max(0, input.facial_excitement_score)) *
-        WEIGHT_CEILINGS.facial_excitement * w('facial_excitement'),
+        WEIGHT_CEILINGS.facial_excitement *
+        w('facial_excitement'),
     );
 
     const skin_exposure = Math.min(
       WEIGHT_CEILINGS.skin_exposure,
       Math.min(1, Math.max(0, input.skin_exposure_score)) *
-        WEIGHT_CEILINGS.skin_exposure * w('skin_exposure'),
+        WEIGHT_CEILINGS.skin_exposure *
+        w('skin_exposure'),
     );
 
     const motion = Math.min(
       WEIGHT_CEILINGS.motion,
-      Math.min(1, Math.max(0, input.motion_score)) *
-        WEIGHT_CEILINGS.motion * w('motion'),
+      Math.min(1, Math.max(0, input.motion_score)) * WEIGHT_CEILINGS.motion * w('motion'),
     );
 
     const audio_vocal = Math.min(
       WEIGHT_CEILINGS.audio_vocal,
       Math.min(1, Math.max(0, input.audio_vocal_ratio)) *
-        WEIGHT_CEILINGS.audio_vocal * w('audio_vocal'),
+        WEIGHT_CEILINGS.audio_vocal *
+        w('audio_vocal'),
     );
 
     const momentumRaw = Math.max(0, input.heat_trend_5min);
@@ -479,25 +473,26 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const hot_streak = Math.min(
       WEIGHT_CEILINGS.hot_streak,
       this.norm(input.hot_streak_ticks, INPUT_MAX.hot_streak_ticks) *
-        WEIGHT_CEILINGS.hot_streak * w('hot_streak'),
+        WEIGHT_CEILINGS.hot_streak *
+        w('hot_streak'),
     );
 
     const round2 = (n: number): number => Math.round(n * 100) / 100;
 
     return {
-      tip_pressure:      round2(tip_pressure),
-      chat_velocity:     round2(chat_velocity),
-      dwell:             round2(dwell),
-      hearts:            round2(hearts),
-      private_spying:    round2(private_spying),
-      heart_rate:        round2(heart_rate),
-      eye_tracking:      round2(eye_tracking),
+      tip_pressure: round2(tip_pressure),
+      chat_velocity: round2(chat_velocity),
+      dwell: round2(dwell),
+      hearts: round2(hearts),
+      private_spying: round2(private_spying),
+      heart_rate: round2(heart_rate),
+      eye_tracking: round2(eye_tracking),
       facial_excitement: round2(facial_excitement),
-      skin_exposure:     round2(skin_exposure),
-      motion:            round2(motion),
-      audio_vocal:       round2(audio_vocal),
-      momentum:          round2(momentum),
-      hot_streak:        round2(hot_streak),
+      skin_exposure: round2(skin_exposure),
+      motion: round2(motion),
+      audio_vocal: round2(audio_vocal),
+      momentum: round2(momentum),
+      hot_streak: round2(hot_streak),
     };
   }
 
@@ -516,7 +511,7 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
 
     if (rawTier === state.confirmedTier) {
       state.pendingTier = rawTier;
-      state.ticks       = 0;
+      state.ticks = 0;
       this.antiFlicker.set(sessionId, state);
       return { tier: state.confirmedTier, pendingTier: null, ticks: 0 };
     }
@@ -526,20 +521,20 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
       if (state.ticks >= ANTI_FLICKER_TICKS_REQUIRED) {
         const promoted = state.pendingTier;
         state.confirmedTier = promoted;
-        state.ticks         = 0;
+        state.ticks = 0;
         this.antiFlicker.set(sessionId, state);
         return { tier: promoted, pendingTier: null, ticks: 0 };
       }
     } else {
       state.pendingTier = rawTier;
-      state.ticks       = 1;
+      state.ticks = 1;
     }
 
     this.antiFlicker.set(sessionId, state);
     return {
-      tier:        state.confirmedTier,
+      tier: state.confirmedTier,
       pendingTier: state.pendingTier,
-      ticks:       state.ticks,
+      ticks: state.ticks,
     };
   }
 
@@ -580,19 +575,21 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const elevated: string[] = [];
     const T = ADAPTIVE_ELEVATION_THRESHOLD;
 
-    if (input.tips_per_min / INPUT_MAX.tips_per_min >= T)                       elevated.push('tip_pressure');
-    if (input.chat_velocity_per_min / INPUT_MAX.chat_velocity_per_min >= T)     elevated.push('chat_velocity');
-    if (input.heart_reactions_per_min / INPUT_MAX.heart_reactions_per_min >= T) elevated.push('hearts');
-    if (input.private_spy_count / INPUT_MAX.private_spy_count >= T)             elevated.push('private_spying');
+    if (input.tips_per_min / INPUT_MAX.tips_per_min >= T) elevated.push('tip_pressure');
+    if (input.chat_velocity_per_min / INPUT_MAX.chat_velocity_per_min >= T)
+      elevated.push('chat_velocity');
+    if (input.heart_reactions_per_min / INPUT_MAX.heart_reactions_per_min >= T)
+      elevated.push('hearts');
+    if (input.private_spy_count / INPUT_MAX.private_spy_count >= T) elevated.push('private_spying');
     const effectiveBpm = input.sensync_bpm ?? input.heart_rate_bpm;
     const hrDelta = Math.max(0, effectiveBpm - input.heart_rate_baseline_bpm);
-    if (hrDelta / INPUT_MAX.hr_delta_bpm >= T)                                  elevated.push('heart_rate');
-    if (input.eye_tracking_score >= T)                                           elevated.push('eye_tracking');
-    if (input.facial_excitement_score >= T)                                      elevated.push('facial_excitement');
-    if (input.skin_exposure_score >= T)                                          elevated.push('skin_exposure');
-    if (input.motion_score >= T)                                                 elevated.push('motion');
-    if (input.audio_vocal_ratio >= T)                                            elevated.push('audio_vocal');
-    if (input.hot_streak_ticks / INPUT_MAX.hot_streak_ticks >= T)               elevated.push('hot_streak');
+    if (hrDelta / INPUT_MAX.hr_delta_bpm >= T) elevated.push('heart_rate');
+    if (input.eye_tracking_score >= T) elevated.push('eye_tracking');
+    if (input.facial_excitement_score >= T) elevated.push('facial_excitement');
+    if (input.skin_exposure_score >= T) elevated.push('skin_exposure');
+    if (input.motion_score >= T) elevated.push('motion');
+    if (input.audio_vocal_ratio >= T) elevated.push('audio_vocal');
+    if (input.hot_streak_ticks / INPUT_MAX.hot_streak_ticks >= T) elevated.push('hot_streak');
 
     return elevated;
   }
@@ -603,19 +600,18 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
         where: { creator_id: creatorId },
       });
       if (row) {
-        const loaded   = row.weights as Record<string, number>;
+        const loaded = row.weights as Record<string, number>;
         const defaults = this.defaultAdaptiveWeights();
         const merged: Record<string, number> = {};
         for (const key of Object.keys(defaults)) {
-          merged[key] =
-            typeof loaded[key] === 'number' ? loaded[key] : defaults[key];
+          merged[key] = typeof loaded[key] === 'number' ? loaded[key] : defaults[key];
         }
         this.adaptiveCache.set(creatorId, merged);
       }
     } catch (err) {
       this.logger.warn('FfsService: adaptive weights DB load failed', {
         creator_id: creatorId,
-        error:      String(err),
+        error: String(err),
       });
     }
   }
@@ -641,11 +637,11 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
       } else {
         await this.prisma.ffsAdaptiveWeights.create({
           data: {
-            creator_id:      creatorId,
+            creator_id: creatorId,
             weights,
             tip_events_seen: 1,
-            correlation_id:  `ffs-adaptive-init-${creatorId}-${Date.now()}`,
-            reason_code:     'FFS_ADAPTIVE_INIT',
+            correlation_id: `ffs-adaptive-init-${creatorId}-${Date.now()}`,
+            reason_code: 'FFS_ADAPTIVE_INIT',
             rule_applied_id: FFS_RULE_ID,
           },
         });
@@ -664,23 +660,23 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
   private updateSessionState(input: FfsInput, score: FfsScore): void {
     const existing = this.sessionState.get(input.session_id);
     this.sessionState.set(input.session_id, {
-      currentScore:     score,
+      currentScore: score,
       sessionStartedAt: existing?.sessionStartedAt ?? new Date(),
-      isDualFlame:      input.is_dual_flame,
+      isDualFlame: input.is_dual_flame,
     });
   }
 
   private emitScoreEvents(score: FfsScore, input: FfsInput): void {
     const payload = {
-      session_id:          score.session_id,
-      creator_id:          score.creator_id,
-      ffs_score:           score.ffs_score,
-      ffs_tier:            score.ffs_tier,
-      components:          score.components,
+      session_id: score.session_id,
+      creator_id: score.creator_id,
+      ffs_score: score.ffs_score,
+      ffs_tier: score.ffs_tier,
+      components: score.components,
       adaptive_multiplier: score.adaptive_multiplier,
-      is_dual_flame:       score.is_dual_flame,
-      captured_at_utc:     score.captured_at_utc,
-      rule_applied_id:     score.rule_applied_id,
+      is_dual_flame: score.is_dual_flame,
+      captured_at_utc: score.captured_at_utc,
+      rule_applied_id: score.rule_applied_id,
     };
     this.nats.publish(NATS_TOPICS.FFS_SCORE_UPDATE, payload);
 
@@ -688,27 +684,27 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const prev = this.previousTier(score.session_id);
     if (prev !== null && prev !== score.ffs_tier) {
       this.nats.publish(NATS_TOPICS.FFS_TIER_CHANGED, {
-        session_id:      score.session_id,
-        creator_id:      score.creator_id,
-        from:            prev,
-        to:              score.ffs_tier,
-        ffs_score:       score.ffs_score,
+        session_id: score.session_id,
+        creator_id: score.creator_id,
+        from: prev,
+        to: score.ffs_tier,
+        ffs_score: score.ffs_score,
         captured_at_utc: score.captured_at_utc,
         rule_applied_id: score.rule_applied_id,
       });
       this.logger.log('FfsService: tier transition', {
         session_id: score.session_id,
-        from:       prev,
-        to:         score.ffs_tier,
+        from: prev,
+        to: score.ffs_tier,
       });
     }
 
     // INFERNO peak
     if (score.ffs_tier === 'INFERNO') {
       this.nats.publish(NATS_TOPICS.FFS_PEAK, {
-        session_id:      score.session_id,
-        creator_id:      score.creator_id,
-        ffs_score:       score.ffs_score,
+        session_id: score.session_id,
+        creator_id: score.creator_id,
+        ffs_score: score.ffs_score,
         captured_at_utc: score.captured_at_utc,
         rule_applied_id: score.rule_applied_id,
       });
@@ -717,12 +713,12 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     // Dual Flame INFERNO peak
     if (score.ffs_tier === 'INFERNO' && score.is_dual_flame) {
       this.nats.publish(NATS_TOPICS.FFS_DUAL_FLAME_PEAK, {
-        session_id:               score.session_id,
-        creator_id:               score.creator_id,
-        ffs_score:                score.ffs_score,
+        session_id: score.session_id,
+        creator_id: score.creator_id,
+        ffs_score: score.ffs_score,
         dual_flame_partner_score: input.dual_flame_partner_score ?? null,
-        captured_at_utc:          score.captured_at_utc,
-        rule_applied_id:          score.rule_applied_id,
+        captured_at_utc: score.captured_at_utc,
+        rule_applied_id: score.rule_applied_id,
       });
     }
 
@@ -730,16 +726,13 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     const state = this.sessionState.get(score.session_id);
     if (state) {
       const dwellMs = Date.now() - state.sessionStartedAt.getTime();
-      const dwell   = dwellMs / 60_000;
-      if (
-        score.ffs_score >= HOT_AND_READY_MIN_SCORE &&
-        dwell >= HOT_AND_READY_MIN_DWELL
-      ) {
+      const dwell = dwellMs / 60_000;
+      if (score.ffs_score >= HOT_AND_READY_MIN_SCORE && dwell >= HOT_AND_READY_MIN_DWELL) {
         this.nats.publish(NATS_TOPICS.FFS_HOT_AND_READY, {
-          session_id:      score.session_id,
-          creator_id:      score.creator_id,
-          ffs_score:       score.ffs_score,
-          dwell_minutes:   Math.round(dwell),
+          session_id: score.session_id,
+          creator_id: score.creator_id,
+          ffs_score: score.ffs_score,
+          dwell_minutes: Math.round(dwell),
           captured_at_utc: score.captured_at_utc,
           rule_applied_id: score.rule_applied_id,
         });
@@ -801,21 +794,21 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     try {
       await this.prisma.ffsSnapshot.create({
         data: {
-          session_id:      score.session_id,
-          creator_id:      score.creator_id,
-          ffs_score:       score.ffs_score,
-          ffs_tier:        score.ffs_tier,
-          components:      score.components as object,
-          correlation_id:  `ffs-${score.session_id}-${Date.now()}`,
-          reason_code:     `FFS_SAMPLE_${score.ffs_tier}`,
+          session_id: score.session_id,
+          creator_id: score.creator_id,
+          ffs_score: score.ffs_score,
+          ffs_tier: score.ffs_tier,
+          components: score.components as object,
+          correlation_id: `ffs-${score.session_id}-${Date.now()}`,
+          reason_code: `FFS_SAMPLE_${score.ffs_tier}`,
           rule_applied_id: score.rule_applied_id,
-          is_dual_flame:   score.is_dual_flame,
+          is_dual_flame: score.is_dual_flame,
         },
       });
     } catch (err) {
       this.logger.warn('FfsService: snapshot persist failed', {
         session_id: score.session_id,
-        error:      String(err),
+        error: String(err),
       });
     }
   }
@@ -831,8 +824,8 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
     // input frame so the next score tick adds it to the composite.
     this.nats.subscribe(NATS_TOPICS.SENSYNC_BPM_UPDATE, (payload) => {
       const sessionId = payload['session_id'] as string | undefined;
-      const bpm       = payload['bpm'] as number | undefined;
-      const boost     = payload['quality_boost_points'] as number | undefined;
+      const bpm = payload['bpm'] as number | undefined;
+      const boost = payload['quality_boost_points'] as number | undefined;
       if (!sessionId || typeof bpm !== 'number') return;
 
       const last = this.lastInput.get(sessionId);
@@ -866,7 +859,10 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
       if (last) {
         this.lastInput.set(sessionId, {
           ...last,
-          chat_velocity_per_min: Math.min(INPUT_MAX.chat_velocity_per_min, last.chat_velocity_per_min + 1),
+          chat_velocity_per_min: Math.min(
+            INPUT_MAX.chat_velocity_per_min,
+            last.chat_velocity_per_min + 1,
+          ),
         });
       }
     });
@@ -886,19 +882,19 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
 
   private zeroComponents(): FfsScoreComponents {
     return {
-      tip_pressure:      0,
-      chat_velocity:     0,
-      dwell:             0,
-      hearts:            0,
-      private_spying:    0,
-      heart_rate:        0,
-      eye_tracking:      0,
+      tip_pressure: 0,
+      chat_velocity: 0,
+      dwell: 0,
+      hearts: 0,
+      private_spying: 0,
+      heart_rate: 0,
+      eye_tracking: 0,
       facial_excitement: 0,
-      skin_exposure:     0,
-      motion:            0,
-      audio_vocal:       0,
-      momentum:          0,
-      hot_streak:        0,
+      skin_exposure: 0,
+      motion: 0,
+      audio_vocal: 0,
+      momentum: 0,
+      hot_streak: 0,
     };
   }
 
@@ -909,7 +905,7 @@ export class FfsService implements OnModuleInit, OnModuleDestroy {
   getAdaptiveWeightsPublic(creatorId: string): AdaptiveWeights {
     const weights = this.getAdaptiveWeights(creatorId);
     return {
-      creator_id:      creatorId,
+      creator_id: creatorId,
       weights,
       tip_events_seen: 0,
       last_updated_at: new Date().toISOString(),

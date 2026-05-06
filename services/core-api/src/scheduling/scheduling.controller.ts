@@ -269,9 +269,7 @@ export class CoverageController {
    * Checks if a date is a stat holiday and validates on-call manager coverage.
    */
   @Get('stat-holiday')
-  async checkStatHoliday(
-    @Query('date') date: string,
-  ): Promise<{
+  async checkStatHoliday(@Query('date') date: string): Promise<{
     date: string;
     is_stat_holiday: boolean;
     pay_multiplier: number;

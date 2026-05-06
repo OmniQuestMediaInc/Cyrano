@@ -5,7 +5,7 @@
 # This workflow installs Node.js, Yarn, and project dependencies before
 # the agent begins work.  It runs automatically when changed (for
 # validation) and can be triggered manually from the Actions tab.
-name: "Copilot Setup Steps"
+name: 'Copilot Setup Steps'
 
 on:
   workflow_dispatch:
@@ -31,8 +31,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "20"
-          cache: "yarn"
+          node-version: '20'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile

@@ -111,7 +111,7 @@ MEMB-002 uses for one-ACTIVE-subscription-per-user.
    payload ✅
 5. **Logger on BijouAdmissionService** — every transition and decision
    is logged ✅
-6. **NATS_TOPICS.* only** — no raw strings ✅
+6. **NATS_TOPICS.\* only** — no raw strings ✅
 
 ## Multi-tenant Mandate
 
@@ -141,6 +141,7 @@ PROGRAM_CONTROL/REPORT_BACK/BJ-003-REPORT-BACK.md     | (created)
 **SUCCESS**
 
 All BJ-003 scope items delivered:
+
 - ✅ `BijouAdmission` Prisma model (schema only)
 - ✅ `BijouAdmissionService` with request/accept/confirm/enforce methods
 - ✅ 10s server-side accept window + 30s camera grace (governance constants)

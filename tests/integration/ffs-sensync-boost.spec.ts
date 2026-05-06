@@ -25,26 +25,26 @@ const noopPrisma = {
 } as unknown as ConstructorParameters<typeof FfsService>[1];
 
 const baseInput: FfsInput = {
-  session_id:               'sess-boost-1',
-  creator_id:               'creator-boost-1',
-  captured_at_utc:          '2026-04-27T00:00:00.000Z',
-  tips_in_session:          0,
-  tips_per_min:             0,
-  avg_tip_tokens:           0,
-  chat_velocity_per_min:    0,
-  heart_reactions_per_min:  0,
-  private_spy_count:        0,
-  dwell_minutes:            30, // outside early-phase window so EARLY_PHASE_BOOST does not apply
-  heart_rate_bpm:           70,
-  heart_rate_baseline_bpm:  70,
-  eye_tracking_score:       0,
-  facial_excitement_score:  0,
-  skin_exposure_score:      0,
-  motion_score:             0,
-  audio_vocal_ratio:        0,
-  heat_trend_5min:          0,
-  hot_streak_ticks:         0,
-  is_dual_flame:            false,
+  session_id: 'sess-boost-1',
+  creator_id: 'creator-boost-1',
+  captured_at_utc: '2026-04-27T00:00:00.000Z',
+  tips_in_session: 0,
+  tips_per_min: 0,
+  avg_tip_tokens: 0,
+  chat_velocity_per_min: 0,
+  heart_reactions_per_min: 0,
+  private_spy_count: 0,
+  dwell_minutes: 30, // outside early-phase window so EARLY_PHASE_BOOST does not apply
+  heart_rate_bpm: 70,
+  heart_rate_baseline_bpm: 70,
+  eye_tracking_score: 0,
+  facial_excitement_score: 0,
+  skin_exposure_score: 0,
+  motion_score: 0,
+  audio_vocal_ratio: 0,
+  heat_trend_5min: 0,
+  hot_streak_ticks: 0,
+  is_dual_flame: false,
 };
 
 describe('FfsService — SenSync™ boost', () => {
@@ -56,7 +56,7 @@ describe('FfsService — SenSync™ boost', () => {
 
   it('does not change the score when sensync_bpm is undefined', () => {
     const baseline = service.calculateFfsScore({ ...baseInput, session_id: 'sess-no-sensync' });
-    const repeat   = service.calculateFfsScore({ ...baseInput, session_id: 'sess-no-sensync' });
+    const repeat = service.calculateFfsScore({ ...baseInput, session_id: 'sess-no-sensync' });
     expect(baseline.ffs_score).toBe(repeat.ffs_score);
   });
 
@@ -104,20 +104,20 @@ describe('FfsService — SenSync™ boost', () => {
   it('clamps the final score to 100 even with maximum boost', () => {
     const hot: FfsInput = {
       ...baseInput,
-      session_id:              'sess-clamp',
-      tips_per_min:            2,
-      chat_velocity_per_min:   30,
+      session_id: 'sess-clamp',
+      tips_per_min: 2,
+      chat_velocity_per_min: 30,
       heart_reactions_per_min: 10,
-      private_spy_count:       10,
-      heart_rate_bpm:          110,
-      eye_tracking_score:      1,
+      private_spy_count: 10,
+      heart_rate_bpm: 110,
+      eye_tracking_score: 1,
       facial_excitement_score: 1,
-      skin_exposure_score:     1,
-      motion_score:            1,
-      audio_vocal_ratio:       1,
-      heat_trend_5min:         50,
-      hot_streak_ticks:        10,
-      sensync_bpm:             baseInput.heart_rate_baseline_bpm + 60,
+      skin_exposure_score: 1,
+      motion_score: 1,
+      audio_vocal_ratio: 1,
+      heat_trend_5min: 50,
+      hot_streak_ticks: 10,
+      sensync_bpm: baseInput.heart_rate_baseline_bpm + 60,
     };
     const score = service.calculateFfsScore(hot);
     expect(score.ffs_score).toBeLessThanOrEqual(100);

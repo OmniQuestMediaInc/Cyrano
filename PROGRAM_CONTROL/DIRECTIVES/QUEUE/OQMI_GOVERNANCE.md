@@ -335,4 +335,3 @@ quick-reference register) are not present in this file. A follow-up
 task should restore §9–§12 from authoritative source. This note is
 placed to flag the defect for the next governance-scoped editing pass;
 it does not itself constitute §9–§12.
-

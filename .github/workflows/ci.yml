@@ -76,3 +76,76 @@ jobs:
             fi
           done < .github/required-files.txt
           $all_ok || exit 1
+
+  # ---------------------------------------------------------------------------
+  # Job 3: Workspace quality — install + format:check + lint + typecheck +
+  #        test. Gates every PR with the same checks deploy.yml runs against
+  #        main, so red is caught before merge.
+  # ---------------------------------------------------------------------------
+  workspace-quality:
+    name: Workspace Quality (lint / typecheck / format / test)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      # prisma validate needs a value but never connects during typecheck/test.
+      DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3.8.2
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies (frozen lockfile)
+        run: yarn install --frozen-lockfile
+
+      - name: Prisma generate
+        run: yarn prisma:generate
+
+      - name: Prisma validate
+        run: yarn prisma validate
+
+      - name: Format check (prettier)
+        run: yarn format:check
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Test (jest)
+        run: yarn test
+
+  # ---------------------------------------------------------------------------
+  # Job 4: Ship-gate verifier — fails CI if any L0 invariant is violated.
+  # ---------------------------------------------------------------------------
+  ship-gate:
+    name: Ship-Gate Verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [workspace-quality]
+
+    env:
+      DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3.8.2
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies (frozen lockfile)
+        run: yarn install --frozen-lockfile
+
+      - name: Run ship-gate verifier
+        run: yarn ship-gate

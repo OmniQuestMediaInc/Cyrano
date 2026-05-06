@@ -33,7 +33,9 @@ export interface SubscriptionView {
 /** Repository contract — Prisma adapter in core-api; in-memory in tests. */
 export interface ConciergeSessionRepository {
   findActiveSubscription(user_id: string): Promise<SubscriptionView | null>;
-  insertSession(record: Omit<ConciergeSessionRecord, 'created_at' | 'updated_at'>): Promise<ConciergeSessionRecord>;
+  insertSession(
+    record: Omit<ConciergeSessionRecord, 'created_at' | 'updated_at'>,
+  ): Promise<ConciergeSessionRecord>;
   findById(id: string): Promise<ConciergeSessionRecord | null>;
   findByUserId(user_id: string): Promise<ConciergeSessionRecord[]>;
 }
@@ -120,9 +122,7 @@ export class DiamondConciergeSessionService {
   /** List all sessions for a user, ordered by most recent first. */
   async listUserSessions(userId: string): Promise<ConciergeSessionRecord[]> {
     const sessions = await this.repo.findByUserId(userId);
-    return sessions.slice().sort(
-      (a, b) => b.created_at.getTime() - a.created_at.getTime(),
-    );
+    return sessions.slice().sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
   }
 }
 

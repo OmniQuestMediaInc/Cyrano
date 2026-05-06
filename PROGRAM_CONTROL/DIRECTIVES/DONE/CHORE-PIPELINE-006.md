@@ -1,4 +1,5 @@
 # DIRECTIVE: CHORE-PIPELINE-006
+
 # Update CLAUDE.md — Claude Code Autonomous Directive Protocol
 
 **Directive ID:** CHORE-PIPELINE-006
@@ -27,4 +28,5 @@ canonical files (REQUIREMENTS_MASTER.md and DOMAIN_GLOSSARY.md).
 ---
 
 ## Result: DONE — Completed by COPILOT agent 2026-04-17
+
 ## Report-back: PROGRAM_CONTROL/REPORT_BACK/CHORE-PIPELINE-006.md

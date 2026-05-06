@@ -4,17 +4,14 @@
 // → pointerup, with optional shake telemetry, then POSTs /gamification/play.
 
 import { el, RenderElement } from './render-plan';
-import type {
-  PrizePoolEntryViewModel,
-  PaymentMethod,
-} from '../types/gamification-contracts';
+import type { PrizePoolEntryViewModel, PaymentMethod } from '../types/gamification-contracts';
 
 export interface WheelOfFortuneInputs {
   creator_id: string;
   entries: PrizePoolEntryViewModel[];
   selected_token_tier: number;
   selected_payment: PaymentMethod;
-  ready: boolean;                  // false when in cooldown
+  ready: boolean; // false when in cooldown
   cooldown_message: string | null; // e.g. "Next spin in 12s"
 }
 

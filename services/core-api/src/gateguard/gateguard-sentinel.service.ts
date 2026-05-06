@@ -104,17 +104,19 @@ export class GateGuardSentinelService {
    * @param twinId  - The AI twin / creator the message is directed to.
    * @returns ContentScanResult — callers must bail out when `blocked` is true.
    */
-  async scanMessage(
-    userId: string,
-    content: string,
-    twinId: string,
-  ): Promise<ContentScanResult> {
+  async scanMessage(userId: string, content: string, twinId: string): Promise<ContentScanResult> {
     const flags = GateGuardSentinelService.detectFlags(content);
 
     if (flags.celebrity || flags.illegal || flags.nonConsensual) {
       const correlationId = randomUUID();
 
-      await this.persistModerationLog({ userId, twinId, reason: flags.reason, correlationId, flags });
+      await this.persistModerationLog({
+        userId,
+        twinId,
+        reason: flags.reason,
+        correlationId,
+        flags,
+      });
 
       this.nats.publish(NATS_TOPICS.GATEGUARD_MESSAGE_BLOCKED, {
         user_id: userId,
@@ -148,9 +150,9 @@ export class GateGuardSentinelService {
    * Exported for unit-test coverage without standing up the full service.
    */
   static detectFlags(content: string): ContentScanFlags {
-    const celebrity = CELEBRITY_PATTERNS.some(p => p.test(content));
-    const illegal = ILLEGAL_PATTERNS.some(p => p.test(content));
-    const nonConsensual = NON_CONSENSUAL_PATTERNS.some(p => p.test(content));
+    const celebrity = CELEBRITY_PATTERNS.some((p) => p.test(content));
+    const illegal = ILLEGAL_PATTERNS.some((p) => p.test(content));
+    const nonConsensual = NON_CONSENSUAL_PATTERNS.some((p) => p.test(content));
 
     const reasons: string[] = [];
     if (celebrity) reasons.push('CELEBRITY_LIKENESS');

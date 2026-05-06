@@ -10,23 +10,23 @@
 
 ## Wave A status — final
 
-| Task ID | Name | Status | Notes |
-|---------|------|--------|-------|
-| A001 | Q-000-PRE-READ-AUDIT | DONE (2026-04-22) | Foundational audit; pre-charter. |
-| A002 | Delete CLAUDE.md from repo root | DONE (2026-04-23) | Already absent; paperwork. |
-| A003 | Delete README.md from repo root | DONE (2026-04-23) | File deleted; provenance preserved by A004 prior. |
-| A004 | Land Ghost Alpha provenance | DONE (2026-04-22) | Pre-charter dependency. |
-| A005 | Archive Sovereign_Kernel.md.pdf | DONE (2026-04-23) | Moved to archive/governance/; refs updated. |
-| A006 | Delete root OQMI_SYSTEM_STATE.md (v2.0 doctrine) | DONE (2026-04-23) | Required-files.txt + copilot-instructions.md updated to keep CI green. |
-| A007 | Resolve package-lock.json + yarn.lock co-presence | DONE (2026-04-23) | Already absent; paperwork. |
-| A008 | Audit copilot/chore-update-program-control branch | DONE (2026-04-23) | Branch absent on origin; no action. |
-| A009 | Stale branch report | DONE (2026-04-23) | 10 branches enumerated; recommend follow-up A016 for CEO-authorized cleanup. |
-| A010 | Locate RRR_CEO_DECISIONS_FINAL_2026-04-17.md | DONE (2026-04-23) | FOUND at docs/; indexed; no contradictions. |
-| A011 | Verify PROGRAM_CONTROL subdirectories | DONE (2026-04-23) | Both present with substantive content. |
-| A012 | Reconcile commit prefix enums | DONE (2026-04-23) | Canonical enum landed in DOMAIN_GLOSSARY.md; R-CLARIFY-006 fully resolved (HZ/HCZ split confirmed). |
-| A013 | OQMI_GOVERNANCE.md path-reference reconciliation | DONE (2026-04-23) | Directive premise partly inaccurate; OQMI_SYSTEM_STATE.md §11 fixed instead. |
-| A014 | Repo visibility revert to PRIVATE | DONE (2026-04-23) | CEO confirmed private; paperwork landed. |
-| A099 | Wave A cleanup | DONE (2026-04-23) | This task. Wave B opens. |
+| Task ID | Name                                              | Status            | Notes                                                                                               |
+| ------- | ------------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------- |
+| A001    | Q-000-PRE-READ-AUDIT                              | DONE (2026-04-22) | Foundational audit; pre-charter.                                                                    |
+| A002    | Delete CLAUDE.md from repo root                   | DONE (2026-04-23) | Already absent; paperwork.                                                                          |
+| A003    | Delete README.md from repo root                   | DONE (2026-04-23) | File deleted; provenance preserved by A004 prior.                                                   |
+| A004    | Land Ghost Alpha provenance                       | DONE (2026-04-22) | Pre-charter dependency.                                                                             |
+| A005    | Archive Sovereign_Kernel.md.pdf                   | DONE (2026-04-23) | Moved to archive/governance/; refs updated.                                                         |
+| A006    | Delete root OQMI_SYSTEM_STATE.md (v2.0 doctrine)  | DONE (2026-04-23) | Required-files.txt + copilot-instructions.md updated to keep CI green.                              |
+| A007    | Resolve package-lock.json + yarn.lock co-presence | DONE (2026-04-23) | Already absent; paperwork.                                                                          |
+| A008    | Audit copilot/chore-update-program-control branch | DONE (2026-04-23) | Branch absent on origin; no action.                                                                 |
+| A009    | Stale branch report                               | DONE (2026-04-23) | 10 branches enumerated; recommend follow-up A016 for CEO-authorized cleanup.                        |
+| A010    | Locate RRR_CEO_DECISIONS_FINAL_2026-04-17.md      | DONE (2026-04-23) | FOUND at docs/; indexed; no contradictions.                                                         |
+| A011    | Verify PROGRAM_CONTROL subdirectories             | DONE (2026-04-23) | Both present with substantive content.                                                              |
+| A012    | Reconcile commit prefix enums                     | DONE (2026-04-23) | Canonical enum landed in DOMAIN_GLOSSARY.md; R-CLARIFY-006 fully resolved (HZ/HCZ split confirmed). |
+| A013    | OQMI_GOVERNANCE.md path-reference reconciliation  | DONE (2026-04-23) | Directive premise partly inaccurate; OQMI_SYSTEM_STATE.md §11 fixed instead.                        |
+| A014    | Repo visibility revert to PRIVATE                 | DONE (2026-04-23) | CEO confirmed private; paperwork landed.                                                            |
+| A099    | Wave A cleanup                                    | DONE (2026-04-23) | This task. Wave B opens.                                                                            |
 
 **14 tasks, all DONE. Wave A is closed.**
 
@@ -37,6 +37,7 @@
 ### Lint pass repo-wide
 
 Delegated to CI on the PR. The repo carries `.github/workflows/super-linter.yml` which runs on PRs. Wave A modifications were:
+
 - File deletions (`README.md`, root `OQMI_SYSTEM_STATE.md`)
 - File move (`Sovereign_Kernel.md.pdf` → `archive/governance/`)
 - Markdown edits in DOMAIN_GLOSSARY.md, OQMI_GOVERNANCE.md, OQMI_SYSTEM_STATE.md (QUEUE), CNZ-WORK-001.md, REPO_MANIFEST.md, copilot-instructions.md

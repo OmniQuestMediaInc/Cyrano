@@ -18,11 +18,13 @@
 ## §1.1 — OPEN BRANCHES INVENTORY
 
 Command run:
+
 ```
 git ls-remote --heads origin
 ```
 
 Raw output (verbatim):
+
 ```
 b1406abd8d913eba8f9821d7e7b4732e28170231	refs/heads/claude/audit-schema-integrity-EUzfq
 716dc6f0420251bd3041dfa87c2fa695ec781f64	refs/heads/claude/chore-thread-12-cleanup
@@ -60,57 +62,61 @@ ba1ccf5865c54b24bb6b924f70ccef8cd9055991	refs/heads/copilot/update-project-struc
 
 Ahead/behind values computed against `origin/main` tip `4c576faa`.
 
-| Branch | Tip SHA | Last Commit Timestamp | Author | Ahead | Behind | PR# | PR State |
-|---|---|---|---|---|---|---|---|
-| `claude/audit-schema-integrity-EUzfq` | `b1406ab` | 2026-04-19T06:05:40Z | github-actions[bot] | 4 | 16 | #275 | closed/merged |
-| `claude/chore-thread-12-cleanup` | `716dc6f` | 2026-04-17T15:05:08Z | github-actions[bot] | 0 | 65 | none | — |
-| `claude/dfsp-001-otp-account-hold-report-back` | `3663c42` | 2026-04-15T20:08:29Z | github-actions[bot] | 0 | 275 | none | — |
-| `claude/thread-9-handoff-document` | `3339a99` | 2026-04-14T20:00:39Z | github-actions[bot] | 0 | 291 | none | — |
-| `copilot/add-status-queued-to-dfsp-001` | `ada0175` | 2026-04-17T00:05:49Z | github-actions[bot] | 0 | 267 | none | — |
-| `copilot/audit-open-branches-inventory` *(current)* | `4c576fa` | 2026-04-19T07:07:25Z | Copilot | 0 | 0 | none | — |
-| `copilot/audit-thread-16-state` | `299628a` | 2026-04-19T07:07:20Z | github-actions[bot] | 4 | 1 | #278 | closed/merged |
-| `copilot/bootstrap-program-control-directory-structure-again` | `f9ff20a` | 2026-04-08T20:23:31-04:00 | ImagiNarratives | 0 | 431 | none | — |
-| `copilot/chore-add-autonomous-directive-protocol-again` | `cf5a647` | 2026-04-17T01:23:25Z | github-actions[bot] | 0 | 230 | none | — |
-| `copilot/chore-add-tech-debt-delta-2026-04-16` | `ada0175` | 2026-04-17T00:05:49Z | github-actions[bot] | 0 | 267 | none | — |
-| `copilot/chore-create-domain-glossary` | `0917494` | 2026-04-17T00:57:10Z | github-actions[bot] | 0 | 263 | none | — |
-| `copilot/chore-fetch-urls-for-testing-data` | `a45c19b` | 2026-04-10T19:11:05-04:00 | ImagiNarratives | 0 | 387 | none | — |
-| `copilot/chore-ts-legal-hold-g-geo-001` | `8db2615` | 2026-04-09T04:17:55Z | Copilot | 0 | 417 | none | — |
-| `copilot/chorebump-github-actions-node-24` | `a2f5d1f` | 2026-04-10T20:43:12Z | Copilot | 0 | 393 | none | — |
-| `copilot/choreprogram-control-bootstrap` | `9ac6308` | 2026-04-17T04:47:27Z | github-actions[bot] | 0 | 157 | none | — |
-| `copilot/chorereference-library-drive-update` | `bbafbc4` | 2026-04-19T05:32:24Z | github-actions[bot] | 0 | 33 | #271 | closed/merged |
-| `copilot/connect-caude-to-repo` | `8c00813` | 2026-04-17T06:03:20Z | github-actions[bot] | 0 | 139 | none | — |
-| `copilot/fetch-repo-directory-tree` | `d1e05d1` | 2026-04-10T15:09:46-04:00 | ImagiNarratives | 0 | 400 | none | — |
-| `copilot/fix-commitment-errors` | `727e2ff` | 2026-04-14T19:30:55Z | github-actions[bot] | 0 | 307 | none | — |
-| `copilot/hard-stop-dfsp-001` | `e64cce3` | 2026-04-10T20:58:36Z | Copilot | 0 | 392 | none | — |
-| `copilot/housekeeping-check-legacy-files` | `f4b0bec` | 2026-04-10T22:35:10Z | Copilot | 0 | 390 | none | — |
-| `copilot/infra-004-fetch-status` | `f4b0bec` | 2026-04-10T22:35:10Z | Copilot | 0 | 390 | none | — |
-| `copilot/infra-004-fill-commit-hash` | `a45c19b` | 2026-04-10T19:11:05-04:00 | ImagiNarratives | 0 | 387 | none | — |
-| `copilot/intake-thread11-directive-series-001` | `06b6ce3` | 2026-04-17T09:43:08Z | github-actions[bot] | 0 | 111 | none | — |
-| `copilot/move-directive-gov-const-001` | `3e1c6be` | 2026-04-12T20:24:07-04:00 | ImagiNarratives | 0 | 380 | none | — |
-| `copilot/proc-001-main-merge` | `d03b093` | 2026-04-10T16:23:24-04:00 | ImagiNarratives | 0 | 394 | none | — |
-| `copilot/update-project-structure` | `ba1ccf5` | 2026-04-09T04:56:50Z | Copilot | 0 | 414 | none | — |
+| Branch                                                        | Tip SHA   | Last Commit Timestamp     | Author              | Ahead | Behind | PR#  | PR State      |
+| ------------------------------------------------------------- | --------- | ------------------------- | ------------------- | ----- | ------ | ---- | ------------- |
+| `claude/audit-schema-integrity-EUzfq`                         | `b1406ab` | 2026-04-19T06:05:40Z      | github-actions[bot] | 4     | 16     | #275 | closed/merged |
+| `claude/chore-thread-12-cleanup`                              | `716dc6f` | 2026-04-17T15:05:08Z      | github-actions[bot] | 0     | 65     | none | —             |
+| `claude/dfsp-001-otp-account-hold-report-back`                | `3663c42` | 2026-04-15T20:08:29Z      | github-actions[bot] | 0     | 275    | none | —             |
+| `claude/thread-9-handoff-document`                            | `3339a99` | 2026-04-14T20:00:39Z      | github-actions[bot] | 0     | 291    | none | —             |
+| `copilot/add-status-queued-to-dfsp-001`                       | `ada0175` | 2026-04-17T00:05:49Z      | github-actions[bot] | 0     | 267    | none | —             |
+| `copilot/audit-open-branches-inventory` _(current)_           | `4c576fa` | 2026-04-19T07:07:25Z      | Copilot             | 0     | 0      | none | —             |
+| `copilot/audit-thread-16-state`                               | `299628a` | 2026-04-19T07:07:20Z      | github-actions[bot] | 4     | 1      | #278 | closed/merged |
+| `copilot/bootstrap-program-control-directory-structure-again` | `f9ff20a` | 2026-04-08T20:23:31-04:00 | ImagiNarratives     | 0     | 431    | none | —             |
+| `copilot/chore-add-autonomous-directive-protocol-again`       | `cf5a647` | 2026-04-17T01:23:25Z      | github-actions[bot] | 0     | 230    | none | —             |
+| `copilot/chore-add-tech-debt-delta-2026-04-16`                | `ada0175` | 2026-04-17T00:05:49Z      | github-actions[bot] | 0     | 267    | none | —             |
+| `copilot/chore-create-domain-glossary`                        | `0917494` | 2026-04-17T00:57:10Z      | github-actions[bot] | 0     | 263    | none | —             |
+| `copilot/chore-fetch-urls-for-testing-data`                   | `a45c19b` | 2026-04-10T19:11:05-04:00 | ImagiNarratives     | 0     | 387    | none | —             |
+| `copilot/chore-ts-legal-hold-g-geo-001`                       | `8db2615` | 2026-04-09T04:17:55Z      | Copilot             | 0     | 417    | none | —             |
+| `copilot/chorebump-github-actions-node-24`                    | `a2f5d1f` | 2026-04-10T20:43:12Z      | Copilot             | 0     | 393    | none | —             |
+| `copilot/choreprogram-control-bootstrap`                      | `9ac6308` | 2026-04-17T04:47:27Z      | github-actions[bot] | 0     | 157    | none | —             |
+| `copilot/chorereference-library-drive-update`                 | `bbafbc4` | 2026-04-19T05:32:24Z      | github-actions[bot] | 0     | 33     | #271 | closed/merged |
+| `copilot/connect-caude-to-repo`                               | `8c00813` | 2026-04-17T06:03:20Z      | github-actions[bot] | 0     | 139    | none | —             |
+| `copilot/fetch-repo-directory-tree`                           | `d1e05d1` | 2026-04-10T15:09:46-04:00 | ImagiNarratives     | 0     | 400    | none | —             |
+| `copilot/fix-commitment-errors`                               | `727e2ff` | 2026-04-14T19:30:55Z      | github-actions[bot] | 0     | 307    | none | —             |
+| `copilot/hard-stop-dfsp-001`                                  | `e64cce3` | 2026-04-10T20:58:36Z      | Copilot             | 0     | 392    | none | —             |
+| `copilot/housekeeping-check-legacy-files`                     | `f4b0bec` | 2026-04-10T22:35:10Z      | Copilot             | 0     | 390    | none | —             |
+| `copilot/infra-004-fetch-status`                              | `f4b0bec` | 2026-04-10T22:35:10Z      | Copilot             | 0     | 390    | none | —             |
+| `copilot/infra-004-fill-commit-hash`                          | `a45c19b` | 2026-04-10T19:11:05-04:00 | ImagiNarratives     | 0     | 387    | none | —             |
+| `copilot/intake-thread11-directive-series-001`                | `06b6ce3` | 2026-04-17T09:43:08Z      | github-actions[bot] | 0     | 111    | none | —             |
+| `copilot/move-directive-gov-const-001`                        | `3e1c6be` | 2026-04-12T20:24:07-04:00 | ImagiNarratives     | 0     | 380    | none | —             |
+| `copilot/proc-001-main-merge`                                 | `d03b093` | 2026-04-10T16:23:24-04:00 | ImagiNarratives     | 0     | 394    | none | —             |
+| `copilot/update-project-structure`                            | `ba1ccf5` | 2026-04-09T04:56:50Z      | Copilot             | 0     | 414    | none | —             |
 
 **Notable:**
+
 - `copilot/chore-add-tech-debt-delta-2026-04-16` and `copilot/add-status-queued-to-dfsp-001` share tip SHA `ada0175`.
 - `copilot/housekeeping-check-legacy-files` and `copilot/infra-004-fetch-status` share tip SHA `f4b0bec`.
 - `copilot/chore-fetch-urls-for-testing-data` and `copilot/infra-004-fill-commit-hash` share tip SHA `a45c19b`.
 - `copilot/audit-thread-16-state` (Rev 1 audit branch) has 4 commits ahead of main and 1 behind — it was not deleted after PR #278 merged.
 
 **PR summary (Rev 2):**
+
 - Branches with a PR (closed/merged): 3 — `claude/audit-schema-integrity-EUzfq` (PR#275), `copilot/chorereference-library-drive-update` (PR#271), `copilot/audit-thread-16-state` (PR#278)
 - Branches with no PR at all: 24
 - `copilot/audit-open-branches-inventory` (current audit branch): no PR, 0 ahead / 0 behind main
 
 ---
 
-## §1.2 — refs/* ORPHAN BRANCH PRESENCE
+## §1.2 — refs/\* ORPHAN BRANCH PRESENCE
 
 Command run:
+
 ```
 git ls-remote origin 'refs/oss/*' 'refs/oqminc/*'
 ```
 
 Raw output (verbatim):
+
 ```
 2bc31fc31dee7168df6eded0dc64913cc61ca0e7	refs/oqminc/ai-resources
 cf70dcdaee0d9b26e6ad82aef3402f89e8622705	refs/oss/booking-api
@@ -127,17 +133,17 @@ ecd9462723727c7de747ada08ebed60eeb815522	refs/oss/socketio-chat
 
 ### Per-ref findings vs. handoff §1.3 expected names
 
-| Expected name (handoff §1.3) | Actual remote ref | Status |
-|---|---|---|
-| `refs/oqminc-ai-resources` | `refs/oqminc/ai-resources` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-booking-api` | `refs/oss/booking-api` | **WRONG-NAME** — slash separator, not hyphen |
+| Expected name (handoff §1.3)   | Actual remote ref              | Status                                       |
+| ------------------------------ | ------------------------------ | -------------------------------------------- |
+| `refs/oqminc-ai-resources`     | `refs/oqminc/ai-resources`     | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-booking-api`         | `refs/oss/booking-api`         | **WRONG-NAME** — slash separator, not hyphen |
 | `refs/oss-discussion-platform` | `refs/oss/discussion-platform` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-live-polling` | `refs/oss/live-polling` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-loadbalancer-nginx` | `refs/oss/loadbalancer-nginx` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-react-chat-app` | `refs/oss/react-chat-app` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-social-media-app` | `refs/oss/social-media-app` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-socketio-chat` | `refs/oss/socketio-chat` | **WRONG-NAME** — slash separator, not hyphen |
-| `refs/oss-zoom-clone` | `refs/oss/zoom-clone` | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-live-polling`        | `refs/oss/live-polling`        | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-loadbalancer-nginx`  | `refs/oss/loadbalancer-nginx`  | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-react-chat-app`      | `refs/oss/react-chat-app`      | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-social-media-app`    | `refs/oss/social-media-app`    | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-socketio-chat`       | `refs/oss/socketio-chat`       | **WRONG-NAME** — slash separator, not hyphen |
+| `refs/oss-zoom-clone`          | `refs/oss/zoom-clone`          | **WRONG-NAME** — slash separator, not hyphen |
 
 **Finding:** All 9 refs are present on the remote. However the naming convention differs from the handoff §1.3 specification. The handoff listed hyphen-separated names (e.g. `refs/oqminc-ai-resources`) while the actual remote uses a slash namespace hierarchy (e.g. `refs/oqminc/ai-resources`). The slash form matches the naming used in `PUSH_ALL_REFS.sh` and the THREAD15 directive. This discrepancy is in the handoff documentation, not the implemented refs — the implementation matches the script and THREAD15 design intent.
 
@@ -156,6 +162,7 @@ Date: `Sun Apr 19 06:20:34 2026 +0000`
 
 Command: `git log --oneline --follow REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/PUSH_ALL_REFS.sh | head -5`
 Output:
+
 ```
 2523215 THREAD15-OSS-HARVEST: Stage 9 OSS reference branch manifests + self-completing GA workflow (#276)
 ```
@@ -166,6 +173,7 @@ Output:
 
 Command: `git ls-files --format='%(objectmode) %(path)' REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/PUSH_ALL_REFS.sh`
 Output:
+
 ```
 100644 REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/PUSH_ALL_REFS.sh
 ```
@@ -224,7 +232,7 @@ push_ref() {
   local COMMIT_MSG="$4"
 ```
 
-### D. Does the script loop over the 9 refs-* subfolders?
+### D. Does the script loop over the 9 refs-\* subfolders?
 
 **YES — via 9 explicit `push_ref` calls** (not a loop). The function `push_ref()` is called once per ref with the corresponding `refs-*` subdirectory passed as `$SEED_SUBDIR`. The relevant calls (verbatim):
 
@@ -285,6 +293,7 @@ push_ref \
 ```
 
 All 9 `refs-*` subdirectories in `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/` are covered:
+
 ```
 refs-oqminc-ai-resources
 refs-oss-booking-api
@@ -300,6 +309,7 @@ refs-oss-zoom-clone
 ### E. Does the script push each as an orphan branch via `git push origin HEAD:refs/<name>`?
 
 **YES.** The `push_ref()` function:
+
 1. Creates a temp directory and runs `git init -q`
 2. Runs `git checkout --orphan main` — creates an orphan commit with no parent
 3. Copies the `REFS_MANIFEST.md` seed file into the temp repo
@@ -307,6 +317,7 @@ refs-oss-zoom-clone
 5. Pushes via `git push origin "HEAD:$BRANCH_REF"` where `$BRANCH_REF` is the full `refs/oss/...` or `refs/oqminc/...` refspec
 
 Relevant code verbatim from `push_ref()`:
+
 ```bash
   git checkout --orphan main
   cp "$SEED_DIR/$SEED_SUBDIR/REFS_MANIFEST.md" ./REFS_MANIFEST.md
@@ -322,25 +333,26 @@ The script also includes an idempotency guard: if the ref already exists on the 
 
 ### PR Facts (verbatim from GitHub API)
 
-| Field | Value |
-|---|---|
-| PR number | **#271** |
-| Title | `CHORE: Reference Library Drive Update — BUILDD CONTROL - CNZ folder + TEMPLATES dir` |
-| State | **closed / merged** |
-| Branch | `copilot/chorereference-library-drive-update` → `main` |
-| Author | `Copilot` (app: copilot-swe-agent) |
-| Merged by | `OmniQuestMediaInc` (CEO) |
-| Created | `2026-04-19T05:32:31Z` |
-| Merged | `2026-04-19T05:33:13Z` |
-| Commits | 2 |
-| Files changed | 7 |
-| +Additions | 168 |
-| −Deletions | 8 |
+| Field           | Value                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------- |
+| PR number       | **#271**                                                                                |
+| Title           | `CHORE: Reference Library Drive Update — BUILDD CONTROL - CNZ folder + TEMPLATES dir`   |
+| State           | **closed / merged**                                                                     |
+| Branch          | `copilot/chorereference-library-drive-update` → `main`                                  |
+| Author          | `Copilot` (app: copilot-swe-agent)                                                      |
+| Merged by       | `OmniQuestMediaInc` (CEO)                                                               |
+| Created         | `2026-04-19T05:32:31Z`                                                                  |
+| Merged          | `2026-04-19T05:33:13Z`                                                                  |
+| Commits         | 2                                                                                       |
+| Files changed   | 7                                                                                       |
+| +Additions      | 168                                                                                     |
+| −Deletions      | 8                                                                                       |
 | PR body excerpt | `CHORE: Reference Library Drive Update — Stage REFERENCE_LIBRARY and TEMPLATES changes` |
 
 ### What PR #271 delivered
 
 Per PR body checklist (all items checked):
+
 - Updated `REFERENCE_LIBRARY/00_THREAD_BOOTSTRAP.md` — replaced Section 2, added Section 2B
 - Created `REFERENCE_LIBRARY/02_DOMAIN_TAXONOMY.md` with PROGRAM CONTROL STRUCTURE section
 - Created `REFERENCE_LIBRARY/06_PROJECT_DECISIONS.md` with DEC-002 entry
@@ -361,21 +373,21 @@ Per PR body checklist (all items checked):
 
 ## SUMMARY OF FINDINGS (Rev 2)
 
-| Check | Result |
-|---|---|
-| Total non-main branches | **27** |
-| Branches with open PR | **0** (no currently open PRs against any live branch) |
-| Branches with closed/merged PR | **3** — `claude/audit-schema-integrity-EUzfq` (PR#275), `copilot/chorereference-library-drive-update` (PR#271), `copilot/audit-thread-16-state` (PR#278) |
-| Branches with no PR at all | **24** |
-| `copilot/audit-open-branches-inventory` vs main | **0 ahead / 0 behind** (at parity) |
-| `copilot/audit-thread-16-state` vs main | **4 ahead / 1 behind** — Rev 1 audit branch, not deleted after PR#278 merged |
-| refs/* orphan branches present | **9/9 present** |
-| refs/* naming vs directive expected names | **WRONG-NAME** for all 9 — directive listed hyphen-separated names (e.g. `refs/oqminc-ai-resources`); actual remote uses slash hierarchy (e.g. `refs/oqminc/ai-resources`); implementation matches PUSH_ALL_REFS.sh design intent — discrepancy is in the directive's expected-name list, not the implementation |
-| `PUSH_ALL_REFS.sh` committed on main | **YES** — commit `2523215`, merged via PR#276 on 2026-04-19T06:20:34Z |
-| `PUSH_ALL_REFS.sh` mode 755 in git | **NO** — git object mode `100644` (non-executable) |
-| Script covers 9 refs-* subfolders | **YES** — 9 explicit `push_ref` calls, each referencing the corresponding `refs-*` subdirectory |
-| Script pushes as orphan via `git push origin HEAD:refs/...` | **YES** — confirmed in `push_ref()` body |
-| PR #271 triage | **CLEAN** — closed/merged by CEO, branch 0 ahead of main, no open follow-ons |
+| Check                                                       | Result                                                                                                                                                                                                                                                                                                           |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Total non-main branches                                     | **27**                                                                                                                                                                                                                                                                                                           |
+| Branches with open PR                                       | **0** (no currently open PRs against any live branch)                                                                                                                                                                                                                                                            |
+| Branches with closed/merged PR                              | **3** — `claude/audit-schema-integrity-EUzfq` (PR#275), `copilot/chorereference-library-drive-update` (PR#271), `copilot/audit-thread-16-state` (PR#278)                                                                                                                                                         |
+| Branches with no PR at all                                  | **24**                                                                                                                                                                                                                                                                                                           |
+| `copilot/audit-open-branches-inventory` vs main             | **0 ahead / 0 behind** (at parity)                                                                                                                                                                                                                                                                               |
+| `copilot/audit-thread-16-state` vs main                     | **4 ahead / 1 behind** — Rev 1 audit branch, not deleted after PR#278 merged                                                                                                                                                                                                                                     |
+| refs/\* orphan branches present                             | **9/9 present**                                                                                                                                                                                                                                                                                                  |
+| refs/\* naming vs directive expected names                  | **WRONG-NAME** for all 9 — directive listed hyphen-separated names (e.g. `refs/oqminc-ai-resources`); actual remote uses slash hierarchy (e.g. `refs/oqminc/ai-resources`); implementation matches PUSH_ALL_REFS.sh design intent — discrepancy is in the directive's expected-name list, not the implementation |
+| `PUSH_ALL_REFS.sh` committed on main                        | **YES** — commit `2523215`, merged via PR#276 on 2026-04-19T06:20:34Z                                                                                                                                                                                                                                            |
+| `PUSH_ALL_REFS.sh` mode 755 in git                          | **NO** — git object mode `100644` (non-executable)                                                                                                                                                                                                                                                               |
+| Script covers 9 refs-\* subfolders                          | **YES** — 9 explicit `push_ref` calls, each referencing the corresponding `refs-*` subdirectory                                                                                                                                                                                                                  |
+| Script pushes as orphan via `git push origin HEAD:refs/...` | **YES** — confirmed in `push_ref()` body                                                                                                                                                                                                                                                                         |
+| PR #271 triage                                              | **CLEAN** — closed/merged by CEO, branch 0 ahead of main, no open follow-ons                                                                                                                                                                                                                                     |
 
 ### Open Gaps (evidenced by audit)
 

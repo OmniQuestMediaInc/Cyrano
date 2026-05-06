@@ -8,8 +8,7 @@ export interface PortalSeoConfig {
 
 export const PORTAL_SEO: Record<string, PortalSeoConfig> = {
   'ink-and-steel': {
-    description:
-      'Hot tattooed, muscular, dominant AI companions that remember every desire.',
+    description: 'Hot tattooed, muscular, dominant AI companions that remember every desire.',
     keywords: [
       'tattooed AI boyfriend',
       'dominant alt AI',
@@ -20,8 +19,7 @@ export const PORTAL_SEO: Record<string, PortalSeoConfig> = {
     ],
   },
   'lotus-bloom': {
-    description:
-      'Elegant Asian beauties from kawaii to seductive — your perfect AI match.',
+    description: 'Elegant Asian beauties from kawaii to seductive — your perfect AI match.',
     keywords: [
       'Asian AI girlfriend',
       'kawaii AI',
@@ -44,8 +42,7 @@ export const PORTAL_SEO: Record<string, PortalSeoConfig> = {
     ],
   },
   'barely-legal': {
-    description:
-      'Fresh, flirty, and fearless AI companions — bright-eyed and bold.',
+    description: 'Fresh, flirty, and fearless AI companions — bright-eyed and bold.',
     keywords: [
       'young AI companion',
       'flirty AI girlfriend',
@@ -56,8 +53,7 @@ export const PORTAL_SEO: Record<string, PortalSeoConfig> = {
     ],
   },
   'dark-desires': {
-    description:
-      'Dark, magnetic AI companions that draw you in with forbidden intensity.',
+    description: 'Dark, magnetic AI companions that draw you in with forbidden intensity.',
     keywords: [
       'dark AI companion',
       'gothic AI girlfriend',
@@ -70,9 +66,7 @@ export const PORTAL_SEO: Record<string, PortalSeoConfig> = {
 };
 
 export function getPortalDescription(portal: string): string {
-  return (
-    PORTAL_SEO[portal]?.description ?? 'Your perfect AI companion awaits.'
-  );
+  return PORTAL_SEO[portal]?.description ?? 'Your perfect AI companion awaits.';
 }
 
 export function getPortalKeywords(portal: string): string[] {

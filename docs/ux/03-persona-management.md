@@ -9,13 +9,13 @@
 
 ## API / Presenter Binding
 
-| Operation | Endpoint | Notes |
-|---|---|---|
-| List personas | `GET /cyrano/ai-twin` | Returns `TwinSummary[]` filtered by scope |
-| Create persona | `POST /cyrano/ai-twin` | Creator only; sets `persona_prompt` + `visibility` |
-| Update persona prompt | `PATCH /cyrano/ai-twin/:id` | Creator only; triggers re-training if base model unchanged |
-| Set global default | `PATCH /cyrano/ai-twin/:id/global` | OQMI Operator only |
-| Guest custom save | `POST /cyrano/narrative/memory` | VIP_GOLD+ only; stored in `MemoryBank` as `PREFERENCE` type |
+| Operation             | Endpoint                           | Notes                                                       |
+| --------------------- | ---------------------------------- | ----------------------------------------------------------- |
+| List personas         | `GET /cyrano/ai-twin`              | Returns `TwinSummary[]` filtered by scope                   |
+| Create persona        | `POST /cyrano/ai-twin`             | Creator only; sets `persona_prompt` + `visibility`          |
+| Update persona prompt | `PATCH /cyrano/ai-twin/:id`        | Creator only; triggers re-training if base model unchanged  |
+| Set global default    | `PATCH /cyrano/ai-twin/:id/global` | OQMI Operator only                                          |
+| Guest custom save     | `POST /cyrano/narrative/memory`    | VIP_GOLD+ only; stored in `MemoryBank` as `PREFERENCE` type |
 
 All mutations require `correlation_id` and `idempotency_key` (see `docs/UX_INTEGRATION_BRIEF.md` §6).
 
@@ -70,19 +70,19 @@ to TEMPLATE scope — only a Creator or Operator can publish at TEMPLATE level.
 
 ### Tabs
 
-| Tab | Visible to | Content |
-|---|---|---|
-| Global | All roles | House default personas (`GLOBAL` scope, `is_house_model: true`) |
-| Templates | VIP+ | Creator-authored templates (`TEMPLATE` scope, `visibility: PLATFORM_INTERNAL`) |
-| My Personas | VIP_GOLD+ | Guest's `CUSTOM` scope personas + Creator's own published personas |
+| Tab         | Visible to | Content                                                                        |
+| ----------- | ---------- | ------------------------------------------------------------------------------ |
+| Global      | All roles  | House default personas (`GLOBAL` scope, `is_house_model: true`)                |
+| Templates   | VIP+       | Creator-authored templates (`TEMPLATE` scope, `visibility: PLATFORM_INTERNAL`) |
+| My Personas | VIP_GOLD+  | Guest's `CUSTOM` scope personas + Creator's own published personas             |
 
 ### Scope Badges
 
-| Scope | Badge label | Colour |
-|---|---|---|
-| `GLOBAL` | House | Neutral/grey |
-| `TEMPLATE` | Creator | Brand accent |
-| `CUSTOM` | Yours | Guest accent |
+| Scope      | Badge label | Colour       |
+| ---------- | ----------- | ------------ |
+| `GLOBAL`   | House       | Neutral/grey |
+| `TEMPLATE` | Creator     | Brand accent |
+| `CUSTOM`   | Yours       | Guest accent |
 
 ---
 
@@ -134,11 +134,11 @@ If a guest with `VIP` or `VIP_SILVER` tier attempts to access the "My Personas" 
 
 ## Compliance
 
-| Layer | Trigger | Action |
-|---|---|---|
-| `PERSONA_SCOPE_DENIED` | Guest tier below required scope | Upgrade CTA (non-blocking) |
-| GateGuard AV | Selecting a SUBSCRIBER-visibility persona | `ComplianceOverlay` — AV check |
-| Bill 149 | First custom persona save | Consent prompt (if not already captured this session) |
+| Layer                  | Trigger                                   | Action                                                |
+| ---------------------- | ----------------------------------------- | ----------------------------------------------------- |
+| `PERSONA_SCOPE_DENIED` | Guest tier below required scope           | Upgrade CTA (non-blocking)                            |
+| GateGuard AV           | Selecting a SUBSCRIBER-visibility persona | `ComplianceOverlay` — AV check                        |
+| Bill 149               | First custom persona save                 | Consent prompt (if not already captured this session) |
 
 ---
 
@@ -160,6 +160,6 @@ Scope — CUSTOM:    Yours
 
 ---
 
-*Binding: `services/ai-twin/src/ai-twin.types.ts` → `TwinSummary` ·
+_Binding: `services/ai-twin/src/ai-twin.types.ts` → `TwinSummary` ·
 `services/narrative-engine/src/narrative.types.ts` → `MemoryType` ·
-`apps/cyrano-standalone/app/ai-twin/page.tsx`*
+`apps/cyrano-standalone/app/ai-twin/page.tsx`_

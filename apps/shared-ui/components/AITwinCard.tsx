@@ -79,9 +79,7 @@ export function AITwinCard({ twin, theme, onSelect }: AITwinCardProps): React.Re
         </div>
       )}
 
-      <p style={{ fontWeight: 700, color: '#fff', margin: 0, textAlign: 'center' }}>
-        {twin.name}
-      </p>
+      <p style={{ fontWeight: 700, color: '#fff', margin: 0, textAlign: 'center' }}>{twin.name}</p>
       <p
         style={{
           fontSize: '0.8rem',

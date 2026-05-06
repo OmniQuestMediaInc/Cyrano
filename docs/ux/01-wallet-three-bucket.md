@@ -45,48 +45,48 @@ the presenter contract.
 Every UI element below points to a named contract field. Wireframes
 must not introduce fields the contract does not expose.
 
-| UI element | Field | Notes |
-|---|---|---|
-| tier badge | `WalletThreeBucketView.tier` | uses `GuestTier` (presenter shorthand: `GUEST` \| `MEMBER` \| `DIAMOND`); shared `tier-badge` component |
-| total balance | `WalletThreeBucketView.total_tokens` | `bigint` arrives as string; format with thousands separator |
-| bucket row label | `WalletBucketRow.label` | localized; do not derive from bucket key |
-| bucket row description | `WalletBucketRow.description` | tooltip text |
-| bucket row balance | `WalletBucketRow.balance_tokens` | `bigint` as string |
-| bucket row priority chip | `WalletBucketRow.spend_priority` | 1 / 2 / 3 |
-| "Drains next" indicator | `WalletBucketRow.will_drain_next` | true on the top non-empty bucket |
-| safety-net card | `WalletThreeBucketView.safety_net` | render only when non-null |
-| safety-net hours | `SafetyNetOfferCard.hours_until_expiry` | from contract |
-| Extend CTA fee | `SafetyNetOfferCard.extension_fee_usd` | + grant days |
-| Token Bridge CTA bonus | `SafetyNetOfferCard.token_bridge_bonus_pct` | enabled only when `has_token_bridge_eligible: true` |
-| 3/5ths CTA refund pct | `SafetyNetOfferCard.three_fifths_refund_pct` | + lock_hours |
-| reconnect pill | NATS subscription health | shown when NATS is reconnecting; never silent-fail |
-| Buy tokens CTA | navigates to `/tokens` | guest tier shows guest rates; member tier shows member rates (per `TokenBundleRateCard.tier`) |
+| UI element               | Field                                        | Notes                                                                                                   |
+| ------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| tier badge               | `WalletThreeBucketView.tier`                 | uses `GuestTier` (presenter shorthand: `GUEST` \| `MEMBER` \| `DIAMOND`); shared `tier-badge` component |
+| total balance            | `WalletThreeBucketView.total_tokens`         | `bigint` arrives as string; format with thousands separator                                             |
+| bucket row label         | `WalletBucketRow.label`                      | localized; do not derive from bucket key                                                                |
+| bucket row description   | `WalletBucketRow.description`                | tooltip text                                                                                            |
+| bucket row balance       | `WalletBucketRow.balance_tokens`             | `bigint` as string                                                                                      |
+| bucket row priority chip | `WalletBucketRow.spend_priority`             | 1 / 2 / 3                                                                                               |
+| "Drains next" indicator  | `WalletBucketRow.will_drain_next`            | true on the top non-empty bucket                                                                        |
+| safety-net card          | `WalletThreeBucketView.safety_net`           | render only when non-null                                                                               |
+| safety-net hours         | `SafetyNetOfferCard.hours_until_expiry`      | from contract                                                                                           |
+| Extend CTA fee           | `SafetyNetOfferCard.extension_fee_usd`       | + grant days                                                                                            |
+| Token Bridge CTA bonus   | `SafetyNetOfferCard.token_bridge_bonus_pct`  | enabled only when `has_token_bridge_eligible: true`                                                     |
+| 3/5ths CTA refund pct    | `SafetyNetOfferCard.three_fifths_refund_pct` | + lock_hours                                                                                            |
+| reconnect pill           | NATS subscription health                     | shown when NATS is reconnecting; never silent-fail                                                      |
+| Buy tokens CTA           | navigates to `/tokens`                       | guest tier shows guest rates; member tier shows member rates (per `TokenBundleRateCard.tier`)           |
 
 ---
 
 ## States
 
-| State | Trigger | Visual |
-|---|---|---|
-| empty (no balance, no expiry) | total_tokens = "0", safety_net = null | encouraging empty state with Buy CTA |
-| loaded | normal | layout above |
-| safety-net active | `safety_net != null` | recovery section visible |
-| safety-net expired | `hours_until_expiry <= 0` | restricted-experience-overlay |
-| WGS intervention active | overlay from §10 | welfare-intervention-overlay covers page |
-| legal hold | `LEGAL_HOLD_ACTIVE` | full-account-lockout |
-| reconnecting | NATS subscription drop | reconnect pill + dimmed live values |
+| State                         | Trigger                               | Visual                                   |
+| ----------------------------- | ------------------------------------- | ---------------------------------------- |
+| empty (no balance, no expiry) | total_tokens = "0", safety_net = null | encouraging empty state with Buy CTA     |
+| loaded                        | normal                                | layout above                             |
+| safety-net active             | `safety_net != null`                  | recovery section visible                 |
+| safety-net expired            | `hours_until_expiry <= 0`             | restricted-experience-overlay            |
+| WGS intervention active       | overlay from §10                      | welfare-intervention-overlay covers page |
+| legal hold                    | `LEGAL_HOLD_ACTIVE`                   | full-account-lockout                     |
+| reconnecting                  | NATS subscription drop                | reconnect pill + dimmed live values      |
 
 ---
 
 ## CTAs and step-up
 
-| CTA | Triggers step-up? | Step-up action |
-|---|---|---|
-| Buy tokens | no | — |
-| Extend (safety-net) | no | — |
-| Token Bridge | no | — |
+| CTA                            | Triggers step-up?   | Step-up action                              |
+| ------------------------------ | ------------------- | ------------------------------------------- |
+| Buy tokens                     | no                  | —                                           |
+| Extend (safety-net)            | no                  | —                                           |
+| Token Bridge                   | no                  | —                                           |
 | 3/5ths Exit (member-initiated) | yes — operator-side | `refund:override` if it crosses policy gate |
-| View history | no | — |
+| View history                   | no                  | —                                           |
 
 ---
 

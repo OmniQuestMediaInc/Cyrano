@@ -119,10 +119,7 @@ export class AuditBridgeService implements OnModuleInit {
     this.logger.log('AuditBridgeService: wired ' + BRIDGE_MAPPINGS.length + ' topic bindings');
   }
 
-  private async handle(
-    mapping: BridgeMapping,
-    payload: Record<string, unknown>,
-  ): Promise<void> {
+  private async handle(mapping: BridgeMapping, payload: Record<string, unknown>): Promise<void> {
     const correlationSource = mapping.correlationKey
       ? (payload[mapping.correlationKey] as string | undefined)
       : undefined;

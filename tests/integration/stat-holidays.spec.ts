@@ -15,7 +15,7 @@ import {
 
 describe('Ontario Statutory Holiday Computation', () => {
   describe('fixed holidays', () => {
-    it('should include New Year\'s Day on January 1', () => {
+    it("should include New Year's Day on January 1", () => {
       const holidays = getHolidaysForYears([2026]);
       const newYear = holidays.find((h) => h.name === "New Year's Day");
       expect(newYear).toBeDefined();

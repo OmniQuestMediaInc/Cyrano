@@ -133,5 +133,5 @@ export const GovernanceConfig = {
   // Per-event floor/ceiling are stored in velocityzone_events table.
   // The canonical default limits (operator may not exceed these via admin UI).
   VELOCITYZONE_RATE_FLOOR_MIN: new Decimal('0.075'),
-  VELOCITYZONE_RATE_CEIL_MAX:  new Decimal('0.090'),
+  VELOCITYZONE_RATE_CEIL_MAX: new Decimal('0.090'),
 } as const;

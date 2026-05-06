@@ -10,12 +10,12 @@ export type PortalId =
   | 'DARK_DESIRES';
 
 const PORTAL_LABELS: Record<PortalId, string> = {
-  MAIN:                  'Cyrano',
-  INK_AND_STEEL:         'Ink & Steel',
-  LOTUS_BLOOM:           'Lotus Bloom',
-  DESPERATE_HOUSEWIVES:  'Desperate Housewives',
-  BARELY_LEGAL:          'Barely Legal',
-  DARK_DESIRES:          'Dark Desires',
+  MAIN: 'Cyrano',
+  INK_AND_STEEL: 'Ink & Steel',
+  LOTUS_BLOOM: 'Lotus Bloom',
+  DESPERATE_HOUSEWIVES: 'Desperate Housewives',
+  BARELY_LEGAL: 'Barely Legal',
+  DARK_DESIRES: 'Dark Desires',
 };
 
 interface PortalSwitcherProps {

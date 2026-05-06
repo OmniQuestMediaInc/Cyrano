@@ -7,7 +7,7 @@
 **Author:** claude-in-chat
 **Date:** 2026-04-25
 
------
+---
 
 ## Purpose
 
@@ -17,7 +17,7 @@ This memo surfaces each claim with a discrepancy statement and a proposed amendm
 
 Once decisions are recorded, a follow-up implementation PR will edit Business Plan v2.8 §B.5.x / §B.7.1 to match each chosen option. The implementation PR is out of scope for this memo.
 
------
+---
 
 ## Claims
 
@@ -28,12 +28,12 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 **Proposed amendment options.**
 
 - **(a) Cite.** Add a footnote naming (i) the proving scheme (e.g. Groth16, PLONK, Halo2), (ii) the library/vendor, (iii) measured proof size and verification time on target hardware, and (iv) the trusted-setup posture.
-- **(b) Qualify.** Reword to: *"zk-SNARK-style attestations are a Phase-2 research target; v1 ships with a hash-commitment audit trail and reserves the F4 surface for future SNARK adoption."*
+- **(b) Qualify.** Reword to: _"zk-SNARK-style attestations are a Phase-2 research target; v1 ships with a hash-commitment audit trail and reserves the F4 surface for future SNARK adoption."_
 - **(c) Strike.** Remove F4 from §B.5.3 entirely; add a one-line note in the deferred-features appendix.
 
 **CEO DECISION:**
 
------
+---
 
 ### Claim 2 — Federation as a shipping production feature (§B.5.3 F2)
 
@@ -42,12 +42,12 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 **Proposed amendment options.**
 
 - **(a) Cite.** Name (i) at least one peer/partner with a signed peering agreement, (ii) the federation transport (NATS subject scheme, mTLS posture), (iii) the replay/idempotency rules, and (iv) the operating runbook reference.
-- **(b) Qualify.** Reword to: *"federation surfaces are scaffolded (NATS event emission live); production peering activates on first signed peer agreement. Pre-launch: zero peers."*
+- **(b) Qualify.** Reword to: _"federation surfaces are scaffolded (NATS event emission live); production peering activates on first signed peer agreement. Pre-launch: zero peers."_
 - **(c) Strike.** Remove F2 production framing; move federation to the roadmap section with a target window.
 
 **CEO DECISION:**
 
------
+---
 
 ### Claim 3 — 72–85% precision/recall on §B.5.3 F1 (currently uncited)
 
@@ -56,12 +56,12 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 **Proposed amendment options.**
 
 - **(a) Cite.** Footnote (i) the eval dataset (size, labelling provenance, class balance), (ii) the model + threshold, (iii) the measurement date and code revision, (iv) confidence intervals, and (v) the holdout protocol. Replace the bare range with the cited measurement.
-- **(b) Qualify.** Reword to: *"Design target: 72–85% precision/recall once GateGuard Sentinel reaches GA. Pre-launch: model is in calibration; no measured production figure is published."*
+- **(b) Qualify.** Reword to: _"Design target: 72–85% precision/recall once GateGuard Sentinel reaches GA. Pre-launch: model is in calibration; no measured production figure is published."_
 - **(c) Strike.** Remove the numeric range; replace with non-numeric language ("high-precision classification") until measurement is available.
 
 **CEO DECISION:**
 
------
+---
 
 ### Claim 4 — 200 ms latency budget (§B.5.1 / §B.5.3, unanalyzed)
 
@@ -70,12 +70,12 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 **Proposed amendment options.**
 
 - **(a) Cite.** Add a budget decomposition table (per-hop allocation in ms, percentile target — p50/p95/p99, target QPS, measurement methodology). Reconcile with the Cyrano ≤350 ms bound by either narrowing scope ("excludes Cyrano join") or raising the headline.
-- **(b) Qualify.** Reword to: *"Design budget: 200 ms p95 for the non-Cyrano hot path (excludes Cyrano join, which budgets ≤350 ms separately). Measured production figure pending Phase-2 load testing."*
+- **(b) Qualify.** Reword to: _"Design budget: 200 ms p95 for the non-Cyrano hot path (excludes Cyrano join, which budgets ≤350 ms separately). Measured production figure pending Phase-2 load testing."_
 - **(c) Strike.** Remove the numeric budget from the plan; relocate to an internal SLO document not surfaced to investors.
 
 **CEO DECISION:**
 
------
+---
 
 ### Claim 5 — HeartPleasure heart-rate-as-Flicker n'Flame Scoring-input (§B.7.1)
 
@@ -84,12 +84,12 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 **Proposed amendment options.**
 
 - **(a) Cite.** Specify (i) the device / SDK family (Apple HealthKit, Google Health Connect, named wearable vendor), (ii) the consent model and explicit retention/deletion posture, (iii) the regulatory analysis (FTC HBNR, applicable state law), (iv) the anti-spoof / signal-quality logic, and (v) the Flicker n'Flame Scoring weighting. Add a heart-rate-ingestion service to the Wave-D spine.
-- **(b) Qualify.** Reword to: *"Heart-rate telemetry is a Phase-2 research direction subject to compliance review; v1 Flicker n'Flame Scoring uses non-biometric inputs only. No biometric data is collected pre-launch."*
+- **(b) Qualify.** Reword to: _"Heart-rate telemetry is a Phase-2 research direction subject to compliance review; v1 Flicker n'Flame Scoring uses non-biometric inputs only. No biometric data is collected pre-launch."_
 - **(c) Strike.** Remove heart-rate language from §B.7.1; the feature does not appear in any investor-facing material until a compliance-cleared pathway exists.
 
 **CEO DECISION:**
 
------
+---
 
 ## Implementation flow after sign-off
 
@@ -106,6 +106,6 @@ Once decisions are recorded, a follow-up implementation PR will edit Business Pl
 - C008 (Day 91 Parity vs Pixel Legacy — CEO_GATE: NO, separate path)
 - C099 Wave C cleanup (runs after C002–C008 close)
 
------
+---
 
 **End of CNZ-WORK-001-AMEND-C007.md**

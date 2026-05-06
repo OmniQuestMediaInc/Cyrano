@@ -24,7 +24,11 @@ export const NATS_DEFAULT_SHARD_COUNT = 16;
  * Example:
  *   shardedSubject('ffs.score.update', 'sess_123', 16) → 'ffs.score.update.7'
  */
-export function shardedSubject(baseTopic: string, key: string, shardCount = NATS_DEFAULT_SHARD_COUNT): string {
+export function shardedSubject(
+  baseTopic: string,
+  key: string,
+  shardCount = NATS_DEFAULT_SHARD_COUNT,
+): string {
   const safeShardCount = Math.max(1, shardCount | 0);
   const shard = djb2(key) % safeShardCount;
   return `${baseTopic}.${shard}`;

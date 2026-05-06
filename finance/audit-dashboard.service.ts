@@ -22,7 +22,7 @@ export class AuditDashboardService {
     let totalPlatform = 0n;
     const violations: Array<{ id: string; reason: string }> = [];
 
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       // 1. Math Integrity Check
       const calculatedSum = entry.modelNetCents + entry.studioAgencyHoldbackCents;
       if (calculatedSum !== entry.grossCents) {
@@ -40,10 +40,10 @@ export class AuditDashboardService {
         totalGrossCents: totalGross,
         totalModelNetCents: totalNet,
         totalPlatformFeesCents: totalPlatform,
-        entryCount: entries.length
+        entryCount: entries.length,
       },
       violations,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 }

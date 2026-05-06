@@ -4,9 +4,7 @@
  */
 import { RbacService } from '../../services/core-api/src/auth/rbac.service';
 import { RbacGuard } from '../../services/core-api/src/auth/rbac.guard';
-import type {
-  StepUpVerificationResult,
-} from '../../services/core-api/src/auth/step-up.service';
+import type { StepUpVerificationResult } from '../../services/core-api/src/auth/step-up.service';
 
 function buildStubAudit() {
   const emitted: unknown[] = [];

@@ -27,9 +27,7 @@ export class FfsController {
    * GET /ffs/leaderboard?category=all|standard|dual_flame|hot_and_ready|new_flames
    */
   @Get('leaderboard')
-  getLeaderboard(
-    @Query('category') category?: string,
-  ): FfsLeaderboard {
+  getLeaderboard(@Query('category') category?: string): FfsLeaderboard {
     const validCategories: LeaderboardCategory[] = [
       'all',
       'standard',
@@ -37,9 +35,7 @@ export class FfsController {
       'hot_and_ready',
       'new_flames',
     ];
-    const cat: LeaderboardCategory = validCategories.includes(
-      category as LeaderboardCategory,
-    )
+    const cat: LeaderboardCategory = validCategories.includes(category as LeaderboardCategory)
       ? (category as LeaderboardCategory)
       : 'all';
 
@@ -51,9 +47,7 @@ export class FfsController {
    * GET /ffs/session/:sessionId
    */
   @Get('session/:sessionId')
-  getSessionScore(
-    @Param('sessionId') sessionId: string,
-  ): FfsScore {
+  getSessionScore(@Param('sessionId') sessionId: string): FfsScore {
     const score = this.ffsService.getSessionScore(sessionId);
     if (!score) {
       throw new NotFoundException(`Session not found or not yet active: ${sessionId}`);
@@ -81,11 +75,7 @@ export class FfsController {
     @Param('sessionId') sessionId: string,
     @Body() body: { creator_id: string; is_dual_flame?: boolean },
   ): { session_id: string; started: boolean } {
-    this.ffsService.startSession(
-      sessionId,
-      body.creator_id,
-      body.is_dual_flame ?? false,
-    );
+    this.ffsService.startSession(sessionId, body.creator_id, body.is_dual_flame ?? false);
     return { session_id: sessionId, started: true };
   }
 
@@ -93,9 +83,7 @@ export class FfsController {
    * DELETE /ffs/session/:sessionId
    */
   @Delete('session/:sessionId')
-  endSession(
-    @Param('sessionId') sessionId: string,
-  ): { session_id: string; ended: boolean } {
+  endSession(@Param('sessionId') sessionId: string): { session_id: string; ended: boolean } {
     this.ffsService.endSession(sessionId);
     return { session_id: sessionId, ended: true };
   }
@@ -108,7 +96,7 @@ export class FfsController {
     this.logger.log('FfsController.recordTipEvent', {
       session_id: dto.session_id,
       creator_id: dto.creator_id,
-      tokens:     dto.tokens,
+      tokens: dto.tokens,
     });
     this.ffsService.learnFromTipEvent(dto.ffs_context);
     return { learned: true };
@@ -118,9 +106,7 @@ export class FfsController {
    * GET /ffs/adaptive-weights/:creatorId
    */
   @Get('adaptive-weights/:creatorId')
-  getAdaptiveWeights(
-    @Param('creatorId') creatorId: string,
-  ) {
+  getAdaptiveWeights(@Param('creatorId') creatorId: string) {
     return this.ffsService.getAdaptiveWeightsPublic(creatorId);
   }
 }

@@ -20,7 +20,7 @@ MD024:
 
 # MD026: trailing punctuation in headings — allow `?` and `!`.
 MD026:
-  punctuation: ".,;:"
+  punctuation: '.,;:'
 
 # MD029: ordered list prefix — accept either all-ones or ordered styles.
 MD029:

@@ -35,7 +35,7 @@ type SpendBucket = ConfigLedgerBucket;
 
 export interface LedgerServiceDeps {
   repo: LedgerRepository;
-  clock?: () => Date;     // test seam — default Date.now
+  clock?: () => Date; // test seam — default Date.now
 }
 
 export class LedgerService {
@@ -101,13 +101,16 @@ export class LedgerService {
    */
   async spend(args: {
     walletId: string;
-    amount: number;                  // positive integer: tokens to spend
+    amount: number; // positive integer: tokens to spend
     correlationId: string;
     reasonCode?: ReasonCode;
     metadata?: Record<string, unknown>;
   }): Promise<SpendResult> {
     if (!Number.isInteger(args.amount) || args.amount <= 0) {
-      throw new LedgerError('INVALID_AMOUNT', `spend amount must be a positive integer (got ${args.amount})`);
+      throw new LedgerError(
+        'INVALID_AMOUNT',
+        `spend amount must be a positive integer (got ${args.amount})`,
+      );
     }
     const reason: ReasonCode = args.reasonCode ?? 'SPEND';
 
@@ -172,7 +175,10 @@ export class LedgerService {
     metadata?: Record<string, unknown>;
   }): Promise<{ wallet: WalletSnapshot; entry: LedgerEntry }> {
     if (!Number.isInteger(args.amount) || args.amount <= 0) {
-      throw new LedgerError('INVALID_AMOUNT', `credit amount must be a positive integer (got ${args.amount})`);
+      throw new LedgerError(
+        'INVALID_AMOUNT',
+        `credit amount must be a positive integer (got ${args.amount})`,
+      );
     }
     return this.record({
       walletId: args.walletId,
@@ -216,7 +222,8 @@ export class LedgerService {
 
   private validateInput(input: LedgerEntryInput): void {
     if (!input.walletId) throw new LedgerError('INVALID_WALLET', 'walletId is required');
-    if (!input.correlationId) throw new LedgerError('INVALID_CORRELATION', 'correlationId is required');
+    if (!input.correlationId)
+      throw new LedgerError('INVALID_CORRELATION', 'correlationId is required');
     if (!Number.isInteger(input.amount)) {
       throw new LedgerError('INVALID_AMOUNT', `amount must be an integer (got ${input.amount})`);
     }

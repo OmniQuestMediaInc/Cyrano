@@ -21,11 +21,13 @@ Next.js discussion/community platform. Data hooks, community schemas, and post/r
 ## HOW TO USE
 
 Read a file from this branch:
+
 ```
 git show refs/oss/discussion-platform:<filepath>
 ```
 
 Example:
+
 ```
 git show refs/oss/discussion-platform:README.md
 ```
@@ -37,6 +39,7 @@ git show refs/oss/discussion-platform:README.md
 > This branch contains only this manifest.
 >
 > To populate with full OSS source content when internet access is restored:
+>
 > ```bash
 > git clone https://github.com/CelaDaniel/next_discussion_platform.git /tmp/next_discussion_platform
 > cd /tmp/next_discussion_platform
@@ -45,6 +48,7 @@ git show refs/oss/discussion-platform:README.md
 > ```
 >
 > To update if the branch already exists as a manifest stub:
+>
 > ```bash
 > git fetch https://github.com/CelaDaniel/next_discussion_platform.git HEAD
 > git push origin FETCH_HEAD:refs/oss/discussion-platform --force-with-lease
@@ -63,4 +67,4 @@ git show refs/oss/discussion-platform:README.md
 
 ---
 
-*END REFS MANIFEST*
+_END REFS MANIFEST_

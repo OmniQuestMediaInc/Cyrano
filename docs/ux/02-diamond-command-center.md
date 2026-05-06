@@ -69,59 +69,59 @@ format Grok matches for all operator surfaces.
 
 ## Field bindings
 
-| Panel | Field | Notes |
-|---|---|---|
-| liquidity panel | `DiamondCommandCenterView.liquidity` | one-shot from request |
-| velocity table rows | `DiamondLiquidityView.velocity_table[]` | five rows, one per `DiamondVelocityBand` |
-| KPI cards | `DiamondLiquidityView.kpis[]` | each carries `label / value / trend / reason_code` |
-| 48h warning queue | `DiamondCommandCenterView.warning_queue` | sorted by `hours_until_expiry` ascending; `severity` chip on each |
-| personal-touch queue | `DiamondCommandCenterView.personal_touch_queue` | `escalation_tier` chip (GOLD / PLATINUM / BLACK) |
-| Token Bridge offer cards | `DiamondCommandCenterView.open_token_bridge_cards[]` | one per case; CTA "Process bridge" |
-| Three-Fifths Exit cards | `DiamondCommandCenterView.open_three_fifths_cards[]` | one per case; CTA "Approve refund" — triggers step-up |
-| GateGuard live feed | `DiamondCommandCenterView.gateguard_feed` | live via NATS `GATEGUARD_DECISION_*`; first 50 rows; auto-scroll |
-| Welfare panel | `DiamondCommandCenterView.welfare_panel` | counts + trending reason_codes; live via NATS `GATEGUARD_WELFARE_SIGNAL` |
-| Audit chain viewer | `DiamondCommandCenterView.audit_chain_window` | live via NATS `AUDIT_IMMUTABLE_*`; chain integrity check on every render |
-| header reconnect pill | NATS subscription health | shown when reconnecting |
-| `rule_applied_id` footer | `DiamondCommandCenterView.rule_applied_id` | small print for audit traceability |
+| Panel                    | Field                                                | Notes                                                                    |
+| ------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------ |
+| liquidity panel          | `DiamondCommandCenterView.liquidity`                 | one-shot from request                                                    |
+| velocity table rows      | `DiamondLiquidityView.velocity_table[]`              | five rows, one per `DiamondVelocityBand`                                 |
+| KPI cards                | `DiamondLiquidityView.kpis[]`                        | each carries `label / value / trend / reason_code`                       |
+| 48h warning queue        | `DiamondCommandCenterView.warning_queue`             | sorted by `hours_until_expiry` ascending; `severity` chip on each        |
+| personal-touch queue     | `DiamondCommandCenterView.personal_touch_queue`      | `escalation_tier` chip (GOLD / PLATINUM / BLACK)                         |
+| Token Bridge offer cards | `DiamondCommandCenterView.open_token_bridge_cards[]` | one per case; CTA "Process bridge"                                       |
+| Three-Fifths Exit cards  | `DiamondCommandCenterView.open_three_fifths_cards[]` | one per case; CTA "Approve refund" — triggers step-up                    |
+| GateGuard live feed      | `DiamondCommandCenterView.gateguard_feed`            | live via NATS `GATEGUARD_DECISION_*`; first 50 rows; auto-scroll         |
+| Welfare panel            | `DiamondCommandCenterView.welfare_panel`             | counts + trending reason_codes; live via NATS `GATEGUARD_WELFARE_SIGNAL` |
+| Audit chain viewer       | `DiamondCommandCenterView.audit_chain_window`        | live via NATS `AUDIT_IMMUTABLE_*`; chain integrity check on every render |
+| header reconnect pill    | NATS subscription health                             | shown when reconnecting                                                  |
+| `rule_applied_id` footer | `DiamondCommandCenterView.rule_applied_id`           | small print for audit traceability                                       |
 
 ---
 
 ## CTAs and step-up
 
-| CTA | Triggers step-up? | Step-up action | Audit emission |
-|---|---|---|---|
-| Process Token Bridge | no | — | `AUDIT_IMMUTABLE_RECOVERY` |
+| CTA                         | Triggers step-up?           | Step-up action                        | Audit emission                                         |
+| --------------------------- | --------------------------- | ------------------------------------- | ------------------------------------------------------ |
+| Process Token Bridge        | no                          | —                                     | `AUDIT_IMMUTABLE_RECOVERY`                             |
 | Approve Three-Fifths refund | yes if `policy_gated: true` | `refund:override` → `REFUND_OVERRIDE` | `AUDIT_IMMUTABLE_RECOVERY` + `AUDIT_IMMUTABLE_STEP_UP` |
-| Personal-touch contact | no | — | `HUB_DIAMOND_CONCIERGE_HANDOFF` |
-| WORM export trigger | yes | `worm:export` → `WALLET_MODIFICATION` | `WORM_EXPORT_TRIGGERED` + `AUDIT_IMMUTABLE_STEP_UP` |
-| Open recovery case detail | no | — | navigates to `/admin/recovery#case={id}` |
+| Personal-touch contact      | no                          | —                                     | `HUB_DIAMOND_CONCIERGE_HANDOFF`                        |
+| WORM export trigger         | yes                         | `worm:export` → `WALLET_MODIFICATION` | `WORM_EXPORT_TRIGGERED` + `AUDIT_IMMUTABLE_STEP_UP`    |
+| Open recovery case detail   | no                          | —                                     | navigates to `/admin/recovery#case={id}`               |
 
 ---
 
 ## States
 
-| State | Trigger | Visual |
-|---|---|---|
-| loaded | normal | layout above |
-| empty queue | warning_queue.length = 0 | "No wallets expiring in 48h" placeholder |
-| step-up pending | operator triggered gated CTA | step-up-modal overlay |
-| step-up failed | MFA failed | inline error on the originating CTA |
-| NATS reconnecting | subscription drop | reconnect pill; live panels dimmed; last-known frame retained |
-| audit chain integrity failure | `AUDIT_CHAIN_INTEGRITY_FAILURE` | full-screen lockout with case_id; manual override required |
-| reconciliation drift detected | `RECONCILIATION_DRIFT_DETECTED` | banner across header; CTA to drift detail |
+| State                         | Trigger                         | Visual                                                        |
+| ----------------------------- | ------------------------------- | ------------------------------------------------------------- |
+| loaded                        | normal                          | layout above                                                  |
+| empty queue                   | warning_queue.length = 0        | "No wallets expiring in 48h" placeholder                      |
+| step-up pending               | operator triggered gated CTA    | step-up-modal overlay                                         |
+| step-up failed                | MFA failed                      | inline error on the originating CTA                           |
+| NATS reconnecting             | subscription drop               | reconnect pill; live panels dimmed; last-known frame retained |
+| audit chain integrity failure | `AUDIT_CHAIN_INTEGRITY_FAILURE` | full-screen lockout with case_id; manual override required    |
+| reconciliation drift detected | `RECONCILIATION_DRIFT_DETECTED` | banner across header; CTA to drift detail                     |
 
 ---
 
 ## Real-time topology
 
-| Sub-surface | Transport | Topics |
-|---|---|---|
-| GateGuard live feed | NATS | `GATEGUARD_DECISION_APPROVED|COOLDOWN|HARD_DECLINE|HUMAN_ESCALATE`, `GATEGUARD_WELFARE_SIGNAL` |
-| Welfare panel counters | NATS | `GATEGUARD_WELFARE_SIGNAL` |
-| Audit chain window | NATS | `AUDIT_IMMUTABLE_*` family |
-| Reconciliation drift banner | NATS | `RECONCILIATION_DRIFT_DETECTED` |
-| Token Bridge / 3/5ths cards | request/response | re-fetched on case state change |
-| Liquidity / KPIs | request/response | refresh-on-focus + manual refresh button |
+| Sub-surface                 | Transport        | Topics                                   |
+| --------------------------- | ---------------- | ---------------------------------------- | -------- | ------------ | ------------------------------------------- |
+| GateGuard live feed         | NATS             | `GATEGUARD_DECISION_APPROVED             | COOLDOWN | HARD_DECLINE | HUMAN_ESCALATE`, `GATEGUARD_WELFARE_SIGNAL` |
+| Welfare panel counters      | NATS             | `GATEGUARD_WELFARE_SIGNAL`               |
+| Audit chain window          | NATS             | `AUDIT_IMMUTABLE_*` family               |
+| Reconciliation drift banner | NATS             | `RECONCILIATION_DRIFT_DETECTED`          |
+| Token Bridge / 3/5ths cards | request/response | re-fetched on case state change          |
+| Liquidity / KPIs            | request/response | refresh-on-focus + manual refresh button |
 
 REST polling is not used for any live sub-surface here. NATS drop →
 reconnect-with-backoff and the dimmed-frame behavior described in

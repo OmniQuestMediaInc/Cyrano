@@ -49,31 +49,31 @@ export function presentCreatorGamificationDashboard(
   const pool_views: PrizePoolViewModel[] = pools
     .filter((p) => !p.scoped_game_type || !RETIRED_GAME_TYPES.includes(p.scoped_game_type))
     .map((p) => ({
-    pool_id: p.pool_id,
-    name: p.name,
-    scoped_game_type: p.scoped_game_type,
-    version: p.version,
-    is_active: p.is_active,
-    entries: p.entries
-      .filter((e) => e.is_active)
-      .map((e) => ({
-        prize_slot: e.prize_slot,
-        name: e.name,
-        description: e.description,
-        rarity: e.rarity,
-        base_weight: e.base_weight,
-        asset_url: e.asset_url,
-      })),
-  }));
+      pool_id: p.pool_id,
+      name: p.name,
+      scoped_game_type: p.scoped_game_type,
+      version: p.version,
+      is_active: p.is_active,
+      entries: p.entries
+        .filter((e) => e.is_active)
+        .map((e) => ({
+          prize_slot: e.prize_slot,
+          name: e.name,
+          description: e.description,
+          rarity: e.rarity,
+          base_weight: e.base_weight,
+          asset_url: e.asset_url,
+        })),
+    }));
 
-  const cards: CreatorGameCard[] = GAMIFICATION.GAME_TYPES
-    .filter((gt) => !RETIRED_GAME_TYPES.includes(gt))
-    .map((gt) => {
+  const cards: CreatorGameCard[] = GAMIFICATION.GAME_TYPES.filter(
+    (gt) => !RETIRED_GAME_TYPES.includes(gt),
+  ).map((gt) => {
     const cfg = configs.find((c) => c.game_type === gt);
     const tier_stat = analytics.per_game.find((g) => g.game_type === gt);
     const active_pool = cfg
-      ? pools.find((p) => p.pool_id === cfg.prize_pool_id) ?? null
-      : pools.find((p) => p.scoped_game_type === gt || p.scoped_game_type === null) ?? null;
+      ? (pools.find((p) => p.pool_id === cfg.prize_pool_id) ?? null)
+      : (pools.find((p) => p.scoped_game_type === gt || p.scoped_game_type === null) ?? null);
     return {
       game_type: gt,
       display_name: DISPLAY_NAME[gt] ?? gt,
