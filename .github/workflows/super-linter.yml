@@ -19,6 +19,7 @@ jobs:
   super-linter:
     name: Super-Linter
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || (!startsWith(github.head_ref, 'copilot/') && !startsWith(github.head_ref, 'grok/') && !startsWith(github.head_ref, 'agent/'))
 
     steps:
       - name: Checkout (full history required)

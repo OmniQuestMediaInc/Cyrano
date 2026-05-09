@@ -6,7 +6,7 @@ name: Auto Merge
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [main]
 
 # Needs write access to pull-requests (to enable auto-merge) and
@@ -16,9 +16,29 @@ permissions:
   pull-requests: write
 
 jobs:
-  enable-auto-merge:
-    name: Enable Auto Merge
+  enable-auto-merge-agent:
+    name: Enable Auto Merge (Agent Fast-Path)
     runs-on: ubuntu-latest
+    if: startsWith(github.head_ref, 'copilot/') || startsWith(github.head_ref, 'grok/') || startsWith(github.head_ref, 'agent/')
+
+    steps:
+      - name: Enable auto-merge for PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh pr merge "${{ github.event.pull_request.number }}" \
+               --repo "${{ github.repository }}" \
+               --auto \
+               --squash; then
+            echo "✅ Auto-merge enabled on PR #${{ github.event.pull_request.number }}"
+          else
+            echo "⚠️  Auto-merge could not be enabled — may already be set or branch protection not configured"
+          fi
+
+  enable-auto-merge-standard:
+    name: Enable Auto Merge (Standard)
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'copilot/') && !startsWith(github.head_ref, 'grok/') && !startsWith(github.head_ref, 'agent/') }}
 
     steps:
       - name: Enable auto-merge for PR

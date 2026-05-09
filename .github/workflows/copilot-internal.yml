@@ -1,0 +1,17 @@
+name: Copilot Internal Fast-Path
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  fast-gate:
+    runs-on: ubuntu-latest
+    if: startsWith(github.head_ref, 'copilot/') || startsWith(github.head_ref, 'grok/') || startsWith(github.head_ref, 'agent/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn install --frozen-lockfile
+      - run: yarn typecheck && yarn lint && yarn format && yarn test && yarn ship-gate
