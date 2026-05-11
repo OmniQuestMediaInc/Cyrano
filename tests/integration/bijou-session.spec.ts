@@ -6,11 +6,7 @@
  * lifecycle (NONE → WARN → EJECT), standby queue (FIFO), and Ghost Alpha
  * scenario participant flows derived from seed CSVs.
  */
-import {
-  BijouSessionService,
-  BijouSession,
-  BijouParticipant,
-} from '../../services/bijou/src/bijou-session.service';
+import { BijouSessionService, BijouSession } from '../../services/bijou/src/bijou-session.service';
 import { BIJOU_PRICING } from '../../services/core-api/src/config/governance.config';
 import { loadDemoScenarios, loadCustomers, loadCreators } from './seed-loader';
 

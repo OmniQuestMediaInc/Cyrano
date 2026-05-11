@@ -11,7 +11,7 @@
 import { randomUUID } from 'crypto';
 
 describe('SchedulingService', () => {
-  const correlation_id = `TEST-${randomUUID()}`;
+  const _correlation_id = `TEST-${randomUUID()}`;
 
   describe('createPeriod', () => {
     it('should calculate B-Lock cutoff at 21 days before period start', () => {

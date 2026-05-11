@@ -4,7 +4,7 @@
 
 import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { AiTwinService } from './ai-twin.service';
 import { CreateTwinRequest, TrainingJobResult } from './ai-twin.types';
 
@@ -39,10 +39,7 @@ export class AiTwinController {
   /** Record a photo upload completion event. */
   @Post(':twinId/photos')
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
-  async recordPhoto(
-    @Param('twinId') twinId: string,
-    @Body() body: RecordPhotoDto,
-  ) {
+  async recordPhoto(@Param('twinId') twinId: string, @Body() body: RecordPhotoDto) {
     return this.aiTwinService.recordPhotoUpload(twinId, body.photo_id, body.storage_key);
   }
 

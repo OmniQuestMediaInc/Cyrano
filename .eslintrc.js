@@ -20,7 +20,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
@@ -32,4 +31,13 @@ module.exports = {
     semi: ['error', 'always'],
   },
   ignorePatterns: ['dist/', 'node_modules/', '.next/', 'LEGACY_CONFIGS/'],
+  overrides: [
+    {
+      // Test files: relax no-explicit-any — mocks and stubs legitimately need `any`
+      files: ['tests/**/*.ts', '**/*.spec.ts', '**/*.test.ts'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
+    },
+  ],
 };

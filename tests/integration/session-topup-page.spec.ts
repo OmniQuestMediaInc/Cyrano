@@ -275,7 +275,7 @@ describe('renderSessionTopUpPage — purchase action', () => {
     const { tree, view } = renderSessionTopUpPage(makeInputs({ context_snapshot: 'snap-xyz' }));
     expect(view.context_restorable).toBe(true);
     const panel = findByTestId(tree, 'session-topup-purchase-action');
-    const ids = collectTestIds(panel!);
+    const _ids = collectTestIds(panel!);
     // The panel should contain the context notice node
     expect(panel).toBeDefined();
   });

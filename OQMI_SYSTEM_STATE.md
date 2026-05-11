@@ -1,8 +1,8 @@
 ## CYRANO™ STANDALONE — BUILD STATUS
 
-**Date:** May 6, 2026
-**Status:** ALPHA SCAFFOLDS COMPLETE — PHASE 1 HYGIENE REFRESH IN-FLIGHT
-**Branch of record:** `claude/phase-1-hygiene-refresh-EAURk`
+**Date:** May 11, 2026
+**Status:** ALPHA SCAFFOLDS COMPLETE — PHASE 0.5 ECOSYSTEM LINT PARITY COMPLETE
+**Branch of record:** `copilot/phase-0-5-ecosystem-lint-parity`
 
 This refresh corresponds to the Phase 1 directive (Immediate Hygiene + State
 Refresh) authored against the Cyrano™ Standalone codebase. It supersedes the
@@ -474,3 +474,71 @@ matches as recorded in §5.6 (2026-04-24 audit). Creating an empty
 authoring happens in Claude Chat; execution happens in Claude Code via the
 `PROGRAM_CONTROL/DIRECTIVES/` pipeline. No agent may clear a GOV gate
 without CEO-signed clearance in `PROGRAM_CONTROL/CLEARANCES/`.
+
+---
+
+## 11. Phase 0.5 — Ecosystem Lint Parity (2026-05-11)
+
+**Branch of record:** `copilot/phase-0-5-ecosystem-lint-parity`
+**Scope:** Lint infrastructure parity for CyranoZone — ESLint config fix,
+devDependency audit, Husky + lint-staged, `lint:ci` script, ship-gate
+LINT-1 invariant.
+
+### 11.1 `yarn lint:ci` Matrix Result
+
+| Repo       | Command        | Result  | Notes                                      |
+| ---------- | -------------- | ------- | ------------------------------------------ |
+| CyranoZone | `yarn lint:ci` | ✅ PASS | 0 errors, 0 warnings — see §11.3 for fixes |
+
+Cross-repo matrix (ChatNowZone--BUILD, Marketplace-Build, eCommsZone)
+to be executed against their respective branches; results to be filed in
+each repo's `OQMI_SYSTEM_STATE.md`.
+
+### 11.2 Changes Delivered (P0.5.1–P0.5.4 + Cross-Repo Flag)
+
+| Task       | Item                                                                                         | Status                                          |
+| ---------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| P0.5.1     | `.github/linters/`, `super-linter.yml`, `.eslintrc.js`                                       | ✅ Already present (canonical configs in place) |
+| P0.5.2     | Removed `@types/bull` (redundant — bull v4 bundles types)                                    | ✅ DONE                                         |
+| P0.5.2     | Added `ts-node@^10.9.2` (was missing; used in `ship-gate` + `seed:scheduling` scripts)       | ✅ DONE                                         |
+| P0.5.3     | Added `husky@^9.1.7` + `lint-staged@^15.4.3`                                                 | ✅ DONE                                         |
+| P0.5.3     | Created `.husky/pre-commit` hook (`yarn lint-staged`)                                        | ✅ DONE                                         |
+| P0.5.3     | Added `lint-staged` config in `package.json` (TS: eslint+prettier; JSON/MD/YAML: prettier)   | ✅ DONE                                         |
+| P0.5.4     | Added `lint:ci` script: `eslint '{services,tests,PROGRAM_CONTROL}/**/*.ts' --max-warnings 0` | ✅ DONE                                         |
+| Cross-Repo | Added `LINT-1` invariant to `PROGRAM_CONTROL/ship-gate-verifier.ts`                          | ✅ DONE                                         |
+
+### 11.3 Pre-existing Lint Errors Resolved (exposed by ESLint config fix)
+
+The `.eslintrc.js` `@typescript-eslint/no-unused-vars` rule had a duplicate
+options object (two array elements instead of one), causing ESLint to abort
+on startup. The fix merged the two objects into one. Once ESLint ran, several
+pre-existing issues in `tests/` were exposed:
+
+| File                                                  | Error                                          | Fix                                                |
+| ----------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| `services/ai-twin/src/ai-twin.controller.ts`          | `IsUUID` unused import                         | Removed from import list                           |
+| `services/studio-affiliation/src/studio.service.ts`   | `NotImplementedException` unused import        | Removed from import list                           |
+| `services/core-api/src/common/http-client.ts`         | `no-constant-condition` on `while (true)` loop | Added `eslint-disable-next-line` comment           |
+| `tests/integration/bijou-session.spec.ts`             | `BijouParticipant` unused import               | Removed from import list                           |
+| `tests/integration/cyrano-persona-management.spec.ts` | Dangling orphan import block (parse error)     | Removed orphan; added `_ids` prefix for unused var |
+| `tests/integration/scheduling-service.spec.ts`        | `correlation_id` unused var                    | Renamed to `_correlation_id`                       |
+| `tests/integration/session-topup-page.spec.ts`        | `ids` unused var                               | Renamed to `_ids`                                  |
+| `tests/integration/studio-affiliation.spec.ts`        | `candidate` unused mock arg                    | Renamed to `_candidate`                            |
+
+Also added `.eslintrc.js` `overrides` entry disabling `@typescript-eslint/no-explicit-any`
+for test files (`tests/**/*.ts`, `**/*.spec.ts`, `**/*.test.ts`) — standard
+practice for mock-heavy test code.
+
+### 11.4 Ship-Gate LINT-1 Invariant
+
+New check `LINT-1` (category: `Lint-clean (Phase 0.5)`) added to
+`PROGRAM_CONTROL/ship-gate-verifier.ts`. Verifies:
+
+- `.eslintrc.js` (or equivalent) present
+- `lint` + `lint:ci` scripts present in `package.json`
+- `husky` + `lint-staged` in `devDependencies`
+- `lint-staged` config present in `package.json`
+- `.husky/pre-commit` hook present
+
+This check will FAIL on any repo that has not completed P0.5.3/P0.5.4
+onboarding, providing a hard gate for cross-repo lint parity.
