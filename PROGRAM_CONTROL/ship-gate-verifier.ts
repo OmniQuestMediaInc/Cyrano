@@ -11,7 +11,7 @@
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, relative, resolve } from 'path';
-import { execSync } from 'child_process';
+import { execSync, spawnSync } from 'child_process';
 
 interface CheckResult {
   id: string;
@@ -79,8 +79,44 @@ function runCommand(command: string): { ok: boolean; lines: string[] } {
     return { ok: true, lines: lines.length > 0 ? lines : ['command completed without output'] };
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
-    return { ok: false, lines: msg.split('\n').map((line) => line.trim()).filter(Boolean).slice(-8) };
+    return {
+      ok: false,
+      lines: msg
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .slice(-8),
+    };
   }
+}
+
+function runCommandArgs(command: string, args: string[]): { ok: boolean; lines: string[] } {
+  const result = spawnSync(command, args, {
+    cwd: REPO_ROOT,
+    env: process.env,
+    encoding: 'utf8',
+  });
+
+  const merged = `${result.stdout ?? ''}\n${result.stderr ?? ''}`
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(-8);
+
+  if (result.status === 0) {
+    return {
+      ok: true,
+      lines: merged.length > 0 ? merged : ['command completed without output'],
+    };
+  }
+
+  return {
+    ok: false,
+    lines:
+      merged.length > 0
+        ? merged
+        : [`Command failed: ${command} ${args.join(' ')}`, `exit status: ${result.status}`],
+  };
 }
 
 const checks: Array<() => CheckResult> = [
@@ -582,9 +618,19 @@ const checks: Array<() => CheckResult> = [
       };
     }
 
-    const superLinter = runCommand(
-      "docker run --rm -e VALIDATE_ALL_CODEBASE=false -e DEFAULT_WORKSPACE=/tmp/lint -e LINTER_RULES_PATH=.github/linters -v \"$PWD\":/tmp/lint ghcr.io/super-linter/super-linter:latest",
-    );
+    const superLinter = runCommandArgs('docker', [
+      'run',
+      '--rm',
+      '-e',
+      'VALIDATE_ALL_CODEBASE=false',
+      '-e',
+      'DEFAULT_WORKSPACE=/tmp/lint',
+      '-e',
+      'LINTER_RULES_PATH=.github/linters',
+      '-v',
+      `${REPO_ROOT}:/tmp/lint`,
+      'ghcr.io/super-linter/super-linter:latest',
+    ]);
     return {
       id: 'LINT-2',
       category: 'Linting standardization (OQMI_LINT_STANDARD_v1.0)',

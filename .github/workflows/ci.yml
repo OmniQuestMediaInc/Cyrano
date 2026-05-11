@@ -30,6 +30,10 @@ jobs:
             echo "NOT_APPLICABLE: restricted path diff gate applies to pull_request events only."
             exit 0
           fi
+          if [ -z "${{ github.event.pull_request.base.sha }}" ] || [ -z "${{ github.event.pull_request.head.sha }}" ]; then
+            echo "❌ Missing pull_request base/head SHAs; fail-closed policy blocks merge."
+            exit 1
+          fi
           CHANGED_FILES="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
           echo "$CHANGED_FILES"
           if echo "$CHANGED_FILES" | grep -Eqi '(^|/)(ledger|consent|pii)(/|$)'; then
