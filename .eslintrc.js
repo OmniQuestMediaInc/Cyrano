@@ -30,5 +30,13 @@ module.exports = {
     'no-console': 'warn',
     semi: ['error', 'always'],
   },
+  overrides: [
+    {
+      files: ['*.js', '**/*.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+  ],
   ignorePatterns: ['dist/', 'node_modules/', '.next/', 'LEGACY_CONFIGS/'],
 };
