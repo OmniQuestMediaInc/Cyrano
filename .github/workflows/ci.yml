@@ -15,6 +15,33 @@ permissions:
   contents: read
 
 jobs:
+  restricted-paths:
+    name: Restricted Paths Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          fetch-depth: 0
+      - name: Fail-closed on restricted paths (ledger / consent / PII)
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "NOT_APPLICABLE: restricted path diff gate applies to pull_request events only."
+            exit 0
+          fi
+          if [ -z "${{ github.event.pull_request.base.sha }}" ] || [ -z "${{ github.event.pull_request.head.sha }}" ]; then
+            echo "❌ Missing pull_request base/head SHAs; fail-closed policy blocks merge."
+            exit 1
+          fi
+          CHANGED_FILES="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+          echo "$CHANGED_FILES"
+          if echo "$CHANGED_FILES" | grep -Eqi '(^|/)(ledger|consent|pii)(/|$)'; then
+            echo "❌ Restricted path touched (ledger/consent/PII). Fail-closed policy blocks merge."
+            exit 1
+          fi
+          echo "✅ No restricted paths touched."
+
   # ---------------------------------------------------------------------------
   # Job 1: Validate SQL schema by actually applying it to a live PostgreSQL
   #        instance.  Proves the ledger schema is runnable at any commit.
@@ -86,6 +113,7 @@ jobs:
     name: Workspace Quality (lint / typecheck / format / test)
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    needs: [restricted-paths]
 
     env:
       # prisma validate needs a value but never connects during typecheck/test.
@@ -110,14 +138,8 @@ jobs:
       - name: Prisma validate
         run: yarn prisma validate
 
-      - name: Format check (prettier)
-        run: yarn format:check
-
-      - name: Lint
-        run: yarn lint
-
-      - name: Typecheck
-        run: yarn typecheck
+      - name: Lint CI (eslint + prettier + tsc)
+        run: yarn lint:ci
 
       - name: Test (jest)
         run: yarn test

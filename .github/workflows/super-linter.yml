@@ -37,15 +37,16 @@ jobs:
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
+          VALIDATE_ESLINT: true
 
           # Reduce noise/churn and prevent scanning build artifacts
           VALIDATE_ALL_CODEBASE: false
+          VALIDATE_YAML_ALL_CODEBASE: false
+          YAMLVALIDATE_ALL_CODEBASE: false
           IGNORE_GITIGNORED_FILES: true
 
-          # Restrict linting to root files, .github, and docs/ only
-          # Matches: .github/**, docs/**, and root-level *.md, *.yml, *.yaml, *.json files
-          # Excludes: src/, api/, infra/, archive/, LEGACY_CONFIGS/, services/, tests/, ui/
-          FILTER_REGEX_INCLUDE: ^(\.github/|docs/|[^/]+\.(md|yml|yaml|json)$)
+          # Restrict linting to non-code governance/docs + root-level config/source files.
+          FILTER_REGEX_INCLUDE: ^(\.github/|docs/|PROGRAM_CONTROL/|[^/]+\.(md|yml|yaml|json|ts|js)$)
 
           # Belt-and-suspenders: keep heavy / irrelevant trees out even if regex widens later
           FILTER_REGEX_EXCLUDE: (^|/)(LEGACY_CONFIGS|archive|node_modules|dist|\.next|out)/

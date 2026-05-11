@@ -149,7 +149,7 @@ yarn prisma:generate
 yarn lint
 yarn typecheck
 yarn test
-ts-node PROGRAM_CONTROL/ship-gate-verifier.ts
+yarn ship-gate
 ```
 
 The `ship-gate-verifier.ts` script reads this checklist and the

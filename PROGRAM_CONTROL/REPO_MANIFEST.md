@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/update-grok-primary-agent`
-**Commit:** `478d8d053e0e710c21a5361d740f57d6b1fdc5e4`
-**Generated:** 2026-05-11T19:49:40Z
+**Branch:** `copilot/add-linting-configs`
+**Commit:** `76c1164bad5abb1f26829d2dac3225cbc977336e`
+**Generated:** 2026-05-11T20:53:24Z
 
 ## All Files
 
@@ -17,6 +17,7 @@ Auto-generated on every push. Do not edit manually.
 - `.github/ISSUE_TEMPLATE/directive.yml`
 - `.github/branch-protection-agent-fast-path.md`
 - `.github/copilot-instructions.md`
+- `.github/linters/.eslintrc.json`
 - `.github/linters/.markdown-lint.yml`
 - `.github/linters/.yaml-lint.yml`
 - `.github/refs-branch-policy.md`
@@ -36,6 +37,7 @@ Auto-generated on every push. Do not edit manually.
 - `.github/workflows/repo-manifest.yml`
 - `.github/workflows/super-linter.yml`
 - `.gitignore`
+- `.husky/pre-commit`
 - `.markdownlintignore`
 - `.prettierignore`
 - `.prettierrc`
@@ -253,6 +255,7 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/REPORT_BACK/_ARCHIVE_2026-Q1/_MANIFEST.md`
 - `PROGRAM_CONTROL/REPORT_BACK/fix-yarn-lockfile-ci.md`
 - `PROGRAM_CONTROL/REPO_MANIFEST.md`
+- `PROGRAM_CONTROL/ship-gate-verifier.js`
 - `PROGRAM_CONTROL/ship-gate-verifier.ts`
 - `README.md`
 - `REFERENCE_LIBRARY/00_THREAD_BOOTSTRAP.md`
@@ -274,6 +277,7 @@ Auto-generated on every push. Do not edit manually.
 - `REFERENCE_LIBRARY/OSS_REF_BRANCH_SEEDS/refs-oss-zoom-clone/REFS_MANIFEST.md`
 - `REFERENCE_LIBRARY/TEMPLATES/OQMInc_REFERENCE_LIBRARY_MASTER_TEMPLATE.md`
 - `REFERENCE_LIBRARY/TEMPLATES/README.md`
+- `WORK-ORDER.md`
 - `apps/cyrano-standalone/README.md`
 - `apps/cyrano-standalone/app/access-denied/page.tsx`
 - `apps/cyrano-standalone/app/ai-twin/page.tsx`

@@ -474,3 +474,21 @@ matches as recorded in §5.6 (2026-04-24 audit). Creating an empty
 authoring happens in Claude Chat; execution happens in Claude Code via the
 `PROGRAM_CONTROL/DIRECTIVES/` pipeline. No agent may clear a GOV gate
 without CEO-signed clearance in `PROGRAM_CONTROL/CLEARANCES/`.
+
+### 10.8 Phase 0.6 — Linting Standardization (2026-05-11)
+
+- Added canonical TypeScript lint surfaces:
+  - `.eslintrc.js` (legacy v8, single source)
+  - `.github/linters/.eslintrc.json` (Super-Linter fallback)
+  - `.github/workflows/super-linter.yml` scoped via
+    `YAMLVALIDATE_ALL_CODEBASE=false`,
+    `FILTER_REGEX_INCLUDE=^(\.github/|docs/|PROGRAM_CONTROL/|[^/]+\.(md|yml|yaml|json|ts|js)$)`,
+    `VALIDATE_ESLINT=true`, `LINTER_RULES_PATH=.github/linters`.
+- Standardized package scripts:
+  - `lint`, `lint:ci`, `lint:fix`, `format`, `ship-gate`
+  - Added Husky + lint-staged coverage for `*.ts,*.js,*.json,*.md,*.yml,*.yaml`.
+- CI updated to run `yarn lint:ci` in PR quality path and keep ship-gate
+  as a hard gate.
+- Added fail-closed restricted path gate for `ledger|consent|pii`
+  path touches in pull requests.
+- Added `WORK-ORDER.md` with Phase 0.6 checklist template.

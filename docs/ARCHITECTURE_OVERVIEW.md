@@ -116,16 +116,16 @@ view-models.
 
 ## 7. Build + test surface
 
-| Command                                         | Purpose                                |
-| ----------------------------------------------- | -------------------------------------- |
-| `yarn lint` / `yarn lint:fix`                   | ESLint `services/**/*.ts`.             |
-| `yarn format` / `yarn format:check`             | Prettier across the tree.              |
-| `yarn typecheck` / `yarn typecheck:api`         | `tsc --noEmit`.                        |
-| `yarn test`                                     | Jest integration + unit suite.         |
-| `yarn prisma:generate`                          | Regenerate Prisma client.              |
-| `yarn prisma:push`                              | Push Prisma schema.                    |
-| `yarn seed:scheduling`                          | Seed GuestZone reference data.         |
-| `ts-node PROGRAM_CONTROL/ship-gate-verifier.ts` | Run the L0 ship-gate compliance check. |
+| Command                                 | Purpose                                |
+| --------------------------------------- | -------------------------------------- |
+| `yarn lint` / `yarn lint:fix`           | ESLint `services/**/*.ts`.             |
+| `yarn format` / `yarn format:check`     | Prettier across the tree.              |
+| `yarn typecheck` / `yarn typecheck:api` | `tsc --noEmit`.                        |
+| `yarn test`                             | Jest integration + unit suite.         |
+| `yarn prisma:generate`                  | Regenerate Prisma client.              |
+| `yarn prisma:push`                      | Push Prisma schema.                    |
+| `yarn seed:scheduling`                  | Seed GuestZone reference data.         |
+| `yarn ship-gate`                        | Run the L0 ship-gate compliance check. |
 
 ## 8. Governance binding
 
