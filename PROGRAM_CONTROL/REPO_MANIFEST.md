@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/remove-claude-and-set-grok-primary`
-**Commit:** `a8b9f3d1ec1b190afc9ee8bc23e3a035302dbb84`
-**Generated:** 2026-05-11T19:06:13Z
+**Branch:** `dependabot/npm_and_yarn/apps/cyrano-standalone/npm_and_yarn-152f59e559`
+**Commit:** `5247affeb377a7a4a0d31afb380f5d14b379cbe9`
+**Generated:** 2026-05-11T19:33:30Z
 
 ## All Files
 
