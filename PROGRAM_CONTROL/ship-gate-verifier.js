@@ -1,6 +1,14 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
 
+try {
+  require.resolve('ts-node/register/transpile-only');
+} catch {
+  throw new Error(
+    'Missing ts-node runtime: install devDependency "ts-node" to run PROGRAM_CONTROL/ship-gate-verifier.js',
+  );
+}
+
 const entry = path.join(__dirname, 'ship-gate-verifier.ts');
 const result = spawnSync(
   process.execPath,

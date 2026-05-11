@@ -41,6 +41,7 @@ jobs:
 
           # Reduce noise/churn and prevent scanning build artifacts
           VALIDATE_ALL_CODEBASE: false
+          VALIDATE_YAML_ALL_CODEBASE: false
           YAMLVALIDATE_ALL_CODEBASE: false
           IGNORE_GITIGNORED_FILES: true
 
