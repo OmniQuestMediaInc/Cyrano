@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/update-repo-name-to-cyranozone`
-**Commit:** `fe4731ac4566cab77ee78709e330214c289664f7`
-**Generated:** 2026-05-09T12:23:20Z
+**Branch:** `copilot/remove-claude-and-set-grok-primary`
+**Commit:** `a8b9f3d1ec1b190afc9ee8bc23e3a035302dbb84`
+**Generated:** 2026-05-11T19:06:13Z
 
 ## All Files
 
@@ -52,6 +52,8 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-PIPELINE-005.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-PIPELINE-006.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CHORE-TS.md`
+- `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-CLAUDE-CODE-KICKOFF-RETIRED.md`
+- `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-CLAUDE-CODE-STANDING-PROMPT-RETIRED.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-WORK-001-A002-DONE.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-WORK-001-A003-DONE.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/CNZ-WORK-001-A004-DONE.md`
@@ -81,8 +83,8 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/TOK-AUDIT-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/TOK-RETIRE-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/IN_PROGRESS/.gitkeep`
-- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-CLAUDE-CODE-KICKOFF.md`
-- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-CLAUDE-CODE-STANDING-PROMPT.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-GROK-KICKOFF.md`
+- `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-GROK-STANDING-PROMPT.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001-AMEND-C007.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CYR-AI-TWIN-003-PIPELINE.md`
@@ -116,6 +118,8 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-A099-WAVE-A-CLEANUP-report.md`
 - `PROGRAM_CONTROL/REPORT_BACK/CNZ-WORK-001-C007-report.md`
 - `PROGRAM_CONTROL/REPORT_BACK/CONCIERGE-CONFIG-001-REPORT-BACK.md`
+- `PROGRAM_CONTROL/REPORT_BACK/CYR-CORE-001-PROVIDER-RELIABILITY.md`
+- `PROGRAM_CONTROL/REPORT_BACK/CYR-NARR-002-LAYER2-MEMORY.md`
 - `PROGRAM_CONTROL/REPORT_BACK/CYR-STANDALONE-MVP-REPORT-BACK.md`
 - `PROGRAM_CONTROL/REPORT_BACK/DFSP-001-BLOCKED.md`
 - `PROGRAM_CONTROL/REPORT_BACK/DFSP-001-OTP-ACCOUNT-HOLD.md`
@@ -136,6 +140,7 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-002-WORM-EXPORT-SERVICE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-003-ZONE-GPT-PROPOSAL-SERVICE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-004-SOVEREIGN-CAC-MIDDLEWARE.md`
+- `PROGRAM_CONTROL/REPORT_BACK/GOV-CLAUDE-RETIRE-REPORT-BACK.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOVERNANCE-WO-SUSPEND-001.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GWP-001-GWP-SERVICE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GZ-SCHEDULE-001-REPORT-BACK.md`
@@ -180,6 +185,7 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/REPORT_BACK/REWARDS-API-SCAFFOLD.md`
 - `PROGRAM_CONTROL/REPORT_BACK/ROSTER-GATEWAY-DUP-2026-04-26.md`
 - `PROGRAM_CONTROL/REPORT_BACK/SHOWZONE-001-ROOM-SESSION-SERVICE.md`
+- `PROGRAM_CONTROL/REPORT_BACK/STUDIO-AFF-001-IMPL.md`
 - `PROGRAM_CONTROL/REPORT_BACK/THREAD 13 HANDOFF`
 - `PROGRAM_CONTROL/REPORT_BACK/THREAD-12-CLEANUP-REPORT-BACK.md`
 - `PROGRAM_CONTROL/REPORT_BACK/THREAD14-SCHEMA-INTEGRITY-AUDIT.md`
@@ -425,6 +431,8 @@ Auto-generated on every push. Do not edit manually.
 - `prisma/migrations/20260427100000_sensync_consent_scopes_ttl/migration.sql`
 - `prisma/migrations/20260427120000_studio_onboarding_rbac/migration.sql`
 - `prisma/migrations/20260428000000_legal_holds_correlation_id/migration.sql`
+- `prisma/migrations/20260511000000_studio_affiliation_indexes/migration.sql`
+- `prisma/migrations/20260511100000_layer2_narrative_memory/migration.sql`
 - `prisma/migrations/migration_lock.toml`
 - `prisma/schema.prisma`
 - `prisma/seed.test.ts`
@@ -452,6 +460,8 @@ Auto-generated on every push. Do not edit manually.
 - `services/core-api/src/auth/rbac.guard.ts`
 - `services/core-api/src/auth/rbac.service.ts`
 - `services/core-api/src/auth/step-up.service.ts`
+- `services/core-api/src/common/circuit-breaker.ts`
+- `services/core-api/src/common/http-client.ts`
 - `services/core-api/src/compliance/audit-chain.service.ts`
 - `services/core-api/src/compliance/compliance.module.ts`
 - `services/core-api/src/compliance/geo-fencing.service.ts`
@@ -660,6 +670,9 @@ Auto-generated on every push. Do not edit manually.
 - `services/ledger/redbook-rate-card.service.ts`
 - `services/ledger/repository.ts`
 - `services/ledger/types.ts`
+- `services/narrative-engine/src/branching.service.ts`
+- `services/narrative-engine/src/context-builder.service.ts`
+- `services/narrative-engine/src/memory-bank.service.ts`
 - `services/narrative-engine/src/narrative.controller.ts`
 - `services/narrative-engine/src/narrative.module.ts`
 - `services/narrative-engine/src/narrative.service.ts`
@@ -693,6 +706,7 @@ Auto-generated on every push. Do not edit manually.
 - `services/rewards-api/src/white-label/partner-config.schema.ts`
 - `services/risk-engine/src/region-signal.service.ts`
 - `services/risk-engine/src/risk.module.ts`
+- `services/studio-affiliation/src/affiliation-number.generator.ts`
 - `services/studio-affiliation/src/studio-affiliation.module.ts`
 - `services/studio-affiliation/src/studio.service.ts`
 - `services/voice-cloning/src/voice.controller.ts`
@@ -709,10 +723,12 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/ai-twin-page.spec.ts`
 - `tests/integration/bijou-session.spec.ts`
 - `tests/integration/canonical-ledger.spec.ts`
+- `tests/integration/circuit-breaker.spec.ts`
 - `tests/integration/compliance-guard.spec.ts`
 - `tests/integration/concierge-session.spec.ts`
 - `tests/integration/creator-control-service.spec.ts`
 - `tests/integration/cyrano-layer4-enterprise.spec.ts`
+- `tests/integration/cyrano-narr-002-layer2.spec.ts`
 - `tests/integration/cyrano-persona-management.spec.ts`
 - `tests/integration/cyrano-prompt-templates.spec.ts`
 - `tests/integration/cyrano-service.spec.ts`
@@ -726,6 +742,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/gateguard-middleware.spec.ts`
 - `tests/integration/gateguard-scorer.spec.ts`
 - `tests/integration/gateguard-service.spec.ts`
+- `tests/integration/http-client.spec.ts`
 - `tests/integration/immutable-audit-service.spec.ts`
 - `tests/integration/integration-hub.spec.ts`
 - `tests/integration/ledger-service.spec.ts`
@@ -746,6 +763,7 @@ Auto-generated on every push. Do not edit manually.
 - `tests/integration/sensync-rate-limit.spec.ts`
 - `tests/integration/session-topup-page.spec.ts`
 - `tests/integration/stat-holidays.spec.ts`
+- `tests/integration/studio-affiliation.spec.ts`
 - `tests/integration/three-bucket-spend-guard.spec.ts`
 - `tests/integration/zonebot-service.spec.ts`
 - `tests/jest-uuid-shim.cjs`
