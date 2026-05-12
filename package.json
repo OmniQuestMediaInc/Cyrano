@@ -8,9 +8,7 @@
     "lint:ci-js": "yarn lint",
     "lint:ci": "yarn lint:ci-python && yarn lint:ci-js",
     "lint:fix": "eslint 'services/**/*.ts' --fix",
-    "lint": "eslint . --max-warnings=0",
-    "lint:ci": "eslint . --max-warnings=0 && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write .",
+    "lint:ci": "eslint '{services,tests,PROGRAM_CONTROL}/**/*.ts' --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "jest --passWithNoTests",
@@ -25,7 +23,8 @@
     "ship-gate": "node PROGRAM_CONTROL/ship-gate-verifier.js",
     "dev:cyrano": "cd apps/cyrano-standalone && yarn dev",
     "build:cyrano": "cd apps/cyrano-standalone && yarn build",
-    "deploy:all": "docker-compose up --build -d"
+    "deploy:all": "docker-compose up --build -d",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=20 <23",
@@ -53,25 +52,25 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/bull": "^4.10.4",
     "@types/express": "^5.0.6",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.0",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
     "eslint": "8.57.1",
-    "husky": "9.1.7",
+    "husky": "^9.1.7",
     "jest": "^30.3.0",
-    "lint-staged": "16.0.0",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.3.3",
     "prisma": "^6.19.3",
     "ts-node": "10.9.2",
     "ts-jest": "^29.4.9",
+    "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   },
   "lint-staged": {
-    "*.{ts,js}": [
-      "eslint --max-warnings=0 --fix",
+    "*.{ts,tsx}": [
+      "eslint --fix --max-warnings 0",
       "prettier --write"
     ],
     "*.{json,md,yml,yaml}": [

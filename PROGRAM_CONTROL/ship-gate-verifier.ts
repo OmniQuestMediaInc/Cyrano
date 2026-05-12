@@ -580,6 +580,61 @@ const checks: Array<() => CheckResult> = [
         : 'Add AI advisory-only boundary clause to governance/OQMI_INFRASTRUCTURE_AND_SECURITY_POLICY.md §2',
     };
   },
+  // ── 15. LINT-CLEAN INVARIANT (Phase 0.5 Ecosystem Lint Parity) ───────────
+  () => {
+    const pkg = readSafe('package.json') ?? '';
+    let pkgJson: Record<string, unknown> = {};
+    try {
+      pkgJson = JSON.parse(pkg);
+    } catch {
+      pkgJson = {};
+    }
+    const scripts = (pkgJson['scripts'] as Record<string, string> | undefined) ?? {};
+    const devDeps = (pkgJson['devDependencies'] as Record<string, string> | undefined) ?? {};
+    const lintStagedCfg = pkgJson['lint-staged'];
+
+    const hasEslintrc =
+      exists('.eslintrc.js') || exists('.eslintrc.cjs') || exists('eslint.config.js');
+    const hasLintScript = 'lint' in scripts;
+    const hasLintCiScript = 'lint:ci' in scripts;
+    const hasHusky = 'husky' in devDeps;
+    const hasLintStaged = 'lint-staged' in devDeps;
+    const hasLintStagedCfg =
+      lintStagedCfg != null ||
+      exists('.lintstagedrc') ||
+      exists('.lintstagedrc.js') ||
+      exists('.lintstagedrc.json');
+    const hasHuskyHook = exists('.husky/pre-commit');
+
+    const failures: string[] = [];
+    if (!hasEslintrc) failures.push('.eslintrc.js (or equivalent) missing');
+    if (!hasLintScript) failures.push('"lint" script missing from package.json');
+    if (!hasLintCiScript) failures.push('"lint:ci" script missing from package.json');
+    if (!hasHusky) failures.push('husky not in devDependencies');
+    if (!hasLintStaged) failures.push('lint-staged not in devDependencies');
+    if (!hasLintStagedCfg) failures.push('lint-staged config missing');
+    if (!hasHuskyHook) failures.push('.husky/pre-commit hook missing');
+
+    return {
+      id: 'LINT-1',
+      category: 'Lint-clean (Phase 0.5)',
+      description:
+        'Lint parity: ESLint config + lint/lint:ci scripts + Husky + lint-staged all present',
+      status: failures.length === 0 ? 'PASS' : 'FAIL',
+      evidence:
+        failures.length === 0
+          ? [
+              '.eslintrc.js present',
+              '"lint" + "lint:ci" scripts present',
+              'husky + lint-staged in devDependencies',
+              'lint-staged config present',
+              '.husky/pre-commit hook present',
+            ]
+          : failures,
+      remediation:
+        failures.length === 0
+          ? undefined
+          : 'Run: yarn add -D husky lint-staged && husky init — then add lint:ci script and lint-staged config to package.json',
 
   // ── 15. LINTING STANDARDIZATION ────────────────────────────────────────────
   () => {

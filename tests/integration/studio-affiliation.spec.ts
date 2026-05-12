@@ -58,7 +58,7 @@ describe('AffiliationNumberGenerator', () => {
       const returned: string[] = [];
       let callCount = 0;
 
-      const isUnique = jest.fn().mockImplementation(async (candidate: string) => {
+      const isUnique = jest.fn().mockImplementation(async (_candidate: string) => {
         callCount++;
         // First two candidates collide; third is unique
         return callCount > 2;
@@ -209,7 +209,10 @@ describe('StudioService', () => {
       expect(result.affiliation_number).toBe('ABCDEF');
       expect(nats.publish).toHaveBeenCalledWith(
         'nats.studios.affiliated',
-        expect.objectContaining({ studio_id: 'studio-001', correlation_id: BASE_REQUEST.correlation_id }),
+        expect.objectContaining({
+          studio_id: 'studio-001',
+          correlation_id: BASE_REQUEST.correlation_id,
+        }),
       );
     });
 

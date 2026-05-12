@@ -39,10 +39,7 @@ export class AiTwinController {
   /** Record a photo upload completion event. */
   @Post(':twinId/photos')
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
-  async recordPhoto(
-    @Param('twinId') twinId: string,
-    @Body() body: RecordPhotoDto,
-  ) {
+  async recordPhoto(@Param('twinId') twinId: string, @Body() body: RecordPhotoDto) {
     return this.aiTwinService.recordPhotoUpload(twinId, body.photo_id, body.storage_key);
   }
 

@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/p06-cross-repo-linting`
-**Commit:** `026e931f39d666b6721c4151415784776eaf3459`
-**Generated:** 2026-05-12T05:29:37Z
+**Branch:** `copilot/phase-0-5-ecosystem-lint-parity`
+**Commit:** `20083a8c74d2c4e5eaf180c398275bf2a85d48b2`
+**Generated:** 2026-05-12T06:09:03Z
 
 ## All Files
 

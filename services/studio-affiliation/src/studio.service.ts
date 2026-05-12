@@ -73,13 +73,22 @@ export class StudioService {
    * organization_id, tenant_id per OQMI_GOVERNANCE invariants.
    */
   async affiliate(request: AffiliationRequest): Promise<AffiliationResult> {
-    const { creator_id, studio_name, existing_studio_id, organization_id, tenant_id, correlation_id } = request;
+    const {
+      creator_id,
+      studio_name,
+      existing_studio_id,
+      organization_id,
+      tenant_id,
+      correlation_id,
+    } = request;
 
     if (!existing_studio_id && !studio_name) {
       throw new Error('AffiliationRequest must provide either existing_studio_id or studio_name');
     }
     if (existing_studio_id && studio_name) {
-      throw new Error('AffiliationRequest must provide either existing_studio_id or studio_name — not both');
+      throw new Error(
+        'AffiliationRequest must provide either existing_studio_id or studio_name — not both',
+      );
     }
 
     let resultStudio: StudioRecord;

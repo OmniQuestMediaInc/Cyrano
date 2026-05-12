@@ -69,7 +69,8 @@ export class HttpClient {
   ): Promise<HttpResponse<T>> {
     let attempt = 0;
 
-    for (;;) {
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
       attempt++;
       const startMs = Date.now();
 
@@ -137,8 +138,7 @@ export class HttpClient {
         const latencyMs = Date.now() - startMs;
 
         const isTimeout =
-          err instanceof Error &&
-          (err.name === 'AbortError' || err.message.includes('abort'));
+          err instanceof Error && (err.name === 'AbortError' || err.message.includes('abort'));
 
         const isNetworkError =
           err instanceof TypeError && err.message.toLowerCase().includes('fetch');

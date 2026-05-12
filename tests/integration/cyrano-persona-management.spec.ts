@@ -13,8 +13,6 @@ import type {
   CyranoPersonaCard,
   CyranoPersonaManagementPageInputs,
 } from '../../ui/types/cyrano-persona-contracts';
-  PersonaManagementPageInputs,
-} from '../../ui/types/cyrano-persona-management-contracts';
 
 function makePersona(overrides: Partial<CyranoPersonaCard> = {}): CyranoPersonaCard {
   return {
@@ -194,7 +192,7 @@ describe('renderPersonaManagementPage — persona cards', () => {
       makeInputs({ active_tab: 'custom', custom_personas: [persona] }),
     );
     const avatar = findByTestId(tree, 'persona-card-avatar-av1');
-    const ids = collectTestIds(avatar!);
+    const _ids = collectTestIds(avatar!);
     // avatar element itself has test_id; placeholder is a child span
     expect(avatar).toBeDefined();
     expect(avatar?.props?.avatar_url).toBeNull();
