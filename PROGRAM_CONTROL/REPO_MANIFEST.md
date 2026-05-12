@@ -3,8 +3,8 @@
 Auto-generated on every push. Do not edit manually.
 
 **Branch:** `dependabot/npm_and_yarn/apps/cyrano-standalone/npm_and_yarn-152f59e559`
-**Commit:** `6e28f6ee4fa64a1f37a7207bd0462e219edd4ce3`
-**Generated:** 2026-05-11T20:12:48Z
+**Commit:** `db68e7e7e4465e5fe08bf7a656791d47e272f82e`
+**Generated:** 2026-05-12T06:19:24Z
 
 ## All Files
 
