@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `dependabot/npm_and_yarn/apps/cyrano-standalone/npm_and_yarn-152f59e559`
-**Commit:** `db68e7e7e4465e5fe08bf7a656791d47e272f82e`
-**Generated:** 2026-05-12T06:19:24Z
+**Branch:** `copilot/governance-equalization-refresh`
+**Commit:** `2857f3cdc6e8a9311c88c0945f4fa64d90c66e70`
+**Generated:** 2026-05-12T07:10:38Z
 
 ## All Files
 
@@ -41,6 +41,7 @@ Auto-generated on every push. Do not edit manually.
 - `.markdownlintignore`
 - `.prettierignore`
 - `.prettierrc`
+- `CONTRIBUTING.md`
 - `HANDOFF.md`
 - `OQMI_SYSTEM_STATE.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/AUDIT-001.md`
@@ -73,6 +74,7 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/DFSP-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/GEO-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/GOV-CONST-001.md`
+- `PROGRAM_CONTROL/DIRECTIVES/DONE/GOVERNANCE-EQ-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/HOTFIX-AUTH-001.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/INFRA-004.md`
 - `PROGRAM_CONTROL/DIRECTIVES/DONE/KYC-001.md`
@@ -143,6 +145,7 @@ Auto-generated on every push. Do not edit manually.
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-003-ZONE-GPT-PROPOSAL-SERVICE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-004-SOVEREIGN-CAC-MIDDLEWARE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOV-CLAUDE-RETIRE-REPORT-BACK.md`
+- `PROGRAM_CONTROL/REPORT_BACK/GOVERNANCE-EQ-001-REPORT-BACK.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GOVERNANCE-WO-SUSPEND-001.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GWP-001-GWP-SERVICE.md`
 - `PROGRAM_CONTROL/REPORT_BACK/GZ-SCHEDULE-001-REPORT-BACK.md`
