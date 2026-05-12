@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/governance-equalization-refresh`
-**Commit:** `2857f3cdc6e8a9311c88c0945f4fa64d90c66e70`
-**Generated:** 2026-05-12T07:10:38Z
+**Branch:** `copilot/update-architecture-and-workflows`
+**Commit:** `2ac918b7c1822ac2e90315ef99925aaa6c5df2c9`
+**Generated:** 2026-05-12T17:51:28Z
 
 ## All Files
 

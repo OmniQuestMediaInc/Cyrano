@@ -20,10 +20,6 @@ import type {
   CyranoPersonaManagementPageView,
   CyranoPersonaManagementTab,
 } from '../../../../types/cyrano-persona-contracts';
-  CyranoPersonaManagementTab,
-  PersonaManagementPageInputs,
-  PersonaManagementPageView,
-} from '../../../../types/cyrano-persona-management-contracts';
 
 export const PERSONA_MANAGEMENT_PAGE_RULE_ID = 'PERSONA_MANAGEMENT_PAGE_v1';
 
@@ -114,7 +110,6 @@ function renderHeader(): RenderElement {
 function renderTabs(
   activeTab: CyranoPersonaManagementTab,
   view: CyranoPersonaManagementPageView,
-  view: PersonaManagementPageView,
 ): RenderElement {
   const tabs: CyranoPersonaManagementTab[] = ['global', 'template', 'custom'];
   return el(
@@ -147,7 +142,6 @@ function renderTabs(
 }
 
 function tabCount(tab: CyranoPersonaManagementTab, view: CyranoPersonaManagementPageView): number {
-function tabCount(tab: CyranoPersonaManagementTab, view: PersonaManagementPageView): number {
   switch (tab) {
     case 'global':
       return view.total_global;
