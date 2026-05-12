@@ -69,7 +69,7 @@ export class HttpClient {
   ): Promise<HttpResponse<T>> {
     let attempt = 0;
 
-    while (true) {
+    for (;;) {
       attempt++;
       const startMs = Date.now();
 

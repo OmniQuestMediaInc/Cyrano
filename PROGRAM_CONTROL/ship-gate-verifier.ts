@@ -680,6 +680,46 @@ const checks: Array<() => CheckResult> = [
           : 'Execute full naming-canon rename pass per docs/DOMAIN_GLOSSARY.md before launch',
     };
   },
+  () => {
+    const pkg = readSafe('package.json') ?? '';
+    const ci = readSafe('.github/workflows/ci.yml') ?? '';
+    const copilot = readSafe('.github/workflows/copilot-internal.yml') ?? '';
+    const superLinter = readSafe('.github/workflows/super-linter.yml') ?? '';
+
+    const hasLintScripts =
+      pkg.includes('"lint:ci-python"') &&
+      pkg.includes('"lint:ci-js"') &&
+      pkg.includes('"lint:ci"');
+    const ciHasGate = ci.includes('yarn lint:ci') && ci.includes('yarn ship-gate');
+    const copilotHasGate = copilot.includes('yarn lint:ci') && copilot.includes('yarn ship-gate');
+    const superLinterMixed =
+      superLinter.includes('VALIDATE_PYTHON: true') &&
+      superLinter.includes('VALIDATE_JAVASCRIPT_ES: true') &&
+      superLinter.includes('VALIDATE_TYPESCRIPT_ES: true');
+    const ok = hasLintScripts && ciHasGate && copilotHasGate && superLinterMixed;
+
+    return {
+      id: 'cross-repo-lint-parity',
+      category: 'Cross-repo lint parity',
+      description: 'Mixed lint parity baseline (scripts + CI ship-gate + super-linter validators) is enforced',
+      status: ok ? 'PASS' : 'FAIL',
+      evidence: [
+        hasLintScripts
+          ? 'package.json includes lint:ci-python + lint:ci-js + lint:ci'
+          : 'package.json missing one or more lint:ci* scripts',
+        ciHasGate ? 'ci.yml runs lint:ci and ship-gate' : 'ci.yml missing lint:ci and/or ship-gate step',
+        copilotHasGate
+          ? 'copilot-internal.yml runs lint:ci and ship-gate'
+          : 'copilot-internal.yml missing lint:ci and/or ship-gate step',
+        superLinterMixed
+          ? 'super-linter.yml enables Python + JavaScript + TypeScript validators'
+          : 'super-linter.yml missing mixed-language validator enablement',
+      ],
+      remediation: ok
+        ? undefined
+        : 'Align package scripts and CI workflows with Phase 0.6 mixed lint parity baseline',
+    };
+  },
 ];
 
 export function runShipGate(): ShipGateReport {

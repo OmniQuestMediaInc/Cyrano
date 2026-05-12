@@ -18,4 +18,7 @@ jobs:
           node-version: 20
           cache: yarn
       - run: yarn install --frozen-lockfile
-      - run: yarn typecheck && yarn lint && yarn format && yarn test && yarn ship-gate
+      - run: yarn typecheck
+      - run: yarn lint:ci
+      - run: yarn test
+      - run: yarn ship-gate

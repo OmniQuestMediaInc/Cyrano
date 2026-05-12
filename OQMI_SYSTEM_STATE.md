@@ -475,6 +475,17 @@ authoring happens in Claude Chat; execution happens in Claude Code via the
 `PROGRAM_CONTROL/DIRECTIVES/` pipeline. No agent may clear a GOV gate
 without CEO-signed clearance in `PROGRAM_CONTROL/CLEARANCES/`.
 
+---
+
+## 11. Phase 0.6 Propagation Entry — 2026-05-11
+
+- Applied cross-repo lint parity baseline in CyranoZone:
+  - Added `lint:ci-python`, `lint:ci-js`, and `lint:ci` scripts in `package.json`.
+  - Updated `.github/workflows/ci.yml` to run `yarn lint:ci` in workspace-quality.
+  - Updated `.github/workflows/copilot-internal.yml` to run `yarn ship-gate` as a dedicated step alongside `yarn lint:ci`.
+  - Updated `.github/workflows/super-linter.yml` to enable mixed Python/JS/TS validators and include `gateguard/`, `services/`, and `ui/`.
+- Updated `PROGRAM_CONTROL/ship-gate-verifier.ts` invariant registry with `cross-repo-lint-parity`.
+- Financial/ledger logic unchanged; no infra/network policy changes introduced.
 ### 10.8 Phase 0.6 — Linting Standardization (2026-05-11)
 
 - Added canonical TypeScript lint surfaces:

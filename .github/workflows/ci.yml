@@ -138,6 +138,11 @@ jobs:
       - name: Prisma validate
         run: yarn prisma validate
 
+      - name: Lint parity gate (Python + JS/TS)
+        run: yarn lint:ci
+
+      - name: Typecheck
+        run: yarn typecheck
       - name: Lint CI (eslint + prettier + tsc)
         run: yarn lint:ci
 

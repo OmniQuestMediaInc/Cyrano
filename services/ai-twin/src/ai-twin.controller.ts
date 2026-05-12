@@ -4,7 +4,7 @@
 
 import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { AiTwinService } from './ai-twin.service';
 import { CreateTwinRequest, TrainingJobResult } from './ai-twin.types';
 

@@ -6,7 +6,7 @@
 // tenant_id. The affiliate() method operates in a $transaction — all-or-nothing.
 // No partial studio without a founder affiliation; no partial affiliation without a studio.
 
-import { Injectable, Logger, NotImplementedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../core-api/src/prisma.service';
 import { NatsService } from '../../core-api/src/nats/nats.service';
 import { AffiliationNumberGenerator } from './affiliation-number.generator';
@@ -198,4 +198,3 @@ export class StudioService {
     return { studio: resultStudio, affiliation_number: affiliationNumber };
   }
 }
-

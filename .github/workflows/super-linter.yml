@@ -28,15 +28,18 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Run Super-Linter (targeted validators)
+      - name: Run Super-Linter (canonical mixed-language validators)
         uses: super-linter/super-linter@v8.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          # Only run what this repo is currently using in CI
+          # Canonical baseline validators
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
+          VALIDATE_PYTHON: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_TYPESCRIPT_ES: true
           VALIDATE_ESLINT: true
 
           # Reduce noise/churn and prevent scanning build artifacts
@@ -45,6 +48,9 @@ jobs:
           YAMLVALIDATE_ALL_CODEBASE: false
           IGNORE_GITIGNORED_FILES: true
 
+          # Restrict linting to canonical governance/docs plus active mixed-language codepaths
+          # Matches: .github/**, docs/**, gateguard/**, services/**, ui/**, and root-level markdown/yaml/json
+          FILTER_REGEX_INCLUDE: ^(\.github/|docs/|gateguard/|services/|ui/|[^/]+\.(md|yml|yaml|json)$)
           # Restrict linting to non-code governance/docs + root-level config/source files.
           FILTER_REGEX_INCLUDE: ^(\.github/|docs/|PROGRAM_CONTROL/|[^/]+\.(md|yml|yaml|json|ts|js)$)
 
