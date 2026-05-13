@@ -24,13 +24,15 @@ export class EcommsZoneClient {
       return;
     }
 
-    const timeoutMs = Number(process.env.ECOMMSZONE_WEBHOOK_TIMEOUT_MS ?? '5000');
+    const parsedTimeoutMs = Number(process.env.ECOMMSZONE_WEBHOOK_TIMEOUT_MS ?? '5000');
+    const timeoutMs =
+      Number.isFinite(parsedTimeoutMs) && parsedTimeoutMs > 0 ? parsedTimeoutMs : 5000;
     const webhookSecret = process.env.ECOMMSZONE_WEBHOOK_SECRET ?? '';
     const headers: Record<string, string> = {
       'content-type': 'application/json',
-      'x-oqmi-source': 'cyranozone',
+      'x-oqmi-source': 'integration-hub',
       'x-oqmi-event': 'hub.high_heat_monetization.v1',
-      'x-oqmi-rule-applied-id': 'GOVERNANCE-EQ-v1',
+      'x-oqmi-rule-applied-id': payload.rule_applied_id,
     };
     if (webhookSecret) {
       headers['x-oqmi-webhook-secret'] = webhookSecret;
@@ -39,10 +41,18 @@ export class EcommsZoneClient {
     try {
       await axios.post(webhookUrl, payload, {
         headers,
-        timeout: Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : 5000,
+        timeout: timeoutMs,
       });
     } catch (error) {
-      this.logger.warn('EcommsZone webhook dispatch failed', error);
+      this.logger.warn('EcommsZone webhook dispatch failed', {
+        webhook_url: webhookUrl,
+        session_id: payload.session_id,
+        creator_id: payload.creator_id,
+        error:
+          error instanceof Error
+            ? { name: error.name, message: error.message }
+            : { message: 'Unknown error' },
+      });
     }
   }
 }

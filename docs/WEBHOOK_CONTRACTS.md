@@ -2,7 +2,7 @@
 
 **Version:** v1.1  
 **Status:** Active  
-**Rule Applied:** GOVERNANCE-EQ-v1
+**Rule Applied (document cleanup):** GOVERNANCE-EQ-v1
 
 ## eCommsZone outbound contract (CyranoZone → eCommsZone)
 
@@ -14,6 +14,7 @@
 
 - Fired when `services/integration-hub/src/hub.service.ts` emits `NATS_TOPICS.HUB_HIGH_HEAT_MONETIZATION`
 - Sent to eCommsZone by `services/integration-hub/src/ecomms-zone.client.ts`
+- Payload and `x-oqmi-rule-applied-id` header use `INTEGRATION_HUB_v2` from the integration-hub event envelope.
 
 #### Payload schema
 

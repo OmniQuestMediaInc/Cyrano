@@ -157,7 +157,7 @@ export class IntegrationHubService {
         rule_applied_id: HUB_RULE_ID,
       };
       this.nats.publish(NATS_TOPICS.HUB_HIGH_HEAT_MONETIZATION, monetizationPayload);
-      await this.ecommsZoneClient?.sendHighHeatMonetization(monetizationPayload);
+      void this.ecommsZoneClient?.sendHighHeatMonetization(monetizationPayload);
     }
 
     if (scalingPct > 0) {
