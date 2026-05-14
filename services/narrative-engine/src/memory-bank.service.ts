@@ -46,8 +46,23 @@ const DEFAULT_TAU_DAYS = 90;
  */
 function heuristicImportance(content: string): number {
   const EMOTIONAL_KEYWORDS = [
-    'love', 'hate', 'fear', 'joy', 'anger', 'surprise', 'trust', 'anticipate',
-    'scared', 'happy', 'sad', 'excited', 'hurt', 'secret', 'promise', 'always', 'never',
+    'love',
+    'hate',
+    'fear',
+    'joy',
+    'anger',
+    'surprise',
+    'trust',
+    'anticipate',
+    'scared',
+    'happy',
+    'sad',
+    'excited',
+    'hurt',
+    'secret',
+    'promise',
+    'always',
+    'never',
   ];
   const lower = content.toLowerCase();
   const words = lower.split(/\s+/).length;

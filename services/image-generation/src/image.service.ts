@@ -121,13 +121,17 @@ export class ImageService {
 
     let storageUrl: string;
     try {
-      storageUrl = await this.callBananaDev(req.model, {
-        prompt: promptUsed,
-        negative_prompt: negativePrompt,
-        num_inference_steps: req.num_inference_steps ?? 28,
-        guidance_scale: req.guidance_scale ?? 7.5,
-        ...dims,
-      }, req.correlation_id);
+      storageUrl = await this.callBananaDev(
+        req.model,
+        {
+          prompt: promptUsed,
+          negative_prompt: negativePrompt,
+          num_inference_steps: req.num_inference_steps ?? 28,
+          guidance_scale: req.guidance_scale ?? 7.5,
+          ...dims,
+        },
+        req.correlation_id,
+      );
     } catch (err) {
       await this.nats.publish(NATS_IMAGE_FAILED, {
         twin_id: req.twin_id,

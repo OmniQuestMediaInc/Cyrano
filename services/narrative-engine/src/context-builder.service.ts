@@ -37,7 +37,7 @@ function estimateTokens(text: string): number {
 // Strip PII before memory injection: email, phone, last-name-like patterns.
 const PII_PATTERNS = [
   /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, // email
-  /\b\+?1?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,  // US phone
+  /\b\+?1?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, // US phone
 ];
 
 function stripPii(text: string): string {
@@ -48,8 +48,7 @@ function stripPii(text: string): string {
   return cleaned;
 }
 
-const LLM_MAX_PROMPT_TOKENS =
-  parseInt(process.env.LLM_MAX_PROMPT_TOKENS ?? '8000', 10) || 8000;
+const LLM_MAX_PROMPT_TOKENS = parseInt(process.env.LLM_MAX_PROMPT_TOKENS ?? '8000', 10) || 8000;
 
 const SYSTEM_SAFETY_RAILS =
   process.env.NARRATIVE_SAFETY_RAILS ??

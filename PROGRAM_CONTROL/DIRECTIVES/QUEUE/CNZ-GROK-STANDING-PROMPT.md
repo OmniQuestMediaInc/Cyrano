@@ -18,12 +18,12 @@ deviation. No synthesis. No fabrication.
 
 ## GOVERNING DOCUMENTS (read before any execution)
 
-| Document | Path | Purpose |
-|---|---|---|
-| Governance | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md` | Supreme rulebook — supersedes all |
-| System State | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md` | DONE / WIP / OUTSTANDING tracker |
-| Active Charter | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001.md` | Task list — Waves A–H |
-| Naming Authority | `docs/DOMAIN_GLOSSARY.md` | Commit prefixes, terminology |
+| Document         | Path                                                    | Purpose                           |
+| ---------------- | ------------------------------------------------------- | --------------------------------- |
+| Governance       | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`   | Supreme rulebook — supersedes all |
+| System State     | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md` | DONE / WIP / OUTSTANDING tracker  |
+| Active Charter   | `PROGRAM_CONTROL/DIRECTIVES/QUEUE/CNZ-WORK-001.md`      | Task list — Waves A–H             |
+| Naming Authority | `docs/DOMAIN_GLOSSARY.md`                               | Commit prefixes, terminology      |
 
 ## INVARIANTS (non-negotiable)
 

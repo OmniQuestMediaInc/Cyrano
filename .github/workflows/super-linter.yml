@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Run Super-Linter (canonical mixed-language validators)
+      - name: Run Super-Linter (cleanup-mode mixed-language validators)
         uses: super-linter/super-linter@v8.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,8 +48,8 @@ jobs:
           YAMLVALIDATE_ALL_CODEBASE: false
           IGNORE_GITIGNORED_FILES: true
 
-          # Restrict linting to non-code governance/docs + root-level config/source files.
-          FILTER_REGEX_INCLUDE: ^(\.github/|docs/|PROGRAM_CONTROL/|[^/]+\.(md|yml|yaml|json|ts|js)$)
+          # Restrict linting to canonical governance/docs plus active mixed-language codepaths.
+          FILTER_REGEX_INCLUDE: ^(\.github/|docs/|PROGRAM_CONTROL/|gateguard/|services/|ui/|[^/]+\.(md|yml|yaml|json|ts|js)$)
 
           # Belt-and-suspenders: keep heavy / irrelevant trees out even if regex widens later
           FILTER_REGEX_EXCLUDE: (^|/)(LEGACY_CONFIGS|archive|node_modules|dist|\.next|out)/

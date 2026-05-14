@@ -61,10 +61,7 @@ export class AffiliationNumberGenerator {
     studioCount: number,
     isUnique: (candidate: string) => Promise<boolean>,
   ): Promise<string> {
-    const length = Math.max(
-      MIN_LENGTH,
-      Math.min(MAX_LENGTH, targetLength(studioCount)),
-    );
+    const length = Math.max(MIN_LENGTH, Math.min(MAX_LENGTH, targetLength(studioCount)));
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       const candidate = generate(length);

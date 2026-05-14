@@ -2,9 +2,9 @@
 
 Auto-generated on every push. Do not edit manually.
 
-**Branch:** `copilot/cleanup-governance-sync`
-**Commit:** `2eb8c149a2890a3e3c74d2918dc8a9ba12cc0507`
-**Generated:** 2026-05-14T09:34:10Z
+**Branch:** `copilot/cleanup-governance-sync-again`
+**Commit:** `e7dad68555138651e5c16fb249df203428212e69`
+**Generated:** 2026-05-14T09:38:05Z
 
 ## All Files
 

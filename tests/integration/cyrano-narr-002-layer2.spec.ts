@@ -194,10 +194,7 @@ describe('ContextBuilderService', () => {
     mockMemoryBank = {
       recallMemories: jest.fn().mockResolvedValue([]),
     };
-    service = new ContextBuilderService(
-      mockPrisma as never,
-      mockMemoryBank as never,
-    );
+    service = new ContextBuilderService(mockPrisma as never, mockMemoryBank as never);
   });
 
   it('returns a non-empty prompt_block with safety rails', async () => {
@@ -348,9 +345,7 @@ describe('BranchingService', () => {
     });
 
     it('throws when beat_id does not exist', async () => {
-      mockPrisma.storyBeat.findUniqueOrThrow.mockRejectedValue(
-        new Error('Record not found'),
-      );
+      mockPrisma.storyBeat.findUniqueOrThrow.mockRejectedValue(new Error('Record not found'));
 
       await expect(
         service.createBranchDecision({

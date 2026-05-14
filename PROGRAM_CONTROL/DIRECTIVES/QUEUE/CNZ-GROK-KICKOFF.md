@@ -51,7 +51,7 @@ All tasks in CNZ-WORK-001.md previously assigned `Agent: claude-code` are now as
 
 ## STEP 3 — EXECUTION PROTOCOL
 
-1. Find the next unblocked `QUEUED` task in CNZ-WORK-001.md (or any CYR-* / STUDIO-* directive in `PROGRAM_CONTROL/DIRECTIVES/QUEUE/`).
+1. Find the next unblocked `QUEUED` task in CNZ-WORK-001.md (or any `CYR-*` / `STUDIO-*` directive in `PROGRAM_CONTROL/DIRECTIVES/QUEUE/`).
 2. Check for conflicts (Touches: field overlap) per Autonomous Directive Protocol §3.
 3. Create branch `grok/<directive-id-lowercase>`.
 4. Execute the directive exactly as written (Droid Mode).
@@ -66,15 +66,15 @@ Refer to `PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_SYSTEM_STATE.md` §5 OUTSTANDING
 
 Active unblocked directives (as of 2026-05-11):
 
-| Directive | Status | Notes |
-|---|---|---|
-| CYR-CORE-001-PROVIDER-RELIABILITY | QUEUED | No deps — execute first |
-| CYR-NARR-002-LAYER2-MEMORY | QUEUED | No deps — can parallel with CYR-CORE-001 |
-| STUDIO-AFF-001-IMPL | QUEUED | FIZ-scoped — requires REASON/IMPACT/CORRELATION_ID in commit |
-| CYR-AI-TWIN-003-PIPELINE | QUEUED | Depends on CYR-CORE-001 |
-| CYR-VOICE-004-CALL-SYSTEM | QUEUED | Depends on CYR-CORE-001 + CYR-NARR-002 |
-| CYR-PORTAL-005-CONSISTENCY | QUEUED | After CYR-AI-TWIN-003 |
-| CYR-SAFETY-006-MODERATION | QUEUED | Depends on CYR-NARR-002 + CYR-VOICE-004; CEO clearance required |
+| Directive                         | Status | Notes                                                           |
+| --------------------------------- | ------ | --------------------------------------------------------------- |
+| CYR-CORE-001-PROVIDER-RELIABILITY | QUEUED | No deps — execute first                                         |
+| CYR-NARR-002-LAYER2-MEMORY        | QUEUED | No deps — can parallel with CYR-CORE-001                        |
+| STUDIO-AFF-001-IMPL               | QUEUED | FIZ-scoped — requires REASON/IMPACT/CORRELATION_ID in commit    |
+| CYR-AI-TWIN-003-PIPELINE          | QUEUED | Depends on CYR-CORE-001                                         |
+| CYR-VOICE-004-CALL-SYSTEM         | QUEUED | Depends on CYR-CORE-001 + CYR-NARR-002                          |
+| CYR-PORTAL-005-CONSISTENCY        | QUEUED | After CYR-AI-TWIN-003                                           |
+| CYR-SAFETY-006-MODERATION         | QUEUED | Depends on CYR-NARR-002 + CYR-VOICE-004; CEO clearance required |
 
 ---
 

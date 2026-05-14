@@ -1,8 +1,11 @@
-# Cyrano™ Standalone
+# CyranoZone — Cleanup Mode
+
+> **CLEANUP MODE ACTIVE** — Governance sync and repo hardening take priority over new feature work.
+> Cyrano L1/L2 feature ownership now lives in the dedicated Cyrano repo; this repo only keeps the integration and cleanup surface needed for ship-gate and handoff.
 
 > **AI Character Companions — photorealistic, persistent-memory, voice-cloned.**
 > Powered by Flux LoRA fine-tuning, ElevenLabs voice cloning, and a cinematic narrative engine.
-> Governed by OmniQuest Media Inc. (OQMInc™) — OQMI Coding Doctrine v2.0.
+> Governed by OmniQuest Media Inc. (OQMInc™) — `OQMI_GOVERNANCE.md` + `OQMI_INFRASTRUCTURE_AND_SECURITY_POLICY.md`.
 
 **Package manager:** Yarn (canonical for all OQMInc repos — do not use npm or pnpm).
 
@@ -217,18 +220,18 @@ See [`.env.example`](.env.example) for a full list. Key variables:
 
 ## Governance
 
-This repo operates under the OQMI Coding Doctrine v2.0. All agents must read:
+This repo operates under cleanup-mode governance. All agents must read:
 
 - **[`PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md`](PROGRAM_CONTROL/DIRECTIVES/QUEUE/OQMI_GOVERNANCE.md)** — governance invariants, PR lifecycle, escalation discipline.
 - **[`docs/DOMAIN_GLOSSARY.md`](docs/DOMAIN_GLOSSARY.md)** — naming authority and commit prefix enum.
 - **[`governance/OQMI_INFRASTRUCTURE_AND_SECURITY_POLICY.md`](governance/OQMI_INFRASTRUCTURE_AND_SECURITY_POLICY.md)** — sovereign infrastructure & security policy (rule_applied_id: OQMI_INFRA_v1.0). Binding on all repos, environments, agents, and infrastructure.
-- **[`PROGRAM_CONTROL/WORK-ORDER-v0.9.x.md`](PROGRAM_CONTROL/WORK-ORDER-v0.9.x.md)** — active cleanup-mode work-order index.
+- **[`PROGRAM_CONTROL/WORK-ORDER-v0.9.8.md`](PROGRAM_CONTROL/WORK-ORDER-v0.9.8.md)** — current cleanup-cycle report-back for this repo.
 
-### Cleanup mode fast-path
+### Cleanup-mode fast path
 
-- Cleanup-only lane is active (`GOVERNANCE-EQ-v1`).
-- Non-financial PRs use auto-merge after CI + ship-gate + super-linter signals are green/gray.
-- Financial/ledger-path changes remain human-review only.
+- Non-financial PRs follow the fast path: auto-merge on green/gray once CI and ship-gate are satisfied.
+- Human review is reserved for governance-doc edits plus financial / ledger / compliance categories defined in `OQMI_GOVERNANCE.md §2.2`.
+- Cyrano-specific runtime ownership is being stripped from this repo; remaining integrations should communicate through NATS events or webhook contracts instead of in-repo feature expansion.
 
 ### Financial Integrity Zone (FIZ)
 
@@ -251,19 +254,14 @@ CORRELATION_ID: <idempotency key>
 
 ---
 
-## Future Merge Path
+## Cleanup-mode direction
 
-Cyrano Standalone shares the same Prisma schema, governance model, Canonical Ledger, and
-user system as the main ChatNow.Zone platform. When ready to merge:
+Cleanup work in this repo is currently focused on:
 
-1. The `AiTwin`, `VoiceClone`, `MemoryBank`, `ImageCache`, and `NarrativeBranch` Prisma
-   models drop cleanly into the ChatNow.Zone schema with no conflicts.
-2. The four new services (`ai-twin`, `image-generation`, `voice-cloning`, `narrative-engine`)
-   register as NestJS modules in `core-api/src/app.module.ts`.
-3. The `cyrano-standalone` Next.js app becomes a sub-app in the main monorepo.
+1. governance sync and ship-gate hardening,
+2. removal or archiving of Cyrano L1/L2 remnants that no longer belong here,
+3. preserving only the NATS / webhook integration seams needed to hand traffic to the dedicated Cyrano repository.
 
 ---
-
-_Cyrano™ — OmniQuest Media Inc. · All rights reserved._
 
 _[rule_applied_id: GOVERNANCE-EQ-v1]_

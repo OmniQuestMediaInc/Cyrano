@@ -1,7 +1,7 @@
 # WO: WO-CI-001
-# Continuous Integration — ChatNow.Zone BUILD
+# Continuous Integration — CyranoZone cleanup fast-path baseline
 # Triggers on every push to main and every PR targeting main so that the
-# branch always shows a green status check instead of grey (no runs).
+# branch always records the CI + ship-gate baseline required for cleanup-mode auto-merge.
 name: CI
 
 on:

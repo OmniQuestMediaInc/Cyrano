@@ -39,10 +39,7 @@ export class VoiceController {
   /** Record a voice sample upload. */
   @Post(':voiceCloneId/samples')
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
-  async recordSample(
-    @Param('voiceCloneId') voiceCloneId: string,
-    @Body() body: RecordSampleDto,
-  ) {
+  async recordSample(@Param('voiceCloneId') voiceCloneId: string, @Body() body: RecordSampleDto) {
     return this.voiceService.recordSample(
       voiceCloneId,
       body.sample_id,

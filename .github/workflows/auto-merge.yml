@@ -1,7 +1,7 @@
 # WO: WO-CI-002
-# Auto-Merge — ChatNow.Zone BUILD
+# Auto-Merge — CyranoZone cleanup fast path
 # Enables auto-merge (squash strategy) on every PR targeting main so that
-# the branch is merged automatically once all required status checks pass.
+# non-financial cleanup PRs land automatically once the required status checks are green/gray.
 name: Auto Merge
 
 on:
@@ -39,7 +39,7 @@ jobs:
   enable-auto-merge-standard:
     name: Enable Auto Merge (Standard)
     runs-on: ubuntu-latest
-    if: !startsWith(github.head_ref, 'copilot/') && !startsWith(github.head_ref, 'grok/') && !startsWith(github.head_ref, 'agent/')
+    if: !startsWith(github.head_ref , 'copilot/') && !startsWith(github.head_ref, 'grok/') && !startsWith(github.head_ref, 'agent/')
 
     steps:
       - name: Enable auto-merge for PR

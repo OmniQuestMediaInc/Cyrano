@@ -105,9 +105,7 @@ export class CircuitBreaker {
     }
 
     if (this.consecutiveFailures >= this.failureThreshold) {
-      this.logger.error(
-        `${this.provider} hit failure threshold (${this.failureThreshold}) → OPEN`,
-      );
+      this.logger.error(`${this.provider} hit failure threshold (${this.failureThreshold}) → OPEN`);
       this.trip();
     }
   }

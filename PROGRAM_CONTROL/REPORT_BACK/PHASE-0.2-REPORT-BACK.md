@@ -28,29 +28,29 @@ docs/REQUIREMENTS_MASTER.md           |  2 +-
 
 ### 1. Claude purged from docs and prompts
 
-| File | Change |
-|---|---|
-| `.github/copilot-instructions.md` | Agent Handoff Protocol: `Claude` → `Grok`; What Copilot must NEVER do: `Claude Chat's role` → `CEO-authorized agents only` |
-| `docs/DIRECTIVE_TEMPLATE.md` | `**Agent:** COPILOT \| CLAUDE_CODE` → `COPILOT \| GROK` |
-| `docs/REQUIREMENTS_MASTER.md` | Maintainer line: `Claude Chat + Copilot/Claude Code` → `Grok + Copilot/Grok` |
-| `docs/MEMBERSHIP_LIFECYCLE_POLICY.md` | All `Claude Chat / Claude Code` agent references replaced with `Grok / Copilot` |
-| `docs/ARCHITECTURE_OVERVIEW.md` | Branch of record: `claude/frontend-polish-concierge-ui-mlqrR` → `grok/phase-0.2-grok-primary-ship-gate` |
-| `docs/PRE_LAUNCH_CHECKLIST.md` | Branch of record: `claude/frontend-polish-concierge-ui-mlqrR` → `grok/phase-0.2-grok-primary-ship-gate` |
+| File                                  | Change                                                                                                                     |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `.github/copilot-instructions.md`     | Agent Handoff Protocol: `Claude` → `Grok`; What Copilot must NEVER do: `Claude Chat's role` → `CEO-authorized agents only` |
+| `docs/DIRECTIVE_TEMPLATE.md`          | `**Agent:** COPILOT \| CLAUDE_CODE` → `COPILOT \| GROK`                                                                    |
+| `docs/REQUIREMENTS_MASTER.md`         | Maintainer line: `Claude Chat + Copilot/Claude Code` → `Grok + Copilot/Grok`                                               |
+| `docs/MEMBERSHIP_LIFECYCLE_POLICY.md` | All `Claude Chat / Claude Code` agent references replaced with `Grok / Copilot`                                            |
+| `docs/ARCHITECTURE_OVERVIEW.md`       | Branch of record: `claude/frontend-polish-concierge-ui-mlqrR` → `grok/phase-0.2-grok-primary-ship-gate`                    |
+| `docs/PRE_LAUNCH_CHECKLIST.md`        | Branch of record: `claude/frontend-polish-concierge-ui-mlqrR` → `grok/phase-0.2-grok-primary-ship-gate`                    |
 
 ### 2. Ship-Gate Verifier hardening
 
-| Check | Change |
-|---|---|
-| `GATE-2` | Description updated: `Welfare Guardian thresholds` → `WelfareWatch™ Score thresholds` |
+| Check            | Change                                                                                                                                                                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GATE-2`         | Description updated: `Welfare Guardian thresholds` → `WelfareWatch™ Score thresholds`                                                                                                                                                                         |
 | `NAMING-1` (NEW) | Added naming-canon compliance check: flags legacy tokens `ffs/` (→ crowdsync) and `Welfare Guardian` (→ WelfareWatch™ Score) in services/ + ui/ TypeScript; status SKIP during Phase 0.2 partial-alignment baseline, escalates to FAIL after full rename pass |
 
 ### 3. Workflows — already complete (pre-existing)
 
-| Workflow | Status |
-|---|---|
+| Workflow                                                          | Status                                 |
+| ----------------------------------------------------------------- | -------------------------------------- |
 | `directive-dispatch.yml` — CLAUDE_CODE retired, re-routes to Grok | ✅ Already in place (landed in PR #54) |
-| `auto-merge.yml` — `grok/` prefix in agent fast-path | ✅ Already in place |
-| `ci.yml` + `deploy.yml` — Ship-gate job present | ✅ Already in place |
+| `auto-merge.yml` — `grok/` prefix in agent fast-path              | ✅ Already in place                    |
+| `ci.yml` + `deploy.yml` — Ship-gate job present                   | ✅ Already in place                    |
 
 ---
 
@@ -68,6 +68,7 @@ docs/REQUIREMENTS_MASTER.md           |  2 +-
 **SUCCESS**
 
 All Phase 0.2 deliverables complete. Ship-gate now enforces:
+
 - Canada residency flag (INFRA-1) — pre-existing
 - Immutable backup stub (INFRA-2) — pre-existing
 - AI advisory boundary (INFRA-3) — pre-existing
